@@ -1,0 +1,147 @@
+/* Apple-like background & font smoothing */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #0d0d0f;
+    background-image: radial-gradient(circle at 15% 25%, rgba(52, 80, 154, 0.15), transparent 40%),
+                      radial-gradient(circle at 85% 75%, rgba(120, 50, 150, 0.1), transparent 40%);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Modern Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #4a4a4a; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #6a6a6a; }
+
+/* Smooth fade-in animation for results */
+.fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Modal animations */
+.modal-enter-active { transition: all 300ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+.modal-leave-active { transition: all 200ms ease-in; }
+.modal-enter-from, .modal-leave-to { opacity: 0; transform: scale(0.95); }
+.modal-enter-to, .modal-leave-from { opacity: 1; transform: scale(1); }
+
+/* --- Custom Animations --- */
+
+/* General transition for interactive elements */
+.btn-transition {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Button press animation */
+.btn-press:active {
+    transform: scale(0.97);
+}
+
+/* KLUG button hover glow */
+.klug-btn:not(:disabled):hover {
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.15);
+    border-color: rgba(59, 130, 246, 0.3);
+    background-color: rgba(64, 64, 64, 0.8);
+    transform: translateY(-1px);
+}
+
+.klug-btn:disabled {
+    pointer-events: none;
+    user-select: none;
+}
+
+.keycap-badge { position:absolute; top:-6px; left:-6px; background: rgba(23,23,23,0.95); border:1px solid rgba(63,63,70,0.85); color:#e5e7eb; font-size:11px; padding:1px 6px; border-radius:9999px; z-index:5; box-shadow: 0 1px 2px rgba(0,0,0,0.35); }
+.keycap-badge-lg { font-size:13px; padding:2px 8px; }
+.keycap-target { position: relative; }
+.chord-highlight { box-shadow: inset 0 0 0 2px rgba(99,102,241,0.35); border-radius: 12px; }
+
+/* Animations */
+@keyframes zoomInSoft { from { opacity:0; transform: scale(0.96); } to { opacity:1; transform: scale(1); } }
+.animate-zoom-in { animation: zoomInSoft 140ms ease-out; }
+
+/* Better typography for larger screens */
+@media (min-width: 1280px) {
+    .klug-btn h3 {
+        font-size: 0.95rem;
+    }
+    
+    .klug-btn p {
+        font-size: 0.8rem;
+        line-height: 1.3;
+    }
+}
+
+/* Smooth focus for textareas */
+textarea {
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+/* Slider thumb styling */
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #3b82f6;
+    border-radius: 50%;
+    cursor: pointer;
+    margin-top: -8px; /* Offset to center */
+    transition: background-color 0.2s;
+}
+
+input[type=range]:hover::-webkit-slider-thumb {
+    background: #2563eb;
+}
+
+/* --- Quick Wins UI --- */
+/* Chips */
+.chip {
+    padding: 4px 10px;
+    border-radius: 9999px;
+    border: 1px solid rgba(107,114,128,0.5);
+    background: rgba(24,24,27,0.7);
+    color: #cbd5e1;
+    font-size: 12px;
+}
+.chip:hover { background: rgba(63,63,70,0.6); }
+
+/* History panel */
+#history-panel.open { transform: translateX(0); }
+.history-item { border: 1px solid rgba(63,63,70,0.8); background: rgba(24,24,27,0.7); border-radius: 10px; }
+.history-item:hover { border-color: rgba(99,102,241,0.5); }
+.history-title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.history-meta { font-size: 11px; color: #9ca3af; }
+.history-actions button { font-size: 11px; }
+
+/* Char stats badges */
+.badge { padding: 2px 8px; border-radius: 9999px; border: 1px solid rgba(63,63,70,0.8); font-size: 11px; }
+.badge.ok { color: #86efac; border-color: rgba(34,197,94,0.4); }
+.badge.warn { color: #facc15; border-color: rgba(250,204,21,0.4); }
+.badge.err { color: #fda4af; border-color: rgba(244,63,94,0.4); }
+
+/* Small toast/help */
+#shortcut-help { position: fixed; bottom: 20px; right: 20px; background: rgba(23,23,23,0.9); border: 1px solid rgba(63,63,70,0.8); border-radius: 12px; padding: 12px 14px; color: #e5e7eb; font-size: 12px; z-index: 200; display: none; }
+
+/* Binding chips */
+.binding-chip { display:inline-flex; align-items:center; gap:6px; padding:3px 8px; border-radius:8px; border:1px solid rgba(63,63,70,0.8); background: rgba(23,23,23,0.7); color:#e5e7eb; font-size:12px; }
+.binding-chip .remove { cursor:pointer; color:#9ca3af; }
+.binding-chip.conflict { border-color: rgba(244,63,94,0.6); color:#fecaca; }
+
+/* Command palette */
+.cmdk-item { display:flex; align-items:center; justify-content:space-between; padding:10px 12px; cursor:pointer; background: transparent; }
+.cmdk-item:hover, .cmdk-item.active { background: rgba(63,63,70,0.5); }
+.cmdk-label { color:#e5e7eb; font-size:14px; }
+.cmdk-binding { color:#9ca3af; font-size:12px; border:1px solid rgba(63,63,70,0.8); padding:2px 6px; border-radius:6px; }
+
+/* Action HUD */
+#action-hud { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%); background: rgba(23,23,23,0.92); border: 1px solid rgba(63,63,70,0.8); border-radius: 12px; padding: 8px 12px; color: #e5e7eb; font-size: 13px; z-index: 210; opacity: 0; pointer-events: none; transition: opacity 120ms ease-in-out, transform 120ms ease-in-out; }
+#chord-hint.show { display:block; }
+#action-hud.show { opacity: 1; transform: translateX(-50%) translateY(-4px); }
+
+/* Pulse */
+.pulse { box-shadow: 0 0 0 2px rgba(59,130,246,0.5); transition: box-shadow 400ms ease-out; }
+.pulse-end { box-shadow: none; }
