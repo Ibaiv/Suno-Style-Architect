@@ -78,9 +78,10 @@
         </header>
 
         <!-- ### MAIN INTERFACE GRID ### -->
-        <div class="grid grid-cols-1 xl:grid-cols-2 gap-8 lg:gap-12">
-            <!-- ## ROW 1, COL 1: IDEA INPUT ## -->
-            <div class="bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20 flex flex-col">
+        <div class="space-y-8 lg:space-y-12">
+            <div class="grid grid-cols-1 xl:grid-cols-2 gap-8 lg:gap-12">
+                <!-- ## ROW 1, COL 1: IDEA INPUT ## -->
+                <div class="bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20 flex flex-col">
                 <div class="flex justify-between items-center mb-3">
                     <label for="idea-input" class="text-xl font-semibold text-white">Deine Vision</label>
                     <button id="spark-idea-button" class="flex items-center gap-1.5 text-sm text-blue-400 hover:text-blue-300 font-medium transition-colors">
@@ -99,8 +100,8 @@
                 </button>
             </div>
             
-            <!-- ## ROW 1, COL 2: RESULT ## -->
-            <div class="bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20 flex flex-col">
+                <!-- ## ROW 1, COL 2: RESULT ## -->
+                <div class="bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20 flex flex-col">
                 <h2 class="text-xl font-semibold text-white mb-4">Dein Meisterstück</h2>
                 <div id="result-wrapper" class="flex-grow flex flex-col">
                     <!-- Initial State -->
@@ -148,8 +149,9 @@
                 </div>
             </div>
 
-            <!-- ## ROW 2, COL 1: EXPERT REFINEMENT ## -->
-            <div class="bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20">
+            <div class="grid grid-cols-1 xl:grid-cols-3 gap-8 lg:gap-12">
+                <!-- ## ROW 2, COL 1: EXPERT REFINEMENT ## -->
+                <div class="bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20">
                 <h2 class="text-xl font-semibold text-white mb-2">Experten-Veredelung</h2>
                 <p class="text-neutral-400 mb-4 text-sm">Lass deinen Prompt von KI-Personas mit Fachwissen überarbeiten.</p>
                 <div id="expert-disabled-notice" class="mb-4 p-3 bg-amber-900/20 border border-amber-700/50 text-amber-300 rounded-lg text-sm">
@@ -193,10 +195,10 @@
                         <p class="text-xs text-neutral-400">Füge spezifische Anweisungen hinzu.</p>
                     </button>
                 </div>
-            </div>
-            
-            <!-- ## ROW 2, COL 2: KLUG ## -->
-            <div class="bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20">
+                </div>
+
+                <!-- ## ROW 2, COL 2: KLUG ## -->
+                <div class="bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20">
                 <h2 class="text-xl font-semibold text-white mb-2">KLUG</h2>
                 <p class="text-neutral-400 mb-4 text-sm">Intelligente Werkzeuge zur Verfeinerung deines Prompts.</p>
                 <div id="klug-disabled-notice" class="mb-4 p-3 bg-amber-900/20 border border-amber-700/50 text-amber-300 rounded-lg text-sm">
@@ -251,6 +253,42 @@
                         <h3 class="font-semibold text-neutral-200">Effektketten-Designer</h3>
                         <p class="text-xs text-neutral-400">Gestalte den Sound mit Effekten.</p>
                     </button>
+                </div>
+                </div>
+
+                <!-- ## ROW 2, COL 3: INNOVATION LAB ## -->
+                <div class="bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20">
+                    <h2 class="text-xl font-semibold text-white mb-2">Innovation-Labor</h2>
+                    <p class="text-neutral-400 mb-4 text-sm">Entdecke neue experimentelle Module, um deine Ideen in frische Richtungen zu lenken.</p>
+                    <div id="lab-disabled-notice" class="mb-4 p-3 bg-amber-900/20 border border-amber-700/50 text-amber-300 rounded-lg text-sm">
+                        💡 <strong>Hinweis:</strong> Generiere zuerst einen Prompt, um das Innovation-Labor zu aktivieren.
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-3 lg:gap-4">
+                        <button id="future-groove-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                            <h3 class="font-semibold text-neutral-200">Future Groove</h3>
+                            <p class="text-xs text-neutral-400">Verleihe deinem Sound futuristische Texturen.</p>
+                        </button>
+                        <button id="aether-sculptor-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                            <h3 class="font-semibold text-neutral-200">Äther-Skulpteur</h3>
+                            <p class="text-xs text-neutral-400">Forme immersive Klanglandschaften.</p>
+                        </button>
+                        <button id="rhythm-alchemist-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                            <h3 class="font-semibold text-neutral-200">Rhythmus-Alchemist</h3>
+                            <p class="text-xs text-neutral-400">Destilliere komplexe Percussion-Kombinationen.</p>
+                        </button>
+                        <button id="narrative-weaver-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                            <h3 class="font-semibold text-neutral-200">Narrativ-Architekt</h3>
+                            <p class="text-xs text-neutral-400">Verknüpfe Motive zu epischen Geschichten.</p>
+                        </button>
+                        <button id="synesthesia-painter-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                            <h3 class="font-semibold text-neutral-200">Synästhesie-Maler</h3>
+                            <p class="text-xs text-neutral-400">Übersetze Farben und Formen in Klangideen.</p>
+                        </button>
+                        <button id="pulse-engine-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                            <h3 class="font-semibold text-neutral-200">Pulse Engine</h3>
+                            <p class="text-xs text-neutral-400">Erzeuge dynamische Spannungsbögen.</p>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

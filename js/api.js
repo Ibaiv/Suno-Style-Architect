@@ -113,11 +113,15 @@ function setKlugToolsState(enabled) {
     // Show/hide notice messages
     const expertNotice = document.getElementById('expert-disabled-notice');
     const klugNotice = document.getElementById('klug-disabled-notice');
+    const labNotice = document.getElementById('lab-disabled-notice');
     if (expertNotice) {
         expertNotice.style.display = enabled ? 'none' : 'block';
     }
     if (klugNotice) {
         klugNotice.style.display = enabled ? 'none' : 'block';
+    }
+    if (labNotice) {
+        labNotice.style.display = enabled ? 'none' : 'block';
     }
 }
 
