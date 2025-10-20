@@ -13,6 +13,7 @@ function initializeAdvancedFeatures() {
     setupIdeaSpark();
     setupExpertRefinements();
     setupKlugTools();
+    setupFutureLabTools();
     setupCustomInstruction();
 }
 
@@ -194,6 +195,616 @@ function setupKlugTools() {
     
     taggerTools.forEach(tool => {
         setupKlugTagger(tool.id, tool.prompt);
+    });
+}
+
+// === FUTURE LAB LOGIC ===
+function setupFutureLabTools() {
+    setupAdaptiveFlow();
+    setupAiCollaboration();
+    setupStoryArcDesigner();
+    setupImmersiveSpace();
+    setupHumanTouch();
+    setupReleaseForecast();
+}
+
+function setupAdaptiveFlow() {
+    const modal = document.getElementById('adaptive-flow-modal');
+    const openButton = document.getElementById('adaptive-flow-button');
+    const slider = modal?.querySelector('#adaptive-flow-slider');
+    const levelBadge = modal?.querySelector('#adaptive-flow-level');
+    const runButton = modal?.querySelector('#run-adaptive-flow-button');
+    const buttonText = modal?.querySelector('#run-adaptive-flow-text');
+    const loader = modal?.querySelector('#adaptive-flow-loader');
+    const output = modal?.querySelector('#adaptive-flow-output');
+
+    if (!modal || !openButton || !runButton || !slider || !levelBadge || !output) return;
+
+    const modalLogic = setupModal(modal, openButton);
+
+    slider.addEventListener('input', () => {
+        levelBadge.textContent = slider.value;
+    });
+
+    openButton.addEventListener('click', () => {
+        slider.value = '65';
+        levelBadge.textContent = '65';
+        output.innerHTML = `<p class="text-neutral-500 text-sm">Passe die Intensität an und forme den Flow deines Prompts neu.</p>`;
+    });
+
+    runButton.addEventListener('click', async () => {
+        const currentPrompt = document.getElementById('result-text').textContent.trim();
+        if (!currentPrompt) {
+            output.innerHTML = `<p class="text-red-400">Bitte generiere zuerst einen Prompt.</p>`;
+            return;
+        }
+
+        runButton.disabled = true;
+        buttonText.classList.add('hidden');
+        loader.classList.remove('hidden');
+        output.innerHTML = `<div class="animate-spin h-6 w-6 text-blue-400 mx-auto"></div>`;
+
+        const userQuery = `Base prompt: "${currentPrompt}"\nDynamic intensity (0-100): ${slider.value}`;
+
+        try {
+            const response = await callOpenRouterAPI(userQuery, ADAPTIVE_FLOW_PROMPT);
+            const [promptBlock, notesBlock] = response.split('---').map(section => section.trim());
+            const cleanPrompt = promptBlock.replace(/^PROMPT:\s*/i, '').trim();
+            const notes = (notesBlock || '').replace(/^FLOW NOTES:\s*/i, '').split('\n').map(line => line.replace(/^[-•]\s*/, '').trim()).filter(Boolean);
+
+            output.innerHTML = `
+                <div class="grid gap-4 md:grid-cols-2">
+                    <div>
+                        <h3 class="text-sm font-semibold text-neutral-300 mb-2">Aktueller Prompt</h3>
+                        <pre class="whitespace-pre-wrap text-xs md:text-sm text-neutral-400 bg-neutral-900/70 border border-neutral-700 rounded-xl p-3">${currentPrompt}</pre>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-semibold text-neutral-300 mb-2">Neuer Flow</h3>
+                        <pre class="whitespace-pre-wrap text-xs md:text-sm text-neutral-200 bg-neutral-900/70 border border-blue-500/40 rounded-xl p-3" id="adaptive-flow-result">${cleanPrompt}</pre>
+                        <button id="apply-adaptive-flow-button" class="mt-3 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg btn-transition btn-press">Flow übernehmen</button>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <h4 class="text-sm font-semibold text-neutral-300 mb-2">Flow-Notizen</h4>
+                    <ul class="text-xs md:text-sm text-neutral-400 space-y-1">
+                        ${notes.map(note => `<li class="flex gap-2"><span class="text-blue-400">•</span><span>${note}</span></li>`).join('')}
+                    </ul>
+                </div>
+            `;
+
+            const applyButton = output.querySelector('#apply-adaptive-flow-button');
+            applyButton?.addEventListener('click', () => {
+                document.getElementById('result-text').textContent = cleanPrompt;
+                if (window.QW) { window.QW.onPromptUpdated({ source: 'future-lab:adaptive-flow' }); }
+                modalLogic.close();
+            });
+        } catch (error) {
+            console.error('Adaptive Flow failed', error);
+            output.innerHTML = `<p class="text-red-400">Fehler beim Berechnen des Flows: ${error.message}</p>`;
+        } finally {
+            runButton.disabled = false;
+            buttonText.classList.remove('hidden');
+            loader.classList.add('hidden');
+        }
+    });
+}
+
+function setupAiCollaboration() {
+    const modal = document.getElementById('ai-collab-modal');
+    const openButton = document.getElementById('ai-collab-button');
+    const personasContainer = modal?.querySelector('#ai-collab-personas');
+    const generateButton = modal?.querySelector('#generate-ai-collab-button');
+    const buttonText = modal?.querySelector('#generate-ai-collab-text');
+    const loader = modal?.querySelector('#ai-collab-loader');
+    const output = modal?.querySelector('#ai-collab-output');
+
+    if (!modal || !openButton || !personasContainer || !generateButton || !output) return;
+
+    const modalLogic = setupModal(modal, openButton);
+    const personas = [
+        { id: 'visionary', label: 'Visionärer Komponist', detail: 'erzählerische Themen & modulare Harmonien' },
+        { id: 'beat-architect', label: 'Beat-Architekt', detail: 'rhythmische Layer & Sidechain-Drive' },
+        { id: 'texturalist', label: 'Textur-Alchemist', detail: 'granulare Atmosphären & Motion FX' },
+        { id: 'vocal-director', label: 'Vocal Director', detail: 'Toplines, Harmonien & Call/Response' },
+        { id: 'mix-navigator', label: 'Mix Navigator', detail: 'Automation, Panorama & Stem-Balance' }
+    ];
+    let selected = new Set();
+
+    const renderPersonas = () => {
+        personasContainer.innerHTML = '';
+        personas.forEach(persona => {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'text-left bg-neutral-900/60 border border-neutral-700 rounded-xl p-3 hover:border-blue-500/60 transition-colors';
+            button.innerHTML = `<div class="text-sm font-semibold text-neutral-200">${persona.label}</div><div class="text-xs text-neutral-400 mt-1">${persona.detail}</div>`;
+            button.addEventListener('click', () => {
+                if (selected.has(persona.id)) {
+                    selected.delete(persona.id);
+                    button.classList.remove('border-blue-500/60', 'bg-blue-600/20');
+                } else {
+                    selected.add(persona.id);
+                    button.classList.add('border-blue-500/60', 'bg-blue-600/20');
+                }
+            });
+            personasContainer.appendChild(button);
+        });
+    };
+
+    openButton.addEventListener('click', () => {
+        selected = new Set();
+        renderPersonas();
+        output.innerHTML = `<p class="text-neutral-500 text-sm">Wähle 2-3 Personas aus, um einen kooperativen Prompt zu formen.</p>`;
+    });
+
+    generateButton.addEventListener('click', async () => {
+        const currentPrompt = document.getElementById('result-text').textContent.trim();
+        if (!currentPrompt) {
+            output.innerHTML = `<p class="text-red-400">Bitte generiere zuerst einen Prompt.</p>`;
+            return;
+        }
+
+        const picks = personas.filter(p => selected.has(p.id));
+        if (picks.length === 0) {
+            output.innerHTML = `<p class="text-amber-300">Wähle mindestens eine Persona aus.</p>`;
+            return;
+        }
+
+        generateButton.disabled = true;
+        buttonText?.classList.add('hidden');
+        loader?.classList.remove('hidden');
+        output.innerHTML = `<div class="animate-spin h-6 w-6 text-blue-400 mx-auto"></div>`;
+
+        const personaSummary = picks.map(p => `${p.label} (${p.detail})`).join('; ');
+        const userQuery = `Base prompt: "${currentPrompt}"\nPersonas: ${personaSummary}`;
+
+        try {
+            const response = await callOpenRouterAPI(userQuery, AI_COLLAB_PROMPT);
+            const [promptBlock, notesBlock] = response.split('---').map(section => section.trim());
+            const cleanPrompt = promptBlock.replace(/^PROMPT:\s*/i, '').trim();
+            const notes = (notesBlock || '').replace(/^INTERPLAY NOTES:\s*/i, '').split('\n').map(line => line.replace(/^[-•]\s*/, '').trim()).filter(Boolean);
+
+            output.innerHTML = `
+                <div class="space-y-4">
+                    <div class="bg-neutral-900/70 border border-blue-500/30 rounded-xl p-4">
+                        <h3 class="text-sm font-semibold text-neutral-200 mb-2">Kooperativer Prompt</h3>
+                        <pre class="whitespace-pre-wrap text-xs md:text-sm text-neutral-100" id="ai-collab-result">${cleanPrompt}</pre>
+                        <button id="apply-ai-collab-button" class="mt-3 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg btn-transition btn-press">Prompt übernehmen</button>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-semibold text-neutral-300 mb-2">Interplay-Ideen</h4>
+                        <ul class="text-xs md:text-sm text-neutral-400 space-y-1">
+                            ${notes.map(note => `<li class="flex gap-2"><span class="text-blue-400">•</span><span>${note}</span></li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+            `;
+
+            const applyButton = output.querySelector('#apply-ai-collab-button');
+            applyButton?.addEventListener('click', () => {
+                document.getElementById('result-text').textContent = cleanPrompt;
+                if (window.QW) { window.QW.onPromptUpdated({ source: 'future-lab:ai-collab' }); }
+                modalLogic.close();
+            });
+        } catch (error) {
+            console.error('AI Collaboration failed', error);
+            output.innerHTML = `<p class="text-red-400">Fehler bei der Kollaboration: ${error.message}</p>`;
+        } finally {
+            generateButton.disabled = false;
+            buttonText?.classList.remove('hidden');
+            loader?.classList.add('hidden');
+        }
+    });
+}
+
+function setupStoryArcDesigner() {
+    const modal = document.getElementById('story-arc-modal');
+    const openButton = document.getElementById('story-arc-button');
+    const regenerateButton = modal?.querySelector('#story-arc-generate-button');
+    const buttonText = modal?.querySelector('#story-arc-generate-text');
+    const loader = modal?.querySelector('#story-arc-loader');
+    const output = modal?.querySelector('#story-arc-output');
+
+    if (!modal || !openButton || !regenerateButton || !output) return;
+
+    const modalLogic = setupModal(modal, openButton);
+
+    const generateArc = async () => {
+        const currentPrompt = document.getElementById('result-text').textContent.trim();
+        if (!currentPrompt) {
+            output.innerHTML = `<p class="text-red-400">Bitte generiere zuerst einen Prompt.</p>`;
+            return;
+        }
+
+        regenerateButton.disabled = true;
+        buttonText?.classList.add('hidden');
+        loader?.classList.remove('hidden');
+        output.innerHTML = `<div class="animate-spin h-6 w-6 text-blue-400 mx-auto"></div>`;
+
+        try {
+            const response = await callOpenRouterAPI(currentPrompt, STORY_ARC_DESIGNER_PROMPT);
+            const [promptBlock, notesBlock] = response.split('---').map(section => section.trim());
+            const cleanPrompt = promptBlock.replace(/^PROMPT:\s*/i, '').trim();
+            const notes = (notesBlock || '').replace(/^ARC OUTLINE:\s*/i, '').split('\n').map(line => line.replace(/^[-•]\s*/, '').trim()).filter(Boolean);
+
+            output.innerHTML = `
+                <div class="space-y-4">
+                    <div class="bg-neutral-900/70 border border-blue-500/30 rounded-xl p-4">
+                        <h3 class="text-sm font-semibold text-neutral-200 mb-2">Dramaturgischer Prompt</h3>
+                        <pre class="whitespace-pre-wrap text-xs md:text-sm text-neutral-100" id="story-arc-result">${cleanPrompt}</pre>
+                        <button id="apply-story-arc-button" class="mt-3 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg btn-transition btn-press">Prompt übernehmen</button>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-semibold text-neutral-300 mb-2">Arc-Gliederung</h4>
+                        <ul class="text-xs md:text-sm text-neutral-400 space-y-1">
+                            ${notes.map(note => `<li class="flex gap-2"><span class="text-blue-400">•</span><span>${note}</span></li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+            `;
+
+            const applyButton = output.querySelector('#apply-story-arc-button');
+            applyButton?.addEventListener('click', () => {
+                document.getElementById('result-text').textContent = cleanPrompt;
+                if (window.QW) { window.QW.onPromptUpdated({ source: 'future-lab:story-arc' }); }
+                modalLogic.close();
+            });
+        } catch (error) {
+            console.error('Story Arc Designer failed', error);
+            output.innerHTML = `<p class="text-red-400">Fehler beim Erstellen des Story-Arcs: ${error.message}</p>`;
+        } finally {
+            regenerateButton.disabled = false;
+            buttonText?.classList.remove('hidden');
+            loader?.classList.add('hidden');
+        }
+    };
+
+    openButton.addEventListener('click', generateArc);
+    regenerateButton.addEventListener('click', generateArc);
+}
+
+function setupImmersiveSpace() {
+    const modal = document.getElementById('immersive-space-modal');
+    const openButton = document.getElementById('immersive-space-button');
+    const presetsContainer = modal?.querySelector('#immersive-space-presets');
+    const generateButton = modal?.querySelector('#run-immersive-space-button');
+    const buttonText = modal?.querySelector('#run-immersive-space-text');
+    const loader = modal?.querySelector('#immersive-space-loader');
+    const output = modal?.querySelector('#immersive-space-output');
+
+    if (!modal || !openButton || !presetsContainer || !generateButton || !output) return;
+
+    const modalLogic = setupModal(modal, openButton);
+    const presets = [
+        { id: 'cathedral', label: 'Kathedralen-Halo', detail: 'riesige Hallfahnen & schwebende Chorhöhen' },
+        { id: 'neon-club', label: 'Neon-Club', detail: 'eng umschließende Bässe & wandernde Laser-FX' },
+        { id: 'skyline', label: 'Skyline Rooftop', detail: 'offene Höhenluft & Delay-Echos aus der Ferne' },
+        { id: 'ocean-dome', label: 'Ocean Dome', detail: 'unterseeische Pulsationen & 360°-Waves' },
+        { id: 'void-orbit', label: 'Void Orbit', detail: 'schwerelose Ambisonics & kreisende Synth-Orbits' }
+    ];
+    let selected = new Set();
+
+    const renderPresets = () => {
+        presetsContainer.innerHTML = '';
+        presets.forEach(preset => {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'text-left bg-neutral-900/60 border border-neutral-700 rounded-xl p-3 hover:border-blue-500/60 transition-colors';
+            button.innerHTML = `<div class="text-sm font-semibold text-neutral-200">${preset.label}</div><div class="text-xs text-neutral-400 mt-1">${preset.detail}</div>`;
+            button.addEventListener('click', () => {
+                if (selected.has(preset.id)) {
+                    selected.delete(preset.id);
+                    button.classList.remove('border-blue-500/60', 'bg-blue-600/20');
+                } else {
+                    selected.add(preset.id);
+                    button.classList.add('border-blue-500/60', 'bg-blue-600/20');
+                }
+            });
+            presetsContainer.appendChild(button);
+        });
+    };
+
+    openButton.addEventListener('click', () => {
+        selected = new Set(['neon-club']);
+        renderPresets();
+        // Highlight default selection after render
+        Array.from(presetsContainer.children).forEach((el, idx) => {
+            const preset = presets[idx];
+            if (selected.has(preset.id)) {
+                el.classList.add('border-blue-500/60', 'bg-blue-600/20');
+            }
+        });
+        output.innerHTML = `<p class="text-neutral-500 text-sm">Wähle eine oder mehrere Umgebungen, um ein immersives Klangfeld zu modellieren.</p>`;
+    });
+
+    generateButton.addEventListener('click', async () => {
+        const currentPrompt = document.getElementById('result-text').textContent.trim();
+        if (!currentPrompt) {
+            output.innerHTML = `<p class="text-red-400">Bitte generiere zuerst einen Prompt.</p>`;
+            return;
+        }
+
+        if (selected.size === 0) {
+            output.innerHTML = `<p class="text-amber-300">Wähle mindestens eine Umgebung aus.</p>`;
+            return;
+        }
+
+        generateButton.disabled = true;
+        buttonText?.classList.add('hidden');
+        loader?.classList.remove('hidden');
+        output.innerHTML = `<div class="animate-spin h-6 w-6 text-blue-400 mx-auto"></div>`;
+
+        const selectedPresets = presets.filter(p => selected.has(p.id)).map(p => `${p.label}: ${p.detail}`).join('; ');
+        const userQuery = `Base prompt: "${currentPrompt}"\nSpatial inspirations: ${selectedPresets}`;
+
+        try {
+            const response = await callOpenRouterAPI(userQuery, IMMERSIVE_SPACE_PROMPT);
+            const [promptBlock, notesBlock] = response.split('---').map(section => section.trim());
+            const cleanPrompt = promptBlock.replace(/^PROMPT:\s*/i, '').trim();
+            const notes = (notesBlock || '').replace(/^SPACE DESIGN NOTES:\s*/i, '').split('\n').map(line => line.replace(/^[-•]\s*/, '').trim()).filter(Boolean);
+
+            output.innerHTML = `
+                <div class="space-y-4">
+                    <div class="bg-neutral-900/70 border border-blue-500/30 rounded-xl p-4">
+                        <h3 class="text-sm font-semibold text-neutral-200 mb-2">Immersiver Prompt</h3>
+                        <pre class="whitespace-pre-wrap text-xs md:text-sm text-neutral-100" id="immersive-space-result">${cleanPrompt}</pre>
+                        <button id="apply-immersive-space-button" class="mt-3 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg btn-transition btn-press">Prompt übernehmen</button>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-semibold text-neutral-300 mb-2">Raum-Notizen</h4>
+                        <ul class="text-xs md:text-sm text-neutral-400 space-y-1">
+                            ${notes.map(note => `<li class="flex gap-2"><span class="text-blue-400">•</span><span>${note}</span></li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+            `;
+
+            const applyButton = output.querySelector('#apply-immersive-space-button');
+            applyButton?.addEventListener('click', () => {
+                document.getElementById('result-text').textContent = cleanPrompt;
+                if (window.QW) { window.QW.onPromptUpdated({ source: 'future-lab:immersive-space' }); }
+                modalLogic.close();
+            });
+        } catch (error) {
+            console.error('Immersive Space failed', error);
+            output.innerHTML = `<p class="text-red-400">Fehler beim Gestalten des Klangraums: ${error.message}</p>`;
+        } finally {
+            generateButton.disabled = false;
+            buttonText?.classList.remove('hidden');
+            loader?.classList.add('hidden');
+        }
+    });
+}
+
+function setupHumanTouch() {
+    const modal = document.getElementById('human-touch-modal');
+    const openButton = document.getElementById('human-touch-button');
+    const optionsContainer = modal?.querySelector('#human-touch-options');
+    const generateButton = modal?.querySelector('#apply-human-touch-button');
+    const buttonText = modal?.querySelector('#apply-human-touch-text');
+    const loader = modal?.querySelector('#human-touch-loader');
+    const output = modal?.querySelector('#human-touch-output');
+
+    if (!modal || !openButton || !optionsContainer || !generateButton || !output) return;
+
+    const modalLogic = setupModal(modal, openButton);
+    const options = [
+        { id: 'micro-swing', label: 'Micro-Swing', detail: 'leicht hinter der Beat-Mikrotiming' },
+        { id: 'analog-dust', label: 'Analog-Dust', detail: 'Bandrauschen & leichte Saturation' },
+        { id: 'human-vocals', label: 'Human Vox', detail: 'atmen, Ad-Libs & intime Layer' },
+        { id: 'instrument-noise', label: 'Instrument Noise', detail: 'Fingergeräusche & Fret-Slides' },
+        { id: 'dynamic-swell', label: 'Dynamic Swell', detail: 'manuelle Lautstärke-Wellen' }
+    ];
+    let selected = new Set(['micro-swing', 'analog-dust']);
+
+    const renderOptions = () => {
+        optionsContainer.innerHTML = '';
+        options.forEach(option => {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'text-left bg-neutral-900/60 border border-neutral-700 rounded-xl p-3 hover:border-blue-500/60 transition-colors';
+            button.innerHTML = `<div class="text-sm font-semibold text-neutral-200">${option.label}</div><div class="text-xs text-neutral-400 mt-1">${option.detail}</div>`;
+            if (selected.has(option.id)) {
+                button.classList.add('border-blue-500/60', 'bg-blue-600/20');
+            }
+            button.addEventListener('click', () => {
+                if (selected.has(option.id)) {
+                    selected.delete(option.id);
+                    button.classList.remove('border-blue-500/60', 'bg-blue-600/20');
+                } else {
+                    selected.add(option.id);
+                    button.classList.add('border-blue-500/60', 'bg-blue-600/20');
+                }
+            });
+            optionsContainer.appendChild(button);
+        });
+    };
+
+    openButton.addEventListener('click', () => {
+        selected = new Set(['micro-swing', 'analog-dust']);
+        renderOptions();
+        output.innerHTML = `<p class="text-neutral-500 text-sm">Markiere, welche organischen Nuancen du betonen möchtest.</p>`;
+    });
+
+    generateButton.addEventListener('click', async () => {
+        const currentPrompt = document.getElementById('result-text').textContent.trim();
+        if (!currentPrompt) {
+            output.innerHTML = `<p class="text-red-400">Bitte generiere zuerst einen Prompt.</p>`;
+            return;
+        }
+
+        if (selected.size === 0) {
+            output.innerHTML = `<p class="text-amber-300">Wähle mindestens eine Nuance aus.</p>`;
+            return;
+        }
+
+        generateButton.disabled = true;
+        buttonText?.classList.add('hidden');
+        loader?.classList.remove('hidden');
+        output.innerHTML = `<div class="animate-spin h-6 w-6 text-blue-400 mx-auto"></div>`;
+
+        const selectedOptions = options.filter(o => selected.has(o.id)).map(o => `${o.label}: ${o.detail}`).join('; ');
+        const userQuery = `Base prompt: "${currentPrompt}"\nHumanising cues: ${selectedOptions}`;
+
+        try {
+            const response = await callOpenRouterAPI(userQuery, HUMAN_TOUCH_PROMPT);
+            const [promptBlock, notesBlock] = response.split('---').map(section => section.trim());
+            const cleanPrompt = promptBlock.replace(/^PROMPT:\s*/i, '').trim();
+            const notes = (notesBlock || '').replace(/^HUMAN TOUCH NOTES:\s*/i, '').split('\n').map(line => line.replace(/^[-•]\s*/, '').trim()).filter(Boolean);
+
+            output.innerHTML = `
+                <div class="space-y-4">
+                    <div class="bg-neutral-900/70 border border-blue-500/30 rounded-xl p-4">
+                        <h3 class="text-sm font-semibold text-neutral-200 mb-2">Humanisierter Prompt</h3>
+                        <pre class="whitespace-pre-wrap text-xs md:text-sm text-neutral-100" id="human-touch-result">${cleanPrompt}</pre>
+                        <button id="apply-human-touch-result" class="mt-3 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg btn-transition btn-press">Prompt übernehmen</button>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-semibold text-neutral-300 mb-2">Nuancen</h4>
+                        <ul class="text-xs md:text-sm text-neutral-400 space-y-1">
+                            ${notes.map(note => `<li class="flex gap-2"><span class="text-blue-400">•</span><span>${note}</span></li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+            `;
+
+            const applyButton = output.querySelector('#apply-human-touch-result');
+            applyButton?.addEventListener('click', () => {
+                document.getElementById('result-text').textContent = cleanPrompt;
+                if (window.QW) { window.QW.onPromptUpdated({ source: 'future-lab:human-touch' }); }
+                modalLogic.close();
+            });
+        } catch (error) {
+            console.error('Human Touch failed', error);
+            output.innerHTML = `<p class="text-red-400">Fehler beim Humanisieren: ${error.message}</p>`;
+        } finally {
+            generateButton.disabled = false;
+            buttonText?.classList.remove('hidden');
+            loader?.classList.add('hidden');
+        }
+    });
+}
+
+function setupReleaseForecast() {
+    const modal = document.getElementById('release-forecast-modal');
+    const openButton = document.getElementById('release-forecast-button');
+    const timelineSelect = modal?.querySelector('#release-forecast-timeline');
+    const leversContainer = modal?.querySelector('#release-forecast-levers');
+    const generateButton = modal?.querySelector('#generate-release-forecast-button');
+    const buttonText = modal?.querySelector('#generate-release-forecast-text');
+    const loader = modal?.querySelector('#release-forecast-loader');
+    const output = modal?.querySelector('#release-forecast-output');
+
+    if (!modal || !openButton || !timelineSelect || !leversContainer || !generateButton || !output) return;
+
+    const modalLogic = setupModal(modal, openButton);
+    const levers = [
+        { id: 'tiktok', label: 'TikTok / Shorts', detail: 'Kurzform-Teaser & Challenges' },
+        { id: 'livestream', label: 'Livestream', detail: 'Premiere & Q&A mit Fans' },
+        { id: 'playlist', label: 'Playlist Pitch', detail: 'Kuratoren & Editorial Pitch' },
+        { id: 'press', label: 'Presse & Blogs', detail: 'Storytelling & Artist Statements' },
+        { id: 'live', label: 'Live Drop', detail: 'Secret Gig oder Listening Session' }
+    ];
+    let selected = new Set(['tiktok', 'playlist']);
+
+    const renderLevers = () => {
+        leversContainer.innerHTML = '';
+        levers.forEach(lever => {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'text-left bg-neutral-900/60 border border-neutral-700 rounded-xl p-3 hover:border-blue-500/60 transition-colors';
+            button.innerHTML = `<div class="text-sm font-semibold text-neutral-200">${lever.label}</div><div class="text-xs text-neutral-400 mt-1">${lever.detail}</div>`;
+            if (selected.has(lever.id)) {
+                button.classList.add('border-blue-500/60', 'bg-blue-600/20');
+            }
+            button.addEventListener('click', () => {
+                if (selected.has(lever.id)) {
+                    selected.delete(lever.id);
+                    button.classList.remove('border-blue-500/60', 'bg-blue-600/20');
+                } else {
+                    selected.add(lever.id);
+                    button.classList.add('border-blue-500/60', 'bg-blue-600/20');
+                }
+            });
+            leversContainer.appendChild(button);
+        });
+    };
+
+    openButton.addEventListener('click', () => {
+        selected = new Set(['tiktok', 'playlist']);
+        timelineSelect.value = '6';
+        renderLevers();
+        output.innerHTML = `<p class="text-neutral-500 text-sm">Lege deinen Zeitplan und die wichtigsten Kanäle für den Release fest.</p>`;
+    });
+
+    generateButton.addEventListener('click', async () => {
+        const currentPrompt = document.getElementById('result-text').textContent.trim();
+        if (!currentPrompt) {
+            output.innerHTML = `<p class="text-red-400">Bitte generiere zuerst einen Prompt.</p>`;
+            return;
+        }
+
+        if (selected.size === 0) {
+            output.innerHTML = `<p class="text-amber-300">Wähle mindestens einen Kanal aus.</p>`;
+            return;
+        }
+
+        generateButton.disabled = true;
+        buttonText?.classList.add('hidden');
+        loader?.classList.remove('hidden');
+        output.innerHTML = `<div class="animate-spin h-6 w-6 text-blue-400 mx-auto"></div>`;
+
+        const timeline = timelineSelect.value;
+        const focusLevers = levers.filter(l => selected.has(l.id)).map(l => `${l.label}: ${l.detail}`).join('; ');
+        const userQuery = `Song Prompt: "${currentPrompt}"\nLaunch timeline (weeks): ${timeline}\nFocus channels: ${focusLevers}`;
+
+        try {
+            const response = await callOpenRouterAPI(userQuery, RELEASE_FORECAST_PROMPT);
+            const [planBlock, tacticsBlock] = response.split('---').map(section => section.trim());
+            const planLines = (planBlock || '').replace(/^PLAN:\s*/i, '').split('\n').map(line => line.replace(/^[-•]\s*/, '').trim()).filter(Boolean);
+            const tacticsLines = (tacticsBlock || '').replace(/^TACTICS:\s*/i, '').split('\n').map(line => line.replace(/^[-•]\s*/, '').trim()).filter(Boolean);
+            const planText = planLines.join('\n');
+            const tacticsText = tacticsLines.join('\n');
+
+            output.innerHTML = `
+                <div class="space-y-4">
+                    <div>
+                        <h3 class="text-sm font-semibold text-neutral-200 mb-2">Release-Plan</h3>
+                        <ul class="text-xs md:text-sm text-neutral-300 space-y-1">
+                            ${planLines.map(line => `<li class="flex gap-2"><span class="text-blue-400">•</span><span>${line}</span></li>`).join('')}
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-semibold text-neutral-300 mb-2">Taktiken</h4>
+                        <ul class="text-xs md:text-sm text-neutral-400 space-y-1">
+                            ${tacticsLines.map(line => `<li class="flex gap-2"><span class="text-blue-400">•</span><span>${line}</span></li>`).join('')}
+                        </ul>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-2">
+                        <button id="copy-release-forecast-button" class="flex-1 bg-neutral-800 hover:bg-neutral-700 text-white font-semibold py-2 px-4 rounded-lg btn-transition btn-press">Plan kopieren</button>
+                        <button id="close-release-forecast-button" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg btn-transition btn-press">Fertig</button>
+                    </div>
+                </div>
+            `;
+
+            const copyButton = output.querySelector('#copy-release-forecast-button');
+            const closeButton = output.querySelector('#close-release-forecast-button');
+            copyButton?.addEventListener('click', async () => {
+                const payload = `Plan:\n${planText}\n\nTaktiken:\n${tacticsText}`;
+                await safeCopyText(payload);
+                copyButton.textContent = 'Kopiert!';
+                setTimeout(() => { copyButton.textContent = 'Plan kopieren'; }, 2000);
+            });
+            closeButton?.addEventListener('click', () => {
+                modalLogic.close();
+            });
+        } catch (error) {
+            console.error('Release Forecast failed', error);
+            output.innerHTML = `<p class="text-red-400">Fehler bei der Release-Planung: ${error.message}</p>`;
+        } finally {
+            generateButton.disabled = false;
+            buttonText?.classList.remove('hidden');
+            loader?.classList.add('hidden');
+        }
     });
 }
 

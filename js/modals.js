@@ -409,5 +409,134 @@ function getModalsHTML() {
             </div>
         </div>
     </div>
+
+    <!-- FUTURE LAB MODALS -->
+    <div id="adaptive-flow-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden modal-enter-from">
+        <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-4xl">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-white">🌀 Adaptiver Flow</h2>
+                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none">&times;</button>
+            </div>
+            <p class="text-neutral-400 mb-4 text-sm">Steuere, wie stark dein Song über die Reise hinweg anschwillt, kulminiert und wieder zur Ruhe kommt.</p>
+            <div class="flex flex-col lg:flex-row lg:items-center gap-4 bg-neutral-900/40 border border-neutral-700 rounded-2xl p-4">
+                <div class="flex-1">
+                    <label for="adaptive-flow-slider" class="block text-xs font-medium text-neutral-400 uppercase tracking-wide mb-2">Dynamik-Intensität</label>
+                    <input id="adaptive-flow-slider" type="range" min="0" max="100" value="65" class="w-full h-1 bg-neutral-700 rounded-lg appearance-none cursor-pointer">
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="text-neutral-400 text-xs uppercase tracking-wide">Level</span>
+                    <span id="adaptive-flow-level" class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-blue-600/20 border border-blue-500/50 text-lg font-semibold text-blue-200">65</span>
+                </div>
+                <button id="run-adaptive-flow-button" class="w-full lg:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-5 rounded-lg btn-transition btn-press flex items-center justify-center gap-2">
+                    <span id="run-adaptive-flow-text">Flow formen</span>
+                    <svg id="adaptive-flow-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                </button>
+            </div>
+            <div id="adaptive-flow-output" class="mt-5 text-sm space-y-4"></div>
+        </div>
+    </div>
+
+    <div id="ai-collab-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden modal-enter-from">
+        <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-4xl">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-white">🤝 KI-Kollaboration</h2>
+                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none">&times;</button>
+            </div>
+            <p class="text-neutral-400 mb-4 text-sm">Wähle Personas, die gemeinsam an deinem Track arbeiten sollen. Die KI beschreibt, wie sie sich gegenseitig inspirieren.</p>
+            <div id="ai-collab-personas" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+            <div class="mt-6 border-t border-neutral-700/60 pt-4 flex justify-end">
+                <button id="generate-ai-collab-button" class="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-5 rounded-lg btn-transition btn-press flex items-center justify-center gap-2">
+                    <span id="generate-ai-collab-text">Interplay erschaffen</span>
+                    <svg id="ai-collab-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                </button>
+            </div>
+            <div id="ai-collab-output" class="mt-5 text-sm space-y-4"></div>
+        </div>
+    </div>
+
+    <div id="story-arc-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden modal-enter-from">
+        <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-4xl">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-white">📚 Story-Arc Designer</h2>
+                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none">&times;</button>
+            </div>
+            <p class="text-neutral-400 mb-4 text-sm">Transformiere deinen Prompt in eine dreiteilige musikalische Reise mit klaren Höhepunkten.</p>
+            <div class="border border-neutral-700 rounded-2xl p-4 bg-neutral-900/40">
+                <button id="story-arc-generate-button" class="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-5 rounded-lg btn-transition btn-press flex items-center justify-center gap-2">
+                    <span id="story-arc-generate-text">Arc neu berechnen</span>
+                    <svg id="story-arc-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                </button>
+                <div id="story-arc-output" class="mt-4 text-sm space-y-4"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="immersive-space-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden modal-enter-from">
+        <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-4xl">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-white">🌌 Immersive Space</h2>
+                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none">&times;</button>
+            </div>
+            <p class="text-neutral-400 mb-4 text-sm">Definiere akustische Räume und Bewegungen, damit dein Song in 3D erlebbar wird.</p>
+            <div id="immersive-space-presets" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+            <div class="mt-6 border-t border-neutral-700/60 pt-4 flex justify-end">
+                <button id="run-immersive-space-button" class="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-5 rounded-lg btn-transition btn-press flex items-center justify-center gap-2">
+                    <span id="run-immersive-space-text">Raum modellieren</span>
+                    <svg id="immersive-space-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                </button>
+            </div>
+            <div id="immersive-space-output" class="mt-5 text-sm space-y-4"></div>
+        </div>
+    </div>
+
+    <div id="human-touch-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden modal-enter-from">
+        <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-4xl">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-white">🎛️ Human Touch</h2>
+                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none">&times;</button>
+            </div>
+            <p class="text-neutral-400 mb-4 text-sm">Füge analoge Nuancen, organische Bewegungen und kleine Unvollkommenheiten hinzu.</p>
+            <div id="human-touch-options" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+            <div class="mt-6 border-t border-neutral-700/60 pt-4 flex justify-end">
+                <button id="apply-human-touch-button" class="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-5 rounded-lg btn-transition btn-press flex items-center justify-center gap-2">
+                    <span id="apply-human-touch-text">Humanisieren</span>
+                    <svg id="human-touch-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                </button>
+            </div>
+            <div id="human-touch-output" class="mt-5 text-sm space-y-4"></div>
+        </div>
+    </div>
+
+    <div id="release-forecast-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden modal-enter-from">
+        <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-4xl">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-white">🚀 Release Forecast</h2>
+                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none">&times;</button>
+            </div>
+            <p class="text-neutral-400 mb-4 text-sm">Plane den Launch deines Songs mit datengetriebenen Impulsen, abgestimmt auf Stimmung und Zielgruppe.</p>
+            <div class="grid gap-4 md:grid-cols-3 bg-neutral-900/40 border border-neutral-700 rounded-2xl p-4">
+                <div class="md:col-span-1">
+                    <label for="release-forecast-timeline" class="block text-xs font-medium text-neutral-400 uppercase tracking-wide mb-2">Zeitplan (Wochen)</label>
+                    <select id="release-forecast-timeline" class="w-full bg-neutral-900/70 border border-neutral-600 rounded-lg p-2 text-neutral-200 focus:ring-2 focus:ring-blue-500">
+                        <option value="4">4 Wochen Sprint</option>
+                        <option value="6" selected>6 Wochen Kampagne</option>
+                        <option value="8">8 Wochen Deep Dive</option>
+                        <option value="12">12 Wochen Roll-out</option>
+                    </select>
+                </div>
+                <div class="md:col-span-2">
+                    <p class="text-xs font-medium text-neutral-400 uppercase tracking-wide mb-2">Fokus-Kanäle</p>
+                    <div id="release-forecast-levers" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+                </div>
+            </div>
+            <div class="mt-6 border-t border-neutral-700/60 pt-4 flex justify-end">
+                <button id="generate-release-forecast-button" class="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-5 rounded-lg btn-transition btn-press flex items-center justify-center gap-2">
+                    <span id="generate-release-forecast-text">Plan generieren</span>
+                    <svg id="release-forecast-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                </button>
+            </div>
+            <div id="release-forecast-output" class="mt-5 text-sm space-y-4"></div>
+        </div>
+    </div>
     `;
 }
