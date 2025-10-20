@@ -111,6 +111,18 @@ const showError = (message) => {
     resultContainer.classList.add('hidden');
 };
 
+const showHudMessage = (text) => {
+    const hud = document.getElementById('action-hud');
+    if (!hud) return;
+    hud.textContent = text;
+    hud.classList.remove('hidden');
+    hud.classList.add('show');
+    clearTimeout(showHudMessage._timeout);
+    showHudMessage._timeout = setTimeout(() => {
+        hud.classList.remove('show');
+    }, 1200);
+};
+
 const generatePrompt = async () => {
     const userInput = ideaInput.value.trim();
     if (!userInput) {
@@ -193,5 +205,12 @@ document.addEventListener('DOMContentLoaded', () => {
     loadSettings();
     setKlugToolsState(false);
     setupCopyButton(copyButton, copyIcon, checkIcon, resultText);
+    document.querySelectorAll('[data-coming-soon]').forEach(button => {
+        button.addEventListener('click', (event) => {
+            event.preventDefault();
+            const message = button.dataset.comingSoon || 'Feature bald verfügbar.';
+            showHudMessage(message);
+        });
+    });
 });
 

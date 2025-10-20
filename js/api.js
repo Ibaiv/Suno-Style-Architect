@@ -119,6 +119,10 @@ function setKlugToolsState(enabled) {
     if (klugNotice) {
         klugNotice.style.display = enabled ? 'none' : 'block';
     }
+    const futureNotice = document.getElementById('future-disabled-notice');
+    if (futureNotice) {
+        futureNotice.style.display = enabled ? 'none' : 'block';
+    }
 }
 
 // Modal setup function

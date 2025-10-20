@@ -78,9 +78,10 @@
         </header>
 
         <!-- ### MAIN INTERFACE GRID ### -->
-        <div class="grid grid-cols-1 xl:grid-cols-2 gap-8 lg:gap-12">
-            <!-- ## ROW 1, COL 1: IDEA INPUT ## -->
-            <div class="bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20 flex flex-col">
+        <div class="space-y-8 lg:space-y-12">
+            <div class="grid grid-cols-1 xl:grid-cols-2 gap-8 lg:gap-12">
+                <!-- ## ROW 1, COL 1: IDEA INPUT ## -->
+                <div class="bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20 flex flex-col">
                 <div class="flex justify-between items-center mb-3">
                     <label for="idea-input" class="text-xl font-semibold text-white">Deine Vision</label>
                     <button id="spark-idea-button" class="flex items-center gap-1.5 text-sm text-blue-400 hover:text-blue-300 font-medium transition-colors">
@@ -97,12 +98,12 @@
                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
                 </button>
-            </div>
-            
-            <!-- ## ROW 1, COL 2: RESULT ## -->
-            <div class="bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20 flex flex-col">
-                <h2 class="text-xl font-semibold text-white mb-4">Dein Meisterstück</h2>
-                <div id="result-wrapper" class="flex-grow flex flex-col">
+                </div>
+
+                <!-- ## ROW 1, COL 2: RESULT ## -->
+                <div class="bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20 flex flex-col">
+                    <h2 class="text-xl font-semibold text-white mb-4">Dein Meisterstück</h2>
+                    <div id="result-wrapper" class="flex-grow flex flex-col">
                     <!-- Initial State -->
                     <div id="initial-state" class="flex-grow flex flex-col items-center justify-center text-center p-4">
                          <div class="w-16 h-16 bg-blue-600/10 border border-blue-500/20 rounded-2xl flex items-center justify-center mb-4">
@@ -146,17 +147,19 @@
                         </div>
                     </div>
                 </div>
+                </div>
             </div>
 
-            <!-- ## ROW 2, COL 1: EXPERT REFINEMENT ## -->
-            <div class="bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20">
-                <h2 class="text-xl font-semibold text-white mb-2">Experten-Veredelung</h2>
-                <p class="text-neutral-400 mb-4 text-sm">Lass deinen Prompt von KI-Personas mit Fachwissen überarbeiten.</p>
-                <div id="expert-disabled-notice" class="mb-4 p-3 bg-amber-900/20 border border-amber-700/50 text-amber-300 rounded-lg text-sm">
-                    💡 <strong>Hinweis:</strong> Generiere zuerst einen Prompt, um die Experten-Tools zu aktivieren.
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-                    <button id="producer-refine-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+            <div class="grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-8 lg:gap-12">
+                <!-- ## ROW 2, COL 1: EXPERT REFINEMENT ## -->
+                <div class="bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20">
+                    <h2 class="text-xl font-semibold text-white mb-2">Experten-Veredelung</h2>
+                    <p class="text-neutral-400 mb-4 text-sm">Lass deinen Prompt von KI-Personas mit Fachwissen überarbeiten.</p>
+                    <div id="expert-disabled-notice" class="mb-4 p-3 bg-amber-900/20 border border-amber-700/50 text-amber-300 rounded-lg text-sm">
+                        💡 <strong>Hinweis:</strong> Generiere zuerst einen Prompt, um die Experten-Tools zu aktivieren.
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+                        <button id="producer-refine-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                         <h3 class="font-semibold text-neutral-200">Weltklasse Produzent</h3>
                         <p class="text-xs text-neutral-400">Fokus auf Sound-Design & Mix.</p>
                     </button>
@@ -193,17 +196,17 @@
                         <p class="text-xs text-neutral-400">Füge spezifische Anweisungen hinzu.</p>
                     </button>
                 </div>
-            </div>
-            
-            <!-- ## ROW 2, COL 2: KLUG ## -->
-            <div class="bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20">
-                <h2 class="text-xl font-semibold text-white mb-2">KLUG</h2>
-                <p class="text-neutral-400 mb-4 text-sm">Intelligente Werkzeuge zur Verfeinerung deines Prompts.</p>
-                <div id="klug-disabled-notice" class="mb-4 p-3 bg-amber-900/20 border border-amber-700/50 text-amber-300 rounded-lg text-sm">
-                    💡 <strong>Hinweis:</strong> Generiere zuerst einen Prompt, um die KLUG-Tools zu aktivieren.
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-4 gap-3 lg:gap-4">
-                    <button id="genre-mixer-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+
+                <!-- ## ROW 2, COL 2: KLUG ## -->
+                <div class="bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20">
+                    <h2 class="text-xl font-semibold text-white mb-2">KLUG</h2>
+                    <p class="text-neutral-400 mb-4 text-sm">Intelligente Werkzeuge zur Verfeinerung deines Prompts.</p>
+                    <div id="klug-disabled-notice" class="mb-4 p-3 bg-amber-900/20 border border-amber-700/50 text-amber-300 rounded-lg text-sm">
+                        💡 <strong>Hinweis:</strong> Generiere zuerst einen Prompt, um die KLUG-Tools zu aktivieren.
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-4 gap-3 lg:gap-4">
+                        <button id="genre-mixer-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                         <h3 class="font-semibold text-neutral-200">Genre-Mixer</h3>
                         <p class="text-xs text-neutral-400">Kombiniere Stile für Klänge.</p>
                     </button>
@@ -251,6 +254,38 @@
                         <h3 class="font-semibold text-neutral-200">Effektketten-Designer</h3>
                         <p class="text-xs text-neutral-400">Gestalte den Sound mit Effekten.</p>
                     </button>
+                </div>
+                </div>
+
+                <!-- ## ROW 2, COL 3: FUTURE LAB ## -->
+                <div class="bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20">
+                    <h2 class="text-xl font-semibold text-white mb-2">Zukunftswerkstatt</h2>
+                    <p class="text-neutral-400 mb-4 text-sm">Hier entstehen neue Experimente und Spezial-Tools für kommende Workflows.</p>
+                    <div id="future-disabled-notice" class="mb-4 p-3 bg-amber-900/20 border border-amber-700/50 text-amber-300 rounded-lg text-sm">
+                        💡 <strong>Hinweis:</strong> Generiere zuerst einen Prompt, um die Zukunftswerkstatt zu erkunden.
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-2 gap-3 lg:gap-4">
+                        <button class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press hover:bg-purple-900/40" data-coming-soon="Sound-Morphing befindet sich noch im Labor.">
+                            <span class="chip mb-2 inline-flex items-center gap-2 bg-purple-900/20 border-purple-500/40 text-purple-200">In Planung</span>
+                            <h3 class="font-semibold text-neutral-200">Sound-Morphing Modul</h3>
+                            <p class="text-xs text-neutral-400">Verforme Texturen zwischen Styles in Echtzeit.</p>
+                        </button>
+                        <button class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press hover:bg-purple-900/40" data-coming-soon="Das Storyboarding-Feature kommt bald.">
+                            <span class="chip mb-2 inline-flex items-center gap-2 bg-purple-900/20 border-purple-500/40 text-purple-200">Konzept</span>
+                            <h3 class="font-semibold text-neutral-200">Storyboarding-Coach</h3>
+                            <p class="text-xs text-neutral-400">Verknüpfe Szenenideen mit passenden Musikphasen.</p>
+                        </button>
+                        <button class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press hover:bg-purple-900/40" data-coming-soon="Der Live-Performance-Mode startet bald.">
+                            <span class="chip mb-2 inline-flex items-center gap-2 bg-purple-900/20 border-purple-500/40 text-purple-200">Prototyp</span>
+                            <h3 class="font-semibold text-neutral-200">Live Performance Mode</h3>
+                            <p class="text-xs text-neutral-400">Passe Prompts für Bühnenmomente dynamisch an.</p>
+                        </button>
+                        <button class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press hover:bg-purple-900/40" data-coming-soon="Das Kollaborationsnetzwerk ist in Vorbereitung.">
+                            <span class="chip mb-2 inline-flex items-center gap-2 bg-purple-900/20 border-purple-500/40 text-purple-200">Vision</span>
+                            <h3 class="font-semibold text-neutral-200">Collab-Netzwerk</h3>
+                            <p class="text-xs text-neutral-400">Teile Ideen mit Produzenten im geschützten Raum.</p>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
