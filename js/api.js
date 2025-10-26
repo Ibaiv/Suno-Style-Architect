@@ -42,6 +42,110 @@ async function callOpenRouterAPI(userMessage, systemPrompt) {
     }
 }
 
+async function callOpenRouterVision({ systemPrompt, userPrompt, imageBase64, imageMime, responseFormat, temperature = 0.2, maxTokens = 900 }) {
+    if (!API_KEY) {
+        throw new Error("Bitte konfiguriere zuerst deinen API Key in den Einstellungen.");
+    }
+    if (!imageBase64) {
+        throw new Error('Kein Bild verfügbar.');
+    }
+
+    const userContent = [];
+    if (userPrompt) {
+        userContent.push({ type: 'input_text', text: userPrompt });
+    }
+    userContent.push({ type: 'input_image', image_base64: imageBase64, mime_type: imageMime || 'image/png' });
+
+    const payload = {
+        model: SELECTED_MODEL,
+        messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: userContent }
+        ],
+        temperature,
+        max_tokens: maxTokens
+    };
+
+    if (responseFormat) {
+        payload.response_format = responseFormat;
+    }
+
+    const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${API_KEY}`,
+            'HTTP-Referer': window.location.origin,
+            'X-Title': 'Suno Style Architect'
+        },
+        body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) {
+        const errorData = await response.text();
+        throw new Error(`Vision request failed (${response.status}): ${errorData}`);
+    }
+
+    const result = await response.json();
+    const content = result.choices?.[0]?.message?.content;
+    if (typeof content === 'string') {
+        return content.trim();
+    }
+    if (Array.isArray(content)) {
+        const textPart = content.find(part => part.type === 'output_text');
+        if (textPart?.text) {
+            return textPart.text.trim();
+        }
+    }
+    if (result.error) {
+        throw new Error(result.error.message || 'Unbekannter Vision-Fehler.');
+    }
+    throw new Error('Ungültige Vision-Antwort.');
+}
+
+function getMimeFromDataUrl(dataUrl) {
+    if (!dataUrl?.startsWith('data:')) return null;
+    return dataUrl.substring(dataUrl.indexOf(':') + 1, dataUrl.indexOf(';'));
+}
+
+async function readFileAsDataURL(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(reader.error || new Error('Konnte Datei nicht lesen.'));
+        reader.readAsDataURL(file);
+    });
+}
+
+async function downscaleImage(dataUrl, maxDimension = 1024) {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => {
+            let { width, height } = img;
+            if (width <= maxDimension && height <= maxDimension) {
+                return resolve(dataUrl);
+            }
+            const scale = Math.min(maxDimension / width, maxDimension / height);
+            const canvas = document.createElement('canvas');
+            canvas.width = Math.round(width * scale);
+            canvas.height = Math.round(height * scale);
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            resolve(canvas.toDataURL(getMimeFromDataUrl(dataUrl) || 'image/jpeg', 0.9));
+        };
+        img.onerror = () => reject(new Error('Bild konnte nicht geladen werden.'));
+        img.src = dataUrl;
+    });
+}
+
+async function prepareImageForVision(file) {
+    const dataUrl = await readFileAsDataURL(file);
+    const optimized = await downscaleImage(dataUrl, MAX_IMAGE_DIMENSION || 1024);
+    const base64 = optimized.split(',')[1];
+    const mime = getMimeFromDataUrl(optimized) || file.type || 'image/jpeg';
+    return { dataUrl: optimized, base64, mime };
+}
+
 // === UTILITY FUNCTIONS ===
 // Robust copy helper with fallback
 async function safeCopyText(text){

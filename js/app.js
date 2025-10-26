@@ -53,6 +53,9 @@ const savedModel = localStorage.getItem('selected_model') || 'openai/gpt-5-mini'
         modelSelect.value = savedModel;
         currentModelSpan.textContent = MODEL_NAMES[savedModel] || savedModel;
         showMainApp();
+        if (typeof window.updateVisionAvailability === 'function') {
+            window.updateVisionAvailability();
+        }
     } else {
         // Show setup modal explicitly if not configured
         showSettings();
@@ -79,9 +82,12 @@ function saveSettings() {
     localStorage.setItem('openrouter_api_key', apiKey);
     localStorage.setItem('ssa_api_key', apiKey);
     localStorage.setItem('selected_model', model);
-    
+
     currentModelSpan.textContent = MODEL_NAMES[model] || model;
     showMainApp();
+    if (typeof window.updateVisionAvailability === 'function') {
+        window.updateVisionAvailability();
+    }
 }
 
 function showMainApp() {

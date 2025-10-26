@@ -10,6 +10,7 @@ A powerful AI-powered web application for creating optimized music prompts for S
 - **Smart Prompt Generation**: Transform basic ideas into detailed, optimized Suno prompts
 - **Expert Refinement**: AI personas with specialized knowledge (Producer, Musician, Composer, DJ, etc.)
 - **KLUG Tools**: Intelligent features for mood analysis, genre mixing, tempo finding, and more
+- **Bild → Stilarchitektur**: Nutze visuelle Referenzen, um automatisch maßgeschneiderte Suno-Stilprompts zu erzeugen
 - **Idea Spark**: Generate creative song concepts from simple keywords
 - **Multi-Model Support**: Works with various AI models through OpenRouter
 
@@ -111,6 +112,12 @@ A powerful AI-powered web application for creating optimized music prompts for S
 - Available only after generating an initial prompt
 - Each tool provides specific enhancements
 - Multiple tools can be applied in sequence
+
+#### Bildgestützte Stilgenerierung
+- Ersetzte den ehemaligen „Kreativkosmos“-Bereich durch ein Panel zum Hochladen von Referenzbildern
+- Unterstützte Modelle analysieren das Bild und erzeugen daraus einen komplett neuen Prompt oder adaptieren deinen aktuellen Prompt auf Stimmung, Farben, Licht und erzählerische Details des Bildes
+- Fehlende Bildunterstützung eines Modells wird deutlich gekennzeichnet; der Upload ist deaktiviert, bis ein Vision-fähiges Modell gewählt wird
+- Die Vision-Zusammenfassung kann bei Bedarf eingeblendet werden, um die übertragenen Stilelemente nachzuvollziehen
 
 #### Version Optimization
 - **"Für v3 (kurz)"**: Optimizes for Suno v3 (under 200 characters)

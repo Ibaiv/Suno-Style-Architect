@@ -11,9 +11,32 @@ document.addEventListener('modals:ready', () => {
 function initializeAdvancedFeatures() {
     // Setup all modals
     setupIdeaSpark();
+    setupImageStylePanel();
     setupExpertRefinements();
     setupKlugTools();
     setupCustomInstruction();
+}
+
+function injectPromptResultFromFeature(text, source = 'feature') {
+    if (!text) return;
+    const resultTextEl = document.getElementById('result-text');
+    const resultContainer = document.getElementById('result-container');
+    const initialState = document.getElementById('initial-state');
+    const refinementControls = document.getElementById('refinement-controls');
+    const errorContainer = document.getElementById('error-container');
+
+    if (resultTextEl) {
+        resultTextEl.textContent = text;
+    }
+    initialState?.classList.add('hidden');
+    resultContainer?.classList.remove('hidden');
+    resultContainer?.classList.add('fade-in');
+    refinementControls?.classList.remove('hidden');
+    errorContainer?.classList.add('hidden');
+    setKlugToolsState(true);
+    if (window.QW) {
+        window.QW.onPromptUpdated({ source });
+    }
 }
 
 // === IDEA SPARK LOGIC ===
@@ -68,6 +91,290 @@ function setupIdeaSpark() {
     
     generateIdeasButton.addEventListener('click', generateIdeas);
     keywordInput.addEventListener('keydown', (e) => e.key === 'Enter' && (e.preventDefault(), generateIdeas()));
+}
+
+// === IMAGE STYLE PANEL ===
+function setupImageStylePanel() {
+    const panel = document.getElementById('image-style-panel');
+    if (!panel) return;
+
+    if (panel.dataset.initialized === 'true') {
+        if (typeof window.updateVisionAvailability === 'function') {
+            window.updateVisionAvailability();
+        }
+        return;
+    }
+    panel.dataset.initialized = 'true';
+
+    const dropzone = panel.querySelector('[data-role="image-dropzone"]');
+    const fileInput = panel.querySelector('#image-upload-input');
+    const triggerButton = panel.querySelector('#image-upload-trigger');
+    const placeholder = panel.querySelector('#image-upload-placeholder');
+    const preview = panel.querySelector('#image-upload-preview');
+    const previewImg = panel.querySelector('#image-preview-img');
+    const fileNameLabel = panel.querySelector('#image-file-name');
+    const removeButton = panel.querySelector('#image-remove-button');
+    const statusEl = panel.querySelector('#image-status');
+    const summaryDetails = panel.querySelector('#image-summary-details');
+    const summaryPre = panel.querySelector('#image-summary-debug');
+    const disabledOverlay = panel.querySelector('#image-dropzone-disabled');
+    const warningBadge = panel.querySelector('#image-vision-warning');
+
+    const generateButton = panel.querySelector('#image-generate-button');
+    const generateText = panel.querySelector('#image-generate-text');
+    const generateLoader = panel.querySelector('#image-generate-loader');
+    const adaptButton = panel.querySelector('#image-adapt-button');
+    const adaptText = panel.querySelector('#image-adapt-text');
+    const adaptLoader = panel.querySelector('#image-adapt-loader');
+
+    let currentImage = null; // { dataUrl, base64, mime, name }
+    let cachedSummary = null;
+    let visionAvailable = false;
+
+    const setStatus = (message = '', variant = 'info') => {
+        if (!statusEl) return;
+        statusEl.textContent = message;
+        statusEl.classList.remove('image-status-error', 'image-status-success');
+        if (variant === 'error') {
+            statusEl.classList.add('image-status-error');
+        } else if (variant === 'success') {
+            statusEl.classList.add('image-status-success');
+        }
+    };
+
+    const updateSummaryUI = (summary) => {
+        if (!summaryDetails || !summaryPre) return;
+        if (!summary) {
+            summaryDetails.classList.add('hidden');
+            summaryPre.textContent = '';
+        } else {
+            summaryDetails.classList.remove('hidden');
+            summaryPre.textContent = JSON.stringify(summary, null, 2);
+        }
+    };
+
+    const toggleButtonDisabled = (button, disabled) => {
+        if (!button) return;
+        button.disabled = disabled;
+        button.classList.toggle('opacity-50', disabled);
+        button.classList.toggle('cursor-not-allowed', disabled);
+    };
+
+    const setButtonLoading = (button, textEl, loaderEl, isLoading) => {
+        if (!button) return;
+        button.disabled = isLoading;
+        if (textEl) textEl.classList.toggle('hidden', isLoading);
+        if (loaderEl) loaderEl.classList.toggle('hidden', !isLoading);
+    };
+
+    const updateActionStates = () => {
+        const hasImage = !!currentImage;
+        const hasPrompt = (document.getElementById('result-text')?.textContent.trim().length || 0) > 0;
+        const disableGenerate = !visionAvailable || !hasImage;
+        const disableAdapt = disableGenerate || !hasPrompt;
+        toggleButtonDisabled(generateButton, disableGenerate);
+        toggleButtonDisabled(adaptButton, disableAdapt);
+    };
+
+    const resetImage = () => {
+        currentImage = null;
+        cachedSummary = null;
+        preview?.classList.add('hidden');
+        placeholder?.classList.remove('hidden');
+        if (previewImg) previewImg.src = '';
+        if (fileNameLabel) fileNameLabel.textContent = '';
+        updateSummaryUI(null);
+        setStatus('Bild entfernt.', 'info');
+        updateActionStates();
+    };
+
+    const parseVisionSummary = (text) => {
+        if (!text) return null;
+        let normalized = text.trim();
+        if (normalized.startsWith('```')) {
+            normalized = normalized.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/```$/i, '').trim();
+        }
+        try {
+            return JSON.parse(normalized);
+        } catch (err) {
+            try {
+                return JSON.parse(normalized.replace(/\n/g, ''));
+            } catch (error) {
+                console.warn('Konnte Vision-JSON nicht parsen:', text);
+                return null;
+            }
+        }
+    };
+
+    const ensureVisionSummary = async () => {
+        if (!currentImage) {
+            throw new Error('Bitte lade zuerst ein Bild hoch.');
+        }
+        if (cachedSummary) {
+            return cachedSummary;
+        }
+        setStatus('Analysiere Bild…');
+        const response = await callOpenRouterVision({
+            systemPrompt: IMAGE_SUMMARY_PROMPT,
+            userPrompt: 'Respond with the requested JSON object describing the image for music prompt design.',
+            imageBase64: currentImage.base64,
+            imageMime: currentImage.mime,
+            responseFormat: { type: 'json_object' },
+            temperature: 0.1,
+            maxTokens: 700
+        });
+        const summary = parseVisionSummary(response);
+        if (!summary) {
+            throw new Error('Die Bildanalyse konnte nicht interpretiert werden.');
+        }
+        cachedSummary = summary;
+        updateSummaryUI(summary);
+        return summary;
+    };
+
+    const handleFile = async (file) => {
+        if (!file) return;
+        if (!visionAvailable) {
+            setStatus('Das aktuelle Modell kann keine Bilder interpretieren.', 'error');
+            return;
+        }
+        if (file.size > MAX_IMAGE_SIZE_MB * 1024 * 1024) {
+            setStatus(`Datei ist zu groß (max. ${MAX_IMAGE_SIZE_MB} MB).`, 'error');
+            return;
+        }
+        try {
+            setStatus('Bereite Bild auf…');
+            const prepared = await prepareImageForVision(file);
+            currentImage = { ...prepared, name: file.name };
+            cachedSummary = null;
+            if (previewImg) previewImg.src = prepared.dataUrl;
+            if (fileNameLabel) fileNameLabel.textContent = file.name || 'Bild';
+            placeholder?.classList.add('hidden');
+            preview?.classList.remove('hidden');
+            updateSummaryUI(null);
+            setStatus('Bild geladen. Starte die Analyse, um Stilhinweise zu erhalten.', 'success');
+        } catch (error) {
+            console.error('Fehler beim Vorbereiten des Bildes:', error);
+            setStatus('Bild konnte nicht verarbeitet werden.', 'error');
+            currentImage = null;
+        }
+        updateActionStates();
+    };
+
+    const handleGenerate = async () => {
+        if (!visionAvailable) return;
+        if (!currentImage) {
+            setStatus('Bitte lade zuerst ein Bild hoch.', 'error');
+            return;
+        }
+        try {
+            setButtonLoading(generateButton, generateText, generateLoader, true);
+            toggleButtonDisabled(adaptButton, true);
+            const summary = await ensureVisionSummary();
+            setStatus('Erzeuge neuen Suno-Stilprompt…');
+            const payload = `IMAGE_ANALYSIS:\n${JSON.stringify(summary, null, 2)}`;
+            const prompt = await callOpenRouterAPI(payload, IMAGE_TO_PROMPT_PROMPT);
+            injectPromptResultFromFeature(prompt, 'image:new');
+            setStatus('Neuer Prompt erfolgreich erstellt.', 'success');
+        } catch (error) {
+            console.error('Fehler beim Generieren aus Bild:', error);
+            setStatus(error.message || 'Erstellung des Prompts fehlgeschlagen.', 'error');
+        } finally {
+            setButtonLoading(generateButton, generateText, generateLoader, false);
+            updateActionStates();
+        }
+    };
+
+    const handleAdapt = async () => {
+        if (!visionAvailable) return;
+        const currentPrompt = document.getElementById('result-text')?.textContent.trim();
+        if (!currentImage) {
+            setStatus('Bitte lade zuerst ein Bild hoch.', 'error');
+            return;
+        }
+        if (!currentPrompt) {
+            setStatus('Generiere zuerst einen Prompt, den du adaptieren kannst.', 'error');
+            return;
+        }
+        try {
+            setButtonLoading(adaptButton, adaptText, adaptLoader, true);
+            toggleButtonDisabled(generateButton, true);
+            const summary = await ensureVisionSummary();
+            setStatus('Mappe Bildstimmung auf vorhandenen Prompt…');
+            const payload = `EXISTING_PROMPT:\n${currentPrompt}\n\nIMAGE_ANALYSIS:\n${JSON.stringify(summary, null, 2)}`;
+            const prompt = await callOpenRouterAPI(payload, IMAGE_PROMPT_ADAPTER_PROMPT);
+            injectPromptResultFromFeature(prompt, 'image:adapt');
+            setStatus('Prompt an das Bild angepasst.', 'success');
+        } catch (error) {
+            console.error('Fehler beim Adaptieren des Prompts:', error);
+            setStatus(error.message || 'Adaptieren fehlgeschlagen.', 'error');
+        } finally {
+            setButtonLoading(adaptButton, adaptText, adaptLoader, false);
+            updateActionStates();
+        }
+    };
+
+    const applyVisionAvailability = () => {
+        visionAvailable = !!(MODEL_CAPABILITIES?.[SELECTED_MODEL]?.vision);
+        dropzone?.classList.toggle('dropzone-disabled', !visionAvailable);
+        disabledOverlay?.classList.toggle('hidden', visionAvailable);
+        warningBadge?.classList.toggle('hidden', visionAvailable);
+        if (!visionAvailable) {
+            setStatus('Das ausgewählte Modell unterstützt derzeit keine Bildverarbeitung.', 'error');
+        } else if (currentImage) {
+            setStatus('Bereit für Bildanalyse und Prompt-Erstellung.', 'success');
+        } else {
+            setStatus('Lade ein Bild hoch, um Bild → Stil zu starten.');
+        }
+        updateActionStates();
+    };
+
+    // File interactions
+    triggerButton?.addEventListener('click', () => fileInput?.click());
+    fileInput?.addEventListener('change', (event) => {
+        const file = event.target.files?.[0];
+        if (file) {
+            handleFile(file);
+        }
+        event.target.value = '';
+    });
+
+    dropzone?.addEventListener('dragover', (event) => {
+        event.preventDefault();
+        if (!visionAvailable) return;
+        dropzone.classList.add('ring-2', 'ring-blue-500/40');
+    });
+
+    dropzone?.addEventListener('dragleave', () => {
+        dropzone.classList.remove('ring-2', 'ring-blue-500/40');
+    });
+
+    dropzone?.addEventListener('drop', (event) => {
+        event.preventDefault();
+        dropzone.classList.remove('ring-2', 'ring-blue-500/40');
+        if (!visionAvailable) return;
+        const file = event.dataTransfer?.files?.[0];
+        if (file) {
+            handleFile(file);
+        }
+    });
+
+    removeButton?.addEventListener('click', resetImage);
+    generateButton?.addEventListener('click', handleGenerate);
+    adaptButton?.addEventListener('click', handleAdapt);
+
+    // Observe prompt changes to update adapt button availability
+    const resultTextEl = document.getElementById('result-text');
+    if (resultTextEl) {
+        const observer = new MutationObserver(() => updateActionStates());
+        observer.observe(resultTextEl, { childList: true, subtree: true, characterData: true });
+    }
+
+    window.updateVisionAvailability = () => {
+        applyVisionAvailability();
+    };
+
+    applyVisionAvailability();
 }
 
 // === EXPERT REFINEMENT LOGIC ===

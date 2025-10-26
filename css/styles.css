@@ -145,3 +145,18 @@ input[type=range]:hover::-webkit-slider-thumb {
 /* Pulse */
 .pulse { box-shadow: 0 0 0 2px rgba(59,130,246,0.5); transition: box-shadow 400ms ease-out; }
 .pulse-end { box-shadow: none; }
+
+/* Image style panel */
+.dropzone-disabled {
+    pointer-events: none;
+    opacity: 0.45;
+    filter: saturate(0.5);
+}
+
+.image-status-error {
+    color: #fca5a5;
+}
+
+.image-status-success {
+    color: #86efac;
+}

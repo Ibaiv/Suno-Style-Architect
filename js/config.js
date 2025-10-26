@@ -15,6 +15,21 @@ const MODEL_NAMES = {
     'inclusionai/ling-1t': 'Ling-1T'
 };
 
+// Model capability matrix (extend as models evolve)
+const MODEL_CAPABILITIES = {
+    'openai/gpt-5-mini': { vision: true },
+    'anthropic/claude-haiku-4.5': { vision: true },
+    'deepseek/deepseek-v3.1-terminus': { vision: false },
+    'deepseek/deepseek-v3.2-exp': { vision: false },
+    'tngtech/deepseek-r1t2-chimera': { vision: false },
+    'z-ai/glm-4.6': { vision: false },
+    'x-ai/grok-4-fast': { vision: false },
+    'inclusionai/ling-1t': { vision: false }
+};
+
+const MAX_IMAGE_SIZE_MB = 5;
+const MAX_IMAGE_DIMENSION = 1280;
+
 // Music genres for genre mixer
 const musicGenres = ["Acoustic", "Afrobeat", "Alternative", "Ambient", "Blues", "Bluegrass", "Breakcore", "Celtic", "City Pop", "Classical", "Country", "Dance", "Dancehall", "Disco", "Drum and Bass", "Dubstep", "Electronic", "Emo", "Folk", "Funk", "Glitchcore", "Gospel", "Goth", "Grunge", "Hard Rock", "Heavy Metal", "Hip Hop", "House", "Hyperpop", "Indie", "Industrial", "J-Pop", "J-Rock", "Jazz", "K-Pop", "Latin", "Lofi", "New Wave", "Orchestral", "Phonk", "Pop", "Post-Punk", "Progressive Rock", "Psychedelic Rock", "Punk", "R&B", "Reggae", "Reggaeton", "Rock", "Salsa", "Samba", "Shoegaze", "Ska", "Soul", "Synthwave", "Techno", "Trance", "Trap"];
 
