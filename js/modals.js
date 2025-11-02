@@ -561,5 +561,23 @@ function getModalsHTML() {
         </div>
     </div>
 
+    <div id="markdown-report-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden modal-enter-from">
+        <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-2xl">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-white">📋 Prompt-Report</h2>
+                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none">&times;</button>
+            </div>
+            <p class="text-neutral-400 mb-4 text-sm">Hier ist eine Markdown-Zusammenfassung deiner Vision und des finalen Prompts, inklusive einer KI-Analyse.</p>
+            
+            <div class="relative bg-neutral-900/70 rounded-xl border border-neutral-700">
+                <button id="copy-report-button" class="absolute top-2.5 right-2.5 p-1.5 bg-neutral-700/50 hover:bg-neutral-700 rounded-md text-neutral-400 hover:text-white transition-all duration-200 z-10 btn-transition btn-press" title="Report kopieren">
+                    <svg id="copy-report-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                    <svg id="check-report-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="hidden text-green-400"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </button>
+                <pre id="report-output-pre" class="whitespace-pre-wrap text-sm text-neutral-300 p-4 h-full max-h-[60vh] overflow-auto"></pre>
+            </div>
+        </div>
+    </div>
+
     `;
 }

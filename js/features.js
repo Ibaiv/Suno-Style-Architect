@@ -16,6 +16,7 @@ function initializeAdvancedFeatures() {
     setupVisualEngine();
     setupFutureLabTools();
     setupCustomInstruction();
+    setupMarkdownReport();
 }
 
 // === IDEA SPARK LOGIC ===
@@ -1283,20 +1284,20 @@ function setupCustomInstruction() {
     const applyButton = document.getElementById('apply-custom-instruction-button');
     const buttonText = document.getElementById('apply-custom-instruction-text');
     const loader = document.getElementById('apply-custom-instruction-loader');
-    
+
     if (!modal || !openButton || !applyButton) return;
-    
+
     const modalLogic = setupModal(modal, openButton);
-    
+
     applyButton.addEventListener('click', async () => {
         const instruction = input.value.trim();
         const currentPrompt = document.getElementById('result-text').textContent.trim();
         if (!instruction || !currentPrompt) return;
-        
+
         applyButton.disabled = true;
         buttonText.classList.add('hidden');
         loader.classList.remove('hidden');
-        
+
         const userQuery = `Base prompt: "${currentPrompt}"\nInstruction: "${instruction}"`;
         try {
             const refined = await callOpenRouterAPI(userQuery, CUSTOM_INSTRUCTION_PROMPT);
@@ -1310,6 +1311,46 @@ function setupCustomInstruction() {
             applyButton.disabled = false;
             buttonText.classList.remove('hidden');
             loader.classList.add('hidden');
+        }
+    });
+}
+
+function setupMarkdownReport() {
+    const modal = document.getElementById('markdown-report-modal');
+    const openButton = document.getElementById('markdown-report-button');
+    if (!modal || !openButton) return;
+
+    const modalLogic = setupModal(modal, openButton);
+    const outputPre = document.getElementById('report-output-pre');
+    const copyButton = document.getElementById('copy-report-button');
+    const copyIcon = document.getElementById('copy-report-icon');
+    const checkIcon = document.getElementById('check-report-icon');
+
+    // Wire up the copy button inside the modal
+    if (copyButton && copyIcon && checkIcon && outputPre) {
+        setupCopyButton(copyButton, copyIcon, checkIcon, outputPre);
+    }
+
+    openButton.addEventListener('click', async () => {
+        const vision = document.getElementById('idea-input').value.trim();
+        const finalPrompt = document.getElementById('result-text').textContent.trim();
+
+        if (!finalPrompt) {
+            alert('Bitte generiere zuerst einen Prompt.');
+            return;
+        }
+
+        outputPre.textContent = 'Analysiere Prompt...';
+        modalLogic.open();
+
+        const userQuery = `**Ursprüngliche Vision:**\n> ${vision || 'Keine Angabe'}\n\n**Finaler Stil-Prompt:**\n> ${finalPrompt}`;
+
+        try {
+            const report = await callOpenRouterAPI(userQuery, MARKDOWN_REPORT_PROMPT);
+            outputPre.textContent = report;
+        } catch (error) {
+            console.error('Error generating report:', error);
+            outputPre.textContent = `Fehler bei der Erstellung des Reports:\n${error.message}`;
         }
     });
 }
