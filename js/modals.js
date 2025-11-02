@@ -561,5 +561,73 @@ function getModalsHTML() {
         </div>
     </div>
 
+    <div id="rhythm-generator-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden modal-enter-from">
+        <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-2xl">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-white">🥁 Rhythmus-Generator & Poly-Mixer</h2>
+                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none">&times;</button>
+            </div>
+            <p class="text-neutral-400 mb-4 text-sm">Wähle die rhythmischen Bausteine. Die KI beschreibt den Groove.</p>
+            
+            <div class="space-y-4">
+                
+                <div>
+                    <label class="block text-sm font-medium text-neutral-300 mb-2">1. Taktart (Basis-Feel)</label>
+                    <div class="synth-selector-group">
+                        <input type="radio" name="rhythm_signature" id="sig_4_4" value="4/4 time (straight)" class="synth-radio" checked>
+                        <label for="sig_4_4" class="synth-label">4/4 (Gerade)</label>
+                        <input type="radio" name="rhythm_signature" id="sig_3_4" value="3/4 time (waltz)" class="synth-radio">
+                        <label for="sig_3_4" class="synth-label">3/4 (Walzer)</label>
+                        <input type="radio" name="rhythm_signature" id="sig_6_8" value="6/8 time (folk/ballad)" class="synth-radio">
+                        <label for="sig_6_8" class="synth-label">6/8 (Ballade)</label>
+                        <input type="radio" name="rhythm_signature" id="sig_shuffle" value="shuffle/swing feel" class="synth-radio">
+                        <label for="sig_shuffle" class="synth-label">Shuffle / Swing</label>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-neutral-300 mb-2">2. Kick-Drum-Muster</label>
+                    <div class="synth-selector-group">
+                        <input type="radio" name="rhythm_kick" id="kick_standard" value="standard kick on 1 and 3" class="synth-radio" checked>
+                        <label for="kick_standard" class="synth-label">Standard (auf 1 & 3)</label>
+                        <input type="radio" name="rhythm_kick" id="kick_4_floor" value="four-on-the-floor kick" class="synth-radio">
+                        <label for="kick_4_floor" class="synth-label">Four-on-the-Floor</label>
+                        <input type="radio" name="rhythm_kick" id="kick_syncopated" value="syncopated kick pattern" class="synth-radio">
+                        <label for="kick_syncopated" class="synth-label">Synkopiert (z.B. Hip Hop)</label>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-neutral-300 mb-2">3. Snare-Drum-Muster</label>
+                    <div class="synth-selector-group">
+                        <input type="radio" name="rhythm_snare" id="snare_standard" value="snare on 2 and 4" class="synth-radio" checked>
+                        <label for="snare_standard" class="synth-label">Standard (auf 2 & 4)</label>
+                        <input type="radio" name="rhythm_snare" id="snare_offbeat" value="off-beat snare (e.g., reggae)" class="synth-radio">
+                        <label for="snare_offbeat" class="synth-label">Off-Beat</label>
+                        <input type="radio" name="rhythm_snare" id="snare_march" value="marching snare roll" class="synth-radio">
+                        <label for="snare_march" class="synth-label">Marsch / Wirbel</label>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-neutral-300 mb-2">4. Hi-Hat-Muster</label>
+                    <div class="synth-selector-group">
+                        <input type="radio" name="rhythm_hat" id="hat_8th" value="steady 8th-note hi-hats" class="synth-radio" checked>
+                        <label for="hat_8th" class="synth-label">Achtelnoten</label>
+                        <input type="radio" name="rhythm_hat" id="hat_16th" value="driving 16th-note hi-hats" class="synth-radio">
+                        <label for="hat_16th" class="synth-label">16tel-Noten</label>
+                        <input type="radio" name="rhythm_hat" id="hat_open_close" value="dynamic open/closed hi-hats" class="synth-radio">
+                        <label for="hat_open_close" class="synth-label">Offen / Geschlossen</label>
+                    </div>
+                </div>
+            </div>
+
+            <button id="apply-rhythm-generator-button" class="mt-6 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg btn-transition btn-press flex items-center justify-center">
+                <span id="apply-rhythm-generator-text">Groove zum Prompt hinzufügen</span>
+                <svg id="apply-rhythm-generator-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+            </button>
+        </div>
+    </div>
+
     `;
 }

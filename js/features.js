@@ -16,6 +16,7 @@ function initializeAdvancedFeatures() {
     setupVisualEngine();
     setupFutureLabTools();
     setupCustomInstruction();
+    setupRhythmGenerator();
 }
 
 // === IDEA SPARK LOGIC ===
@@ -1283,20 +1284,20 @@ function setupCustomInstruction() {
     const applyButton = document.getElementById('apply-custom-instruction-button');
     const buttonText = document.getElementById('apply-custom-instruction-text');
     const loader = document.getElementById('apply-custom-instruction-loader');
-    
+
     if (!modal || !openButton || !applyButton) return;
-    
+
     const modalLogic = setupModal(modal, openButton);
-    
+
     applyButton.addEventListener('click', async () => {
         const instruction = input.value.trim();
         const currentPrompt = document.getElementById('result-text').textContent.trim();
         if (!instruction || !currentPrompt) return;
-        
+
         applyButton.disabled = true;
         buttonText.classList.add('hidden');
         loader.classList.remove('hidden');
-        
+
         const userQuery = `Base prompt: "${currentPrompt}"\nInstruction: "${instruction}"`;
         try {
             const refined = await callOpenRouterAPI(userQuery, CUSTOM_INSTRUCTION_PROMPT);
@@ -1306,6 +1307,64 @@ function setupCustomInstruction() {
         } catch (error) {
             console.error('Error with custom instruction:', error);
             input.value = "Ein Fehler ist aufgetreten.";
+        } finally {
+            applyButton.disabled = false;
+            buttonText.classList.remove('hidden');
+            loader.classList.add('hidden');
+        }
+    });
+}
+
+function setupRhythmGenerator() {
+    const modal = document.getElementById('rhythm-generator-modal');
+    const openButton = document.getElementById('rhythm-generator-button');
+    const applyButton = document.getElementById('apply-rhythm-generator-button');
+    const buttonText = document.getElementById('apply-rhythm-generator-text');
+    const loader = document.getElementById('apply-rhythm-generator-loader');
+    
+    if (!modal || !openButton || !applyButton) return;
+    
+    const modalLogic = setupModal(modal, openButton);
+    
+    applyButton.addEventListener('click', async () => {
+        // 1. Read all visual selections
+        const rhythmDesign = {
+            signature: modal.querySelector('input[name="rhythm_signature"]:checked')?.value || '4/4',
+            kick: modal.querySelector('input[name="rhythm_kick"]:checked')?.value || 'standard kick',
+            snare: modal.querySelector('input[name="rhythm_snare"]:checked')?.value || 'standard snare',
+            hat: modal.querySelector('input[name="rhythm_hat"]:checked')?.value || 'standard hi-hats'
+        };
+        
+        // 2. Set loading state
+        applyButton.disabled = true;
+        buttonText.classList.add('hidden');
+        loader.classList.remove('hidden');
+        
+        try {
+            // 3. Call AI to translate concepts to text
+            const userQuery = JSON.stringify(rhythmDesign);
+            const descriptiveText = await callOpenRouterAPI(userQuery, RHYTHM_TRANSLATOR_PROMPT);
+            
+            // 4. Append to result text
+            const resultTextEl = document.getElementById('result-text');
+            const currentPrompt = resultTextEl.textContent.trim();
+            
+            // Append with smart punctuation
+            if (currentPrompt.endsWith(',')) {
+                resultTextEl.textContent += ` ${descriptiveText},`;
+            } else if (currentPrompt) {
+                resultTextEl.textContent += `, ${descriptiveText},`;
+            } else {
+                resultTextEl.textContent = `${descriptiveText},`;
+            }
+            
+            if(window.QW){ window.QW.onPromptUpdated({source:'rhythm-generator'}); }
+            modalLogic.close();
+            
+        } catch (error) {
+            console.error('Error in Rhythm Generator:', error);
+            buttonText.textContent = "Fehler";
+            setTimeout(() => { buttonText.textContent = "Groove zum Prompt hinzufügen"; }, 2000);
         } finally {
             applyButton.disabled = false;
             buttonText.classList.remove('hidden');
