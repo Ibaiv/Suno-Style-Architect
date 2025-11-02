@@ -14,6 +14,7 @@ function initializeAdvancedFeatures() {
     setupExpertRefinements();
     setupKlugTools();
     setupVisualEngine();
+    setupGeneticsLab();
     setupFutureLabTools();
     setupCustomInstruction();
 }
@@ -1310,6 +1311,122 @@ function setupCustomInstruction() {
             applyButton.disabled = false;
             buttonText.classList.remove('hidden');
             loader.classList.add('hidden');
+        }
+    });
+}
+
+function setupGeneticsLab() {
+    const modal = document.getElementById('genetics-lab-modal');
+    const openButton = document.getElementById('genetics-lab-button');
+    if (!modal || !openButton) return;
+
+    const modalLogic = setupModal(modal, openButton);
+
+    const promptASelect = document.getElementById('genetics-prompt-a');
+    const promptBSelect = document.getElementById('genetics-prompt-b');
+    
+    const mutateButton = document.getElementById('apply-mutation-button');
+    const mutateText = document.getElementById('apply-mutation-text');
+    const mutateLoader = document.getElementById('apply-mutation-loader');
+    
+    const crossbreedButton = document.getElementById('apply-crossbreed-button');
+    const crossbreedText = document.getElementById('apply-crossbreed-text');
+    const crossbreedLoader = document.getElementById('apply-crossbreed-loader');
+
+    // Function to populate history dropdowns
+    function populateHistory() {
+        if (!window.QW || !promptASelect || !promptBSelect) return;
+        
+        // Assuming loadHistory exists, similar to quickwins.js
+        const history = (typeof loadHistory === 'function') ? loadHistory() : [];
+        
+        promptASelect.innerHTML = '';
+        promptBSelect.innerHTML = '';
+
+        if (history.length === 0) {
+            const noOption = new Option("Kein Verlauf vorhanden", "");
+            noOption.disabled = true;
+            promptASelect.add(noOption);
+            promptBSelect.add(noOption.cloneNode());
+            return;
+        }
+
+        history.forEach((item, index) => {
+            const truncatedText = item.content.substring(0, 50) + (item.content.length > 50 ? '...' : '');
+            const option = new Option(truncatedText, item.content);
+            promptASelect.add(option);
+            promptBSelect.add(option.cloneNode(true));
+        });
+        
+        // Select first and second item by default if possible
+        if(history.length > 1) {
+             promptBSelect.selectedIndex = 1;
+        }
+    }
+
+    // Populate dropdowns when modal is opened
+    openButton.addEventListener('click', () => {
+        if (typeof loadHistory === 'function') {
+            populateHistory();
+        } else {
+            console.warn('loadHistory function not found. Is quickwins.js loaded?');
+        }
+    });
+
+    // Mutation Logic
+    mutateButton.addEventListener('click', async () => {
+        const currentPrompt = document.getElementById('result-text').textContent.trim();
+        if (!currentPrompt) return;
+
+        mutateButton.disabled = true;
+        mutateText.classList.add('hidden');
+        mutateLoader.classList.remove('hidden');
+
+        try {
+            const mutatedPrompt = await callOpenRouterAPI(currentPrompt, MUTATION_PROMPT);
+            document.getElementById('result-text').textContent = mutatedPrompt;
+            if(window.QW){ window.QW.onPromptUpdated({source:'genetics:mutate'}); }
+            modalLogic.close();
+        } catch (error) {
+            console.error('Error mutating prompt:', error);
+            mutateText.textContent = "Fehler";
+            setTimeout(() => { mutateText.textContent = "Aktuellen Prompt mutieren"; }, 2000);
+        } finally {
+            mutateButton.disabled = false;
+            mutateText.classList.remove('hidden');
+            mutateLoader.classList.add('hidden');
+        }
+    });
+
+    // Crossbreed Logic
+    crossbreedButton.addEventListener('click', async () => {
+        const promptA = promptASelect.value;
+        const promptB = promptBSelect.value;
+
+        if (!promptA || !promptB) {
+            alert('Bitte wähle zwei Prompts aus dem Verlauf aus.');
+            return;
+        }
+
+        crossbreedButton.disabled = true;
+        crossbreedText.classList.add('hidden');
+        crossbreedLoader.classList.remove('hidden');
+
+        const userQuery = `PROMPT A:\n${promptA}\n\nPROMPT B:\n${promptB}`;
+
+        try {
+            const crossbredPrompt = await callOpenRouterAPI(userQuery, CROSSBREED_PROMPT);
+            document.getElementById('result-text').textContent = crossbredPrompt;
+            if(window.QW){ window.QW.onPromptUpdated({source:'genetics:crossbreed'}); }
+            modalLogic.close();
+        } catch (error) {
+            console.error('Error crossbreeding prompts:', error);
+            crossbreedText.textContent = "Fehler";
+            setTimeout(() => { crossbreedText.textContent = "Prompts kreuzen"; }, 2000);
+        } finally {
+            crossbreedButton.disabled = false;
+            crossbreedText.classList.remove('hidden');
+            crossbreedLoader.classList.add('hidden');
         }
     });
 }
