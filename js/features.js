@@ -183,7 +183,8 @@ function setupKlugTools() {
     setupVibeEnhancer();
     setupArtistSuggester();
     setupTempoFinder();
-    
+    setupSynthDesignerLab();
+
     // Setup tagger tools
     const taggerTools = [
         { id: 'mood-analyzer', prompt: MOOD_ANALYZER_PROMPT },
@@ -1246,7 +1247,7 @@ function setupTempoFinder() {
     const modal = document.getElementById('tempo-finder-modal');
     const openButton = document.getElementById('tempo-finder-button');
     const output = modal?.querySelector('#tempo-finder-output');
-    
+
     if (!modal || !openButton || !output) return;
     
     const modalLogic = setupModal(modal, openButton);
@@ -1273,6 +1274,151 @@ function setupTempoFinder() {
             output.innerHTML = `<p class="text-red-400">Fehler bei der Tempo-Suche: ${error.message}</p>`;
         }
     });
+}
+
+function setupSynthDesignerLab() {
+    const modal = document.getElementById('synth-designer-modal');
+    const openButton = document.getElementById('synth-designer-button');
+    const applyButton = modal?.querySelector('#synth-designer-apply');
+    const buttonText = modal?.querySelector('#synth-designer-apply-text');
+    const loader = modal?.querySelector('#synth-designer-loader');
+    const slider = modal?.querySelector('#synth-filter-slider');
+    const sliderLabel = modal?.querySelector('#synth-filter-label');
+    const errorBox = modal?.querySelector('#synth-designer-error');
+
+    if (!modal || !openButton || !applyButton || !slider || !sliderLabel) return;
+
+    const modalLogic = setupModal(modal, openButton);
+
+    const resetForm = () => {
+        const selectFirst = (name) => {
+            const inputs = modal.querySelectorAll(`input[name="${name}"]`);
+            inputs.forEach((input, index) => { input.checked = index === 0; });
+        };
+        selectFirst('synth-role');
+        selectFirst('synth-core');
+        selectFirst('synth-envelope');
+        modal.querySelectorAll('.synth-effect').forEach(cb => { cb.checked = false; });
+        slider.value = '50';
+        updateSliderLabel();
+        if (errorBox) {
+            errorBox.textContent = '';
+            errorBox.classList.add('hidden');
+        }
+    };
+
+    const updateSliderLabel = () => {
+        const description = describeSynthBrightness(slider.value);
+        sliderLabel.textContent = description.label;
+    };
+
+    slider.addEventListener('input', updateSliderLabel);
+
+    document.addEventListener('modal:open', (event) => {
+        if (event.detail?.id === 'synth-designer-modal') {
+            resetForm();
+        }
+    });
+
+    // Prepare defaults on initialization
+    resetForm();
+
+    applyButton.addEventListener('click', async () => {
+        const currentPrompt = document.getElementById('result-text').textContent.trim();
+        if (!currentPrompt) {
+            if (errorBox) {
+                errorBox.textContent = 'Bitte generiere zuerst einen Basis-Prompt.';
+                errorBox.classList.remove('hidden');
+            }
+            return;
+        }
+
+        const getValue = (name) => modal.querySelector(`input[name="${name}"]:checked`)?.value || '';
+        const role = getValue('synth-role');
+        const core = getValue('synth-core');
+        const envelope = getValue('synth-envelope');
+        if (!role || !core || !envelope) {
+            if (errorBox) {
+                errorBox.textContent = 'Bitte triff für jede Kategorie eine Auswahl.';
+                errorBox.classList.remove('hidden');
+            }
+            return;
+        }
+
+        const brightness = describeSynthBrightness(slider.value);
+        const effects = Array.from(modal.querySelectorAll('.synth-effect:checked')).map(cb => cb.value);
+
+        applyButton.disabled = true;
+        buttonText?.classList.add('hidden');
+        loader?.classList.remove('hidden');
+        if (errorBox) {
+            errorBox.textContent = '';
+            errorBox.classList.add('hidden');
+        }
+
+        const userMessage = `Base prompt: "${currentPrompt}"\nSynth role: ${role}\nWaveform character: ${core}\nFilter brightness: ${brightness.descriptor} (${brightness.scale}/100)\nEnvelope shape: ${envelope}\nEffects: ${effects.length ? effects.join(', ') : 'None'}`;
+
+        try {
+            const translation = await callOpenRouterAPI(userMessage, SYNTH_DESIGNER_PROMPT);
+            const sentence = sanitizeSynthSentence(translation);
+            if (sentence) {
+                appendSentenceToPrompt(sentence, 'klug:synth-designer');
+                modalLogic.close();
+            } else if (errorBox) {
+                errorBox.textContent = 'Die KI konnte keine Beschreibung erzeugen. Bitte erneut versuchen.';
+                errorBox.classList.remove('hidden');
+            }
+        } catch (error) {
+            if (errorBox) {
+                errorBox.textContent = `Fehler bei der Übersetzung: ${error.message}`;
+                errorBox.classList.remove('hidden');
+            }
+        } finally {
+            applyButton.disabled = false;
+            buttonText?.classList.remove('hidden');
+            loader?.classList.add('hidden');
+        }
+    });
+
+}
+
+function describeSynthBrightness(value) {
+    const scale = Number(value || 0);
+    if (scale <= 15) return { label: 'Sehr gedämpft', descriptor: 'dull and low-pass filtered', scale };
+    if (scale <= 35) return { label: 'Warm', descriptor: 'warm and rounded', scale };
+    if (scale <= 65) return { label: 'Ausgewogen', descriptor: 'balanced and open', scale };
+    if (scale <= 85) return { label: 'Leuchtend', descriptor: 'bright and forward', scale };
+    return { label: 'Aggressiv', descriptor: 'piercing and aggressive', scale };
+}
+
+function sanitizeSynthSentence(sentence) {
+    if (!sentence) return '';
+    let clean = sentence.trim();
+    clean = clean.replace(/^"|"$/g, '').trim();
+    if (!clean) return '';
+    if (!/[.!?]$/.test(clean)) {
+        clean += '.';
+    }
+    return clean;
+}
+
+function appendSentenceToPrompt(sentence, source) {
+    if (!sentence) return;
+    const resultElement = document.getElementById('result-text');
+    if (!resultElement) return;
+    const currentRaw = resultElement.textContent;
+    const trimmedCurrent = currentRaw.replace(/\s+$/g, '');
+    let newPrompt = trimmedCurrent;
+    if (!trimmedCurrent) {
+        newPrompt = sentence;
+    } else {
+        const needsPunctuation = !/[.!?]"?$/.test(trimmedCurrent.slice(-1));
+        newPrompt = trimmedCurrent + (needsPunctuation ? '.' : '') + ' ' + sentence;
+    }
+    resultElement.textContent = newPrompt;
+    if (window.QW) {
+        window.QW.onPromptUpdated({ source });
+    }
 }
 
 // === CUSTOM INSTRUCTION LOGIC ===

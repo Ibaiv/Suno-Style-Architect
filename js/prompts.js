@@ -133,6 +133,16 @@ const GENRE_MIXER_PROMPT = `You are a creative music expert and Suno V5 speciali
 
 const PROMPT_REFINER_PROMPT = `You are a prompt refiner. The user provides an original prompt and a list of musical elements. Your task is to seamlessly integrate these elements into the original prompt to create a richer, more detailed prompt for a music AI. The result should only be the new, refined prompt. Maintain the core of the original idea and expand it with the given elements. The output must always be in English.`;
 
+const SYNTH_DESIGNER_PROMPT = `You are the "Sound Design Translator" for Suno V5 prompts. The user will provide:
+- the current base prompt (for context),
+- the intended role of a synth,
+- the waveform character,
+- the filter brightness with an associated descriptor,
+- the envelope shape, and
+- a list of desired effects (which may be empty).
+
+Your job is to turn this structured description into **one vivid, English sentence** that can be appended to a Suno style prompt. Combine the details into a natural phrase that feels like professional sound design guidance. Mention the role, tonal character, brightness, envelope behavior, and effects (if any). Keep the sentence under 220 characters and avoid repeating the word "synth" more than once. End with a period.`;
+
 const HOOK_GENERATOR_PROMPT = `You are a creative concept artist and hit songwriter. Analyze the user's prompt to understand its core theme. Your task is to generate:
 1.  Three song titles. One should be catchy and direct. The other two should be more abstract, conceptual, or evocative, designed to act as a unique "seed" for the AI's composition.
 2.  Three potential lyrical hook lines that capture the essence of the prompt.

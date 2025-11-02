@@ -410,6 +410,116 @@ function getModalsHTML() {
         </div>
     </div>
 
+    <div id="synth-designer-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden modal-enter-from">
+        <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-2xl">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-white">Synth-Designer Lab</h2>
+                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none">&times;</button>
+            </div>
+            <p class="text-neutral-400 mb-6 text-sm">Baue einen präzisen Synth-Sound in fünf Schritten. Die Auswahl wird automatisch in deinen Prompt übersetzt.</p>
+            <div class="space-y-6 text-sm">
+                <div>
+                    <h3 class="text-neutral-300 font-semibold mb-3">1. Instrument-Rolle</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        <label class="flex items-center gap-2 bg-neutral-900/60 border border-neutral-700/70 rounded-lg px-3 py-2 cursor-pointer hover:border-blue-500/60 transition-colors">
+                            <input type="radio" name="synth-role" value="Lead (Melody)" class="accent-blue-500" />
+                            <span>Lead (Melodie)</span>
+                        </label>
+                        <label class="flex items-center gap-2 bg-neutral-900/60 border border-neutral-700/70 rounded-lg px-3 py-2 cursor-pointer hover:border-blue-500/60 transition-colors">
+                            <input type="radio" name="synth-role" value="Bass (Low notes)" class="accent-blue-500" />
+                            <span>Bass (Tiefe Noten)</span>
+                        </label>
+                        <label class="flex items-center gap-2 bg-neutral-900/60 border border-neutral-700/70 rounded-lg px-3 py-2 cursor-pointer hover:border-blue-500/60 transition-colors">
+                            <input type="radio" name="synth-role" value="Pad (Atmosphere)" class="accent-blue-500" />
+                            <span>Pad (Atmosphäre)</span>
+                        </label>
+                        <label class="flex items-center gap-2 bg-neutral-900/60 border border-neutral-700/70 rounded-lg px-3 py-2 cursor-pointer hover:border-blue-500/60 transition-colors">
+                            <input type="radio" name="synth-role" value="Arpeggio (Pattern)" class="accent-blue-500" />
+                            <span>Arpeggio (Pattern)</span>
+                        </label>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-neutral-300 font-semibold mb-3">2. Grundcharakter (Wellenform)</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        <label class="flex items-center gap-2 bg-neutral-900/60 border border-neutral-700/70 rounded-lg px-3 py-2 cursor-pointer hover:border-blue-500/60 transition-colors">
+                            <input type="radio" name="synth-core" value="Soft / Warm" class="accent-blue-500" />
+                            <span>Soft / Warm</span>
+                        </label>
+                        <label class="flex items-center gap-2 bg-neutral-900/60 border border-neutral-700/70 rounded-lg px-3 py-2 cursor-pointer hover:border-blue-500/60 transition-colors">
+                            <input type="radio" name="synth-core" value="Hollow / Woody" class="accent-blue-500" />
+                            <span>Hohl / Holzig</span>
+                        </label>
+                        <label class="flex items-center gap-2 bg-neutral-900/60 border border-neutral-700/70 rounded-lg px-3 py-2 cursor-pointer hover:border-blue-500/60 transition-colors">
+                            <input type="radio" name="synth-core" value="Bright / Rich" class="accent-blue-500" />
+                            <span>Hell / Reich</span>
+                        </label>
+                        <label class="flex items-center gap-2 bg-neutral-900/60 border border-neutral-700/70 rounded-lg px-3 py-2 cursor-pointer hover:border-blue-500/60 transition-colors">
+                            <input type="radio" name="synth-core" value="Noisy / Digital" class="accent-blue-500" />
+                            <span>Rauschig / Digital</span>
+                        </label>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-neutral-300 font-semibold mb-3">3. Klangfarbe (Filter)</h3>
+                    <div class="bg-neutral-900/60 border border-neutral-700/70 rounded-lg px-4 py-3">
+                        <label for="synth-filter-slider" class="flex justify-between text-xs text-neutral-400 uppercase tracking-wide mb-2">
+                            <span>Dull / Subtle</span>
+                            <span id="synth-filter-label" class="text-blue-300 font-semibold">Ausgewogen</span>
+                            <span>Bright / Aggressive</span>
+                        </label>
+                        <input id="synth-filter-slider" type="range" min="0" max="100" value="50" class="w-full h-1 bg-neutral-700 rounded-lg appearance-none cursor-pointer">
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-neutral-300 font-semibold mb-3">4. Hüllkurve (Shape)</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                        <label class="flex items-center gap-2 bg-neutral-900/60 border border-neutral-700/70 rounded-lg px-3 py-2 cursor-pointer hover:border-blue-500/60 transition-colors">
+                            <input type="radio" name="synth-envelope" value="Short / Plucky" class="accent-blue-500" />
+                            <span>Kurz / Plucky</span>
+                        </label>
+                        <label class="flex items-center gap-2 bg-neutral-900/60 border border-neutral-700/70 rounded-lg px-3 py-2 cursor-pointer hover:border-blue-500/60 transition-colors">
+                            <input type="radio" name="synth-envelope" value="Swelling (Slow fade in)" class="accent-blue-500" />
+                            <span>Swelling (Fade-in)</span>
+                        </label>
+                        <label class="flex items-center gap-2 bg-neutral-900/60 border border-neutral-700/70 rounded-lg px-3 py-2 cursor-pointer hover:border-blue-500/60 transition-colors">
+                            <input type="radio" name="synth-envelope" value="Sustained (Long hold)" class="accent-blue-500" />
+                            <span>Lang anhaltend</span>
+                        </label>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-neutral-300 font-semibold mb-3">5. Effekte</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        <label class="flex items-center gap-2 bg-neutral-900/60 border border-neutral-700/70 rounded-lg px-3 py-2 cursor-pointer hover:border-blue-500/60 transition-colors">
+                            <input type="checkbox" value="Reverb (Space)" class="synth-effect accent-blue-500" />
+                            <span>Reverb (Raum)</span>
+                        </label>
+                        <label class="flex items-center gap-2 bg-neutral-900/60 border border-neutral-700/70 rounded-lg px-3 py-2 cursor-pointer hover:border-blue-500/60 transition-colors">
+                            <input type="checkbox" value="Echo (Delay)" class="synth-effect accent-blue-500" />
+                            <span>Echo (Delay)</span>
+                        </label>
+                        <label class="flex items-center gap-2 bg-neutral-900/60 border border-neutral-700/70 rounded-lg px-3 py-2 cursor-pointer hover:border-blue-500/60 transition-colors">
+                            <input type="checkbox" value="Width (Chorus)" class="synth-effect accent-blue-500" />
+                            <span>Width (Chorus)</span>
+                        </label>
+                        <label class="flex items-center gap-2 bg-neutral-900/60 border border-neutral-700/70 rounded-lg px-3 py-2 cursor-pointer hover:border-blue-500/60 transition-colors">
+                            <input type="checkbox" value="Distortion (Grit)" class="synth-effect accent-blue-500" />
+                            <span>Distortion (Grit)</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <p id="synth-designer-error" class="mt-4 text-amber-300 text-sm hidden"></p>
+            <div class="mt-6 border-t border-neutral-700/60 pt-4 flex justify-end">
+                <button id="synth-designer-apply" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-lg btn-transition btn-press flex items-center justify-center gap-2">
+                    <span id="synth-designer-apply-text">Sound zum Prompt hinzufügen</span>
+                <svg id="synth-designer-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- FUTURE LAB MODALS -->
     <div id="adaptive-flow-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden modal-enter-from">
         <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-4xl">
