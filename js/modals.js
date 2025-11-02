@@ -561,5 +561,42 @@ function getModalsHTML() {
         </div>
     </div>
 
+    <div id="genetics-lab-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden modal-enter-from">
+        <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-2xl">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-white">🧬 Genetik-Labor</h2>
+                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none">&times;</button>
+            </div>
+            
+            <div class="mb-6 pb-6 border-b border-neutral-700">
+                <h3 class="text-lg font-semibold text-neutral-200 mb-2">Mutation (Zufall)</h3>
+                <p class="text-neutral-400 mb-4 text-sm">Ändere *ein* Detail deines aktuellen Prompts auf kreative Weise (z.B. Tempo, Instrument, Genre).</p>
+                <button id="apply-mutation-button" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg btn-transition btn-press flex items-center justify-center">
+                    <span id="apply-mutation-text">Aktuellen Prompt mutieren</span>
+                    <svg id="apply-mutation-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                </button>
+            </div>
+
+            <div>
+                <h3 class="text-lg font-semibold text-neutral-200 mb-2">Kreuzung (Kombination)</h3>
+                <p class="text-neutral-400 mb-4 text-sm">Wähle zwei Prompts aus deinem Verlauf. Die KI kreuzt sie zu einem neuen Hybrid.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="genetics-prompt-a" class="block text-sm font-medium text-neutral-300 mb-2">Prompt A (z.B. der Stil)</label>
+                        <select id="genetics-prompt-a" class="w-full bg-neutral-900/70 border border-neutral-600 rounded-lg p-3 text-neutral-200 focus:ring-2 focus:ring-blue-500 text-sm"></select>
+                    </div>
+                    <div>
+                        <label for="genetics-prompt-b" class="block text-sm font-medium text-neutral-300 mb-2">Prompt B (z.B. Instrumente)</label>
+                        <select id="genetics-prompt-b" class="w-full bg-neutral-900/70 border border-neutral-600 rounded-lg p-3 text-neutral-200 focus:ring-2 focus:ring-blue-500 text-sm"></select>
+                    </div>
+                </div>
+                <button id="apply-crossbreed-button" class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg btn-transition btn-press flex items-center justify-center">
+                    <span id="apply-crossbreed-text">Prompts kreuzen</span>
+                    <svg id="apply-crossbreed-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
     `;
 }
