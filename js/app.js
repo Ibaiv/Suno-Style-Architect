@@ -3,6 +3,8 @@
 const apiSetupModal = document.getElementById('api-setup-modal');
 const apiKeyInput = document.getElementById('api-key-input');
 const modelSelect = document.getElementById('model-select');
+const falApiKeyInput = document.getElementById('fal-api-key-input');
+const falModelSelect = document.getElementById('fal-model-select');
 const saveSettingsButton = document.getElementById('save-settings-button');
 const settingsButton = document.getElementById('settings-button');
 const changeSettingsButton = document.getElementById('change-settings-button');
@@ -42,7 +44,19 @@ function loadSettings() {
         localStorage.getItem('api_key'),
     ];
     const savedKey = candidates.find(Boolean) || '';
-const savedModel = localStorage.getItem('selected_model') || 'openai/gpt-5-mini';
+    const savedModel = localStorage.getItem('selected_model') || 'openai/gpt-5-mini';
+
+    // Load optional fal.ai settings
+    const falCandidates = [
+        localStorage.getItem('fal_api_key'),
+        localStorage.getItem('FAL_API_KEY'),
+    ];
+    const savedFalKey = falCandidates.find(Boolean) || '';
+    const savedFalModel = localStorage.getItem('fal_model') || 'fal-ai/fast-sdxl';
+    FAL_API_KEY = savedFalKey;
+    FAL_MODEL = savedFalModel;
+    if (falApiKeyInput) falApiKeyInput.value = savedFalKey;
+    if (falModelSelect) falModelSelect.value = savedFalModel;
     
     if (savedKey) {
         API_KEY = savedKey;
@@ -76,10 +90,18 @@ function saveSettings() {
     
     API_KEY = apiKey;
     SELECTED_MODEL = model;
+
+    // Optional fal.ai settings
+    const falKey = falApiKeyInput ? falApiKeyInput.value.trim() : '';
+    const falModel = falModelSelect ? falModelSelect.value : FAL_MODEL;
+    FAL_API_KEY = falKey;
+    FAL_MODEL = falModel;
     
     localStorage.setItem('openrouter_api_key', apiKey);
     localStorage.setItem('ssa_api_key', apiKey);
     localStorage.setItem('selected_model', model);
+    localStorage.setItem('fal_api_key', falKey);
+    localStorage.setItem('fal_model', falModel);
     
     currentModelSpan.textContent = MODEL_NAMES[model] || model;
     showMainApp();

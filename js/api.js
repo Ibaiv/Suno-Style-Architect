@@ -1,14 +1,139 @@
+// === FAL.AI API CALL ===
+async function callFalAPI(prompt, options = {}) {
+    if (!FAL_API_KEY) {
+        throw new Error("Bitte konfiguriere zuerst deinen Fal.ai API Key in den Einstellungen.");
+    }
+
+    const {
+        timeoutMs = 45000,
+        retries = 2,
+        signal = null
+    } = options;
+
+    // Resolve endpoint path from mapping, with smart fallbacks
+    const endpointFromMap = (typeof FAL_MODEL_ENDPOINTS !== 'undefined') ? FAL_MODEL_ENDPOINTS[FAL_MODEL] : null;
+    const normalized = (v)=> v.replace(/^\/+|\/+$/g,'');
+    const base = endpointFromMap || FAL_MODEL;
+    const candidates = [];
+    const seen = new Set();
+    const push = (x)=>{ const n=normalized(x); if(!seen.has(n)){ seen.add(n); candidates.push(n); }};
+    push(base);
+    if (!/^[-\w]+\//.test(base)) { push(`fal-ai/${base}`); push(`google/${base}`); }
+    if (FAL_MODEL === 'imagen4/preview') push('google/imagen-4/preview');
+    if (FAL_MODEL === 'flux-pro/kontext') push('fal-ai/flux-pro/kontext');
+    if (FAL_MODEL === 'flux-krea-lora/stream') push('fal-ai/flux-krea-lora/stream');
+
+    const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+
+    let lastErr = null;
+    for (const endpoint of candidates) {
+        const url = FAL_BASE_URL + endpoint;
+        const buildPayloads = (ep) => {
+            const sizeA = '1024x1024';
+            const sizeB = 'square_hd';
+            return [
+                { prompt },
+                { input: prompt },
+                { text: prompt },
+                { prompt: { text: prompt } },
+                { prompt, num_images: 1 },
+                { prompt, image_size: sizeA },
+                { prompt, size: sizeB }
+            ];
+        };
+        const payloads = buildPayloads(endpoint);
+
+        // Controller to support timeout and external cancellation per endpoint attempt
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(new Error('Fal.ai timeout')), timeoutMs);
+        const onAbort = () => controller.abort(signal?.reason || new Error('Aborted'));
+        if (signal) {
+            if (signal.aborted) onAbort(); else signal.addEventListener('abort', onAbort, { once: true });
+        }
+
+        const doRequest = async (authHeader, body) => fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': authHeader
+            },
+            body: JSON.stringify(body),
+            signal: controller.signal
+        });
+
+        let attempt = 0;
+        try {
+            for (let pIndex = 0; pIndex < payloads.length; pIndex++) {
+                const body = payloads[pIndex];
+                attempt = 0;
+                while (true) {
+                    // Try with 'Key' scheme first (fal.ai standard). Fallback to 'Bearer'.
+                    let response = await doRequest(`Key ${FAL_API_KEY}`, body);
+                    if (response.status === 401 || response.status === 403) {
+                        response = await doRequest(`Bearer ${FAL_API_KEY}`, body);
+                    }
+
+                    if (!response.ok) {
+                        const text = await response.text();
+                        const status = response.status;
+                        // Retry on transient errors
+                        if ([408, 429, 500, 502, 503, 504].includes(status) && attempt < retries) {
+                            attempt++;
+                            const backoff = Math.min(2000 * attempt, 6000) + Math.random() * 500;
+                            await sleep(backoff);
+                            continue;
+                        }
+                        // Try next payload on schema/validation errors
+                        if ([400, 422].includes(status) || /did not match|validation|schema/i.test(text)) {
+                            // move to next payload shape
+                            break;
+                        }
+                        if (status === 404) {
+                            lastErr = new Error(`Fal.ai endpoint not found: ${url} -> ${text}`);
+                            throw lastErr; // bubble to try next endpoint
+                        }
+                        throw new Error(`Fal.ai API request failed (${status}): ${text}`);
+                    }
+
+                    const result = await response.json();
+                    const imageUrl = (result?.images?.[0]?.url) || (result?.images?.[0]?.image_url) || result?.image?.url || result?.url || result?.output?.[0]?.url;
+                    if (imageUrl) return imageUrl;
+                    // If no URL, try next payload
+                    break;
+                }
+            }
+            // if all payloads failed, fall through to next endpoint
+        } catch (err) {
+            lastErr = err;
+        } finally {
+            clearTimeout(timer);
+            if (signal) signal.removeEventListener('abort', onAbort);
+        }
+        // move to next candidate on failure
+    }
+
+    throw lastErr || new Error('Fal.ai: Konnte kein Bild generieren.');
+}
+
 // === OPENROUTER API CALL ===
-async function callOpenRouterAPI(userMessage, systemPrompt) {
+async function callOpenRouterAPI(userMessage, systemPrompt, imageUrl = null) {
     if (!API_KEY) {
         throw new Error("Bitte konfiguriere zuerst deinen API Key in den Einstellungen.");
     }
+
+    const userContent = imageUrl
+        ? [
+            { type: 'text', text: userMessage },
+            { type: 'image_url', image_url: { url: imageUrl } }
+          ]
+        : userMessage;
 
     const payload = {
         model: SELECTED_MODEL,
         messages: [
             { role: "system", content: systemPrompt },
-            { role: "user", content: userMessage }
+            { role: "user", content: userContent }
         ],
         temperature: 0.7,
         max_tokens: 1000,
@@ -95,6 +220,17 @@ function setupCopyButton(button, icon, check, textElement) {
         }
     });
 }
+
+// Ensure globals are accessible across files regardless of scoping quirks
+try {
+    if (typeof window !== 'undefined') {
+        window.callFalAPI = callFalAPI;
+        window.callOpenRouterAPI = callOpenRouterAPI;
+        window.safeCopyText = safeCopyText;
+        window.setupCopyButton = setupCopyButton;
+        window.setKlugToolsState = setKlugToolsState;
+    }
+} catch (_) {}
 
 function setKlugToolsState(enabled) {
     isPromptGenerated = enabled;

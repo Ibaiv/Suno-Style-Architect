@@ -1,3 +1,34 @@
+// === FAL.AI STATE ===
+let FAL_API_KEY = '';
+let FAL_MODEL = 'fal-ai/fast-sdxl';
+const FAL_BASE_URL = 'https://fal.run/'; // fal.ai proxy URL
+
+// Model display names for fal.ai
+const FAL_MODEL_NAMES = {
+    'fal-ai/fast-sdxl': 'Fast SDXL',
+    'fal-ai/lightning-sdxl': 'Lightning SDXL',
+    'fal-ai/sdxl-lightning-4step': 'SDXL Lightning (4-step)',
+    'fal-ai/stable-diffusion-v1-5': 'Stable Diffusion 1.5',
+    'fal-ai/realistic-vision-v5': 'Realistic Vision v5',
+    'imagen4/preview': 'Imagen 4 (preview)',
+    'flux-pro/kontext': 'FLUX pro Kontext',
+    'flux-krea-lora/stream': 'FLUX Krea LoRA (stream)'
+};
+
+// FAL endpoint mapping (selection value -> API path)
+// This allows us to support models hosted under different orgs (e.g., google/*, fal-ai/*)
+const FAL_MODEL_ENDPOINTS = {
+    'fal-ai/fast-sdxl': 'fal-ai/fast-sdxl',
+    'fal-ai/lightning-sdxl': 'fal-ai/lightning-sdxl',
+    'fal-ai/sdxl-lightning-4step': 'fal-ai/sdxl-lightning-4step',
+    'fal-ai/stable-diffusion-v1-5': 'fal-ai/stable-diffusion-v1-5',
+    'fal-ai/realistic-vision-v5': 'fal-ai/realistic-vision-v5',
+    // New gallery models
+    'imagen4/preview': 'google/imagen-4/preview',
+    'flux-pro/kontext': 'fal-ai/flux-pro/kontext',
+    'flux-krea-lora/stream': 'fal-ai/flux-krea-lora/stream'
+};
+
 // === APP STATE ===
 let API_KEY = '';
 let SELECTED_MODEL = 'openai/gpt-5-mini';

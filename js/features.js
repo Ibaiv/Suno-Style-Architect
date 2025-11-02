@@ -13,6 +13,7 @@ function initializeAdvancedFeatures() {
     setupIdeaSpark();
     setupExpertRefinements();
     setupKlugTools();
+    setupVisualEngine();
     setupFutureLabTools();
     setupCustomInstruction();
 }
@@ -195,6 +196,137 @@ function setupKlugTools() {
     
     taggerTools.forEach(tool => {
         setupKlugTagger(tool.id, tool.prompt);
+    });
+}
+
+// === VISUAL INSPIRATION ENGINE ===
+function setupVisualEngine() {
+    const modal = document.getElementById('visual-engine-modal');
+    const openButton = document.getElementById('visual-engine-button');
+    const input = document.getElementById('image-prompt-input');
+    const generateButton = document.getElementById('generate-image-button');
+    const generateText = document.getElementById('generate-image-text');
+    const generateLoader = document.getElementById('generate-image-loader');
+    const output = document.getElementById('visual-engine-output');
+    const analyzeButton = document.getElementById('analyze-image-button');
+    const analyzeText = document.getElementById('analyze-image-text');
+    const analyzeLoader = document.getElementById('analyze-image-loader');
+
+    if (!modal || !openButton || !input || !generateButton || !output || !analyzeButton) return;
+
+    // Block opening when Fal key is missing
+    openButton.addEventListener('click', (e) => {
+        if (!FAL_API_KEY) {
+            e.preventDefault(); e.stopPropagation();
+            alert('Bitte hinterlege zuerst einen gültigen Fal.ai API Key unter Einstellungen.');
+            if (typeof showSettings === 'function') showSettings();
+        }
+    }, { capture: true });
+
+    const modalLogic = setupModal(modal, openButton);
+    let generatedImageUrl = null;
+    let genReqId = 0;
+    let anaReqId = 0;
+
+    const resetUI = () => {
+        generatedImageUrl = null;
+        analyzeButton.classList.add('hidden');
+        output.innerHTML = `<p class="text-neutral-500 text-sm">Bild wird hier angezeigt...</p>`;
+        input.value = input.value || '';
+    };
+
+    // Reset UI whenever modal opens
+    document.addEventListener('modal:open', (ev) => {
+        if (ev.detail?.id === 'visual-engine-modal') resetUI();
+    });
+
+    const setGenLoading = (isLoading) => {
+        generateButton.disabled = isLoading;
+        generateText?.classList.toggle('hidden', isLoading);
+        generateLoader?.classList.toggle('hidden', !isLoading);
+    };
+    const setAnalyzeLoading = (isLoading) => {
+        analyzeButton.disabled = isLoading;
+        analyzeText?.classList.toggle('hidden', isLoading);
+        analyzeLoader?.classList.toggle('hidden', !isLoading);
+    };
+
+    const withTimeout = (p, ms, label='Request') => Promise.race([
+        p,
+        new Promise((_, rej) => setTimeout(() => rej(new Error(`${label} timeout nach ${ms}ms`)), ms))
+    ]);
+
+    generateButton.addEventListener('click', async () => {
+        const prompt = input.value.trim();
+        if (!prompt) {
+            output.innerHTML = `<p class="text-amber-300 text-sm">Bitte gib eine Beschreibung ein.</p>`;
+            return;
+        }
+        setGenLoading(true);
+        const myId = ++genReqId;
+        output.innerHTML = `<div class="animate-spin h-6 w-6 text-blue-400"></div>`;
+        analyzeButton.classList.add('hidden');
+        try {
+            const url = await callFalAPI(prompt, { timeoutMs: 45000, retries: 2 });
+            if (myId !== genReqId) return; // stale
+            // Preload to ensure the image is valid
+            await new Promise((resolve, reject) => {
+                const img = new Image();
+                img.onload = resolve;
+                img.onerror = reject;
+                img.src = url + (url.includes('?') ? '&' : '?') + 't=' + Date.now();
+            });
+            generatedImageUrl = url;
+            output.innerHTML = `<img src="${url}" alt="Generiertes Bild" class="rounded-lg w-full h-auto">`;
+            analyzeButton.classList.remove('hidden');
+        } catch (error) {
+            console.error('Fal.ai error', error);
+            output.innerHTML = `<p class="text-red-400 text-sm">Fehler beim Generieren des Bildes: ${error.message}</p>`;
+        } finally {
+            setGenLoading(false);
+        }
+    });
+
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); generateButton.click(); }
+    });
+
+    analyzeButton.addEventListener('click', async () => {
+        if (!generatedImageUrl) return;
+        if (!API_KEY) {
+            alert('Bitte konfiguriere zuerst deinen OpenRouter API Key in den Einstellungen.');
+            if (typeof showSettings === 'function') showSettings();
+            return;
+        }
+        const prompt = input.value.trim();
+        setAnalyzeLoading(true);
+        const myId = ++anaReqId;
+        try {
+            const userMessage = `Image prompt used to generate the picture:\n${prompt}`;
+            const generatedText = await withTimeout(
+                callOpenRouterAPI(userMessage, VISUAL_ANALYZER_PROMPT, generatedImageUrl),
+                60000,
+                'Analyse'
+            );
+            if (myId !== anaReqId) return; // stale
+            const resultText = document.getElementById('result-text');
+            const initialState = document.getElementById('initial-state');
+            const resultContainer = document.getElementById('result-container');
+            if (resultText) resultText.textContent = generatedText;
+            if (initialState) initialState.classList.add('hidden');
+            if (resultContainer) {
+                resultContainer.classList.remove('hidden');
+                resultContainer.classList.add('fade-in');
+            }
+            setKlugToolsState(true);
+            if (window.QW) { window.QW.onPromptUpdated({ source: 'klug:visual-engine' }); }
+            modalLogic.close();
+        } catch (error) {
+            console.error('Visual analysis failed', error);
+            output.innerHTML = `<p class="text-red-400 text-sm">Fehler bei der Bildanalyse: ${error.message}</p>` + output.innerHTML;
+        } finally {
+            setAnalyzeLoading(false);
+        }
     });
 }
 

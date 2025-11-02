@@ -44,7 +44,27 @@
                     </select>
                     <p class="text-xs text-neutral-500 mt-1">Standart ist gpt-5-mini (Preis-Leistungs-Verhältnis)</p>
                 </div>
-                
+
+                <div>
+                    <label for="fal-api-key-input" class="block text-sm font-medium text-neutral-300 mb-2">Fal.ai API Key (Optional)</label>
+                    <input type="password" id="fal-api-key-input" class="w-full bg-neutral-900/70 border border-neutral-600 rounded-lg p-3 text-neutral-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm" placeholder="fal.ai key...">
+                    <p class="text-xs text-neutral-500 mt-1">Erforderlich für den "Visuellen Funke". Hol dir einen Key von <a href="https://fal.ai" target="_blank" class="text-blue-400 hover:text-blue-300">fal.ai</a></p>
+                </div>
+
+                <div>
+                    <label for="fal-model-select" class="block text-sm font-medium text-neutral-300 mb-2">Bild-KI-Modell</label>
+                    <select id="fal-model-select" class="w-full bg-neutral-900/70 border border-neutral-600 rounded-lg p-3 text-neutral-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+                        <option value="fal-ai/fast-sdxl">Fast SDXL</option>
+                        <option value="fal-ai/lightning-sdxl">Lightning SDXL</option>
+                        <option value="fal-ai/sdxl-lightning-4step">SDXL Lightning (4-step)</option>
+                        <option value="fal-ai/stable-diffusion-v1-5">Stable Diffusion 1.5</option>
+                        <option value="fal-ai/realistic-vision-v5">Realistic Vision v5</option>
+                        <option value="imagen4/preview">Imagen 4 (preview)</option>
+                        <option value="flux-pro/kontext">FLUX pro Kontext</option>
+                        <option value="flux-krea-lora/stream">FLUX Krea LoRA (stream)</option>
+                    </select>
+                </div>
+
                 <div class="pt-2">
                     <button id="save-settings-button" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg btn-transition btn-press flex items-center justify-center gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17,21 17,13 7,13 7,21"/><polyline points="7,3 7,8 15,8"/></svg>
@@ -223,6 +243,10 @@
                         💡 <strong>Hinweis:</strong> Generiere zuerst einen Prompt, um die KLUG-Tools zu aktivieren.
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-4 gap-3 lg:gap-4">
+                        <button id="visual-engine-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                            <h3 class="font-semibold text-neutral-200">🖼️ Visueller Funke</h3>
+                            <p class="text-xs text-neutral-400">Generiere Bild & analysiere Vibe.</p>
+                        </button>
                         <button id="genre-mixer-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Genre-Mixer</h3>
                             <p class="text-xs text-neutral-400">Kombiniere Stile für Klänge.</p>

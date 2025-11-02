@@ -538,5 +538,28 @@ function getModalsHTML() {
             <div id="release-forecast-output" class="mt-5 text-sm space-y-4"></div>
         </div>
     </div>
+    
+    <div id="visual-engine-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden modal-enter-from">
+        <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-lg">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-white">🖼️ Visueller Funke</h2>
+                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none">&times;</button>
+            </div>
+            <p class="text-neutral-400 mb-4 text-sm">Schritt 1: Beschreibe eine Szene, um ein Bild zu generieren.</p>
+            <textarea id="image-prompt-input" rows="3" class="w-full bg-neutral-900/70 border border-neutral-700 rounded-xl p-3 text-neutral-300 focus:ring-2 focus:ring-blue-500 placeholder-neutral-500 text-base" placeholder="z.B. Eine Cyberpunk-Stadt im Neon-Regen, eine ruhige Waldlichtung im Morgennebel..."></textarea>
+            <button id="generate-image-button" class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg btn-transition btn-press flex items-center justify-center">
+                <span id="generate-image-text">Bild generieren</span>
+                <svg id="generate-image-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+            </button>
+            <div id="visual-engine-output" class="mt-4 p-2 bg-neutral-900/50 rounded-xl border border-neutral-700 min-h-[100px] flex items-center justify-center">
+                <p class="text-neutral-500 text-sm">Bild wird hier angezeigt...</p>
+            </div>
+            <button id="analyze-image-button" class="mt-4 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg btn-transition btn-press flex items-center justify-center hidden">
+                <span id="analyze-image-text">Schritt 2: Bild für Prompt analysieren</span>
+                <svg id="analyze-image-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+            </button>
+        </div>
+    </div>
+
     `;
 }
