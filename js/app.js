@@ -229,5 +229,62 @@ document.addEventListener('DOMContentLoaded', () => {
     loadSettings();
     setKlugToolsState(false);
     setupCopyButton(copyButton, copyIcon, checkIcon, resultText);
+    setupVisionBooster();
 });
 
+
+function setupVisionBooster() {
+    const boosterButton = document.getElementById('vision-booster-button');
+    const ideaInput = document.getElementById('idea-input');
+    const chipContainer = document.getElementById('vision-chips-container');
+    
+    if (!boosterButton || !ideaInput || !chipContainer) return;
+
+    boosterButton.addEventListener('click', async () => {
+        const currentText = ideaInput.value.trim();
+        if (!currentText) {
+            chipContainer.innerHTML = `<span class="text-xs text-neutral-500">Bitte gib zuerst eine Idee ein.</span>`;
+            return;
+        }
+
+        // Show loader on button
+        boosterButton.innerHTML = `<svg class="animate-spin h-4 w-4 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>`;
+        chipContainer.innerHTML = '';
+
+        try {
+            const keywordsString = await callOpenRouterAPI(currentText, KEYWORD_EXPANDER_PROMPT);
+            const keywords = keywordsString.split(',').map(k => k.trim()).filter(Boolean);
+
+            if (keywords.length === 0) {
+                chipContainer.innerHTML = `<span class="text-xs text-neutral-500">Keine Vorschläge gefunden.</span>`;
+            }
+
+            keywords.forEach(keyword => {
+                const chip = document.createElement('button');
+                chip.className = 'booster-chip';
+                chip.textContent = keyword;
+                chip.onclick = () => {
+                    // Append with smart punctuation
+                    const currentVal = ideaInput.value.trim();
+                    if (currentVal.endsWith(',')) {
+                        ideaInput.value += ` ${keyword},`;
+                    } else if (currentVal) {
+                        ideaInput.value += `, ${keyword},`;
+                    } else {
+                        ideaInput.value = `${keyword}, `;
+                    }
+                    ideaInput.focus();
+                    chip.remove(); // Remove chip after clicking
+                };
+                chipContainer.appendChild(chip);
+            });
+
+        } catch (error) {
+            console.error("Error fetching booster keywords:", error);
+            chipContainer.innerHTML = `<span class="text-xs text-red-400">Fehler beim Laden.</span>`;
+        } finally {
+            // Restore button icon
+            boosterButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/><path d="M12 3v18"/><path d="M3 12h18"/></svg>`;
+        }
+    });
+}

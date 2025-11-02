@@ -357,3 +357,12 @@ No explanations, no introductory phrases.
 The output must always be in English.
 
 The total length must not exceed 800 characters.`;
+const KEYWORD_EXPANDER_PROMPT = `You are an AI thesaurus for musicians. The user provides a keyword or short phrase. Your task is to return a comma-separated list of 8-10 highly evocative, creative, and musical adjectives or short concepts related to that keyword.
+
+**Rules:**
+1.  **Output Format:** ONLY a single line of text, with items separated by commas. (e.g., "mystical, dark, cold, quiet, mossy, ancient, echoing, somber, whispering")
+2.  **No Preamble:** Do not add "Here are some keywords:" or anything similar.
+3.  **Be Creative:** Avoid boring adjectives. Instead of "sad," think "melancholic" or "wistful." Instead of "fast," think "driving" or "frantic."
+
+**User's Input:**
+`;

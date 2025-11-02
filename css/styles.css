@@ -145,3 +145,20 @@ input[type=range]:hover::-webkit-slider-thumb {
 /* Pulse */
 .pulse { box-shadow: 0 0 0 2px rgba(59,130,246,0.5); transition: box-shadow 400ms ease-out; }
 .pulse-end { box-shadow: none; }
+/* --- Vision Booster Chip Styles --- */
+.booster-chip {
+    padding: 4px 10px;
+    border-radius: 9999px;
+    border: 1px solid rgba(59, 130, 246, 0.4);
+    background: rgba(59, 130, 246, 0.1);
+    color: #93c5fd;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    animation: fadeIn 0.3s ease-out;
+}
+.booster-chip:hover {
+    background: rgba(59, 130, 246, 0.2);
+    border-color: rgba(59, 130, 246, 0.7);
+    transform: translateY(-1px);
+}
