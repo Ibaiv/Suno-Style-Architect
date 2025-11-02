@@ -539,6 +539,161 @@ function getModalsHTML() {
         </div>
     </div>
     
+    <div id="synth-designer-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden modal-enter-from">
+        <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-3xl">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-white">🎛️ Synth-Designer Lab</h2>
+                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none">&times;</button>
+            </div>
+            <p class="text-neutral-400 mb-5 text-sm">Baue Schritt für Schritt einen Synth-Sound. Deine Auswahl wird in eine präzise Beschreibung für Suno übersetzt und deinem Meisterstück hinzugefügt.</p>
+            <form id="synth-designer-form" class="space-y-5">
+                <div>
+                    <p class="text-sm font-semibold text-neutral-300 mb-2">1. Instrument-Rolle</p>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        <label class="block">
+                            <input type="radio" name="synth-role" value="Lead melody" class="sr-only peer">
+                            <div class="p-3 border border-neutral-700/70 rounded-xl bg-neutral-900/60 hover:border-blue-400/40 transition-all peer-checked:border-blue-400 peer-checked:bg-blue-600/20">
+                                <span class="text-sm font-semibold text-neutral-200">Lead</span>
+                                <p class="text-xs text-neutral-400">Melodie</p>
+                            </div>
+                        </label>
+                        <label class="block">
+                            <input type="radio" name="synth-role" value="Bass foundation" class="sr-only peer">
+                            <div class="p-3 border border-neutral-700/70 rounded-xl bg-neutral-900/60 hover:border-blue-400/40 transition-all peer-checked:border-blue-400 peer-checked:bg-blue-600/20">
+                                <span class="text-sm font-semibold text-neutral-200">Bass</span>
+                                <p class="text-xs text-neutral-400">Tiefe Noten</p>
+                            </div>
+                        </label>
+                        <label class="block">
+                            <input type="radio" name="synth-role" value="Atmospheric pad" class="sr-only peer">
+                            <div class="p-3 border border-neutral-700/70 rounded-xl bg-neutral-900/60 hover:border-blue-400/40 transition-all peer-checked:border-blue-400 peer-checked:bg-blue-600/20">
+                                <span class="text-sm font-semibold text-neutral-200">Pad</span>
+                                <p class="text-xs text-neutral-400">Atmosphäre</p>
+                            </div>
+                        </label>
+                        <label class="block">
+                            <input type="radio" name="synth-role" value="Arpeggiated pattern" class="sr-only peer">
+                            <div class="p-3 border border-neutral-700/70 rounded-xl bg-neutral-900/60 hover:border-blue-400/40 transition-all peer-checked:border-blue-400 peer-checked:bg-blue-600/20">
+                                <span class="text-sm font-semibold text-neutral-200">Arpeggio</span>
+                                <p class="text-xs text-neutral-400">Pattern</p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                <div>
+                    <p class="text-sm font-semibold text-neutral-300 mb-2">2. Grundcharakter (Waveform)</p>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="block">
+                            <input type="radio" name="synth-core" value="soft, warm waveform" class="sr-only peer">
+                            <div class="p-3 border border-neutral-700/70 rounded-xl bg-neutral-900/60 hover:border-blue-400/40 transition-all peer-checked:border-blue-400 peer-checked:bg-blue-600/20">
+                                <span class="text-sm font-semibold text-neutral-200">Soft / Warm</span>
+                                <p class="text-xs text-neutral-400">Butterweich & samtig</p>
+                            </div>
+                        </label>
+                        <label class="block">
+                            <input type="radio" name="synth-core" value="hollow, woody timbre" class="sr-only peer">
+                            <div class="p-3 border border-neutral-700/70 rounded-xl bg-neutral-900/60 hover:border-blue-400/40 transition-all peer-checked:border-blue-400 peer-checked:bg-blue-600/20">
+                                <span class="text-sm font-semibold text-neutral-200">Hollow / Woody</span>
+                                <p class="text-xs text-neutral-400">Hohl & organisch</p>
+                            </div>
+                        </label>
+                        <label class="block">
+                            <input type="radio" name="synth-core" value="bright, harmonically rich waveform" class="sr-only peer">
+                            <div class="p-3 border border-neutral-700/70 rounded-xl bg-neutral-900/60 hover:border-blue-400/40 transition-all peer-checked:border-blue-400 peer-checked:bg-blue-600/20">
+                                <span class="text-sm font-semibold text-neutral-200">Bright / Rich</span>
+                                <p class="text-xs text-neutral-400">Glänzend & voll</p>
+                            </div>
+                        </label>
+                        <label class="block">
+                            <input type="radio" name="synth-core" value="noisy, digital texture" class="sr-only peer">
+                            <div class="p-3 border border-neutral-700/70 rounded-xl bg-neutral-900/60 hover:border-blue-400/40 transition-all peer-checked:border-blue-400 peer-checked:bg-blue-600/20">
+                                <span class="text-sm font-semibold text-neutral-200">Noisy / Digital</span>
+                                <p class="text-xs text-neutral-400">Körnig & modern</p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                <div>
+                    <p class="text-sm font-semibold text-neutral-300 mb-2">3. Timbre (Filter)</p>
+                    <input id="synth-filter-slider" type="range" min="0" max="100" value="50" class="w-full h-1 bg-neutral-700 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between text-xs text-neutral-500 mt-1">
+                        <span>Dumpf / Subtil</span>
+                        <span>Hell / Aggressiv</span>
+                    </div>
+                    <p class="text-xs text-neutral-400 text-right mt-1">Aktuell: <span id="synth-filter-value" class="text-neutral-200 font-medium">Ausgewogen & klar</span></p>
+                </div>
+                <div>
+                    <p class="text-sm font-semibold text-neutral-300 mb-2">4. Hüllkurve (Envelope)</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <label class="block">
+                            <input type="radio" name="synth-envelope" value="short, plucky articulation" class="sr-only peer">
+                            <div class="p-3 border border-neutral-700/70 rounded-xl bg-neutral-900/60 hover:border-blue-400/40 transition-all peer-checked:border-blue-400 peer-checked:bg-blue-600/20">
+                                <span class="text-sm font-semibold text-neutral-200">Kurz / Pluck</span>
+                                <p class="text-xs text-neutral-400">Schneller Attack</p>
+                            </div>
+                        </label>
+                        <label class="block">
+                            <input type="radio" name="synth-envelope" value="slow, swelling rise" class="sr-only peer">
+                            <div class="p-3 border border-neutral-700/70 rounded-xl bg-neutral-900/60 hover:border-blue-400/40 transition-all peer-checked:border-blue-400 peer-checked:bg-blue-600/20">
+                                <span class="text-sm font-semibold text-neutral-200">Schwellend</span>
+                                <p class="text-xs text-neutral-400">Langsamer Aufbau</p>
+                            </div>
+                        </label>
+                        <label class="block">
+                            <input type="radio" name="synth-envelope" value="long, sustained hold" class="sr-only peer">
+                            <div class="p-3 border border-neutral-700/70 rounded-xl bg-neutral-900/60 hover:border-blue-400/40 transition-all peer-checked:border-blue-400 peer-checked:bg-blue-600/20">
+                                <span class="text-sm font-semibold text-neutral-200">Sustain</span>
+                                <p class="text-xs text-neutral-400">Hält lange</p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                <div>
+                    <p class="text-sm font-semibold text-neutral-300 mb-2">5. Effekte (optional)</p>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        <label class="block">
+                            <input type="checkbox" name="synth-effects" value="lush reverb for spaciousness" class="sr-only peer">
+                            <div class="p-3 border border-neutral-700/70 rounded-xl bg-neutral-900/60 hover:border-blue-400/40 transition-all peer-checked:border-blue-400 peer-checked:bg-blue-600/20">
+                                <span class="text-sm font-semibold text-neutral-200">Reverb</span>
+                                <p class="text-xs text-neutral-400">Raum</p>
+                            </div>
+                        </label>
+                        <label class="block">
+                            <input type="checkbox" name="synth-effects" value="tempo-synced echo" class="sr-only peer">
+                            <div class="p-3 border border-neutral-700/70 rounded-xl bg-neutral-900/60 hover:border-blue-400/40 transition-all peer-checked:border-blue-400 peer-checked:bg-blue-600/20">
+                                <span class="text-sm font-semibold text-neutral-200">Echo</span>
+                                <p class="text-xs text-neutral-400">Delay</p>
+                            </div>
+                        </label>
+                        <label class="block">
+                            <input type="checkbox" name="synth-effects" value="stereo chorus for width" class="sr-only peer">
+                            <div class="p-3 border border-neutral-700/70 rounded-xl bg-neutral-900/60 hover:border-blue-400/40 transition-all peer-checked:border-blue-400 peer-checked:bg-blue-600/20">
+                                <span class="text-sm font-semibold text-neutral-200">Width</span>
+                                <p class="text-xs text-neutral-400">Chorus</p>
+                            </div>
+                        </label>
+                        <label class="block">
+                            <input type="checkbox" name="synth-effects" value="gentle saturation and distortion" class="sr-only peer">
+                            <div class="p-3 border border-neutral-700/70 rounded-xl bg-neutral-900/60 hover:border-blue-400/40 transition-all peer-checked:border-blue-400 peer-checked:bg-blue-600/20">
+                                <span class="text-sm font-semibold text-neutral-200">Distortion</span>
+                                <p class="text-xs text-neutral-400">Grit</p>
+                            </div>
+                        </label>
+                    </div>
+                    <p class="text-xs text-neutral-500 mt-2">Keine Auswahl = trockener, unverzierter Sound.</p>
+                </div>
+                <p id="synth-designer-error" class="text-sm text-red-400"></p>
+            </form>
+            <div class="mt-6 border-t border-neutral-700/60 pt-4 flex flex-col sm:flex-row gap-2">
+                <button type="button" class="close-modal-button w-full sm:w-auto bg-neutral-800/70 hover:bg-neutral-700 text-neutral-200 font-semibold py-2.5 px-4 rounded-lg btn-transition btn-press">Abbrechen</button>
+                <button id="add-synth-button" type="button" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-4 rounded-lg btn-transition btn-press flex items-center justify-center gap-2">
+                    <span id="add-synth-button-text">Add Sound to Prompt</span>
+                    <svg id="add-synth-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <div id="visual-engine-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden modal-enter-from">
         <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-lg">
             <div class="flex justify-between items-center mb-4">

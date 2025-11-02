@@ -28,6 +28,8 @@ const CUSTOM_INSTRUCTION_PROMPT = `You are a prompt editor. The user provides a 
 
 const SOUND_ENGINEER_PROMPT = `You are a creative sound engineer and music producer. Your task is to intelligently rewrite a base prompt by integrating up to three specific, creative, or technical instructions from the user. Do not simply append the instructions. Instead, weave them seamlessly into the existing prompt text, maintaining its core style while adding the new details in a natural and musically coherent way. The output must be ONLY the new, refined prompt. The final output must be strictly under 800 characters and in English.`;
 
+const SYNTH_DESIGN_TRANSLATOR_PROMPT = `You are the "Sound Design Translator" for Suno V5 prompts. The user will give you the base prompt and a list of synth design choices. Craft one concise sentence fragment (max 35 words) in English that can be appended to the base prompt after a comma. Describe the synth's role, the waveform character, the perceived filter brightness, its envelope behaviour, and explicitly mention any selected effects (or note that it stays dry if none were chosen). Use vivid but professional production language and do not restate the base prompt.`;
+
 // --- EXPERT PROMPTS ---
 const PRODUCER_REFINER_PROMPT = `You are a world-class music producer with a meticulous ear for sound. Your task is to refine the given music prompt with a focus on **studio production, mixing, and sound design**. Based on the user's 'influence level' (0-100), inject technical terminology that Suno V5 understands.
 
