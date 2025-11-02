@@ -177,6 +177,7 @@ function setupSoundEngineer() {
 
 // === KLUG TOOLS LOGIC ===
 function setupKlugTools() {
+    setupSynthDesignerLab();
     setupGenreMixer();
     setupHookGenerator();
     setupSongStructure();
@@ -196,6 +197,151 @@ function setupKlugTools() {
     
     taggerTools.forEach(tool => {
         setupKlugTagger(tool.id, tool.prompt);
+    });
+}
+
+function getSynthBrightnessInfo(value) {
+    const numeric = Number(value);
+    if (Number.isNaN(numeric)) {
+        return { label: 'Ausgewogen & klar', phrase: 'balanced, clear brightness' };
+    }
+    if (numeric <= 20) {
+        return { label: 'Sehr gedämpft', phrase: 'muted, subtle brightness' };
+    }
+    if (numeric <= 40) {
+        return { label: 'Warm & weich', phrase: 'warm, rounded brightness' };
+    }
+    if (numeric <= 60) {
+        return { label: 'Ausgewogen & klar', phrase: 'balanced, clear brightness' };
+    }
+    if (numeric <= 80) {
+        return { label: 'Leuchtend', phrase: 'bright, lively brightness' };
+    }
+    return { label: 'Aggressiv & scharf', phrase: 'razor-bright, aggressive brightness' };
+}
+
+function appendPromptSentence(base, addition) {
+    const trimmedAddition = (addition || '').trim();
+    if (!trimmedAddition) {
+        return (base || '').trim();
+    }
+    const trimmedBase = (base || '').trim();
+    if (!trimmedBase) {
+        return trimmedAddition;
+    }
+    const needsSpace = /[.!?…]$/.test(trimmedBase) || trimmedBase.endsWith(')');
+    const separator = needsSpace ? ' ' : trimmedBase.endsWith(',') ? ' ' : ', ';
+    return `${trimmedBase}${separator}${trimmedAddition}`;
+}
+
+function setupSynthDesignerLab() {
+    const modal = document.getElementById('synth-designer-modal');
+    const openButton = document.getElementById('synth-designer-button');
+    const form = modal?.querySelector('#synth-designer-form');
+    const slider = modal?.querySelector('#synth-filter-slider');
+    const sliderValueEl = modal?.querySelector('#synth-filter-value');
+    const applyButton = modal?.querySelector('#add-synth-button');
+    const buttonText = modal?.querySelector('#add-synth-button-text');
+    const loader = modal?.querySelector('#add-synth-loader');
+    const errorEl = modal?.querySelector('#synth-designer-error');
+
+    if (!modal || !openButton || !form || !applyButton) return;
+    if (modal.dataset.synthDesignerInitialized === 'true') return;
+    modal.dataset.synthDesignerInitialized = 'true';
+
+    const modalLogic = setupModal(modal, openButton);
+
+    const setSliderLabel = (value) => {
+        const info = getSynthBrightnessInfo(value);
+        if (sliderValueEl) {
+            sliderValueEl.textContent = info.label;
+        }
+        return info;
+    };
+
+    const resetForm = () => {
+        form.reset();
+        if (slider) {
+            slider.value = '50';
+        }
+        setSliderLabel(slider ? slider.value : 50);
+        if (errorEl) {
+            errorEl.textContent = '';
+        }
+    };
+
+    openButton.addEventListener('click', resetForm);
+    document.addEventListener('modal:open', (event) => {
+        if (event.detail?.id === 'synth-designer-modal') {
+            resetForm();
+        }
+    });
+
+    slider?.addEventListener('input', (event) => {
+        setSliderLabel(event.target.value);
+    });
+
+    applyButton.addEventListener('click', async () => {
+        if (errorEl) {
+            errorEl.textContent = '';
+        }
+
+        const resultTextEl = document.getElementById('result-text');
+        const basePrompt = resultTextEl?.textContent || '';
+        const trimmedPrompt = basePrompt.trim();
+        if (!trimmedPrompt) {
+            if (errorEl) {
+                errorEl.textContent = 'Bitte generiere zuerst einen Prompt oder füge Text in das Meisterstück ein.';
+            }
+            return;
+        }
+
+        const role = form.querySelector('input[name="synth-role"]:checked')?.value;
+        const core = form.querySelector('input[name="synth-core"]:checked')?.value;
+        const envelope = form.querySelector('input[name="synth-envelope"]:checked')?.value;
+        const brightnessInfo = getSynthBrightnessInfo(slider ? slider.value : 50);
+        const effects = Array.from(form.querySelectorAll('input[name="synth-effects"]:checked')).map(el => el.value);
+
+        if (!role || !core || !envelope) {
+            if (errorEl) {
+                errorEl.textContent = 'Bitte triff in den Schritten 1, 2 und 4 jeweils eine Auswahl.';
+            }
+            return;
+        }
+
+        applyButton.disabled = true;
+        buttonText?.classList.add('hidden');
+        loader?.classList.remove('hidden');
+
+        const userQuery = `Base Prompt: "${trimmedPrompt}"
+
+Sound Design Choices:
+- Instrument Role: ${role}
+- Core Character: ${core}
+- Filter Brightness: ${brightnessInfo.phrase} (value ${slider ? slider.value : 50}/100)
+- Envelope Shape: ${envelope}
+- Effects: ${effects.length ? effects.join(', ') : 'None'}`;
+
+        try {
+            const translated = await callOpenRouterAPI(userQuery, SYNTH_DESIGN_TRANSLATOR_PROMPT);
+            const updatedPrompt = appendPromptSentence(trimmedPrompt, translated);
+            if (resultTextEl) {
+                resultTextEl.textContent = updatedPrompt;
+            }
+            if (window.QW) {
+                window.QW.onPromptUpdated({ source: 'klug:synth-designer' });
+            }
+            modalLogic.close();
+        } catch (error) {
+            console.error('Synth Designer translation failed', error);
+            if (errorEl) {
+                errorEl.textContent = `Fehler: ${error.message || 'Die Übersetzung ist fehlgeschlagen.'}`;
+            }
+        } finally {
+            applyButton.disabled = false;
+            buttonText?.classList.remove('hidden');
+            loader?.classList.add('hidden');
+        }
     });
 }
 
