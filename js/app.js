@@ -11,6 +11,7 @@ const mainApp = document.getElementById('main-app');
 
 // Main app elements
 const ideaInput = document.getElementById('idea-input');
+const lyricInput = document.getElementById('lyric-input');
 const generateButton = document.getElementById('generate-button');
 const buttonText = document.getElementById('button-text');
 const loader = document.getElementById('loader');
@@ -113,8 +114,10 @@ const showError = (message) => {
 
 const generatePrompt = async () => {
     const userInput = ideaInput.value.trim();
-    if (!userInput) {
-        showError('Bitte gib eine Idee in das Textfeld ein.');
+    const lyrics = (lyricInput && lyricInput.value) ? lyricInput.value.trim() : '';
+
+    if (!userInput && !lyrics) {
+        showError('Bitte gib eine Idee oder Lyrics ein.');
         return;
     }
     if (!API_KEY) {
@@ -122,6 +125,16 @@ const generatePrompt = async () => {
         showSettings();
         return;
     }
+
+    let userMessage;
+    if (userInput && lyrics) {
+        userMessage = `${userInput}\n\n--- LYRICS ---\n${lyrics}`;
+    } else if (lyrics) {
+        userMessage = `--- LYRICS ---\n${lyrics}`;
+    } else {
+        userMessage = userInput;
+    }
+
     setLoading(true);
     initialState.classList.add('hidden');
     resultContainer.classList.add('hidden');
@@ -129,7 +142,7 @@ const generatePrompt = async () => {
     errorContainer.classList.add('hidden');
 
     try {
-        const generatedText = await callOpenRouterAPI(userInput, BASE_SYSTEM_PROMPT);
+        const generatedText = await callOpenRouterAPI(userMessage, BASE_SYSTEM_PROMPT);
         resultText.textContent = generatedText;
         resultContainer.classList.remove('hidden');
         resultContainer.classList.add('fade-in');
@@ -187,6 +200,7 @@ sunoProButton.addEventListener('click', refinePro);
 generateButton.addEventListener('click', generatePrompt);
 ideaInput.addEventListener('keydown', (e) => e.key === 'Enter' && !e.shiftKey && (e.preventDefault(), generatePrompt()));
 ideaInput.addEventListener('input', () => errorContainer.classList.add('hidden'));
+if (lyricInput) lyricInput.addEventListener('input', () => errorContainer.classList.add('hidden'));
 
 // === INITIALIZATION ===
 document.addEventListener('DOMContentLoaded', () => {
