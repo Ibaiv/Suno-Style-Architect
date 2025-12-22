@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,26 +14,40 @@
 
 <body class="text-neutral-200">
     <!-- ### API SETUP MODAL ### -->
-    <div id="api-setup-modal" class="fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 z-[100]">
+    <div id="api-setup-modal"
+        class="fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 z-[100]">
         <div class="bg-neutral-800/90 border border-neutral-700 rounded-3xl shadow-2xl p-8 w-full max-w-md">
             <div class="text-center mb-6">
-                <div class="w-16 h-16 bg-blue-600/20 border border-blue-500/30 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-blue-400"><path d="M9 12l2 2 4-4"/><path d="M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9c1.06 0 2.09.18 3.04.52"/><path d="M16 4L12 8l4 4"/></svg>
+                <div
+                    class="w-16 h-16 bg-blue-600/20 border border-blue-500/30 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                        class="text-blue-400">
+                        <path d="M9 12l2 2 4-4" />
+                        <path d="M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9c1.06 0 2.09.18 3.04.52" />
+                        <path d="M16 4L12 8l4 4" />
+                    </svg>
                 </div>
                 <h2 class="text-2xl font-bold text-white mb-2">Setup erforderlich</h2>
                 <p class="text-neutral-400 text-sm">Konfiguriere deine OpenRouter API-Einstellungen, um zu beginnen.</p>
             </div>
-            
+
             <div class="space-y-4">
                 <div>
-                    <label for="api-key-input" class="block text-sm font-medium text-neutral-300 mb-2">OpenRouter API Key</label>
-                    <input type="password" id="api-key-input" class="w-full bg-neutral-900/70 border border-neutral-600 rounded-lg p-3 text-neutral-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm" placeholder="sk-or-v1-...">
-                    <p class="text-xs text-neutral-500 mt-1">Hol dir deinen kostenlosen API Key von <a href="https://openrouter.ai" target="_blank" class="text-blue-400 hover:text-blue-300">openrouter.ai</a></p>
+                    <label for="api-key-input" class="block text-sm font-medium text-neutral-300 mb-2">OpenRouter API
+                        Key</label>
+                    <input type="password" id="api-key-input"
+                        class="w-full bg-neutral-900/70 border border-neutral-600 rounded-lg p-3 text-neutral-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                        placeholder="sk-or-v1-...">
+                    <p class="text-xs text-neutral-500 mt-1">Hol dir deinen kostenlosen API Key von <a
+                            href="https://openrouter.ai" target="_blank"
+                            class="text-blue-400 hover:text-blue-300">openrouter.ai</a></p>
                 </div>
-                
+
                 <div>
                     <label for="model-select" class="block text-sm font-medium text-neutral-300 mb-2">KI-Modell</label>
-                    <select id="model-select" class="w-full bg-neutral-900/70 border border-neutral-600 rounded-lg p-3 text-neutral-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+                    <select id="model-select"
+                        class="w-full bg-neutral-900/70 border border-neutral-600 rounded-lg p-3 text-neutral-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
                         <option value="openai/gpt-5-mini">GPT-5 mini</option>
                         <option value="anthropic/claude-haiku-4.5">Haiku 4.5</option>
                         <option value="deepseek/deepseek-v3.1-terminus">Deepseek 3.1 terminus</option>
@@ -46,14 +61,21 @@
                 </div>
 
                 <div>
-                    <label for="fal-api-key-input" class="block text-sm font-medium text-neutral-300 mb-2">Fal.ai API Key (Optional)</label>
-                    <input type="password" id="fal-api-key-input" class="w-full bg-neutral-900/70 border border-neutral-600 rounded-lg p-3 text-neutral-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm" placeholder="fal.ai key...">
-                    <p class="text-xs text-neutral-500 mt-1">Erforderlich für den "Visuellen Funke". Hol dir einen Key von <a href="https://fal.ai" target="_blank" class="text-blue-400 hover:text-blue-300">fal.ai</a></p>
+                    <label for="fal-api-key-input" class="block text-sm font-medium text-neutral-300 mb-2">Fal.ai API
+                        Key (Optional)</label>
+                    <input type="password" id="fal-api-key-input"
+                        class="w-full bg-neutral-900/70 border border-neutral-600 rounded-lg p-3 text-neutral-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                        placeholder="fal.ai key...">
+                    <p class="text-xs text-neutral-500 mt-1">Erforderlich für den "Visuellen Funke". Hol dir einen Key
+                        von <a href="https://fal.ai" target="_blank"
+                            class="text-blue-400 hover:text-blue-300">fal.ai</a></p>
                 </div>
 
                 <div>
-                    <label for="fal-model-select" class="block text-sm font-medium text-neutral-300 mb-2">Bild-KI-Modell</label>
-                    <select id="fal-model-select" class="w-full bg-neutral-900/70 border border-neutral-600 rounded-lg p-3 text-neutral-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+                    <label for="fal-model-select"
+                        class="block text-sm font-medium text-neutral-300 mb-2">Bild-KI-Modell</label>
+                    <select id="fal-model-select"
+                        class="w-full bg-neutral-900/70 border border-neutral-600 rounded-lg p-3 text-neutral-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
                         <option value="fal-ai/fast-sdxl">Fast SDXL</option>
                         <option value="fal-ai/lightning-sdxl">Lightning SDXL</option>
                         <option value="fal-ai/sdxl-lightning-4step">SDXL Lightning (4-step)</option>
@@ -66,8 +88,14 @@
                 </div>
 
                 <div class="pt-2">
-                    <button id="save-settings-button" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg btn-transition btn-press flex items-center justify-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17,21 17,13 7,13 7,21"/><polyline points="7,3 7,8 15,8"/></svg>
+                    <button id="save-settings-button"
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg btn-transition btn-press flex items-center justify-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                            <polyline points="17,21 17,13 7,13 7,21" />
+                            <polyline points="7,3 7,8 15,8" />
+                        </svg>
                         Einstellungen speichern
                     </button>
                 </div>
@@ -75,25 +103,44 @@
         </div>
     </div>
 
-    <main class="w-full max-w-[1900px] 2xl:max-w-[2100px] mx-auto p-4 md:p-8 lg:p-12" id="main-app" style="display: none;">
+    <main class="w-full max-w-[1900px] 2xl:max-w-[2100px] mx-auto p-4 md:p-8 lg:p-12" id="main-app"
+        style="display: none;">
         <!-- ### HEADER ### -->
         <header class="text-center mb-10 md:mb-16">
             <div class="inline-flex justify-center items-center gap-4 mb-3">
-                <div class="w-12 h-12 bg-blue-600/20 border border-blue-500/30 rounded-2xl flex items-center justify-center">
-                   <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-blue-400"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                <div
+                    class="w-12 h-12 bg-blue-600/20 border border-blue-500/30 rounded-2xl flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                        class="text-blue-400">
+                        <path d="M9 18V5l12-2v13" />
+                        <circle cx="6" cy="18" r="3" />
+                        <circle cx="18" cy="16" r="3" />
+                    </svg>
                 </div>
-                 <h1 class="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-white to-neutral-300 tracking-tight">Suno Style Architect</h1>
+                <h1
+                    class="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-white to-neutral-300 tracking-tight">
+                    Suno Style Architect</h1>
             </div>
-            <p class="text-neutral-400 max-w-2xl mx-auto text-lg">Erschaffe meisterhafte Prompts für die Suno Musik-KI. Von der ersten Idee zum perfekten Stil.</p>
-            
+            <p class="text-neutral-400 max-w-2xl mx-auto text-lg">Erschaffe meisterhafte Prompts für die Suno Musik-KI.
+                Von der ersten Idee zum perfekten Stil.</p>
+
             <!-- Settings indicator + toolbar -->
             <div class="mt-4 flex items-center justify-center gap-2 text-xs text-neutral-500">
                 <span id="current-model" class="bg-neutral-800/50 px-2 py-1 rounded-full">GPT-5 mini</span>
-                <button id="change-settings-button" class="bg-neutral-800/50 hover:bg-neutral-700/50 px-2 py-1 rounded-full transition-colors">⚙️ Ändern</button>
+                <button id="change-settings-button"
+                    class="bg-neutral-800/50 hover:bg-neutral-700/50 px-2 py-1 rounded-full transition-colors">⚙️
+                    Ändern</button>
                 <span class="mx-2">·</span>
-                <button id="history-toggle-button" class="bg-neutral-800/50 hover:bg-neutral-700/50 px-2 py-1 rounded-full transition-colors">🕘 Verlauf</button>
-                <button id="help-shortcuts-button" class="bg-neutral-800/50 hover:bg-neutral-700/50 px-2 py-1 rounded-full transition-colors" title="Tastenkürzel anzeigen">⌘K</button>
-                <button id="shortcuts-settings-button" class="bg-neutral-800/50 hover:bg-neutral-700/50 px-2 py-1 rounded-full transition-colors" title="Tastenkürzel anpassen">⚡ Shortcuts</button>
+                <button id="history-toggle-button"
+                    class="bg-neutral-800/50 hover:bg-neutral-700/50 px-2 py-1 rounded-full transition-colors">🕘
+                    Verlauf</button>
+                <button id="help-shortcuts-button"
+                    class="bg-neutral-800/50 hover:bg-neutral-700/50 px-2 py-1 rounded-full transition-colors"
+                    title="Tastenkürzel anzeigen">⌘K</button>
+                <button id="shortcuts-settings-button"
+                    class="bg-neutral-800/50 hover:bg-neutral-700/50 px-2 py-1 rounded-full transition-colors"
+                    title="Tastenkürzel anpassen">⚡ Shortcuts</button>
             </div>
         </header>
 
@@ -101,134 +148,307 @@
         <div class="flex flex-col gap-8 lg:gap-12">
             <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8 lg:gap-12">
                 <!-- ## ROW 1, COL 1: IDEA INPUT ## -->
-                <div class="bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20 flex flex-col">
+                <div
+                    class="bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20 flex flex-col">
                     <div class="flex justify-between items-center mb-3">
                         <label for="idea-input" class="text-xl font-semibold text-white">Deine Vision</label>
-                        <button id="spark-idea-button" class="flex items-center gap-1.5 text-sm text-blue-400 hover:text-blue-300 font-medium transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/><path d="M12 3v18"/><path d="M3 12h18"/></svg>
+                        <button id="spark-idea-button"
+                            class="flex items-center gap-1.5 text-sm text-blue-400 hover:text-blue-300 font-medium transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M5 3v4" />
+                                <path d="M19 17v4" />
+                                <path d="M3 5h4" />
+                                <path d="M17 19h4" />
+                                <path d="M12 3v18" />
+                                <path d="M3 12h18" />
+                            </svg>
                             Ideen-Funke
                         </button>
                     </div>
-                    <textarea id="idea-input" rows="6" class="w-full bg-neutral-900/70 border border-neutral-700 rounded-xl p-4 text-neutral-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow duration-300 placeholder-neutral-500 text-base flex-grow" placeholder="Beschreibe deine Musik-Vision..."></textarea>
-                    <textarea id="lyric-input" rows="4" class="w-full bg-neutral-900/70 border border-neutral-700 rounded-xl p-4 text-neutral-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow duration-300 placeholder-neutral-500 text-base flex-grow mt-3" placeholder="Lyrics (Optional)..."></textarea>
-                    <button id="generate-button" class="mt-4 w-full flex justify-center items-center gap-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3.5 px-4 rounded-xl shadow-lg shadow-blue-900/30 hover:shadow-blue-600/40 btn-transition btn-press">
-                        <svg id="generate-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-wand-2"><path d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2 18l-2 4 4-2 16.36-16.36a1.21 1.21 0 0 0 0-1.72Z"/><path d="m14 7 3 3"/></svg>
+                    <textarea id="idea-input" rows="6"
+                        class="w-full bg-neutral-900/70 border border-neutral-700 rounded-xl p-4 text-neutral-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow duration-300 placeholder-neutral-500 text-base flex-grow"
+                        placeholder="Beschreibe deine Musik-Vision..."></textarea>
+                    <textarea id="lyric-input" rows="4"
+                        class="w-full bg-neutral-900/70 border border-neutral-700 rounded-xl p-4 text-neutral-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow duration-300 placeholder-neutral-500 text-base flex-grow mt-3"
+                        placeholder="Lyrics (Optional)..."></textarea>
+                    <button id="generate-button"
+                        class="mt-4 w-full flex justify-center items-center gap-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3.5 px-4 rounded-xl shadow-lg shadow-blue-900/30 hover:shadow-blue-600/40 btn-transition btn-press">
+                        <svg id="generate-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-wand-2">
+                            <path
+                                d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2 18l-2 4 4-2 16.36-16.36a1.21 1.21 0 0 0 0-1.72Z" />
+                            <path d="m14 7 3 3" />
+                        </svg>
                         <span id="button-text">Prompt Architektieren</span>
-                        <svg id="loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        <svg id="loader" class="animate-spin h-5 w-5 text-white hidden"
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                            </circle>
+                            <path class="opacity-75" fill="currentColor"
+                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                            </path>
                         </svg>
                     </button>
                 </div>
 
                 <!-- ## ROW 1, COL 2: RESULT ## -->
-                <div class="bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20 flex flex-col">
+                <div
+                    class="bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20 flex flex-col">
                     <h2 class="text-xl font-semibold text-white mb-4">Dein Meisterstück</h2>
                     <div id="result-wrapper" class="flex-grow flex flex-col">
                         <!-- Initial State -->
-                        <div id="initial-state" class="flex-grow flex flex-col items-center justify-center text-center p-4">
-                            <div class="w-16 h-16 bg-blue-600/10 border border-blue-500/20 rounded-2xl flex items-center justify-center mb-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-blue-400 opacity-60"><path d="M12 3v18"/><path d="M3 12h18"/></svg>
+                        <div id="initial-state"
+                            class="flex-grow flex flex-col items-center justify-center text-center p-4">
+                            <div
+                                class="w-16 h-16 bg-blue-600/10 border border-blue-500/20 rounded-2xl flex items-center justify-center mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round" class="text-blue-400 opacity-60">
+                                    <path d="M12 3v18" />
+                                    <path d="M3 12h18" />
+                                </svg>
                             </div>
                             <p class="text-neutral-400">Dein optimierter Prompt für Suno erscheint hier.</p>
                         </div>
                         <!-- Result Container -->
                         <div id="result-container" class="hidden flex-grow flex flex-col">
-                        <div class="relative bg-neutral-900/70 rounded-xl border border-neutral-700 flex-grow">
-                            <button id="copy-button" class="absolute top-2.5 right-2.5 p-1.5 bg-neutral-700/50 hover:bg-neutral-700 rounded-md text-neutral-400 hover:text-white transition-all duration-200 z-10 btn-transition btn-press" title="Kopieren">
-                                <svg id="copy-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
-                                <svg id="check-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="hidden text-green-400"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                            </button>
-                            <pre id="result-text" class="whitespace-pre-wrap text-base text-neutral-300 p-4 h-full overflow-auto"></pre>
-                        </div>
-                        <!-- Counters and actions -->
-                        <div class="mt-3 flex flex-col gap-2">
-                            <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
-                                <div id="char-stats" class="text-neutral-400"></div>
-                                <div class="flex gap-2">
-                                    <button id="auto-trim-v3-button" class="px-2 py-1 rounded bg-neutral-800/70 border border-neutral-700 hover:bg-neutral-700">Auto-Trim 200</button>
-                                    <button id="export-prompt-button" class="px-2 py-1 rounded bg-neutral-800/70 border border-neutral-700 hover:bg-neutral-700">Export JSON</button>
-                                    <button id="import-prompt-button" class="px-2 py-1 rounded bg-neutral-800/70 border border-neutral-700 hover:bg-neutral-700">Import JSON</button>
-                                    <input id="import-prompt-file" type="file" accept="application/json" class="hidden" />
-                                </div>
+                            <div class="relative bg-neutral-900/70 rounded-xl border border-neutral-700 flex-grow">
+                                <button id="copy-button"
+                                    class="absolute top-2.5 right-2.5 p-1.5 bg-neutral-700/50 hover:bg-neutral-700 rounded-md text-neutral-400 hover:text-white transition-all duration-200 z-10 btn-transition btn-press"
+                                    title="Kopieren">
+                                    <svg id="copy-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+                                        <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+                                    </svg>
+                                    <svg id="check-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                                        stroke-linecap="round" stroke-linejoin="round" class="hidden text-green-400">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                </button>
+                                <pre id="result-text"
+                                    class="whitespace-pre-wrap text-base text-neutral-300 p-4 h-full overflow-auto"></pre>
                             </div>
-                            <div id="lint-hints" class="text-xs text-amber-300"></div>
-                        </div>
+                            <!-- Counters and actions -->
+                            <div class="mt-3 flex flex-col gap-2">
+                                <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
+                                    <div id="char-stats" class="text-neutral-400"></div>
+                                    <div class="flex gap-2">
+                                        <button id="auto-trim-v3-button"
+                                            class="px-2 py-1 rounded bg-neutral-800/70 border border-neutral-700 hover:bg-neutral-700">Auto-Trim
+                                            200</button>
+                                        <button id="export-prompt-button"
+                                            class="px-2 py-1 rounded bg-neutral-800/70 border border-neutral-700 hover:bg-neutral-700">Export
+                                            JSON</button>
+                                        <button id="import-prompt-button"
+                                            class="px-2 py-1 rounded bg-neutral-800/70 border border-neutral-700 hover:bg-neutral-700">Import
+                                            JSON</button>
+                                        <input id="import-prompt-file" type="file" accept="application/json"
+                                            class="hidden" />
+                                    </div>
+                                </div>
+                                <div id="lint-hints" class="text-xs text-amber-300"></div>
+                            </div>
 
-                        <div id="refinement-controls" class="hidden mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
-                            <button id="suno-pro-button" class="flex justify-center items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg btn-transition btn-press text-sm">
-                                <svg id="suno-pro-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m21 21-6-6m6 6v-4m0 4h-4"/><path d="M3 3h6v6"/><path d="M3 10v4a7 7 0 0 0 7 7h4"/></svg>
-                                <span id="suno-pro-text">Für Pro (detailliert)</span>
-                                <svg id="suno-pro-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                            </button>
-                            <button id="custom-instruction-button" class="flex justify-center items-center gap-2 bg-neutral-600 hover:bg-neutral-700 text-white font-semibold py-2 px-4 rounded-lg btn-transition btn-press text-sm">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                                <span>Eigene Anweisung</span>
-                            </button>
+                            <div id="refinement-controls" class="hidden mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                <button id="suno-pro-button"
+                                    class="flex justify-center items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg btn-transition btn-press text-sm">
+                                    <svg id="suno-pro-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="m21 21-6-6m6 6v-4m0 4h-4" />
+                                        <path d="M3 3h6v6" />
+                                        <path d="M3 10v4a7 7 0 0 0 7 7h4" />
+                                    </svg>
+                                    <span id="suno-pro-text">Für Pro (detailliert)</span>
+                                    <svg id="suno-pro-loader" class="animate-spin h-5 w-5 text-white hidden"
+                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                            stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor"
+                                            d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                        </path>
+                                    </svg>
+                                </button>
+                                <button id="custom-instruction-button"
+                                    class="flex justify-center items-center gap-2 bg-neutral-600 hover:bg-neutral-700 text-white font-semibold py-2 px-4 rounded-lg btn-transition btn-press text-sm">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                        stroke-linejoin="round" class="lucide lucide-edit">
+                                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                                    </svg>
+                                    <span>Eigene Anweisung</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
-                </div>
 
-                <!-- ## ROW 1, COL 3: PLACEHOLDER PANEL ## -->
-                <div class="bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20 flex flex-col justify-between">
-                    <div>
-                        <h2 class="text-xl font-semibold text-white mb-2">Kreativ-Kosmos</h2>
-                        <p class="text-neutral-400 text-sm mb-4">Reserviert für kommende Workflow-Magie, die deine Ideen direkt in neue Dimensionen führt.</p>
+                <!-- ## ROW 1, COL 3: KREATIV KOSMOS (Vertical Tiles) ## -->
+                <div class="flex flex-col gap-4 h-full">
+                    <!-- Tile 1: Idea Starter (Active) -->
+                    <button id="idea-starter-tile"
+                        class="kreativ-panel active group relative flex-1 bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl overflow-hidden text-left transition-all duration-300 hover:scale-[1.02] hover:shadow-blue-900/20 hover:border-blue-500/30">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-br from-blue-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        </div>
+                        <div class="relative z-10 h-full flex flex-col justify-between">
+                            <div>
+                                <div
+                                    class="w-10 h-10 bg-blue-500/20 rounded-xl flex items-center justify-center mb-3 text-blue-400 group-hover:text-blue-300 group-hover:scale-110 transition-all duration-300">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path
+                                            d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z" />
+                                        <path
+                                            d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z" />
+                                        <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0" />
+                                        <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5" />
+                                    </svg>
+                                </div>
+                                <h3
+                                    class="text-xl font-bold text-white mb-1 group-hover:text-blue-200 transition-colors">
+                                    Ideen-Starter</h3>
+                                <p class="text-xs text-neutral-400 leading-relaxed">Starte mit einem Funken. Wähle eine
+                                    Welt und lass dich inspirieren.</p>
+                            </div>
+                            <div
+                                class="flex items-center text-xs font-medium text-blue-400 opacity-60 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0">
+                                Starten <span class="ml-1">→</span>
+                            </div>
+                        </div>
+                    </button>
+
+                    <!-- Tile 2: Placeholder -->
+                    <div
+                        class="kreativ-panel inactive flex-1 bg-neutral-800/10 border border-neutral-800 rounded-3xl p-6 relative overflow-hidden grayscale opacity-50 cursor-not-allowed">
+                        <div class="relative z-10 h-full flex flex-col justify-between">
+                            <div
+                                class="w-10 h-10 bg-neutral-700/20 rounded-xl flex items-center justify-center mb-3 text-neutral-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <rect width="18" height="18" x="3" y="3" rx="2" />
+                                    <path d="M9 17V7h4a3 3 0 0 1 0 6H9" />
+                                    <path d="M13 13l4 4" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-neutral-500 mb-1">Co-Creator</h3>
+                                <p class="text-[10px] text-neutral-600">Coming Soon</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="bg-neutral-900/50 border border-neutral-700/70 rounded-2xl p-4 text-sm text-neutral-400">
-                        <p class="font-medium text-neutral-300 mb-1">Was dich erwartet:</p>
-                        <ul class="list-disc list-inside space-y-1">
-                            <li>Interaktive Storyboards für Visionen.</li>
-                            <li>Gemeinsame Sessions mit Co-Kreatoren.</li>
-                            <li>Adaptive Presets für einzigartige Stile.</li>
-                        </ul>
+
+                    <!-- Tile 3: Placeholder -->
+                    <div
+                        class="kreativ-panel inactive flex-1 bg-neutral-800/10 border border-neutral-800 rounded-3xl p-6 relative overflow-hidden grayscale opacity-50 cursor-not-allowed">
+                        <div class="relative z-10 h-full flex flex-col justify-between">
+                            <div
+                                class="w-10 h-10 bg-neutral-700/20 rounded-xl flex items-center justify-center mb-3 text-neutral-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z" />
+                                    <path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" />
+                                    <path d="M12 2v2" />
+                                    <path d="M12 22v-2" />
+                                    <path d="m17 7-1.4 1.4" />
+                                    <path d="M8.4 15.6 7 17" />
+                                    <path d="M22 12h-2" />
+                                    <path d="M4 12H2" />
+                                    <path d="m17 17-1.4-1.4" />
+                                    <path d="M8.4 8.4 7 7" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-neutral-500 mb-1">Story-Board</h3>
+                                <p class="text-[10px] text-neutral-600">Coming Soon</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tile 4: Placeholder -->
+                    <div
+                        class="kreativ-panel inactive flex-1 bg-neutral-800/10 border border-neutral-800 rounded-3xl p-6 relative overflow-hidden grayscale opacity-50 cursor-not-allowed">
+                        <div class="relative z-10 h-full flex flex-col justify-between">
+                            <div
+                                class="w-10 h-10 bg-neutral-700/20 rounded-xl flex items-center justify-center mb-3 text-neutral-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path
+                                        d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z" />
+                                    <path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65" />
+                                    <path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-neutral-500 mb-1">Universum</h3>
+                                <p class="text-[10px] text-neutral-600">Coming Soon</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 xl:grid-cols-3 gap-8 lg:gap-12">
                 <!-- ## ROW 2, COL 1: EXPERT REFINEMENT ## -->
-                <div class="bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20">
+                <div id="expert-container"
+                    class="bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20 inactive-box">
                     <h2 class="text-xl font-semibold text-white mb-2">Experten-Veredelung</h2>
-                    <p class="text-neutral-400 mb-4 text-sm">Lass deinen Prompt von KI-Personas mit Fachwissen überarbeiten.</p>
-                    <div id="expert-disabled-notice" class="mb-4 p-3 bg-amber-900/20 border border-amber-700/50 text-amber-300 rounded-lg text-sm">
-                        💡 <strong>Hinweis:</strong> Generiere zuerst einen Prompt, um die Experten-Tools zu aktivieren.
-                    </div>
+                    <p class="text-neutral-400 mb-4 text-sm">Lass deinen Prompt von KI-Personas mit Fachwissen
+                        überarbeiten.</p>
                     <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-                        <button id="producer-refine-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="producer-refine-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Weltklasse Produzent</h3>
                             <p class="text-xs text-neutral-400">Fokus auf Sound-Design & Mix.</p>
                         </button>
-                        <button id="musician-refine-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="musician-refine-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Weltklasse Musiker</h3>
                             <p class="text-xs text-neutral-400">Fokus auf Musikalität & Emotion.</p>
                         </button>
-                        <button id="composer-refine-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="composer-refine-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Filmkomponist</h3>
                             <p class="text-xs text-neutral-400">Fokus auf Story & Atmosphäre.</p>
                         </button>
-                        <button id="dj-refine-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="dj-refine-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">DJ / Remixer</h3>
                             <p class="text-xs text-neutral-400">Fokus auf Groove & Energie.</p>
                         </button>
-                        <button id="avantgarde-refine-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="avantgarde-refine-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Avantgarde-Klangkünstler</h3>
                             <p class="text-xs text-neutral-400">Bricht Konventionen, experimentell.</p>
                         </button>
-                        <button id="minimalist-refine-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="minimalist-refine-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Minimalist-Komponist</h3>
                             <p class="text-xs text-neutral-400">Reduziert auf die Essenz.</p>
                         </button>
-                        <button id="vocal-harmony-refine-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="vocal-harmony-refine-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Vocal-Harmony Arrangeur</h3>
                             <p class="text-xs text-neutral-400">Fokus auf komplexe Gesangs-Sätze.</p>
                         </button>
-                        <button id="ethno-refine-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="ethno-refine-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Ethno-Musiker</h3>
                             <p class="text-xs text-neutral-400">Integriert authentische Weltmusik.</p>
                         </button>
-                        <button id="sound-engineer-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="sound-engineer-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Sound-Ingenieur</h3>
                             <p class="text-xs text-neutral-400">Füge spezifische Anweisungen hinzu.</p>
                         </button>
@@ -236,66 +456,78 @@
                 </div>
 
                 <!-- ## ROW 2, COL 2: KLUG ## -->
-                <div class="bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20">
+                <div id="klug-container"
+                    class="bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20 inactive-box">
                     <h2 class="text-xl font-semibold text-white mb-2">KLUG</h2>
                     <p class="text-neutral-400 mb-4 text-sm">Intelligente Werkzeuge zur Verfeinerung deines Prompts.</p>
-                    <div id="klug-disabled-notice" class="mb-4 p-3 bg-amber-900/20 border border-amber-700/50 text-amber-300 rounded-lg text-sm">
-                        💡 <strong>Hinweis:</strong> Generiere zuerst einen Prompt, um die KLUG-Tools zu aktivieren.
-                    </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-4 gap-3 lg:gap-4">
-                        <button id="visual-engine-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="visual-engine-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">🖼️ Visueller Funke</h3>
                             <p class="text-xs text-neutral-400">Generiere Bild & analysiere Vibe.</p>
                         </button>
-                        <button id="synth-designer-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="synth-designer-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">🎛️ Synth-Designer</h3>
                             <p class="text-xs text-neutral-400">Baue gezielte Synth-Sounds.</p>
                         </button>
-                        <button id="genre-mixer-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="genre-mixer-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Genre-Mixer</h3>
                             <p class="text-xs text-neutral-400">Kombiniere Stile für Klänge.</p>
                         </button>
-                        <button id="mood-analyzer-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="mood-analyzer-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Stimmungs-Analysator</h3>
                             <p class="text-xs text-neutral-400">Finde passende Instrumente.</p>
                         </button>
-                        <button id="hook-generator-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="hook-generator-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Titel- & Hook-Generator</h3>
                             <p class="text-xs text-neutral-400">Erhalte Ideen für Titel & Refrain.</p>
                         </button>
-                        <button id="song-structure-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="song-structure-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Song-Struktur-Assistent</h3>
                             <p class="text-xs text-neutral-400">Entwerfe den Songaufbau.</p>
                         </button>
-                        <button id="vibe-enhancer-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="vibe-enhancer-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Vibe-Veredler</h3>
                             <p class="text-xs text-neutral-400">Verstärke die Atmosphäre.</p>
                         </button>
-                        <button id="artist-suggester-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="artist-suggester-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Künstler-Kompass</h3>
                             <p class="text-xs text-neutral-400">Finde ähnliche Künstler.</p>
                         </button>
-                        <button id="tempo-finder-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="tempo-finder-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Tempo & BPM-Finder</h3>
                             <p class="text-xs text-neutral-400">Finde das richtige Tempo.</p>
                         </button>
-                        <button id="production-finish-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="production-finish-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Produktions-Finish</h3>
                             <p class="text-xs text-neutral-400">Verleihe den letzten Schliff.</p>
                         </button>
-                        <button id="vocal-stylist-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="vocal-stylist-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Gesangs-Stilist</h3>
                             <p class="text-xs text-neutral-400">Definiere den Gesangsstil.</p>
                         </button>
-                        <button id="groove-meister-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="groove-meister-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Groove-Meister</h3>
                             <p class="text-xs text-neutral-400">Definiere den Rhythmus.</p>
                         </button>
-                        <button id="performance-coach-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="performance-coach-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Performance-Coach</h3>
                             <p class="text-xs text-neutral-400">Verfeinere die Spielweise.</p>
                         </button>
-                        <button id="effect-chain-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="effect-chain-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Effektketten-Designer</h3>
                             <p class="text-xs text-neutral-400">Gestalte den Sound mit Effekten.</p>
                         </button>
@@ -303,36 +535,43 @@
                 </div>
 
                 <!-- ## ROW 2, COL 3: FUTURE LAB ## -->
-                <div class="bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20">
+                <div id="lab-container"
+                    class="bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20 inactive-box">
                     <h2 class="text-xl font-semibold text-white mb-2">Zukunfts-Labor</h2>
-                    <p class="text-neutral-400 mb-4 text-sm">Experimentiere mit kommenden Ideen, die deinen Workflow revolutionieren könnten.</p>
-                    <div id="lab-disabled-notice" class="mb-4 p-3 bg-amber-900/20 border border-amber-700/50 text-amber-300 rounded-lg text-sm">
-                        💡 <strong>Hinweis:</strong> Generiere zuerst einen Prompt, um die Labor-Tools zu aktivieren.
-                    </div>
+                    <p class="text-neutral-400 mb-4 text-sm">Experimentiere mit kommenden Ideen, die deinen Workflow
+                        revolutionieren könnten.</p>
                     <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-2 gap-4">
-                        <button id="adaptive-flow-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="adaptive-flow-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Adaptiver Flow</h3>
                             <p class="text-xs text-neutral-400">Passe Dynamik und Energie an jede Stimmung an.</p>
                         </button>
-                        <button id="ai-collab-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="ai-collab-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">KI-Kollaboration</h3>
-                            <p class="text-xs text-neutral-400">Skizziere Interaktionen zwischen verschiedenen KI-Personas.</p>
+                            <p class="text-xs text-neutral-400">Skizziere Interaktionen zwischen verschiedenen
+                                KI-Personas.</p>
                         </button>
-                        <button id="story-arc-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="story-arc-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Story-Arc Designer</h3>
                             <p class="text-xs text-neutral-400">Baue dramaturgische Bögen für deine Musikreise.</p>
                         </button>
-                        <button id="immersive-space-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="immersive-space-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Immersive Space</h3>
                             <p class="text-xs text-neutral-400">Simuliere 3D-Soundräume für besondere Momente.</p>
                         </button>
-                        <button id="human-touch-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="human-touch-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Human Touch</h3>
                             <p class="text-xs text-neutral-400">Füge subtile Imperfektionen und Feeling hinzu.</p>
                         </button>
-                        <button id="release-forecast-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="release-forecast-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Release Forecast</h3>
-                            <p class="text-xs text-neutral-400">Plane Veröffentlichungen mit datengetriebenen Impulsen.</p>
+                            <p class="text-xs text-neutral-400">Plane Veröffentlichungen mit datengetriebenen Impulsen.
+                            </p>
                         </button>
                     </div>
                 </div>
@@ -340,7 +579,7 @@
         </div>
 
         <!-- ### ERROR SECTION (FULL-WIDTH) ### -->
-         <div id="error-container" class="mt-8 hidden max-w-4xl mx-auto">
+        <div id="error-container" class="mt-8 hidden max-w-4xl mx-auto">
             <div class="bg-red-900/30 border border-red-700/50 text-red-300 px-4 py-3 rounded-xl relative" role="alert">
                 <strong class="font-bold">Fehler! </strong>
                 <span id="error-message"></span>
@@ -350,15 +589,19 @@
 
     <!-- History Sidebar -->
     <div id="history-overlay" class="fixed inset-0 bg-black/60 hidden z-[90]"></div>
-    <aside id="history-panel" class="fixed top-0 right-0 h-full w-[360px] max-w-[80vw] bg-neutral-900/95 border-l border-neutral-700 z-[95] translate-x-full transition-transform">
+    <aside id="history-panel"
+        class="fixed top-0 right-0 h-full w-[360px] max-w-[80vw] bg-neutral-900/95 border-l border-neutral-700 z-[95] translate-x-full transition-transform">
         <div class="h-full flex flex-col">
             <div class="p-4 border-b border-neutral-700 flex items-center justify-between">
                 <h3 class="text-lg font-semibold text-white">Verlauf</h3>
                 <div class="flex items-center gap-2">
-                    <button id="history-export-all" class="text-xs px-2 py-1 rounded bg-neutral-800/70 border border-neutral-700 hover:bg-neutral-700">Export</button>
-                    <button id="history-import" class="text-xs px-2 py-1 rounded bg-neutral-800/70 border border-neutral-700 hover:bg-neutral-700">Import</button>
+                    <button id="history-export-all"
+                        class="text-xs px-2 py-1 rounded bg-neutral-800/70 border border-neutral-700 hover:bg-neutral-700">Export</button>
+                    <button id="history-import"
+                        class="text-xs px-2 py-1 rounded bg-neutral-800/70 border border-neutral-700 hover:bg-neutral-700">Import</button>
                     <input id="history-import-file" type="file" accept="application/json" class="hidden" />
-                    <button id="history-clear" class="text-xs px-2 py-1 rounded bg-red-900/40 border border-red-700 hover:bg-red-800/60">Leeren</button>
+                    <button id="history-clear"
+                        class="text-xs px-2 py-1 rounded bg-red-900/40 border border-red-700 hover:bg-red-800/60">Leeren</button>
                     <button id="history-close" class="text-xl text-neutral-400 hover:text-white">&times;</button>
                 </div>
             </div>
@@ -367,15 +610,23 @@
     </aside>
 
     <!-- Chord hint -->
-    <div id="chord-hint" class="fixed bottom-24 left-1/2 -translate-x-1/2 bg-neutral-900/95 border border-neutral-700 text-neutral-200 text-xs px-3 py-1 rounded-lg z-[105] hidden">Ziffer drücken, 0 = mehr, Esc = abbrechen</div>
+    <div id="chord-hint"
+        class="fixed bottom-24 left-1/2 -translate-x-1/2 bg-neutral-900/95 border border-neutral-700 text-neutral-200 text-xs px-3 py-1 rounded-lg z-[105] hidden">
+        Ziffer drücken, 0 = mehr, Esc = abbrechen</div>
 
     <!-- Command Palette -->
     <div id="cmdk-overlay" class="fixed inset-0 z-[110] hidden">
         <div class="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
-        <div id="cmdk-container" class="relative mx-auto mt-20 w-[92vw] max-w-2xl bg-neutral-900/95 border border-neutral-700 rounded-2xl shadow-2xl p-4">
+        <div id="cmdk-container"
+            class="relative mx-auto mt-20 w-[92vw] max-w-2xl bg-neutral-900/95 border border-neutral-700 rounded-2xl shadow-2xl p-4">
             <div class="flex items-center gap-3 mb-2">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-neutral-400"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                <input id="cmdk-input" type="text" placeholder="Aktion suchen… (z.B. v3, pro, kopieren)" class="flex-1 bg-neutral-900/60 border border-neutral-700 rounded-md px-3 py-2 text-sm text-neutral-200 focus:outline-none focus:ring-2 focus:ring-blue-600"/>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    class="text-neutral-400">
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="m21 21-4.3-4.3" />
+                </svg>
+                <input id="cmdk-input" type="text" placeholder="Aktion suchen… (z.B. v3, pro, kopieren)"
+                    class="flex-1 bg-neutral-900/60 border border-neutral-700 rounded-md px-3 py-2 text-sm text-neutral-200 focus:outline-none focus:ring-2 focus:ring-blue-600" />
                 <button id="cmdk-close" class="text-xl text-neutral-400 hover:text-white">&times;</button>
             </div>
             <div id="cmdk-list" class="max-h-[50vh] overflow-auto divide-y divide-neutral-800"></div>
@@ -386,15 +637,19 @@
     <!-- Shortcut Settings Modal -->
     <div id="shortcut-settings-modal" class="fixed inset-0 z-[120] hidden">
         <div class="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
-        <div class="relative mx-auto mt-16 w-[94vw] max-w-3xl bg-neutral-900/95 border border-neutral-700 rounded-2xl shadow-2xl p-6">
+        <div
+            class="relative mx-auto mt-16 w-[94vw] max-w-3xl bg-neutral-900/95 border border-neutral-700 rounded-2xl shadow-2xl p-6">
             <div class="flex items-center justify-between mb-4">
                 <h3 class="text-xl font-semibold text-white">Tastenkürzel anpassen</h3>
                 <div class="flex items-center gap-2">
-                    <button id="shortcut-reset" class="text-xs px-2 py-1 rounded bg-neutral-800/70 border border-neutral-700 hover:bg-neutral-700">Standard</button>
-                    <button id="shortcut-settings-close" class="text-2xl text-neutral-400 hover:text-white">&times;</button>
+                    <button id="shortcut-reset"
+                        class="text-xs px-2 py-1 rounded bg-neutral-800/70 border border-neutral-700 hover:bg-neutral-700">Standard</button>
+                    <button id="shortcut-settings-close"
+                        class="text-2xl text-neutral-400 hover:text-white">&times;</button>
                 </div>
             </div>
-            <p class="text-neutral-400 text-sm mb-4">Klicke auf ein Feld und drücke die gewünschte Kombination. Nutze Mod für ⌘/Ctrl.</p>
+            <p class="text-neutral-400 text-sm mb-4">Klicke auf ein Feld und drücke die gewünschte Kombination. Nutze
+                Mod für ⌘/Ctrl.</p>
             <div id="shortcut-settings-list" class="max-h-[60vh] overflow-auto divide-y divide-neutral-800"></div>
         </div>
     </div>
@@ -402,12 +657,14 @@
     <!-- Shortcut Modal -->
     <div id="shortcut-modal" class="fixed inset-0 z-[100] hidden">
         <div class="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
-        <div class="relative mx-auto mt-16 w-[92vw] max-w-2xl bg-neutral-900/90 border border-neutral-700 rounded-2xl shadow-2xl p-6">
+        <div
+            class="relative mx-auto mt-16 w-[92vw] max-w-2xl bg-neutral-900/90 border border-neutral-700 rounded-2xl shadow-2xl p-6">
             <div class="flex items-center justify-between mb-4">
                 <h3 class="text-xl font-semibold text-white">Tastenkürzel</h3>
                 <button id="shortcut-close" class="text-2xl text-neutral-400 hover:text-white">&times;</button>
             </div>
-            <p class="text-neutral-400 text-sm mb-4">Nutze schnelle Aktionen ohne die Maus. Modifizierte Systemkürzel (z.B. ⌘C/⌘V) bleiben unberührt.</p>
+            <p class="text-neutral-400 text-sm mb-4">Nutze schnelle Aktionen ohne die Maus. Modifizierte Systemkürzel
+                (z.B. ⌘C/⌘V) bleiben unberührt.</p>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                 <div class="bg-neutral-800/40 rounded-xl border border-neutral-700 p-4">
                     <h4 class="font-medium text-neutral-200 mb-2">Navigation</h4>
@@ -443,11 +700,122 @@
     <div id="action-hud" class="hidden"></div>
 
     <!-- JavaScript Files -->
+    <!-- Creative Cosmos: Idea Starter Modal (V2 Wiki Style) -->
+    <div id="idea-starter-modal" class="fixed inset-0 z-[130] hidden">
+        <div class="absolute inset-0 bg-black/95 backdrop-blur-xl"></div>
+        <div class="relative w-full h-full flex items-center justify-center p-4">
+            <!-- Large Modal Window (16:9 target) -->
+            <div
+                class="bg-[#0b0b14] border border-neutral-700/50 shadow-2xl rounded-3xl w-[95vw] h-[90vh] flex flex-col overflow-hidden relative">
+
+                <!-- Header: World Selection -->
+                <div class="border-b border-white/5 bg-black/40 p-6 flex flex-col gap-6 z-20">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-3xl font-bold text-white tracking-tight flex items-center gap-3">
+                            <span
+                                class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-lg shadow-lg shadow-purple-900/30">�</span>
+                            Kreativ-Bibliothek
+                        </h2>
+                        <button id="close-idea-modal"
+                            class="text-neutral-400 hover:text-white transition-colors bg-white/5 hover:bg-white/10 p-2 rounded-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M18 6 6 18" />
+                                <path d="m6 6 12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                    <!-- World Tabs (Modern Pill Design) -->
+                    <div id="world-tabs"
+                        class="flex gap-3 overflow-x-auto pb-2 scrollbar-hide justify-start lg:justify-center">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Main Content Area (Reading Mode) -->
+                <div class="flex-1 overflow-y-auto custom-scrollbar relative bg-[#11111a] flex flex-col items-center"
+                    id="wiki-scroll-container">
+                    <div id="world-content-area"
+                        class="max-w-4xl w-full py-12 px-8 lg:px-12 opacity-0 translate-y-4 transition-all duration-500">
+                        <!-- Dynamic Content populated by JS -->
+                        <div class="text-center text-neutral-500 mt-20 flex flex-col items-center gap-4">
+                            <div class="text-6xl opacity-20">📖</div>
+                            <p class="text-xl font-medium">Wähle eine Welt aus, um den Artikel zu laden.</p>
+                            <p class="text-sm opacity-60">Markiere Text, um deine Vision zu bauen.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer: Actions -->
+                <div class="border-t border-white/5 bg-black/40 p-6 flex justify-between items-center z-20 w-full">
+                    <div class="text-xs text-neutral-500 hidden sm:block">
+                        <span class="font-medium text-indigo-400">Tipp:</span> Text markieren für Menü. Shortcuts: <span
+                            class="text-neutral-400 font-mono">⇧⌥⌘+M</span> (Markieren), <span
+                            class="text-neutral-400 font-mono">⇧⌥⌘+N</span> (+Notiz)
+                    </div>
+                    <div class="flex gap-4">
+                        <button id="cancel-idea-btn"
+                            class="px-6 py-3 rounded-xl border border-white/10 text-neutral-400 hover:text-white hover:bg-white/5 transition-all text-sm font-medium">
+                            Abbrechen
+                        </button>
+                        <button id="generate-idea-btn"
+                            class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-indigo-900/20 hover:shadow-indigo-900/40 transform hover:-translate-y-0.5 transition-all flex items-center gap-2">
+                            <span>Vision synthetisieren</span>
+                            <svg id="gen-spinner" class="animate-spin h-4 w-4 hidden" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                    stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                </path>
+                            </svg>
+                            <svg id="gen-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275Z" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Context Menu (Global) -->
+    <div id="wiki-context-menu"
+        class="fixed hidden z-[150] bg-neutral-900 border border-neutral-700/80 shadow-2xl rounded-lg overflow-hidden flex-col w-48 backdrop-blur-lg transform transition-all duration-200 origin-top-left">
+        <button
+            class="menu-action w-full text-left px-4 py-3 text-sm text-white hover:bg-white/10 flex items-center gap-2"
+            data-action="select">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="text-green-400">
+                <polyline points="20 6 9 17 4 12" />
+            </svg>
+            <span>Auswählen</span>
+        </button>
+        <button
+            class="menu-action w-full text-left px-4 py-3 text-sm text-white hover:bg-white/10 flex items-center gap-2 border-t border-white/5"
+            data-action="note">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="text-yellow-400">
+                <path d="M12 20h9" />
+                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+            </svg>
+            Notiz hinzufügen
+        </button>
+    </div>
+
     <script src="js/config.js"></script>
     <script src="js/prompts.js"></script>
     <script src="js/api.js"></script>
     <script src="js/modals.js"></script>
     <script src="js/features.js"></script>
+    <script src="js/creative_cosmos.js"></script>
     <script src="js/keys.js"></script>
     <script src="js/palette.js"></script>
     <script src="js/chords.js"></script>
@@ -455,4 +823,5 @@
     <script src="js/quickwins.js"></script>
     <script src="js/app.js"></script>
 </body>
+
 </html>

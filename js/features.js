@@ -27,17 +27,17 @@ function setupIdeaSpark() {
     const ideasOutput = document.getElementById('ideas-output');
     const ideaLoader = document.getElementById('idea-loader');
     const ideaButtonText = document.getElementById('idea-button-text');
-    
+
     if (!ideaModal) return;
-    
+
     const ideaModalLogic = setupModal(ideaModal, sparkIdeaButton);
-    
+
     const setIdeaLoading = (isLoading) => {
         generateIdeasButton.disabled = isLoading;
         ideaButtonText.classList.toggle('hidden', isLoading);
         ideaLoader.classList.toggle('hidden', !isLoading);
     };
-    
+
     const generateIdeas = async () => {
         const keyword = keywordInput.value.trim();
         if (!keyword) {
@@ -67,7 +67,7 @@ function setupIdeaSpark() {
             setIdeaLoading(false);
         }
     };
-    
+
     generateIdeasButton.addEventListener('click', generateIdeas);
     keywordInput.addEventListener('keydown', (e) => e.key === 'Enter' && (e.preventDefault(), generateIdeas()));
 }
@@ -84,11 +84,11 @@ function setupExpertRefinements() {
         { type: 'vocal-harmony', prompt: VOCAL_HARMONY_REFINER_PROMPT },
         { type: 'ethno', prompt: ETHNO_REFINER_PROMPT }
     ];
-    
+
     experts.forEach(expert => {
         setupExpertRefinement(expert.type, expert.prompt);
     });
-    
+
     // Setup sound engineer separately as it has different UI
     setupSoundEngineer();
 }
@@ -100,25 +100,25 @@ function setupExpertRefinement(type, systemPrompt) {
     const applyButton = document.getElementById(`apply-${type}-button`);
     const buttonText = document.getElementById(`apply-${type}-text`);
     const loader = document.getElementById(`apply-${type}-loader`);
-    
+
     if (!modal || !openButton || !applyButton) return;
-    
+
     const modalLogic = setupModal(modal, openButton);
-    
+
     applyButton.addEventListener('click', async () => {
         const influence = slider.value;
         const currentPrompt = document.getElementById('result-text').textContent.trim();
         if (!currentPrompt) return;
-        
+
         applyButton.disabled = true;
         buttonText.classList.add('hidden');
         loader.classList.remove('hidden');
-        
+
         const userQuery = `Prompt: "${currentPrompt}"\nInfluence Level: ${influence}`;
         try {
             const refined = await callOpenRouterAPI(userQuery, systemPrompt);
             document.getElementById('result-text').textContent = refined;
-            if(window.QW){ window.QW.onPromptUpdated({source:`expert:${type}`}); }
+            if (window.QW) { window.QW.onPromptUpdated({ source: `expert:${type}` }); }
             modalLogic.close();
         } catch (error) {
             console.error(`Error refining with ${type}:`, error);
@@ -138,32 +138,32 @@ function setupSoundEngineer() {
     const applyButton = document.getElementById('apply-sound-engineer-button');
     const buttonText = document.getElementById('apply-sound-engineer-text');
     const loader = document.getElementById('apply-sound-engineer-loader');
-    
+
     if (!modal || !openButton || !applyButton) return;
-    
+
     const modalLogic = setupModal(modal, openButton);
-    
+
     applyButton.addEventListener('click', async () => {
         const instructions = Array.from(modal.querySelectorAll('.sound-engineer-input'))
             .map(input => input.value.trim())
             .filter(Boolean);
-        
+
         const currentPrompt = document.getElementById('result-text').textContent.trim();
         if (instructions.length === 0 || !currentPrompt) return;
-        
+
         applyButton.disabled = true;
         buttonText.classList.add('hidden');
         loader.classList.remove('hidden');
-        
+
         let userQuery = `Base prompt: "${currentPrompt}"\n\nIncorporate the following specific instructions:\n`;
         instructions.forEach((inst, index) => {
             userQuery += `${index + 1}. ${inst}\n`;
         });
-        
+
         try {
             const refined = await callOpenRouterAPI(userQuery, SOUND_ENGINEER_PROMPT);
             document.getElementById('result-text').textContent = refined;
-            if(window.QW){ window.QW.onPromptUpdated({source:'sound-engineer'}); }
+            if (window.QW) { window.QW.onPromptUpdated({ source: 'sound-engineer' }); }
             modalLogic.close();
         } catch (error) {
             console.error('Error with sound engineer instruction:', error);
@@ -184,7 +184,7 @@ function setupKlugTools() {
     setupVibeEnhancer();
     setupArtistSuggester();
     setupTempoFinder();
-    
+
     // Setup tagger tools
     const taggerTools = [
         { id: 'mood-analyzer', prompt: MOOD_ANALYZER_PROMPT },
@@ -194,7 +194,7 @@ function setupKlugTools() {
         { id: 'performance-coach', prompt: PERFORMANCE_COACH_PROMPT },
         { id: 'effect-chain', prompt: EFFECT_CHAIN_PROMPT }
     ];
-    
+
     taggerTools.forEach(tool => {
         setupKlugTagger(tool.id, tool.prompt);
     });
@@ -256,6 +256,11 @@ function setupSynthDesignerLab() {
         if (sliderValueEl) {
             sliderValueEl.textContent = info.label;
         }
+        // Update track background visualization
+        if (slider) {
+            const percent = (slider.value - slider.min) / (slider.max - slider.min) * 100;
+            slider.style.setProperty('--range-progress', `${percent}%`);
+        }
         return info;
     };
 
@@ -263,6 +268,7 @@ function setupSynthDesignerLab() {
         form.reset();
         if (slider) {
             slider.value = '50';
+            slider.style.setProperty('--range-progress', '50%');
         }
         setSliderLabel(slider ? slider.value : 50);
         if (errorEl) {
@@ -397,7 +403,7 @@ function setupVisualEngine() {
         analyzeLoader?.classList.toggle('hidden', !isLoading);
     };
 
-    const withTimeout = (p, ms, label='Request') => Promise.race([
+    const withTimeout = (p, ms, label = 'Request') => Promise.race([
         p,
         new Promise((_, rej) => setTimeout(() => rej(new Error(`${label} timeout nach ${ms}ms`)), ms))
     ]);
@@ -1094,24 +1100,24 @@ function setupGenreMixer() {
     const buttonText = modal?.querySelector('#mix-genres-button-text');
     const loader = modal?.querySelector('#mix-genres-loader');
     const output = modal?.querySelector('#genre-mixer-output');
-    
+
     if (!modal || !openButton) return;
-    
+
     const modalLogic = setupModal(modal, openButton);
-    
+
     // Populate genre selectors
     if (container) {
         container.innerHTML = '';
         for (let i = 0; i < 3; i++) {
             const select = document.createElement('select');
             select.className = "genre-select w-full bg-neutral-900/70 border border-neutral-600 rounded-lg p-2 text-neutral-200 focus:ring-2 focus:ring-blue-500";
-            const defaultOption = new Option(i === 0 ? "Wähle Genre 1" : `Genre ${i+1} (optional)`, "");
+            const defaultOption = new Option(i === 0 ? "Wähle Genre 1" : `Genre ${i + 1} (optional)`, "");
             select.add(defaultOption);
             musicGenres.forEach(genre => select.add(new Option(genre, genre)));
             container.appendChild(select);
         }
     }
-    
+
     if (mixButton) {
         mixButton.addEventListener('click', async () => {
             const selectedGenres = Array.from(modal.querySelectorAll('.genre-select')).map(s => s.value).filter(Boolean);
@@ -1126,7 +1132,7 @@ function setupGenreMixer() {
             try {
                 const response = await callOpenRouterAPI(prompt, GENRE_MIXER_PROMPT);
                 document.getElementById('result-text').textContent = response;
-                if(window.QW){ window.QW.onPromptUpdated({source:'genre-mixer'}); }
+                if (window.QW) { window.QW.onPromptUpdated({ source: 'genre-mixer' }); }
                 modalLogic.close();
             } catch (error) {
                 output.innerHTML = `<p class="text-red-400">Fehler beim Mischen der Genres.</p>`;
@@ -1171,11 +1177,11 @@ function setupKlugTagger(toolId, systemPrompt) {
     const applyButton = modal?.querySelector(`#${applyId}`);
     const buttonText = modal?.querySelector(`#${applyTextId}`);
     const loader = modal?.querySelector(`#${applyLoaderId}`);
-    
+
     if (!modal || !openButton || !suggestions || !applyButton) return;
-    
+
     const modalLogic = setupModal(modal, openButton);
-    
+
     openButton.addEventListener('click', async () => {
         selectedKlugItems = [];
         suggestions.innerHTML = `<div class="animate-spin h-6 w-6 text-blue-400 mx-auto"></div>`;
@@ -1185,7 +1191,7 @@ function setupKlugTagger(toolId, systemPrompt) {
             suggestions.innerHTML = '';
             items.forEach(item => {
                 const tag = document.createElement('button');
-                tag.className = 'bg-neutral-700/50 hover:bg-neutral-700 text-neutral-200 py-1 px-3 rounded-full transition-colors duration-200';
+                tag.className = 'bg-neutral-800/20 hover:bg-white/10 text-neutral-200 py-2 px-4 rounded-full transition-colors duration-200 border border-white/5';
                 tag.textContent = item;
                 tag.onclick = () => {
                     const index = selectedKlugItems.indexOf(item);
@@ -1199,11 +1205,11 @@ function setupKlugTagger(toolId, systemPrompt) {
                 };
                 suggestions.appendChild(tag);
             });
-        } catch(error) {
+        } catch (error) {
             suggestions.innerHTML = `<p class="text-red-400">Fehler bei der Analyse: ${error.message}</p>`;
         }
     });
-    
+
     applyButton.onclick = async () => {
         if (selectedKlugItems.length === 0) {
             modalLogic.close();
@@ -1216,9 +1222,9 @@ function setupKlugTagger(toolId, systemPrompt) {
         try {
             const refinedPrompt = await callOpenRouterAPI(prompt, PROMPT_REFINER_PROMPT);
             document.getElementById('result-text').textContent = refinedPrompt;
-            if(window.QW){ window.QW.onPromptUpdated({source:`klug:${toolId}`}); }
+            if (window.QW) { window.QW.onPromptUpdated({ source: `klug:${toolId}` }); }
             modalLogic.close();
-        } catch(error) {
+        } catch (error) {
             console.error("Failed to refine prompt", error);
         } finally {
             applyButton.disabled = false;
@@ -1232,20 +1238,20 @@ function setupHookGenerator() {
     const modal = document.getElementById('hook-generator-modal');
     const openButton = document.getElementById('hook-generator-button');
     const output = modal?.querySelector('#hook-generator-output');
-    
+
     if (!modal || !openButton || !output) return;
-    
+
     const modalLogic = setupModal(modal, openButton);
-    
+
     openButton.addEventListener('click', async () => {
         output.innerHTML = `<div class="animate-spin h-6 w-6 text-blue-400 mx-auto"></div>`;
         try {
             const response = await callOpenRouterAPI(document.getElementById('result-text').textContent, HOOK_GENERATOR_PROMPT);
             const [titlesPart, hooksPart] = response.split('---').map(s => s.trim());
-            
+
             const createSuggestionElement = (text, type) => {
                 const div = document.createElement('div');
-                div.className = 'p-3 bg-neutral-700/50 rounded-lg cursor-pointer hover:bg-neutral-700 transition-colors';
+                div.className = 'p-3 bg-neutral-800/20 border border-white/5 rounded-xl cursor-pointer hover:bg-white/10 transition-colors';
                 div.textContent = text.replace(/^- /, '');
                 div.onclick = () => {
                     const resultText = document.getElementById('result-text');
@@ -1254,7 +1260,7 @@ function setupHookGenerator() {
                 };
                 return div;
             };
-            
+
             output.innerHTML = '';
             if (titlesPart) {
                 const header = document.createElement('h3');
@@ -1270,7 +1276,7 @@ function setupHookGenerator() {
                 output.appendChild(header);
                 hooksPart.replace('HOOKS:', '').trim().split('\n').forEach(hook => output.appendChild(createSuggestionElement(hook, 'hook')));
             }
-        } catch(error) {
+        } catch (error) {
             output.innerHTML = `<p class="text-red-400">Fehler beim Erstellen der Vorschläge: ${error.message}</p>`;
         }
     });
@@ -1283,11 +1289,11 @@ function setupSongStructure() {
     const modal = document.getElementById('song-structure-modal');
     const openButton = document.getElementById('song-structure-button');
     const output = modal?.querySelector('#song-structure-output');
-    
+
     if (!modal || !openButton || !output) return;
-    
+
     const modalLogic = setupModal(modal, openButton);
-    
+
     openButton.addEventListener('click', async () => {
         output.innerHTML = `<div class="animate-spin h-6 w-6 text-blue-400 mx-auto"></div>`;
         try {
@@ -1306,13 +1312,13 @@ function setupSongStructure() {
                 try {
                     const integratedPrompt = await callOpenRouterAPI(`Original prompt: "${document.getElementById('result-text').textContent}". Integrate this structure: "${structure}".`, STRUCTURE_INTEGRATOR_PROMPT);
                     document.getElementById('result-text').textContent = integratedPrompt;
-                    if(window.QW){ window.QW.onPromptUpdated({source:'song-structure'}); }
+                    if (window.QW) { window.QW.onPromptUpdated({ source: 'song-structure' }); }
                     modalLogic.close();
                 } catch (error) {
                     btn.textContent = 'Fehler!';
                 }
             };
-        } catch(error) {
+        } catch (error) {
             output.innerHTML = `<p class="text-red-400">Fehler beim Erstellen des Struktur-Vorschlags: ${error.message}</p>`;
         }
     });
@@ -1322,11 +1328,11 @@ function setupVibeEnhancer() {
     const modal = document.getElementById('vibe-enhancer-modal');
     const openButton = document.getElementById('vibe-enhancer-button');
     const output = modal?.querySelector('#vibe-enhancer-output');
-    
+
     if (!modal || !openButton || !output) return;
-    
+
     const modalLogic = setupModal(modal, openButton);
-    
+
     openButton.addEventListener('click', async () => {
         output.innerHTML = `<div class="animate-spin h-6 w-6 text-blue-400 mx-auto col-span-2"></div>`;
         try {
@@ -1345,10 +1351,10 @@ function setupVibeEnhancer() {
             `;
             output.querySelector('#apply-vibe-button').onclick = () => {
                 document.getElementById('result-text').textContent = enhancedText;
-                if(window.QW){ window.QW.onPromptUpdated({source:'vibe-enhancer'}); }
+                if (window.QW) { window.QW.onPromptUpdated({ source: 'vibe-enhancer' }); }
                 modalLogic.close();
             };
-        } catch(error) {
+        } catch (error) {
             output.innerHTML = `<p class="text-red-400 text-center col-span-2">Fehler beim Veredeln des Vibes: ${error.message}</p>`;
         }
     });
@@ -1358,11 +1364,11 @@ function setupArtistSuggester() {
     const modal = document.getElementById('artist-suggester-modal');
     const openButton = document.getElementById('artist-suggester-button');
     const output = modal?.querySelector('#artist-suggester-output');
-    
+
     if (!modal || !openButton || !output) return;
-    
+
     const modalLogic = setupModal(modal, openButton);
-    
+
     openButton.addEventListener('click', async () => {
         output.innerHTML = `<div class="animate-spin h-6 w-6 text-blue-400 mx-auto"></div>`;
         try {
@@ -1373,16 +1379,16 @@ function setupArtistSuggester() {
                 const [artist, justification] = line.split(':').map(s => s.trim());
                 if (!artist || !justification) return;
                 const el = document.createElement('div');
-                el.className = 'p-3 bg-neutral-700/50 rounded-lg cursor-pointer hover:bg-neutral-700 transition-colors';
+                el.className = 'p-3 bg-neutral-800/20 border border-white/5 rounded-xl cursor-pointer hover:bg-white/10 transition-colors';
                 el.innerHTML = `<strong class="text-blue-400">${artist}</strong><p class="text-xs text-neutral-400">${justification}</p>`;
                 el.onclick = () => {
                     document.getElementById('result-text').textContent += `, in the style of ${artist}`;
-                    if(window.QW){ window.QW.onPromptUpdated({source:'artist-suggester'}); }
+                    if (window.QW) { window.QW.onPromptUpdated({ source: 'artist-suggester' }); }
                     modalLogic.close();
                 };
                 output.appendChild(el);
             });
-        } catch(error) {
+        } catch (error) {
             output.innerHTML = `<p class="text-red-400">Fehler bei der Künstlersuche: ${error.message}</p>`;
         }
     });
@@ -1392,11 +1398,11 @@ function setupTempoFinder() {
     const modal = document.getElementById('tempo-finder-modal');
     const openButton = document.getElementById('tempo-finder-button');
     const output = modal?.querySelector('#tempo-finder-output');
-    
+
     if (!modal || !openButton || !output) return;
-    
+
     const modalLogic = setupModal(modal, openButton);
-    
+
     openButton.addEventListener('click', async () => {
         output.innerHTML = `<div class="animate-spin h-6 w-6 text-blue-400 mx-auto"></div>`;
         try {
@@ -1412,10 +1418,10 @@ function setupTempoFinder() {
             `;
             output.querySelector('.add-bpm-button').onclick = () => {
                 document.getElementById('result-text').textContent += `, ${bpmValue} bpm`;
-                if(window.QW){ window.QW.onPromptUpdated({source:'tempo-finder'}); }
+                if (window.QW) { window.QW.onPromptUpdated({ source: 'tempo-finder' }); }
                 modalLogic.close();
             };
-        } catch(error) {
+        } catch (error) {
             output.innerHTML = `<p class="text-red-400">Fehler bei der Tempo-Suche: ${error.message}</p>`;
         }
     });
@@ -1429,25 +1435,25 @@ function setupCustomInstruction() {
     const applyButton = document.getElementById('apply-custom-instruction-button');
     const buttonText = document.getElementById('apply-custom-instruction-text');
     const loader = document.getElementById('apply-custom-instruction-loader');
-    
+
     if (!modal || !openButton || !applyButton) return;
-    
+
     const modalLogic = setupModal(modal, openButton);
-    
+
     applyButton.addEventListener('click', async () => {
         const instruction = input.value.trim();
         const currentPrompt = document.getElementById('result-text').textContent.trim();
         if (!instruction || !currentPrompt) return;
-        
+
         applyButton.disabled = true;
         buttonText.classList.add('hidden');
         loader.classList.remove('hidden');
-        
+
         const userQuery = `Base prompt: "${currentPrompt}"\nInstruction: "${instruction}"`;
         try {
             const refined = await callOpenRouterAPI(userQuery, CUSTOM_INSTRUCTION_PROMPT);
             document.getElementById('result-text').textContent = refined;
-            if(window.QW){ window.QW.onPromptUpdated({source:'custom-instruction'}); }
+            if (window.QW) { window.QW.onPromptUpdated({ source: 'custom-instruction' }); }
             modalLogic.close();
         } catch (error) {
             console.error('Error with custom instruction:', error);

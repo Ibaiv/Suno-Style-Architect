@@ -539,154 +539,177 @@ function getModalsHTML() {
         </div>
     </div>
     
-    <div id="synth-designer-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden modal-enter-from">
-        <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-3xl">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-bold text-white">🎛️ Synth-Designer Lab</h2>
-                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none">&times;</button>
+    <div id="synth-designer-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden modal-enter-from">
+        <div class="modal-content bg-[#0f111a] border border-white/10 rounded-3xl shadow-2xl p-8 w-full max-w-3xl relative overflow-hidden">
+            <!-- Background Glow -->
+            <div class="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+
+            <div class="flex justify-between items-center mb-8 relative z-10">
+                <div class="flex items-center gap-3">
+                    <div class="p-2 bg-white/5 rounded-lg border border-white/10">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 7h.01"/><path d="M17 7h.01"/><path d="M7 17h.01"/><path d="M17 17h.01"/><path d="M12 12h.01"/></svg>
+                    </div>
+                    <h2 class="text-xl font-bold text-white tracking-tight">Synth-Designer Lab</h2>
+                </div>
+                <button class="close-modal-button text-neutral-500 hover:text-white transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
             </div>
-            <p class="text-neutral-400 mb-5 text-sm">Baue Schritt für Schritt einen Synth-Sound. Deine Auswahl wird in eine präzise Beschreibung für Suno übersetzt und deinem Meisterstück hinzugefügt.</p>
-            <form id="synth-designer-form" class="space-y-5">
+            
+            <form id="synth-designer-form" class="space-y-8 relative z-10">
+                <!-- Section 1: Instrument Role -->
                 <div>
-                    <p class="text-sm font-semibold text-neutral-300 mb-2">1. Instrument-Rolle</p>
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                        <label class="block">
+                    <p class="text-[10px] font-bold text-neutral-500 uppercase tracking-[0.2em] mb-4">1. Instrument-Rolle</p>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                        <label class="block cursor-pointer group">
                             <input type="radio" name="synth-role" value="Lead melody" class="sr-only peer">
-                            <div class="p-3 border border-neutral-700/70 rounded-xl bg-neutral-900/60 hover:border-blue-400/40 transition-all peer-checked:border-blue-400 peer-checked:bg-blue-600/20">
-                                <span class="text-sm font-semibold text-neutral-200">Lead</span>
-                                <p class="text-xs text-neutral-400">Melodie</p>
+                            <div class="synth-card aspect-square rounded-2xl border border-white/5 bg-[#13151f] flex flex-col items-center justify-center gap-3 transition-all duration-300 hover:border-white/20 peer-checked:border-blue-500 peer-checked:bg-blue-500/5 peer-checked:shadow-[0_0_20px_rgba(59,130,246,0.15)]">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-400 group-hover:text-white peer-checked:text-blue-400 transition-colors"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>
+                                <span class="text-sm font-medium text-neutral-400 group-hover:text-white peer-checked:text-white">Lead</span>
                             </div>
                         </label>
-                        <label class="block">
+                        <label class="block cursor-pointer group">
                             <input type="radio" name="synth-role" value="Bass foundation" class="sr-only peer">
-                            <div class="p-3 border border-neutral-700/70 rounded-xl bg-neutral-900/60 hover:border-blue-400/40 transition-all peer-checked:border-blue-400 peer-checked:bg-blue-600/20">
-                                <span class="text-sm font-semibold text-neutral-200">Bass</span>
-                                <p class="text-xs text-neutral-400">Tiefe Noten</p>
+                            <div class="synth-card aspect-square rounded-2xl border border-white/5 bg-[#13151f] flex flex-col items-center justify-center gap-3 transition-all duration-300 hover:border-white/20 peer-checked:border-blue-500 peer-checked:bg-blue-500/5 peer-checked:shadow-[0_0_20px_rgba(59,130,246,0.15)]">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-400 group-hover:text-white peer-checked:text-blue-400 transition-colors"><path d="M13.8 2.2a2 2 0 0 1 1 1.7l-1 5a2 2 0 0 1-3.5 1l-1.5-3a2 2 0 0 1 .5-2.5l2.5-2.2Z"/><path d="M6 9.5a5.5 5.5 0 0 0 2 11h8a5.5 5.5 0 0 0 2-11"/><path d="M9 16c1.5-1 4-1 6 0"/><path d="M9 13a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2"/></svg>
+                                <span class="text-sm font-medium text-neutral-400 group-hover:text-white peer-checked:text-white">Bass</span>
                             </div>
                         </label>
-                        <label class="block">
+                        <label class="block cursor-pointer group">
                             <input type="radio" name="synth-role" value="Atmospheric pad" class="sr-only peer">
-                            <div class="p-3 border border-neutral-700/70 rounded-xl bg-neutral-900/60 hover:border-blue-400/40 transition-all peer-checked:border-blue-400 peer-checked:bg-blue-600/20">
-                                <span class="text-sm font-semibold text-neutral-200">Pad</span>
-                                <p class="text-xs text-neutral-400">Atmosphäre</p>
+                            <div class="synth-card aspect-square rounded-2xl border border-white/5 bg-[#13151f] flex flex-col items-center justify-center gap-3 transition-all duration-300 hover:border-white/20 peer-checked:border-blue-500 peer-checked:bg-blue-500/5 peer-checked:shadow-[0_0_20px_rgba(59,130,246,0.15)]">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-400 group-hover:text-white peer-checked:text-blue-400 transition-colors"><path d="M17.5 19c0-1.7-1.3-3-3-3h-5c-1.7 0-3 1.3-3 3"/><path d="M12 2C7 2 3 7 3 13s5 11 9 11 9-5 9-11-4-11-9-11z"/></svg>
+                                <span class="text-sm font-medium text-neutral-400 group-hover:text-white peer-checked:text-white">Pad</span>
                             </div>
                         </label>
-                        <label class="block">
+                        <label class="block cursor-pointer group">
                             <input type="radio" name="synth-role" value="Arpeggiated pattern" class="sr-only peer">
-                            <div class="p-3 border border-neutral-700/70 rounded-xl bg-neutral-900/60 hover:border-blue-400/40 transition-all peer-checked:border-blue-400 peer-checked:bg-blue-600/20">
-                                <span class="text-sm font-semibold text-neutral-200">Arpeggio</span>
-                                <p class="text-xs text-neutral-400">Pattern</p>
+                            <div class="synth-card aspect-square rounded-2xl border border-white/5 bg-[#13151f] flex flex-col items-center justify-center gap-3 transition-all duration-300 hover:border-white/20 peer-checked:border-blue-500 peer-checked:bg-blue-500/5 peer-checked:shadow-[0_0_20px_rgba(59,130,246,0.15)]">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-400 group-hover:text-white peer-checked:text-blue-400 transition-colors"><path d="M2 8h20"/><path d="M6 8v12"/><path d="M10 8v12"/><path d="M14 8v12"/><path d="M18 8v12"/><rect width="20" height="16" x="2" y="4" rx="2"/></svg>
+                                <span class="text-sm font-medium text-neutral-400 group-hover:text-white peer-checked:text-white">Arpeggio</span>
                             </div>
                         </label>
                     </div>
                 </div>
+
+                <!-- Section 2: Waveform -->
                 <div>
-                    <p class="text-sm font-semibold text-neutral-300 mb-2">2. Grundcharakter (Waveform)</p>
-                    <div class="grid grid-cols-2 gap-3">
-                        <label class="block">
+                    <p class="text-[10px] font-bold text-neutral-500 uppercase tracking-[0.2em] mb-4">2. Grundcharakter (Waveform)</p>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                        <label class="block cursor-pointer group">
                             <input type="radio" name="synth-core" value="soft, warm waveform" class="sr-only peer">
-                            <div class="p-3 border border-neutral-700/70 rounded-xl bg-neutral-900/60 hover:border-blue-400/40 transition-all peer-checked:border-blue-400 peer-checked:bg-blue-600/20">
-                                <span class="text-sm font-semibold text-neutral-200">Soft / Warm</span>
-                                <p class="text-xs text-neutral-400">Butterweich & samtig</p>
+                            <div class="synth-card p-6 rounded-2xl border border-white/5 bg-[#13151f] flex flex-col items-center justify-center gap-3 transition-all duration-300 hover:border-white/20 peer-checked:border-blue-500 peer-checked:bg-blue-500/5 peer-checked:shadow-[0_0_20px_rgba(59,130,246,0.15)]">
+                                <span class="text-3xl filter drop-shadow opacity-80 group-hover:opacity-100 transition-opacity">🔥</span>
+                                <span class="text-sm font-medium text-neutral-400 group-hover:text-white peer-checked:text-white">Soft/Warm</span>
                             </div>
                         </label>
-                        <label class="block">
+                        <label class="block cursor-pointer group">
                             <input type="radio" name="synth-core" value="hollow, woody timbre" class="sr-only peer">
-                            <div class="p-3 border border-neutral-700/70 rounded-xl bg-neutral-900/60 hover:border-blue-400/40 transition-all peer-checked:border-blue-400 peer-checked:bg-blue-600/20">
-                                <span class="text-sm font-semibold text-neutral-200">Hollow / Woody</span>
-                                <p class="text-xs text-neutral-400">Hohl & organisch</p>
+                            <div class="synth-card p-6 rounded-2xl border border-white/5 bg-[#13151f] flex flex-col items-center justify-center gap-3 transition-all duration-300 hover:border-white/20 peer-checked:border-blue-500 peer-checked:bg-blue-500/5 peer-checked:shadow-[0_0_20px_rgba(59,130,246,0.15)]">
+                                <span class="text-3xl filter drop-shadow opacity-80 group-hover:opacity-100 transition-opacity">🪵</span>
+                                <span class="text-sm font-medium text-neutral-400 group-hover:text-white peer-checked:text-white">Hollow</span>
                             </div>
                         </label>
-                        <label class="block">
+                        <label class="block cursor-pointer group">
                             <input type="radio" name="synth-core" value="bright, harmonically rich waveform" class="sr-only peer">
-                            <div class="p-3 border border-neutral-700/70 rounded-xl bg-neutral-900/60 hover:border-blue-400/40 transition-all peer-checked:border-blue-400 peer-checked:bg-blue-600/20">
-                                <span class="text-sm font-semibold text-neutral-200">Bright / Rich</span>
-                                <p class="text-xs text-neutral-400">Glänzend & voll</p>
+                            <div class="synth-card p-6 rounded-2xl border border-white/5 bg-[#13151f] flex flex-col items-center justify-center gap-3 transition-all duration-300 hover:border-white/20 peer-checked:border-blue-500 peer-checked:bg-blue-500/5 peer-checked:shadow-[0_0_20px_rgba(59,130,246,0.15)]">
+                                <span class="text-3xl filter drop-shadow opacity-80 group-hover:opacity-100 transition-opacity">✨</span>
+                                <span class="text-sm font-medium text-neutral-400 group-hover:text-white peer-checked:text-white">Bright</span>
                             </div>
                         </label>
-                        <label class="block">
+                        <label class="block cursor-pointer group">
                             <input type="radio" name="synth-core" value="noisy, digital texture" class="sr-only peer">
-                            <div class="p-3 border border-neutral-700/70 rounded-xl bg-neutral-900/60 hover:border-blue-400/40 transition-all peer-checked:border-blue-400 peer-checked:bg-blue-600/20">
-                                <span class="text-sm font-semibold text-neutral-200">Noisy / Digital</span>
-                                <p class="text-xs text-neutral-400">Körnig & modern</p>
+                            <div class="synth-card p-6 rounded-2xl border border-white/5 bg-[#13151f] flex flex-col items-center justify-center gap-3 transition-all duration-300 hover:border-white/20 peer-checked:border-blue-500 peer-checked:bg-blue-500/5 peer-checked:shadow-[0_0_20px_rgba(59,130,246,0.15)]">
+                                <span class="text-3xl filter drop-shadow opacity-80 group-hover:opacity-100 transition-opacity">⚡</span>
+                                <span class="text-sm font-medium text-neutral-400 group-hover:text-white peer-checked:text-white">Noisy</span>
                             </div>
                         </label>
                     </div>
                 </div>
+
+                <!-- Section 3: Filter Slider -->
                 <div>
-                    <p class="text-sm font-semibold text-neutral-300 mb-2">3. Timbre (Filter)</p>
-                    <input id="synth-filter-slider" type="range" min="0" max="100" value="50" class="w-full h-1 bg-neutral-700 rounded-lg appearance-none cursor-pointer">
-                    <div class="flex justify-between text-xs text-neutral-500 mt-1">
-                        <span>Dumpf / Subtil</span>
-                        <span>Hell / Aggressiv</span>
+                     <p class="text-[10px] font-bold text-neutral-500 uppercase tracking-[0.2em] mb-6">3. Timbre (Filter)</p>
+                     <div class="relative px-1 py-4">
+                        <input id="synth-filter-slider" type="range" min="0" max="100" value="50" 
+                            class="synth-slider w-full h-1 bg-neutral-800 rounded-lg appearance-none cursor-pointer focus:outline-none focus:ring-0 z-20 relative">
+                         <!-- Track Fill -->
+                        <div class="absolute top-[20px] left-1 right-1 h-1 rounded-lg pointer-events-none z-10 overflow-hidden">
+                            <div class="h-full bg-blue-500 transition-all duration-75 ease-out" style="width: var(--range-progress, 50%)"></div>
+                        </div>
                     </div>
-                    <p class="text-xs text-neutral-400 text-right mt-1">Aktuell: <span id="synth-filter-value" class="text-neutral-200 font-medium">Ausgewogen & klar</span></p>
+                    <div class="flex justify-center mt-2">
+                         <span id="synth-filter-value" class="text-xs font-semibold tracking-wide text-blue-200 bg-[#1e293b] px-3 py-1.5 rounded-full border border-blue-500/30 shadow-[0_0_10px_rgba(59,130,246,0.2)]">Ausgewogen</span>
+                    </div>
                 </div>
+
+                <!-- Section 4: Envelope -->
                 <div>
-                    <p class="text-sm font-semibold text-neutral-300 mb-2">4. Hüllkurve (Envelope)</p>
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                        <label class="block">
+                    <p class="text-[10px] font-bold text-neutral-500 uppercase tracking-[0.2em] mb-4">4. Hüllkurve (Envelope)</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <label class="block cursor-pointer group">
                             <input type="radio" name="synth-envelope" value="short, plucky articulation" class="sr-only peer">
-                            <div class="p-3 border border-neutral-700/70 rounded-xl bg-neutral-900/60 hover:border-blue-400/40 transition-all peer-checked:border-blue-400 peer-checked:bg-blue-600/20">
-                                <span class="text-sm font-semibold text-neutral-200">Kurz / Pluck</span>
-                                <p class="text-xs text-neutral-400">Schneller Attack</p>
+                             <div class="synth-card p-4 rounded-xl border border-white/5 bg-[#13151f] flex flex-col items-center justify-center gap-1 transition-all duration-300 hover:border-white/20 peer-checked:border-blue-500 peer-checked:bg-blue-500/5">
+                                <span class="text-sm font-medium text-neutral-400 group-hover:text-white peer-checked:text-white">Kurz / Pluck</span>
+                                <span class="text-[11px] text-neutral-600">Schneller Attack</span>
                             </div>
                         </label>
-                        <label class="block">
+                        <label class="block cursor-pointer group">
                             <input type="radio" name="synth-envelope" value="slow, swelling rise" class="sr-only peer">
-                            <div class="p-3 border border-neutral-700/70 rounded-xl bg-neutral-900/60 hover:border-blue-400/40 transition-all peer-checked:border-blue-400 peer-checked:bg-blue-600/20">
-                                <span class="text-sm font-semibold text-neutral-200">Schwellend</span>
-                                <p class="text-xs text-neutral-400">Langsamer Aufbau</p>
+                             <div class="synth-card p-4 rounded-xl border border-white/5 bg-[#13151f] flex flex-col items-center justify-center gap-1 transition-all duration-300 hover:border-white/20 peer-checked:border-blue-500 peer-checked:bg-blue-500/5">
+                                <span class="text-sm font-medium text-neutral-400 group-hover:text-white peer-checked:text-white">Schwellend</span>
+                                <span class="text-[11px] text-neutral-600">Langsamer Aufbau</span>
                             </div>
                         </label>
-                        <label class="block">
+                        <label class="block cursor-pointer group">
                             <input type="radio" name="synth-envelope" value="long, sustained hold" class="sr-only peer">
-                            <div class="p-3 border border-neutral-700/70 rounded-xl bg-neutral-900/60 hover:border-blue-400/40 transition-all peer-checked:border-blue-400 peer-checked:bg-blue-600/20">
-                                <span class="text-sm font-semibold text-neutral-200">Sustain</span>
-                                <p class="text-xs text-neutral-400">Hält lange</p>
+                             <div class="synth-card p-4 rounded-xl border border-white/5 bg-[#13151f] flex flex-col items-center justify-center gap-1 transition-all duration-300 hover:border-white/20 peer-checked:border-blue-500 peer-checked:bg-blue-500/5">
+                                <span class="text-sm font-medium text-neutral-400 group-hover:text-white peer-checked:text-white">Sustain</span>
+                                <span class="text-[11px] text-neutral-600">Hält lange</span>
                             </div>
                         </label>
                     </div>
                 </div>
+
+                <!-- Section 5: Effects -->
                 <div>
-                    <p class="text-sm font-semibold text-neutral-300 mb-2">5. Effekte (optional)</p>
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                        <label class="block">
+                     <p class="text-[10px] font-bold text-neutral-500 uppercase tracking-[0.2em] mb-4">5. Effekte</p>
+                     <div class="flex flex-wrap gap-2">
+                        <label class="cursor-pointer group">
                             <input type="checkbox" name="synth-effects" value="lush reverb for spaciousness" class="sr-only peer">
-                            <div class="p-3 border border-neutral-700/70 rounded-xl bg-neutral-900/60 hover:border-blue-400/40 transition-all peer-checked:border-blue-400 peer-checked:bg-blue-600/20">
-                                <span class="text-sm font-semibold text-neutral-200">Reverb</span>
-                                <p class="text-xs text-neutral-400">Raum</p>
+                            <div class="synth-effect-pill px-6 py-2.5 rounded-full border border-white/5 bg-[#13151f] text-sm text-neutral-400 transition-all duration-200 hover:bg-white/5 hover:text-white peer-checked:bg-blue-600 peer-checked:border-blue-500 peer-checked:text-white peer-checked:shadow-[0_0_15px_rgba(37,99,235,0.4)]">
+                                Reverb
                             </div>
                         </label>
-                        <label class="block">
+                        <label class="cursor-pointer group">
                             <input type="checkbox" name="synth-effects" value="tempo-synced echo" class="sr-only peer">
-                            <div class="p-3 border border-neutral-700/70 rounded-xl bg-neutral-900/60 hover:border-blue-400/40 transition-all peer-checked:border-blue-400 peer-checked:bg-blue-600/20">
-                                <span class="text-sm font-semibold text-neutral-200">Echo</span>
-                                <p class="text-xs text-neutral-400">Delay</p>
+                             <div class="synth-effect-pill px-6 py-2.5 rounded-full border border-white/5 bg-[#13151f] text-sm text-neutral-400 transition-all duration-200 hover:bg-white/5 hover:text-white peer-checked:bg-blue-600 peer-checked:border-blue-500 peer-checked:text-white peer-checked:shadow-[0_0_15px_rgba(37,99,235,0.4)]">
+                                Echo
                             </div>
                         </label>
-                        <label class="block">
+                        <label class="cursor-pointer group">
                             <input type="checkbox" name="synth-effects" value="stereo chorus for width" class="sr-only peer">
-                            <div class="p-3 border border-neutral-700/70 rounded-xl bg-neutral-900/60 hover:border-blue-400/40 transition-all peer-checked:border-blue-400 peer-checked:bg-blue-600/20">
-                                <span class="text-sm font-semibold text-neutral-200">Width</span>
-                                <p class="text-xs text-neutral-400">Chorus</p>
+                             <div class="synth-effect-pill px-6 py-2.5 rounded-full border border-white/5 bg-[#13151f] text-sm text-neutral-400 transition-all duration-200 hover:bg-white/5 hover:text-white peer-checked:bg-blue-600 peer-checked:border-blue-500 peer-checked:text-white peer-checked:shadow-[0_0_15px_rgba(37,99,235,0.4)]">
+                                Width
                             </div>
                         </label>
-                        <label class="block">
+                        <label class="cursor-pointer group">
                             <input type="checkbox" name="synth-effects" value="gentle saturation and distortion" class="sr-only peer">
-                            <div class="p-3 border border-neutral-700/70 rounded-xl bg-neutral-900/60 hover:border-blue-400/40 transition-all peer-checked:border-blue-400 peer-checked:bg-blue-600/20">
-                                <span class="text-sm font-semibold text-neutral-200">Distortion</span>
-                                <p class="text-xs text-neutral-400">Grit</p>
+                             <div class="synth-effect-pill px-6 py-2.5 rounded-full border border-white/5 bg-[#13151f] text-sm text-neutral-400 transition-all duration-200 hover:bg-white/5 hover:text-white peer-checked:bg-blue-600 peer-checked:border-blue-500 peer-checked:text-white peer-checked:shadow-[0_0_15px_rgba(37,99,235,0.4)]">
+                                Distortion
                             </div>
                         </label>
-                    </div>
-                    <p class="text-xs text-neutral-500 mt-2">Keine Auswahl = trockener, unverzierter Sound.</p>
+                     </div>
                 </div>
-                <p id="synth-designer-error" class="text-sm text-red-400"></p>
+
+                <p id="synth-designer-error" class="text-xs text-red-400 ml-1"></p>
             </form>
-            <div class="mt-6 border-t border-neutral-700/60 pt-4 flex flex-col sm:flex-row gap-2">
-                <button type="button" class="close-modal-button w-full sm:w-auto bg-neutral-800/70 hover:bg-neutral-700 text-neutral-200 font-semibold py-2.5 px-4 rounded-lg btn-transition btn-press">Abbrechen</button>
-                <button id="add-synth-button" type="button" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-4 rounded-lg btn-transition btn-press flex items-center justify-center gap-2">
+
+            <div class="mt-12 flex justify-end items-center gap-6">
+                 <button type="button" class="close-modal-button text-neutral-400 hover:text-neutral-200 font-medium text-sm transition-colors">
+                    Abbrechen
+                </button>
+                <button id="add-synth-button" type="button" class="bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-semibold py-3 px-8 rounded-lg shadow-[0_0_20px_rgba(37,99,235,0.4)] transition-all transform hover:-translate-y-0.5 active:scale-95 flex items-center gap-2">
                     <span id="add-synth-button-text">Add Sound to Prompt</span>
                     <svg id="add-synth-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                 </button>

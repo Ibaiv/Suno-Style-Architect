@@ -12,11 +12,11 @@ async function callFalAPI(prompt, options = {}) {
 
     // Resolve endpoint path from mapping, with smart fallbacks
     const endpointFromMap = (typeof FAL_MODEL_ENDPOINTS !== 'undefined') ? FAL_MODEL_ENDPOINTS[FAL_MODEL] : null;
-    const normalized = (v)=> v.replace(/^\/+|\/+$/g,'');
+    const normalized = (v) => v.replace(/^\/+|\/+$/g, '');
     const base = endpointFromMap || FAL_MODEL;
     const candidates = [];
     const seen = new Set();
-    const push = (x)=>{ const n=normalized(x); if(!seen.has(n)){ seen.add(n); candidates.push(n); }};
+    const push = (x) => { const n = normalized(x); if (!seen.has(n)) { seen.add(n); candidates.push(n); } };
     push(base);
     if (!/^[-\w]+\//.test(base)) { push(`fal-ai/${base}`); push(`google/${base}`); }
     if (FAL_MODEL === 'imagen4/preview') push('google/imagen-4/preview');
@@ -126,7 +126,7 @@ async function callOpenRouterAPI(userMessage, systemPrompt, imageUrl = null) {
         ? [
             { type: 'text', text: userMessage },
             { type: 'image_url', image_url: { url: imageUrl } }
-          ]
+        ]
         : userMessage;
 
     const payload = {
@@ -157,7 +157,7 @@ async function callOpenRouterAPI(userMessage, systemPrompt, imageUrl = null) {
     }
 
     const result = await response.json();
-    
+
     if (result.choices?.[0]?.message?.content) {
         return result.choices[0].message.content.trim();
     } else if (result.error) {
@@ -169,13 +169,13 @@ async function callOpenRouterAPI(userMessage, systemPrompt, imageUrl = null) {
 
 // === UTILITY FUNCTIONS ===
 // Robust copy helper with fallback
-async function safeCopyText(text){
+async function safeCopyText(text) {
     try {
         if (navigator.clipboard && window.isSecureContext) {
             await navigator.clipboard.writeText(text);
             return true;
         }
-    } catch(e) {
+    } catch (e) {
         console.warn('Clipboard API failed, falling back', e);
     }
     // Fallback: hidden textarea + execCommand
@@ -190,17 +190,17 @@ async function safeCopyText(text){
         const ok = document.execCommand('copy');
         document.body.removeChild(ta);
         return ok;
-    } catch(e) {
+    } catch (e) {
         console.error('Fallback copy failed', e);
         return false;
     }
 }
 
-window.copyResult = async function(){
-    const text = (document.getElementById('result-text')?.textContent)||'';
+window.copyResult = async function () {
+    const text = (document.getElementById('result-text')?.textContent) || '';
     const ok = await safeCopyText(text);
-    if(ok){
-        document.dispatchEvent(new CustomEvent('keys:action', { detail: { id:'copy.result', label:'Kopiert', source:'program' }}));
+    if (ok) {
+        document.dispatchEvent(new CustomEvent('keys:action', { detail: { id: 'copy.result', label: 'Kopiert', source: 'program' } }));
     }
     return ok;
 };
@@ -210,7 +210,7 @@ function setupCopyButton(button, icon, check, textElement) {
     button.addEventListener('click', async () => {
         const textToCopy = textElement.textContent || '';
         const ok = await safeCopyText(textToCopy);
-        if(ok){
+        if (ok) {
             icon.classList.add('hidden');
             check.classList.remove('hidden');
             setTimeout(() => {
@@ -230,11 +230,13 @@ try {
         window.setupCopyButton = setupCopyButton;
         window.setKlugToolsState = setKlugToolsState;
     }
-} catch (_) {}
+} catch (_) { }
 
 function setKlugToolsState(enabled) {
     isPromptGenerated = enabled;
     const allTools = document.querySelectorAll('.klug-btn');
+
+    // Toggle button states
     allTools.forEach(button => {
         button.disabled = !enabled;
         if (!enabled) {
@@ -245,25 +247,30 @@ function setKlugToolsState(enabled) {
             button.classList.add('hover:bg-neutral-700');
         }
     });
-    
-    // Show/hide notice messages
-    const expertNotice = document.getElementById('expert-disabled-notice');
-    const klugNotice = document.getElementById('klug-disabled-notice');
-    const labNotice = document.getElementById('lab-disabled-notice');
-    if (expertNotice) {
-        expertNotice.style.display = enabled ? 'none' : 'block';
-    }
-    if (klugNotice) {
-        klugNotice.style.display = enabled ? 'none' : 'block';
-    }
-    if (labNotice) {
-        labNotice.style.display = enabled ? 'none' : 'block';
-    }
+
+    // Toggle container visual states
+    const containers = [
+        document.getElementById('expert-container'),
+        document.getElementById('klug-container'),
+        document.getElementById('lab-container')
+    ];
+
+    containers.forEach(container => {
+        if (container) {
+            if (enabled) {
+                container.classList.remove('inactive-box');
+                container.classList.add('active-box');
+            } else {
+                container.classList.remove('active-box');
+                container.classList.add('inactive-box');
+            }
+        }
+    });
 }
 
 // Modal setup function
 function setupModal(modal, openButton) {
-    if (!modal) return { open: () => {}, close: () => {} };
+    if (!modal) return { open: () => { }, close: () => { } };
     const closeButtons = modal.querySelectorAll('.close-modal-button');
     const open = () => {
         if (!isPromptGenerated && modal.id !== 'idea-modal') {
@@ -285,7 +292,7 @@ function setupModal(modal, openButton) {
             document.dispatchEvent(new CustomEvent('modal:close', { detail: { id: modal.id } }));
         }, 200);
     };
-    if(openButton) openButton.addEventListener('click', open);
+    if (openButton) openButton.addEventListener('click', open);
     closeButtons.forEach(btn => btn.addEventListener('click', close));
     modal.addEventListener('click', (e) => {
         if (e.target === modal) close();
