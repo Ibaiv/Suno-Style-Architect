@@ -816,13 +816,25 @@ input:checked+.synth-effect-pill {
 }
 
 .world-tab.active {
-    background: white;
-    /* High contrast "Light Mode" feel for the tab */
-    color: black;
-    border-color: white;
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(168, 85, 247, 0.2) 100%);
+    border-color: rgba(168, 85, 247, 0.5);
+    color: white;
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.2);
     font-weight: 600;
 }
+
+/* World Tab Dropdown Group */
+/* World Tab Dropdown Group */
+/* World Tab Dropdown Group */
+.world-tab-group {
+    position: relative;
+    display: inline-flex;
+}
+
+/* Dropdown is now handled via JS Portal appended to body */
+
+
+/* Adjust radius for group trigger if needed, or leave as is */
 
 /* NEW: Wiki Article Typography */
 .wiki-article {
