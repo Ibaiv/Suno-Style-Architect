@@ -2538,39 +2538,105 @@ function initCreativeCosmos() {
     if (resetBtn) {
         resetBtn.addEventListener('click', resetAllSelections);
     }
+
+    // Keyboard Shortcuts
+    document.addEventListener('keydown', handleKeyboardShortcuts);
 }
 
-// === TEXT SELECTION MARKING FUNCTIONS ===
+// === KEYBOARD SHORTCUTS ===
 
-function generateUniqueId() {
-    return 'sel_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-}
+function handleKeyboardShortcuts(e) {
+    // Only active if the modal is visible (based on whether we have a currentWorldId and the view is active)
+    const modal = document.getElementById('idea-starter-modal');
+    if (!modal || modal.classList.contains('hidden') || !currentWorldId) return;
 
-function handleTextSelection(e) {
-    const selection = window.getSelection();
-    const selectedText = selection.toString().trim();
+    // Do not trigger if user is typing in an input field (e.g. note input)
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
 
-    // Ignore if selecting within an interactive-term (those have their own click handler)
-    if (e.target.closest('.interactive-term')) {
-        return;
+    // M - Quick Mark
+    if (e.key.toLowerCase() === 'm') {
+        const selection = window.getSelection();
+        const text = selection.toString().trim();
+        if (text && text.length >= 2) {
+            e.preventDefault();
+            markSelectedText(text, selection.getRangeAt(0), null);
+            selection.removeAllRanges();
+            hideSelectionPopup();
+        }
     }
 
-    // Ignore empty or very short selections
-    if (!selectedText || selectedText.length < 2) {
-        hideSelectionPopup();
-        return;
+    // N - Mark with Note
+    if (e.key.toLowerCase() === 'n') {
+        const selection = window.getSelection();
+        const text = selection.toString().trim();
+        if (text && text.length >= 2) {
+            e.preventDefault();
+            const range = selection.getRangeAt(0);
+
+            // Calculate a position for the popup
+            const rect = range.getBoundingClientRect();
+            // Use existing logic to show popup, then immediately switch to note
+            showSelectionPopup(rect.left + rect.width / 2, rect.top, text, range);
+
+            const popup = document.getElementById('selection-popup-menu');
+            if (popup) {
+                showNoteInput(popup, text, range);
+            }
+        }
     }
 
-    // Show popup at cursor position
-    showSelectionPopup(e.clientX, e.clientY, selectedText, selection.getRangeAt(0));
-}
+    // Escape - Clear Selection / Close Popup
+    if (e.key === 'Escape') {
+        if (document.getElementById('selection-popup-menu')) {
+            e.preventDefault(); // Prevent closing the main modal if popup is open
+            hideSelectionPopup();
+            window.getSelection().removeAllRanges();
+        }
+    }
 
-function showSelectionPopup(x, y, selectedText, range) {
-    hideSelectionPopup(); // Remove any existing
+    // Backspace / Delete - Undo Last Mark
+    if (e.key === 'Backspace' || e.key === 'Delete') {
+        // e.preventDefault(); // Careful, might block normal backspace if not cautious. Check for input already done above.
+        undoLastSelection();
+    }
 
-    const popup = document.createElement('div');
-    popup.id = 'selection-popup-menu';
-    popup.innerHTML = `
+    // Shift + R - Reset All
+    if (e.shiftKey && e.key.toLowerCase() === 'r') {
+        e.preventDefault();
+        resetAllSelections();
+    }
+
+    // === TEXT SELECTION MARKING FUNCTIONS ===
+
+    function generateUniqueId() {
+        return 'sel_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    }
+
+    function handleTextSelection(e) {
+        const selection = window.getSelection();
+        const selectedText = selection.toString().trim();
+
+        // Ignore if selecting within an interactive-term (those have their own click handler)
+        if (e.target.closest('.interactive-term')) {
+            return;
+        }
+
+        // Ignore empty or very short selections
+        if (!selectedText || selectedText.length < 2) {
+            hideSelectionPopup();
+            return;
+        }
+
+        // Show popup at cursor position
+        showSelectionPopup(e.clientX, e.clientY, selectedText, selection.getRangeAt(0));
+    }
+
+    function showSelectionPopup(x, y, selectedText, range) {
+        hideSelectionPopup(); // Remove any existing
+
+        const popup = document.createElement('div');
+        popup.id = 'selection-popup-menu';
+        popup.innerHTML = `
         <button id="mark-selection-btn" class="mark-btn">
             <svg class="inline-block w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
@@ -2585,41 +2651,41 @@ function showSelectionPopup(x, y, selectedText, range) {
         </button>
     `;
 
-    // Position popup
-    popup.style.left = `${x + 10}px`;
-    popup.style.top = `${y - 10}px`;
+        // Position popup
+        popup.style.left = `${x + 10}px`;
+        popup.style.top = `${y - 10}px`;
 
-    document.body.appendChild(popup);
+        document.body.appendChild(popup);
 
-    // Adjust if off-screen
-    const rect = popup.getBoundingClientRect();
-    if (rect.right > window.innerWidth) {
-        popup.style.left = `${x - rect.width - 10}px`;
+        // Adjust if off-screen
+        const rect = popup.getBoundingClientRect();
+        if (rect.right > window.innerWidth) {
+            popup.style.left = `${x - rect.width - 10}px`;
+        }
+        if (rect.top < 0) {
+            popup.style.top = `${y + 20}px`;
+        }
+
+        // Handle mark button click
+        document.getElementById('mark-selection-btn').onclick = () => {
+            markSelectedText(selectedText, range, null);
+            hideSelectionPopup();
+            window.getSelection().removeAllRanges();
+        };
+
+        // Handle mark with note button click
+        document.getElementById('mark-with-note-btn').onclick = () => {
+            showNoteInput(popup, selectedText, range);
+        };
     }
-    if (rect.top < 0) {
-        popup.style.top = `${y + 20}px`;
+
+    function hideSelectionPopup() {
+        const popup = document.getElementById('selection-popup-menu');
+        if (popup) popup.remove();
     }
 
-    // Handle mark button click
-    document.getElementById('mark-selection-btn').onclick = () => {
-        markSelectedText(selectedText, range, null);
-        hideSelectionPopup();
-        window.getSelection().removeAllRanges();
-    };
-
-    // Handle mark with note button click
-    document.getElementById('mark-with-note-btn').onclick = () => {
-        showNoteInput(popup, selectedText, range);
-    };
-}
-
-function hideSelectionPopup() {
-    const popup = document.getElementById('selection-popup-menu');
-    if (popup) popup.remove();
-}
-
-function showNoteInput(popup, selectedText, range) {
-    popup.innerHTML = `
+    function showNoteInput(popup, selectedText, range) {
+        popup.innerHTML = `
         <div class="note-input-container">
             <input type="text" id="note-input" placeholder="Notiz eingeben..." maxlength="100" />
             <button id="confirm-note-btn">
@@ -2629,99 +2695,99 @@ function showNoteInput(popup, selectedText, range) {
             </button>
         </div>
     `;
-    const input = document.getElementById('note-input');
-    input.focus();
+        const input = document.getElementById('note-input');
+        input.focus();
 
-    const confirmNote = () => {
-        const note = input.value.trim();
-        markSelectedText(selectedText, range, note || null);
-        hideSelectionPopup();
-        window.getSelection().removeAllRanges();
-    };
+        const confirmNote = () => {
+            const note = input.value.trim();
+            markSelectedText(selectedText, range, note || null);
+            hideSelectionPopup();
+            window.getSelection().removeAllRanges();
+        };
 
-    document.getElementById('confirm-note-btn').onclick = confirmNote;
-    input.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') confirmNote();
-    });
-}
-
-function markSelectedText(text, range, note) {
-    if (!currentWorldId) return;
-
-    // Initialize custom selections for this world if needed
-    if (!customSelections[currentWorldId]) {
-        customSelections[currentWorldId] = [];
+        document.getElementById('confirm-note-btn').onclick = confirmNote;
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') confirmNote();
+        });
     }
 
-    const id = generateUniqueId();
+    function markSelectedText(text, range, note) {
+        if (!currentWorldId) return;
 
-    // Find and auto-select any interactive-terms within the range
-    autoSelectInteractiveTermsInRange(range);
-
-    // Wrap the range in a span
-    try {
-        const wrapper = document.createElement('span');
-        wrapper.className = 'custom-selection';
-        wrapper.dataset.selectionId = id;
-        if (note) {
-            wrapper.dataset.note = note;
-            wrapper.classList.add('has-note');
+        // Initialize custom selections for this world if needed
+        if (!customSelections[currentWorldId]) {
+            customSelections[currentWorldId] = [];
         }
-        range.surroundContents(wrapper);
 
-        // Add click handler to remove
-        wrapper.addEventListener('click', handleCustomSelectionClick);
-    } catch (e) {
-        // surroundContents can fail if selection spans multiple elements
-        console.warn('Could not wrap selection visually, storing text only:', e);
-    }
+        const id = generateUniqueId();
 
-    // Store the selection
-    customSelections[currentWorldId].push({
-        id: id,
-        text: text,
-        note: note
-    });
+        // Find and auto-select any interactive-terms within the range
+        autoSelectInteractiveTermsInRange(range);
 
-    updateSelectionCounter();
-    updateWorldTabIndicators();
-}
-
-// Feature 1: Auto-select interactive-terms within a marked range
-function autoSelectInteractiveTermsInRange(range) {
-    const contentArea = document.getElementById('world-content-area');
-    if (!contentArea) return;
-
-    // Find all interactive-terms
-    const terms = contentArea.querySelectorAll('.interactive-term');
-
-    terms.forEach(term => {
-        // Check if the term is within or overlaps with the selection range
-        if (range.intersectsNode(term)) {
-            const termValue = term.dataset.term;
-            if (!selections[currentWorldId]) selections[currentWorldId] = {};
-
-            // Only select if not already selected
-            if (!selections[currentWorldId][termValue]) {
-                selections[currentWorldId][termValue] = true;
-                term.classList.add('selected');
+        // Wrap the range in a span
+        try {
+            const wrapper = document.createElement('span');
+            wrapper.className = 'custom-selection';
+            wrapper.dataset.selectionId = id;
+            if (note) {
+                wrapper.dataset.note = note;
+                wrapper.classList.add('has-note');
             }
+            range.surroundContents(wrapper);
+
+            // Add click handler to remove
+            wrapper.addEventListener('click', handleCustomSelectionClick);
+        } catch (e) {
+            // surroundContents can fail if selection spans multiple elements
+            console.warn('Could not wrap selection visually, storing text only:', e);
         }
-    });
-}
 
-// Feature 2: Handle click on custom selection to show remove option
-function handleCustomSelectionClick(e) {
-    e.stopPropagation();
-    const selectionEl = e.currentTarget;
-    const selectionId = selectionEl.dataset.selectionId;
+        // Store the selection
+        customSelections[currentWorldId].push({
+            id: id,
+            text: text,
+            note: note
+        });
 
-    // Create remove popup
-    hideSelectionPopup();
-    const popup = document.createElement('div');
-    popup.id = 'selection-popup-menu';
-    popup.className = 'remove-popup';
-    popup.innerHTML = `
+        updateSelectionCounter();
+        updateWorldTabIndicators();
+    }
+
+    // Feature 1: Auto-select interactive-terms within a marked range
+    function autoSelectInteractiveTermsInRange(range) {
+        const contentArea = document.getElementById('world-content-area');
+        if (!contentArea) return;
+
+        // Find all interactive-terms
+        const terms = contentArea.querySelectorAll('.interactive-term');
+
+        terms.forEach(term => {
+            // Check if the term is within or overlaps with the selection range
+            if (range.intersectsNode(term)) {
+                const termValue = term.dataset.term;
+                if (!selections[currentWorldId]) selections[currentWorldId] = {};
+
+                // Only select if not already selected
+                if (!selections[currentWorldId][termValue]) {
+                    selections[currentWorldId][termValue] = true;
+                    term.classList.add('selected');
+                }
+            }
+        });
+    }
+
+    // Feature 2: Handle click on custom selection to show remove option
+    function handleCustomSelectionClick(e) {
+        e.stopPropagation();
+        const selectionEl = e.currentTarget;
+        const selectionId = selectionEl.dataset.selectionId;
+
+        // Create remove popup
+        hideSelectionPopup();
+        const popup = document.createElement('div');
+        popup.id = 'selection-popup-menu';
+        popup.className = 'remove-popup';
+        popup.innerHTML = `
         <button id="remove-selection-btn" class="remove-btn">
             <svg class="inline-block w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -2730,427 +2796,447 @@ function handleCustomSelectionClick(e) {
         </button>
     `;
 
-    // Position at element
-    const rect = selectionEl.getBoundingClientRect();
-    popup.style.left = `${rect.left}px`;
-    popup.style.top = `${rect.bottom + 5}px`;
+        // Position at element
+        const rect = selectionEl.getBoundingClientRect();
+        popup.style.left = `${rect.left}px`;
+        popup.style.top = `${rect.bottom + 5}px`;
 
-    document.body.appendChild(popup);
+        document.body.appendChild(popup);
 
-    document.getElementById('remove-selection-btn').onclick = () => {
-        removeCustomSelection(selectionId, selectionEl);
-        hideSelectionPopup();
-    };
-}
-
-function removeCustomSelection(selectionId, element) {
-    if (!currentWorldId || !customSelections[currentWorldId]) return;
-
-    // Remove from state
-    customSelections[currentWorldId] = customSelections[currentWorldId].filter(
-        sel => sel.id !== selectionId
-    );
-
-    // Unwrap the element (keep the text content)
-    const parent = element.parentNode;
-    while (element.firstChild) {
-        parent.insertBefore(element.firstChild, element);
-    }
-    parent.removeChild(element);
-
-    updateSelectionCounter();
-    updateWorldTabIndicators();
-}
-
-// Feature 3: Update selection counter in footer
-function updateSelectionCounter() {
-    const counter = document.getElementById('selection-counter');
-    const termCountEl = document.getElementById('term-count');
-    const passageCountEl = document.getElementById('passage-count');
-    const resetBtn = document.getElementById('reset-selections-btn');
-
-    if (!counter || !termCountEl || !passageCountEl) return;
-
-    const termCount = Object.keys(selections[currentWorldId] || {}).length;
-    const passageCount = (customSelections[currentWorldId] || []).length;
-
-    termCountEl.textContent = termCount;
-    passageCountEl.textContent = passageCount;
-
-    // Show/hide counter and reset button based on selections
-    if (termCount > 0 || passageCount > 0) {
-        counter.classList.remove('hidden');
-        if (resetBtn) resetBtn.classList.remove('hidden');
-    } else {
-        counter.classList.add('hidden');
-        if (resetBtn) resetBtn.classList.add('hidden');
-    }
-}
-
-// Feature 4: Reset all selections for current world
-function resetAllSelections() {
-    if (!currentWorldId) return;
-
-    // Clear state
-    selections[currentWorldId] = {};
-    customSelections[currentWorldId] = [];
-
-    // Clear visual state
-    const contentArea = document.getElementById('world-content-area');
-    if (contentArea) {
-        // Remove selected class from interactive-terms
-        contentArea.querySelectorAll('.interactive-term.selected').forEach(el => {
-            el.classList.remove('selected');
-        });
-
-        // Unwrap custom selections
-        contentArea.querySelectorAll('.custom-selection').forEach(el => {
-            const parent = el.parentNode;
-            while (el.firstChild) {
-                parent.insertBefore(el.firstChild, el);
-            }
-            parent.removeChild(el);
-        });
+        document.getElementById('remove-selection-btn').onclick = () => {
+            removeCustomSelection(selectionId, selectionEl);
+            hideSelectionPopup();
+        };
     }
 
-    updateSelectionCounter();
-    updateWorldTabIndicators();
-}
+    function removeCustomSelection(selectionId, element) {
+        if (!currentWorldId || !customSelections[currentWorldId]) return;
 
-// Feature 6: Update world tab indicators
-function updateWorldTabIndicators() {
-    const container = document.getElementById('world-tabs');
-    if (!container) return;
+        // Remove from state
+        customSelections[currentWorldId] = customSelections[currentWorldId].filter(
+            sel => sel.id !== selectionId
+        );
 
-    // Check all world tabs for existing indicators and update them
-    Object.keys(CREATIVE_WORLDS).forEach(worldId => {
-        const hasTerms = Object.keys(selections[worldId] || {}).length > 0;
-        const hasPassages = (customSelections[worldId] || []).length > 0;
-        const hasSelections = hasTerms || hasPassages;
-
-        // Find the tab button for this world
-        const btn = container.querySelector(`[data-id="${worldId}"]`);
-        if (btn) {
-            updateTabIndicator(btn, hasSelections);
+        // If element is not provided, try to find it
+        if (!element) {
+            element = document.querySelector(`.custom-selection[data-selection-id="${selectionId}"]`);
         }
 
-        // Also check group triggers (for grouped worlds)
-        const world = CREATIVE_WORLDS[worldId];
-        if (world.group) {
-            // Find if any world in this group has selections
-            const groupHasSelections = Object.values(CREATIVE_WORLDS)
-                .filter(w => w.group === world.group)
-                .some(w => {
-                    return Object.keys(selections[w.id] || {}).length > 0 ||
-                        (customSelections[w.id] || []).length > 0;
-                });
-
-            // Update group trigger if exists
-            const groupContainer = container.querySelector('.world-tab-group');
-            if (groupContainer) {
-                const groupBtn = groupContainer.querySelector('.group-trigger');
-                if (groupBtn) {
-                    updateTabIndicator(groupBtn, groupHasSelections);
-                }
+        if (element) {
+            // Unwrap the element (keep the text content)
+            const parent = element.parentNode;
+            while (element.firstChild) {
+                parent.insertBefore(element.firstChild, element);
             }
+            parent.removeChild(element);
         }
-    });
-}
 
-function updateTabIndicator(btn, hasSelections) {
-    let indicator = btn.querySelector('.selection-indicator');
-
-    if (hasSelections && !indicator) {
-        // Add indicator
-        indicator = document.createElement('span');
-        indicator.className = 'selection-indicator';
-        btn.appendChild(indicator);
-    } else if (!hasSelections && indicator) {
-        // Remove indicator
-        indicator.remove();
+        updateSelectionCounter();
+        updateWorldTabIndicators();
     }
-}
 
-function openIdeaStarter() {
-    const modal = document.getElementById('idea-starter-modal');
-    modal.classList.remove('hidden');
-    modal.classList.add('flex', 'fade-in');
+    function undoLastSelection() {
+        if (!currentWorldId || !customSelections[currentWorldId]) return;
 
-    if (!currentWorldId) {
-        selectWorld('orchestra_treatise'); // Default
+        const selections = customSelections[currentWorldId];
+        if (selections.length === 0) return;
+
+        // Get the last one
+        const lastSelection = selections[selections.length - 1];
+
+        // Remove it
+        removeCustomSelection(lastSelection.id);
     }
-}
 
-function closeIdeaStarter() {
-    const modal = document.getElementById('idea-starter-modal');
-    modal.classList.add('hidden');
-    modal.classList.remove('flex');
-}
+    // Feature 3: Update selection counter in footer
+    function updateSelectionCounter() {
+        const counter = document.getElementById('selection-counter');
+        const termCountEl = document.getElementById('term-count');
+        const passageCountEl = document.getElementById('passage-count');
+        const resetBtn = document.getElementById('reset-selections-btn');
 
-function renderWorldTabs() {
-    const container = document.getElementById('world-tabs');
-    if (!container) return;
-    container.innerHTML = '';
+        if (!counter || !termCountEl || !passageCountEl) return;
 
-    const groups = {};
-    const singles = [];
+        const termCount = Object.keys(selections[currentWorldId] || {}).length;
+        const passageCount = (customSelections[currentWorldId] || []).length;
 
-    // Sort into groups and singles
-    Object.values(CREATIVE_WORLDS).forEach(world => {
-        if (world.group) {
-            if (!groups[world.group]) groups[world.group] = [];
-            groups[world.group].push(world);
+        termCountEl.textContent = termCount;
+        passageCountEl.textContent = passageCount;
+
+        // Show/hide counter and reset button based on selections
+        if (termCount > 0 || passageCount > 0) {
+            counter.classList.remove('hidden');
+            if (resetBtn) resetBtn.classList.remove('hidden');
         } else {
-            singles.push(world);
+            counter.classList.add('hidden');
+            if (resetBtn) resetBtn.classList.add('hidden');
         }
-    });
+    }
 
-    // Render Groups first (specifically Orchestra Group)
-    Object.keys(groups).forEach(groupId => {
-        const groupItems = groups[groupId];
-        const headerItem = groupItems.find(i => i.id === 'orchestra_treatise') || groupItems[0];
+    // Feature 4: Reset all selections for current world
+    function resetAllSelections() {
+        if (!currentWorldId) return;
 
-        const groupContainer = document.createElement('div');
-        groupContainer.className = 'world-tab-group relative'; // Removed group/dropdown hover logic
+        // Clear state
+        selections[currentWorldId] = {};
+        customSelections[currentWorldId] = [];
 
-        const mainBtn = document.createElement('button');
-        mainBtn.className = `world-tab group-trigger`;
-        mainBtn.innerHTML = `<span class="mr-2">${headerItem.icon}</span>${headerItem.name} <svg class="w-3 h-3 ml-1 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>`;
-
-        // Select main item on click
-        mainBtn.onclick = () => selectWorld(headerItem.id);
-
-        // Hover logic for Portal Dropdown
-        let dropdownTimeout;
-
-        const showPortalDropdown = () => {
-            clearTimeout(dropdownTimeout);
-            // Check if already open
-            if (document.getElementById(`dropdown-${groupId}`)) return;
-
-            // Close other dropdowns
-            document.querySelectorAll('.portal-dropdown').forEach(el => el.remove());
-
-            const rect = mainBtn.getBoundingClientRect();
-
-            const dropdown = document.createElement('div');
-            dropdown.id = `dropdown-${groupId}`;
-            dropdown.className = `portal-dropdown fixed bg-[#0b0b14] border border-neutral-700 rounded-xl shadow-xl z-[9999] flex flex-col overflow-hidden animate-fade-in`;
-            dropdown.style.top = `${rect.bottom + 8}px`; // bit of spacing
-            dropdown.style.left = `${rect.left}px`;
-            dropdown.style.minWidth = `${rect.width}px`;
-
-            groupItems.forEach(item => {
-                const itemBtn = document.createElement('button');
-                itemBtn.className = `text-left px-4 py-3 text-sm text-neutral-400 hover:text-white hover:bg-white/5 transition-colors flex items-center gap-2 border-b border-white/5 last:border-0 pointer-events-auto`;
-                itemBtn.innerHTML = `<span>${item.icon}</span> ${item.name}`;
-                itemBtn.onclick = (e) => {
-                    e.stopPropagation();
-                    selectWorld(item.id);
-                    dropdown.remove(); // Close on selection
-                };
-
-                // Highlight active
-                if (currentWorldId === item.id) {
-                    itemBtn.classList.add('text-white', 'bg-white/10');
-                }
-
-                dropdown.appendChild(itemBtn);
+        // Clear visual state
+        const contentArea = document.getElementById('world-content-area');
+        if (contentArea) {
+            // Remove selected class from interactive-terms
+            contentArea.querySelectorAll('.interactive-term.selected').forEach(el => {
+                el.classList.remove('selected');
             });
 
-            // Handle mouse interactions on dropdown
-            dropdown.onmouseenter = () => clearTimeout(dropdownTimeout);
-            dropdown.onmouseleave = () => {
-                dropdownTimeout = setTimeout(() => dropdown.remove(), 200);
+            // Unwrap custom selections
+            contentArea.querySelectorAll('.custom-selection').forEach(el => {
+                const parent = el.parentNode;
+                while (el.firstChild) {
+                    parent.insertBefore(el.firstChild, el);
+                }
+                parent.removeChild(el);
+            });
+        }
+
+        updateSelectionCounter();
+        updateWorldTabIndicators();
+    }
+
+    // Feature 6: Update world tab indicators
+    function updateWorldTabIndicators() {
+        const container = document.getElementById('world-tabs');
+        if (!container) return;
+
+        // Check all world tabs for existing indicators and update them
+        Object.keys(CREATIVE_WORLDS).forEach(worldId => {
+            const hasTerms = Object.keys(selections[worldId] || {}).length > 0;
+            const hasPassages = (customSelections[worldId] || []).length > 0;
+            const hasSelections = hasTerms || hasPassages;
+
+            // Find the tab button for this world
+            const btn = container.querySelector(`[data-id="${worldId}"]`);
+            if (btn) {
+                updateTabIndicator(btn, hasSelections);
+            }
+
+            // Also check group triggers (for grouped worlds)
+            const world = CREATIVE_WORLDS[worldId];
+            if (world.group) {
+                // Find if any world in this group has selections
+                const groupHasSelections = Object.values(CREATIVE_WORLDS)
+                    .filter(w => w.group === world.group)
+                    .some(w => {
+                        return Object.keys(selections[w.id] || {}).length > 0 ||
+                            (customSelections[w.id] || []).length > 0;
+                    });
+
+                // Update group trigger if exists
+                const groupContainer = container.querySelector('.world-tab-group');
+                if (groupContainer) {
+                    const groupBtn = groupContainer.querySelector('.group-trigger');
+                    if (groupBtn) {
+                        updateTabIndicator(groupBtn, groupHasSelections);
+                    }
+                }
+            }
+        });
+    }
+
+    function updateTabIndicator(btn, hasSelections) {
+        let indicator = btn.querySelector('.selection-indicator');
+
+        if (hasSelections && !indicator) {
+            // Add indicator
+            indicator = document.createElement('span');
+            indicator.className = 'selection-indicator';
+            btn.appendChild(indicator);
+        } else if (!hasSelections && indicator) {
+            // Remove indicator
+            indicator.remove();
+        }
+    }
+
+    function openIdeaStarter() {
+        const modal = document.getElementById('idea-starter-modal');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex', 'fade-in');
+
+        if (!currentWorldId) {
+            selectWorld('orchestra_treatise'); // Default
+        }
+    }
+
+    function closeIdeaStarter() {
+        const modal = document.getElementById('idea-starter-modal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
+
+    function renderWorldTabs() {
+        const container = document.getElementById('world-tabs');
+        if (!container) return;
+        container.innerHTML = '';
+
+        const groups = {};
+        const singles = [];
+
+        // Sort into groups and singles
+        Object.values(CREATIVE_WORLDS).forEach(world => {
+            if (world.group) {
+                if (!groups[world.group]) groups[world.group] = [];
+                groups[world.group].push(world);
+            } else {
+                singles.push(world);
+            }
+        });
+
+        // Render Groups first (specifically Orchestra Group)
+        Object.keys(groups).forEach(groupId => {
+            const groupItems = groups[groupId];
+            const headerItem = groupItems.find(i => i.id === 'orchestra_treatise') || groupItems[0];
+
+            const groupContainer = document.createElement('div');
+            groupContainer.className = 'world-tab-group relative'; // Removed group/dropdown hover logic
+
+            const mainBtn = document.createElement('button');
+            mainBtn.className = `world-tab group-trigger`;
+            mainBtn.innerHTML = `<span class="mr-2">${headerItem.icon}</span>${headerItem.name} <svg class="w-3 h-3 ml-1 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>`;
+
+            // Select main item on click
+            mainBtn.onclick = () => selectWorld(headerItem.id);
+
+            // Hover logic for Portal Dropdown
+            let dropdownTimeout;
+
+            const showPortalDropdown = () => {
+                clearTimeout(dropdownTimeout);
+                // Check if already open
+                if (document.getElementById(`dropdown-${groupId}`)) return;
+
+                // Close other dropdowns
+                document.querySelectorAll('.portal-dropdown').forEach(el => el.remove());
+
+                const rect = mainBtn.getBoundingClientRect();
+
+                const dropdown = document.createElement('div');
+                dropdown.id = `dropdown-${groupId}`;
+                dropdown.className = `portal-dropdown fixed bg-[#0b0b14] border border-neutral-700 rounded-xl shadow-xl z-[9999] flex flex-col overflow-hidden animate-fade-in`;
+                dropdown.style.top = `${rect.bottom + 8}px`; // bit of spacing
+                dropdown.style.left = `${rect.left}px`;
+                dropdown.style.minWidth = `${rect.width}px`;
+
+                groupItems.forEach(item => {
+                    const itemBtn = document.createElement('button');
+                    itemBtn.className = `text-left px-4 py-3 text-sm text-neutral-400 hover:text-white hover:bg-white/5 transition-colors flex items-center gap-2 border-b border-white/5 last:border-0 pointer-events-auto`;
+                    itemBtn.innerHTML = `<span>${item.icon}</span> ${item.name}`;
+                    itemBtn.onclick = (e) => {
+                        e.stopPropagation();
+                        selectWorld(item.id);
+                        dropdown.remove(); // Close on selection
+                    };
+
+                    // Highlight active
+                    if (currentWorldId === item.id) {
+                        itemBtn.classList.add('text-white', 'bg-white/10');
+                    }
+
+                    dropdown.appendChild(itemBtn);
+                });
+
+                // Handle mouse interactions on dropdown
+                dropdown.onmouseenter = () => clearTimeout(dropdownTimeout);
+                dropdown.onmouseleave = () => {
+                    dropdownTimeout = setTimeout(() => dropdown.remove(), 200);
+                };
+
+                document.body.appendChild(dropdown);
             };
 
-            document.body.appendChild(dropdown);
-        };
+            const hidePortalDropdown = () => {
+                dropdownTimeout = setTimeout(() => {
+                    const dropdown = document.getElementById(`dropdown-${groupId}`);
+                    if (dropdown) dropdown.remove();
+                }, 200);
+            };
 
-        const hidePortalDropdown = () => {
-            dropdownTimeout = setTimeout(() => {
-                const dropdown = document.getElementById(`dropdown-${groupId}`);
-                if (dropdown) dropdown.remove();
-            }, 200);
-        };
+            mainBtn.onmouseenter = showPortalDropdown;
+            mainBtn.onmouseleave = hidePortalDropdown;
 
-        mainBtn.onmouseenter = showPortalDropdown;
-        mainBtn.onmouseleave = hidePortalDropdown;
+            // Cleanup on scroll or click elsewhere? 
+            // Ideally we should listen to window events but for now simple hover is enough.
 
-        // Cleanup on scroll or click elsewhere? 
-        // Ideally we should listen to window events but for now simple hover is enough.
-
-        groupContainer.appendChild(mainBtn);
-        container.appendChild(groupContainer);
-    });
-
-    // Render Singles
-    singles.forEach(world => {
-        const btn = document.createElement('button');
-        btn.className = `world-tab`;
-        btn.dataset.id = world.id;
-        btn.innerHTML = `<span class="mr-2">${world.icon}</span>${world.name}`;
-        btn.onclick = () => selectWorld(world.id);
-        container.appendChild(btn);
-    });
-}
-
-function selectWorld(worldId) {
-    currentWorldId = worldId;
-
-    // Initialize state if needed
-    if (!selections[currentWorldId]) selections[currentWorldId] = {};
-
-    // Update active state for main tabs and dropdown itmes
-    document.querySelectorAll('.world-tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.world-tab-dropdown button').forEach(t => t.classList.remove('text-white', 'bg-white/10'));
-
-    const activeItemBtn = document.querySelector(`.world-tab-dropdown button[data-id="${worldId}"]`);
-    if (activeItemBtn) {
-        activeItemBtn.classList.add('text-white', 'bg-white/10');
-        // Also highlight the parent group button
-        const groupWrapper = activeItemBtn.closest('.world-tab-group');
-        if (groupWrapper) {
-            const trigger = groupWrapper.querySelector('.world-tab');
-            if (trigger) trigger.classList.add('active');
-        }
-    } else {
-        // Must be a single tab or the group trigger itself acting as a tab (if clicked directly)
-        const btn = document.querySelector(`.world-tab[data-id="${worldId}"]`);
-        if (btn) btn.classList.add('active');
-
-        // Using the loop to find buttons by data-id is safer? 
-        // Actually, the previous implementation used querySelectorAll based on dataset.
-        // Let's support both.
-        document.querySelectorAll(`.world-tab`).forEach(t => {
-            // If this tab is the one, or if it's a group trigger for the active group
-            if (t.dataset.id === worldId) {
-                t.classList.add('active');
-            }
+            groupContainer.appendChild(mainBtn);
+            container.appendChild(groupContainer);
         });
 
-        // Identify group membership for highlighting
-        const world = CREATIVE_WORLDS[worldId];
-        if (world && world.group) {
-            // Highlight group trigger
-            // Just find any group that contains this... logic handled above by 'activeItemBtn' check mostly.
-            // If we clicked the main button "Das Orchester", renderWorldTabs assigned it an onclick for a specific ID.
-            // So it corresponds to a dataset.id on the MAIN button if we set it.
-            // In my new renderWorldTabs, I removed dataset.id from mainBtn unless I want it to be select directly.
-            // I DID add it in my thought process "mainBtn.dataset.id = headerItem.id ??". 
-            // Let's verify what I wrote in the block above.
-            // "mainBtn.onclick = () => selectWorld(headerItem.id);" - but I commented out dataset.id. 
-            // Better to re-add selection logic visual update:
-        }
+        // Render Singles
+        singles.forEach(world => {
+            const btn = document.createElement('button');
+            btn.className = `world-tab`;
+            btn.dataset.id = world.id;
+            btn.innerHTML = `<span class="mr-2">${world.icon}</span>${world.name}`;
+            btn.onclick = () => selectWorld(world.id);
+            container.appendChild(btn);
+        });
     }
 
-    const contentArea = document.getElementById('world-content-area');
-    contentArea.classList.add('opacity-0', 'translate-y-4');
+    function selectWorld(worldId) {
+        currentWorldId = worldId;
 
-    setTimeout(() => {
-        const world = CREATIVE_WORLDS[worldId];
-        contentArea.innerHTML = `<div class="wiki-article animate-zoom-in">${world.wikiContent}</div>`;
-        contentArea.classList.remove('opacity-0', 'translate-y-4');
+        // Initialize state if needed
+        if (!selections[currentWorldId]) selections[currentWorldId] = {};
 
-        // Restore selections (Apply visual state)
-        const currentSelectedTerms = selections[currentWorldId];
-        const terms = contentArea.querySelectorAll('.interactive-term');
-        terms.forEach(el => {
-            // Check data-term
-            const val = el.dataset.term;
-            if (currentSelectedTerms[val]) {
-                el.classList.add('selected');
+        // Update active state for main tabs and dropdown itmes
+        document.querySelectorAll('.world-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.world-tab-dropdown button').forEach(t => t.classList.remove('text-white', 'bg-white/10'));
+
+        const activeItemBtn = document.querySelector(`.world-tab-dropdown button[data-id="${worldId}"]`);
+        if (activeItemBtn) {
+            activeItemBtn.classList.add('text-white', 'bg-white/10');
+            // Also highlight the parent group button
+            const groupWrapper = activeItemBtn.closest('.world-tab-group');
+            if (groupWrapper) {
+                const trigger = groupWrapper.querySelector('.world-tab');
+                if (trigger) trigger.classList.add('active');
             }
-        });
+        } else {
+            // Must be a single tab or the group trigger itself acting as a tab (if clicked directly)
+            const btn = document.querySelector(`.world-tab[data-id="${worldId}"]`);
+            if (btn) btn.classList.add('active');
 
-        // Update counter for this world
+            // Using the loop to find buttons by data-id is safer? 
+            // Actually, the previous implementation used querySelectorAll based on dataset.
+            // Let's support both.
+            document.querySelectorAll(`.world-tab`).forEach(t => {
+                // If this tab is the one, or if it's a group trigger for the active group
+                if (t.dataset.id === worldId) {
+                    t.classList.add('active');
+                }
+            });
+
+            // Identify group membership for highlighting
+            const world = CREATIVE_WORLDS[worldId];
+            if (world && world.group) {
+                // Highlight group trigger
+                // Just find any group that contains this... logic handled above by 'activeItemBtn' check mostly.
+                // If we clicked the main button "Das Orchester", renderWorldTabs assigned it an onclick for a specific ID.
+                // So it corresponds to a dataset.id on the MAIN button if we set it.
+                // In my new renderWorldTabs, I removed dataset.id from mainBtn unless I want it to be select directly.
+                // I DID add it in my thought process "mainBtn.dataset.id = headerItem.id ??". 
+                // Let's verify what I wrote in the block above.
+                // "mainBtn.onclick = () => selectWorld(headerItem.id);" - but I commented out dataset.id. 
+                // Better to re-add selection logic visual update:
+            }
+        }
+
+        const contentArea = document.getElementById('world-content-area');
+        contentArea.classList.add('opacity-0', 'translate-y-4');
+
+        setTimeout(() => {
+            const world = CREATIVE_WORLDS[worldId];
+            contentArea.innerHTML = `<div class="wiki-article animate-zoom-in">${world.wikiContent}</div>`;
+            contentArea.classList.remove('opacity-0', 'translate-y-4');
+
+            // Restore selections (Apply visual state)
+            const currentSelectedTerms = selections[currentWorldId];
+            const terms = contentArea.querySelectorAll('.interactive-term');
+            terms.forEach(el => {
+                // Check data-term
+                const val = el.dataset.term;
+                if (currentSelectedTerms[val]) {
+                    el.classList.add('selected');
+                }
+            });
+
+            // Update counter for this world
+            updateSelectionCounter();
+        }, 300);
+    }
+
+    function toggleTerm(el) {
+        const term = el.dataset.term;
+        if (!selections[currentWorldId]) selections[currentWorldId] = {};
+
+        const isSelected = !!selections[currentWorldId][term];
+
+        if (isSelected) {
+            // Remove
+            delete selections[currentWorldId][term];
+            el.classList.remove('selected');
+        } else {
+            // Add
+            selections[currentWorldId][term] = true;
+            el.classList.add('selected');
+        }
+
         updateSelectionCounter();
-    }, 300);
-}
-
-function toggleTerm(el) {
-    const term = el.dataset.term;
-    if (!selections[currentWorldId]) selections[currentWorldId] = {};
-
-    const isSelected = !!selections[currentWorldId][term];
-
-    if (isSelected) {
-        // Remove
-        delete selections[currentWorldId][term];
-        el.classList.remove('selected');
-    } else {
-        // Add
-        selections[currentWorldId][term] = true;
-        el.classList.add('selected');
+        updateWorldTabIndicators();
     }
 
-    updateSelectionCounter();
-    updateWorldTabIndicators();
-}
+    // === API GENERATION ===
+    async function generateVision() {
+        const activeWorld = CREATIVE_WORLDS[currentWorldId];
+        const worldSelections = selections[currentWorldId] || {};
+        const worldCustomSelections = customSelections[currentWorldId] || [];
 
-// === API GENERATION ===
-async function generateVision() {
-    const activeWorld = CREATIVE_WORLDS[currentWorldId];
-    const worldSelections = selections[currentWorldId] || {};
-    const worldCustomSelections = customSelections[currentWorldId] || [];
+        const selectedKeys = Object.keys(worldSelections);
+        const customTexts = worldCustomSelections.map(s => s.text);
 
-    const selectedKeys = Object.keys(worldSelections);
-    const customTexts = worldCustomSelections.map(s => s.text);
+        // Require at least one selection (either interactive-term or custom)
+        if (selectedKeys.length === 0 && customTexts.length === 0) {
+            alert("Bitte klicke auf ein paar Begriffe im Text oder markiere Textpassagen, bevor du startest.");
+            return;
+        }
 
-    // Require at least one selection (either interactive-term or custom)
-    if (selectedKeys.length === 0 && customTexts.length === 0) {
-        alert("Bitte klicke auf ein paar Begriffe im Text oder markiere Textpassagen, bevor du startest.");
-        return;
-    }
-
-    // Build user input including both types of selections
-    let userInput = `
+        // Build user input including both types of selections
+        let userInput = `
     World: ${activeWorld.name}
     `;
 
-    if (selectedKeys.length > 0) {
-        userInput += `
+        if (selectedKeys.length > 0) {
+            userInput += `
     Selected Terms:
     ${selectedKeys.map(k => `- ${k}`).join('\n')}
     `;
-    }
+        }
 
-    if (worldCustomSelections.length > 0) {
-        userInput += `
+        if (worldCustomSelections.length > 0) {
+            userInput += `
     Custom Marked Passages:
     ${worldCustomSelections.map(s => {
-            if (s.note) {
-                return `- "${s.text}" [Notiz: ${s.note}]`;
-            }
-            return `- "${s.text}"`;
-        }).join('\n')}
+                if (s.note) {
+                    return `- "${s.text}" [Notiz: ${s.note}]`;
+                }
+                return `- "${s.text}"`;
+            }).join('\n')}
     `;
-    }
-
-    const btn = document.getElementById('generate-idea-btn');
-    const spinner = document.getElementById('gen-spinner');
-    const icon = document.getElementById('gen-icon');
-
-    btn.disabled = true;
-    spinner.classList.remove('hidden');
-    icon.classList.add('hidden');
-
-    try {
-        const prompt = await callOpenRouterAPI(userInput, CREATIVE_SYSTEM_PROMPT);
-
-        const ideaInput = document.getElementById('idea-input');
-        if (ideaInput) {
-            ideaInput.value = prompt;
-            ideaInput.classList.add('pulse');
-            setTimeout(() => ideaInput.classList.remove('pulse'), 500);
         }
-        closeIdeaStarter();
 
-    } catch (e) {
-        alert("Fehler bei der Generierung: " + e.message);
-    } finally {
-        btn.disabled = false;
-        spinner.classList.add('hidden');
-        icon.classList.remove('hidden');
+        const btn = document.getElementById('generate-idea-btn');
+        const spinner = document.getElementById('gen-spinner');
+        const icon = document.getElementById('gen-icon');
+
+        btn.disabled = true;
+        spinner.classList.remove('hidden');
+        icon.classList.add('hidden');
+
+        try {
+            const prompt = await callOpenRouterAPI(userInput, CREATIVE_SYSTEM_PROMPT);
+
+            const ideaInput = document.getElementById('idea-input');
+            if (ideaInput) {
+                ideaInput.value = prompt;
+                ideaInput.classList.add('pulse');
+                setTimeout(() => ideaInput.classList.remove('pulse'), 500);
+            }
+            closeIdeaStarter();
+
+        } catch (e) {
+            alert("Fehler bei der Generierung: " + e.message);
+        } finally {
+            btn.disabled = false;
+            spinner.classList.add('hidden');
+            icon.classList.remove('hidden');
+        }
     }
-}
