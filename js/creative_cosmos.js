@@ -2532,6 +2532,12 @@ function initCreativeCosmos() {
     });
 
     renderWorldTabs();
+
+    // Reset button handler
+    const resetBtn = document.getElementById('reset-selections-btn');
+    if (resetBtn) {
+        resetBtn.addEventListener('click', resetAllSelections);
+    }
 }
 
 // === TEXT SELECTION MARKING FUNCTIONS ===
@@ -2565,11 +2571,17 @@ function showSelectionPopup(x, y, selectedText, range) {
     const popup = document.createElement('div');
     popup.id = 'selection-popup-menu';
     popup.innerHTML = `
-        <button id="mark-selection-btn">
+        <button id="mark-selection-btn" class="mark-btn">
+            <svg class="inline-block w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            Markieren
+        </button>
+        <button id="mark-with-note-btn" class="note-btn">
             <svg class="inline-block w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
             </svg>
-            Markieren
+            + Notiz
         </button>
     `;
 
@@ -2590,9 +2602,14 @@ function showSelectionPopup(x, y, selectedText, range) {
 
     // Handle mark button click
     document.getElementById('mark-selection-btn').onclick = () => {
-        markSelectedText(selectedText, range);
+        markSelectedText(selectedText, range, null);
         hideSelectionPopup();
         window.getSelection().removeAllRanges();
+    };
+
+    // Handle mark with note button click
+    document.getElementById('mark-with-note-btn').onclick = () => {
+        showNoteInput(popup, selectedText, range);
     };
 }
 
@@ -2601,7 +2618,34 @@ function hideSelectionPopup() {
     if (popup) popup.remove();
 }
 
-function markSelectedText(text, range) {
+function showNoteInput(popup, selectedText, range) {
+    popup.innerHTML = `
+        <div class="note-input-container">
+            <input type="text" id="note-input" placeholder="Notiz eingeben..." maxlength="100" />
+            <button id="confirm-note-btn">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </button>
+        </div>
+    `;
+    const input = document.getElementById('note-input');
+    input.focus();
+
+    const confirmNote = () => {
+        const note = input.value.trim();
+        markSelectedText(selectedText, range, note || null);
+        hideSelectionPopup();
+        window.getSelection().removeAllRanges();
+    };
+
+    document.getElementById('confirm-note-btn').onclick = confirmNote;
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') confirmNote();
+    });
+}
+
+function markSelectedText(text, range, note) {
     if (!currentWorldId) return;
 
     // Initialize custom selections for this world if needed
@@ -2611,23 +2655,220 @@ function markSelectedText(text, range) {
 
     const id = generateUniqueId();
 
+    // Find and auto-select any interactive-terms within the range
+    autoSelectInteractiveTermsInRange(range);
+
     // Wrap the range in a span
     try {
         const wrapper = document.createElement('span');
         wrapper.className = 'custom-selection';
         wrapper.dataset.selectionId = id;
+        if (note) {
+            wrapper.dataset.note = note;
+            wrapper.classList.add('has-note');
+        }
         range.surroundContents(wrapper);
+
+        // Add click handler to remove
+        wrapper.addEventListener('click', handleCustomSelectionClick);
     } catch (e) {
         // surroundContents can fail if selection spans multiple elements
-        // In that case, just store the text without visual marking
         console.warn('Could not wrap selection visually, storing text only:', e);
     }
 
     // Store the selection
     customSelections[currentWorldId].push({
         id: id,
-        text: text
+        text: text,
+        note: note
     });
+
+    updateSelectionCounter();
+    updateWorldTabIndicators();
+}
+
+// Feature 1: Auto-select interactive-terms within a marked range
+function autoSelectInteractiveTermsInRange(range) {
+    const contentArea = document.getElementById('world-content-area');
+    if (!contentArea) return;
+
+    // Find all interactive-terms
+    const terms = contentArea.querySelectorAll('.interactive-term');
+
+    terms.forEach(term => {
+        // Check if the term is within or overlaps with the selection range
+        if (range.intersectsNode(term)) {
+            const termValue = term.dataset.term;
+            if (!selections[currentWorldId]) selections[currentWorldId] = {};
+
+            // Only select if not already selected
+            if (!selections[currentWorldId][termValue]) {
+                selections[currentWorldId][termValue] = true;
+                term.classList.add('selected');
+            }
+        }
+    });
+}
+
+// Feature 2: Handle click on custom selection to show remove option
+function handleCustomSelectionClick(e) {
+    e.stopPropagation();
+    const selectionEl = e.currentTarget;
+    const selectionId = selectionEl.dataset.selectionId;
+
+    // Create remove popup
+    hideSelectionPopup();
+    const popup = document.createElement('div');
+    popup.id = 'selection-popup-menu';
+    popup.className = 'remove-popup';
+    popup.innerHTML = `
+        <button id="remove-selection-btn" class="remove-btn">
+            <svg class="inline-block w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+            </svg>
+            Markierung entfernen
+        </button>
+    `;
+
+    // Position at element
+    const rect = selectionEl.getBoundingClientRect();
+    popup.style.left = `${rect.left}px`;
+    popup.style.top = `${rect.bottom + 5}px`;
+
+    document.body.appendChild(popup);
+
+    document.getElementById('remove-selection-btn').onclick = () => {
+        removeCustomSelection(selectionId, selectionEl);
+        hideSelectionPopup();
+    };
+}
+
+function removeCustomSelection(selectionId, element) {
+    if (!currentWorldId || !customSelections[currentWorldId]) return;
+
+    // Remove from state
+    customSelections[currentWorldId] = customSelections[currentWorldId].filter(
+        sel => sel.id !== selectionId
+    );
+
+    // Unwrap the element (keep the text content)
+    const parent = element.parentNode;
+    while (element.firstChild) {
+        parent.insertBefore(element.firstChild, element);
+    }
+    parent.removeChild(element);
+
+    updateSelectionCounter();
+    updateWorldTabIndicators();
+}
+
+// Feature 3: Update selection counter in footer
+function updateSelectionCounter() {
+    const counter = document.getElementById('selection-counter');
+    const termCountEl = document.getElementById('term-count');
+    const passageCountEl = document.getElementById('passage-count');
+    const resetBtn = document.getElementById('reset-selections-btn');
+
+    if (!counter || !termCountEl || !passageCountEl) return;
+
+    const termCount = Object.keys(selections[currentWorldId] || {}).length;
+    const passageCount = (customSelections[currentWorldId] || []).length;
+
+    termCountEl.textContent = termCount;
+    passageCountEl.textContent = passageCount;
+
+    // Show/hide counter and reset button based on selections
+    if (termCount > 0 || passageCount > 0) {
+        counter.classList.remove('hidden');
+        if (resetBtn) resetBtn.classList.remove('hidden');
+    } else {
+        counter.classList.add('hidden');
+        if (resetBtn) resetBtn.classList.add('hidden');
+    }
+}
+
+// Feature 4: Reset all selections for current world
+function resetAllSelections() {
+    if (!currentWorldId) return;
+
+    // Clear state
+    selections[currentWorldId] = {};
+    customSelections[currentWorldId] = [];
+
+    // Clear visual state
+    const contentArea = document.getElementById('world-content-area');
+    if (contentArea) {
+        // Remove selected class from interactive-terms
+        contentArea.querySelectorAll('.interactive-term.selected').forEach(el => {
+            el.classList.remove('selected');
+        });
+
+        // Unwrap custom selections
+        contentArea.querySelectorAll('.custom-selection').forEach(el => {
+            const parent = el.parentNode;
+            while (el.firstChild) {
+                parent.insertBefore(el.firstChild, el);
+            }
+            parent.removeChild(el);
+        });
+    }
+
+    updateSelectionCounter();
+    updateWorldTabIndicators();
+}
+
+// Feature 6: Update world tab indicators
+function updateWorldTabIndicators() {
+    const container = document.getElementById('world-tabs');
+    if (!container) return;
+
+    // Check all world tabs for existing indicators and update them
+    Object.keys(CREATIVE_WORLDS).forEach(worldId => {
+        const hasTerms = Object.keys(selections[worldId] || {}).length > 0;
+        const hasPassages = (customSelections[worldId] || []).length > 0;
+        const hasSelections = hasTerms || hasPassages;
+
+        // Find the tab button for this world
+        const btn = container.querySelector(`[data-id="${worldId}"]`);
+        if (btn) {
+            updateTabIndicator(btn, hasSelections);
+        }
+
+        // Also check group triggers (for grouped worlds)
+        const world = CREATIVE_WORLDS[worldId];
+        if (world.group) {
+            // Find if any world in this group has selections
+            const groupHasSelections = Object.values(CREATIVE_WORLDS)
+                .filter(w => w.group === world.group)
+                .some(w => {
+                    return Object.keys(selections[w.id] || {}).length > 0 ||
+                        (customSelections[w.id] || []).length > 0;
+                });
+
+            // Update group trigger if exists
+            const groupContainer = container.querySelector('.world-tab-group');
+            if (groupContainer) {
+                const groupBtn = groupContainer.querySelector('.group-trigger');
+                if (groupBtn) {
+                    updateTabIndicator(groupBtn, groupHasSelections);
+                }
+            }
+        }
+    });
+}
+
+function updateTabIndicator(btn, hasSelections) {
+    let indicator = btn.querySelector('.selection-indicator');
+
+    if (hasSelections && !indicator) {
+        // Add indicator
+        indicator = document.createElement('span');
+        indicator.className = 'selection-indicator';
+        btn.appendChild(indicator);
+    } else if (!hasSelections && indicator) {
+        // Remove indicator
+        indicator.remove();
+    }
 }
 
 function openIdeaStarter() {
@@ -2821,6 +3062,9 @@ function selectWorld(worldId) {
                 el.classList.add('selected');
             }
         });
+
+        // Update counter for this world
+        updateSelectionCounter();
     }, 300);
 }
 
@@ -2839,6 +3083,9 @@ function toggleTerm(el) {
         selections[currentWorldId][term] = true;
         el.classList.add('selected');
     }
+
+    updateSelectionCounter();
+    updateWorldTabIndicators();
 }
 
 // === API GENERATION ===
@@ -2868,10 +3115,15 @@ async function generateVision() {
     `;
     }
 
-    if (customTexts.length > 0) {
+    if (worldCustomSelections.length > 0) {
         userInput += `
     Custom Marked Passages:
-    ${customTexts.map(t => `- "${t}"`).join('\n')}
+    ${worldCustomSelections.map(s => {
+            if (s.note) {
+                return `- "${s.text}" [Notiz: ${s.note}]`;
+            }
+            return `- "${s.text}"`;
+        }).join('\n')}
     `;
     }
 
