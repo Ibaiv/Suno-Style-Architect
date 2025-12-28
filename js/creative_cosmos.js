@@ -2478,6 +2478,8 @@ const CREATIVE_WORLDS = {
 let currentWorldId = null;
 let selections = {};
 // selections: { worldId: { "Term": true } }
+let customSelections = {};
+// customSelections: { worldId: [{ id: string, text: string }] }
 
 document.addEventListener('DOMContentLoaded', () => {
     initCreativeCosmos();
@@ -2514,10 +2516,118 @@ function initCreativeCosmos() {
             }
         });
 
-        // Remove legacy mouseup listener if it existed or just don't add it
+        // Text selection handling for custom marking
+        contentArea.addEventListener('mouseup', handleTextSelection);
     }
 
+    // Close popup on escape or click outside
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') hideSelectionPopup();
+    });
+    document.addEventListener('mousedown', (e) => {
+        const popup = document.getElementById('selection-popup-menu');
+        if (popup && !popup.contains(e.target)) {
+            hideSelectionPopup();
+        }
+    });
+
     renderWorldTabs();
+}
+
+// === TEXT SELECTION MARKING FUNCTIONS ===
+
+function generateUniqueId() {
+    return 'sel_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+}
+
+function handleTextSelection(e) {
+    const selection = window.getSelection();
+    const selectedText = selection.toString().trim();
+
+    // Ignore if selecting within an interactive-term (those have their own click handler)
+    if (e.target.closest('.interactive-term')) {
+        return;
+    }
+
+    // Ignore empty or very short selections
+    if (!selectedText || selectedText.length < 2) {
+        hideSelectionPopup();
+        return;
+    }
+
+    // Show popup at cursor position
+    showSelectionPopup(e.clientX, e.clientY, selectedText, selection.getRangeAt(0));
+}
+
+function showSelectionPopup(x, y, selectedText, range) {
+    hideSelectionPopup(); // Remove any existing
+
+    const popup = document.createElement('div');
+    popup.id = 'selection-popup-menu';
+    popup.innerHTML = `
+        <button id="mark-selection-btn">
+            <svg class="inline-block w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+            </svg>
+            Markieren
+        </button>
+    `;
+
+    // Position popup
+    popup.style.left = `${x + 10}px`;
+    popup.style.top = `${y - 10}px`;
+
+    document.body.appendChild(popup);
+
+    // Adjust if off-screen
+    const rect = popup.getBoundingClientRect();
+    if (rect.right > window.innerWidth) {
+        popup.style.left = `${x - rect.width - 10}px`;
+    }
+    if (rect.top < 0) {
+        popup.style.top = `${y + 20}px`;
+    }
+
+    // Handle mark button click
+    document.getElementById('mark-selection-btn').onclick = () => {
+        markSelectedText(selectedText, range);
+        hideSelectionPopup();
+        window.getSelection().removeAllRanges();
+    };
+}
+
+function hideSelectionPopup() {
+    const popup = document.getElementById('selection-popup-menu');
+    if (popup) popup.remove();
+}
+
+function markSelectedText(text, range) {
+    if (!currentWorldId) return;
+
+    // Initialize custom selections for this world if needed
+    if (!customSelections[currentWorldId]) {
+        customSelections[currentWorldId] = [];
+    }
+
+    const id = generateUniqueId();
+
+    // Wrap the range in a span
+    try {
+        const wrapper = document.createElement('span');
+        wrapper.className = 'custom-selection';
+        wrapper.dataset.selectionId = id;
+        range.surroundContents(wrapper);
+    } catch (e) {
+        // surroundContents can fail if selection spans multiple elements
+        // In that case, just store the text without visual marking
+        console.warn('Could not wrap selection visually, storing text only:', e);
+    }
+
+    // Store the selection
+    customSelections[currentWorldId].push({
+        id: id,
+        text: text
+    });
 }
 
 function openIdeaStarter() {
@@ -2735,19 +2845,35 @@ function toggleTerm(el) {
 async function generateVision() {
     const activeWorld = CREATIVE_WORLDS[currentWorldId];
     const worldSelections = selections[currentWorldId] || {};
+    const worldCustomSelections = customSelections[currentWorldId] || [];
 
     const selectedKeys = Object.keys(worldSelections);
+    const customTexts = worldCustomSelections.map(s => s.text);
 
-    if (selectedKeys.length === 0) {
-        alert("Bitte klicke auf ein paar Begriffe im Text, bevor du startest.");
+    // Require at least one selection (either interactive-term or custom)
+    if (selectedKeys.length === 0 && customTexts.length === 0) {
+        alert("Bitte klicke auf ein paar Begriffe im Text oder markiere Textpassagen, bevor du startest.");
         return;
     }
 
-    const userInput = `
+    // Build user input including both types of selections
+    let userInput = `
     World: ${activeWorld.name}
+    `;
+
+    if (selectedKeys.length > 0) {
+        userInput += `
     Selected Terms:
     ${selectedKeys.map(k => `- ${k}`).join('\n')}
     `;
+    }
+
+    if (customTexts.length > 0) {
+        userInput += `
+    Custom Marked Passages:
+    ${customTexts.map(t => `- "${t}"`).join('\n')}
+    `;
+    }
 
     const btn = document.getElementById('generate-idea-btn');
     const spinner = document.getElementById('gen-spinner');

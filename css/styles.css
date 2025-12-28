@@ -954,3 +954,43 @@ input:checked+.synth-effect-pill {
         transform: scale(1);
     }
 }
+
+/* === Text Selection Marking Popup === */
+#selection-popup-menu {
+    position: fixed;
+    background: rgba(15, 23, 42, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    padding: 6px;
+    z-index: 10000;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    animation: scaleIn 0.1s ease-out;
+}
+
+#selection-popup-menu button {
+    display: flex;
+    align-items: center;
+    background: rgba(250, 204, 21, 0.15);
+    border: 1px solid rgba(250, 204, 21, 0.3);
+    color: #fef08a;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+}
+
+#selection-popup-menu button:hover {
+    background: rgba(250, 204, 21, 0.25);
+    border-color: rgba(250, 204, 21, 0.5);
+}
+
+/* Custom Selection Marking (User-selected text) */
+.custom-selection {
+    background: rgba(250, 204, 21, 0.25);
+    border-radius: 2px;
+    padding: 0 2px;
+    box-shadow: 0 0 0 1px rgba(250, 204, 21, 0.4);
+}
