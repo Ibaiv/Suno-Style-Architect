@@ -739,5 +739,77 @@ function getModalsHTML() {
         </div>
     </div>
 
+    <div id="get-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden modal-enter-from">
+        <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-3xl">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-white">⏳ Genre-Evolution Timeline</h2>
+                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none">&times;</button>
+            </div>
+            <p class="text-neutral-400 mb-6 text-sm">Wähle ein Jahrzehnt, um deinen Prompt mit der charakteristischen Ästhetik dieser Ära zu veredeln.</p>
+            
+            <!-- Genre Selection Dropdown -->
+            <div class="mb-6">
+                <label for="get-genre-select" class="block text-xs text-neutral-400 mb-2 uppercase tracking-wider">Basis-Genre (Auto-Detect)</label>
+                <div class="relative">
+                    <select id="get-genre-select" class="w-full bg-neutral-900/50 border border-neutral-700 rounded-xl px-4 py-3 text-white appearance-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors">
+                        <option value="General">Allgemein (General)</option>
+                        <option value="Electronic">Electronic / Synth</option>
+                        <option value="Rock">Rock / Indie</option>
+                        <option value="Hip Hop">Hip Hop / Rap</option>
+                        <option value="Jazz">Jazz / Fusion</option>
+                        <option value="Pop">Pop / Mainstream</option>
+                        <option value="R&B/Soul">R&B / Soul</option>
+                        <option value="Classical/Orchestral">Classical / Orchestral</option>
+                        <option value="Metal">Metal / Heavy</option>
+                        <option value="Country/Folk">Country / Folk</option>
+                        <option value="Reggae/Dub">Reggae / Dub</option>
+                    </select>
+                    <div class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-neutral-400">
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-8 px-4">
+                <div class="relative">
+                    <input id="get-slider" type="range" min="1950" max="2020" value="2020" step="10" class="w-full h-2 bg-neutral-700 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between text-xs text-neutral-500 mt-2 font-mono">
+                        <span>1950s</span>
+                        <span>1960s</span>
+                        <span>1970s</span>
+                        <span>1980s</span>
+                        <span>1990s</span>
+                        <span>2000s</span>
+                        <span>2010s</span>
+                        <span>2020s</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-neutral-900/40 border border-neutral-700/50 rounded-xl p-4 mb-6">
+                 <div class="flex justify-between items-end mb-2">
+                    <h3 class="text-blue-400 font-bold text-lg" id="get-decade-display">2020s</h3>
+                    <span class="text-xs text-neutral-500 uppercase tracking-widest">Ära-Profil</span>
+                </div>
+                <p id="get-decade-description" class="text-neutral-300 text-sm leading-relaxed">Modernste digitale Produktion, Sidechain-Compression, knackige Transienten und hybride Genres.</p>
+            </div>
+
+            <div class="relative">
+                <button id="apply-get-button" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-xl btn-transition btn-press flex justify-center items-center shadow-lg shadow-blue-900/20 overflow-hidden relative z-10">
+                    <span id="apply-get-text">Ära anwenden</span>
+                </button>
+                
+                <!-- Expanded Loading State Overlay -->
+                <div id="get-loading-overlay" class="absolute inset-0 bg-neutral-900 border border-neutral-700 rounded-xl flex items-center justify-center gap-3 hidden z-20">
+                     <span class="relative flex h-3 w-3">
+                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                      <span class="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></span>
+                    </span>
+                    <span id="get-loading-text" class="text-sm font-medium text-blue-300 animate-pulse">Analysiere Vibe...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
     `;
 }

@@ -359,3 +359,137 @@ No explanations, no introductory phrases.
 The output must always be in English.
 
 The total length must not exceed 800 characters.`;
+
+const GENRE_EVOLUTION_PROMPT = `You are a music historian and producer specialist. Your task is to rewrite the user's prompt to reflect the specific aesthetic, production techniques, and instrumentation of a chosen decade. Keep the core musical idea (melody, mood) but transport it in time. Use specific keywords from that era (e.g., 'gated reverb' for 80s, 'tape saturation' for 60s).
+
+**Output Rules:**
+- The output must be ONLY the refined prompt.
+- The output must be in English.
+- The total length must not exceed 800 characters.`;
+
+const GENRE_KEYWORDS = {
+    "Electronic": ["synth", "techno", "electronic", "beat", "bass", "digital", "dance", "edm", "house", "trance", "ambient", "dubstep"],
+    "Rock": ["guitar", "rock", "band", "drums", "distortion", "metal", "punk", "indie", "alternative", "riff", "solo"],
+    "Hip Hop": ["rap", "hip hop", "beats", "flow", "808", "rhyme", "trap", "urban", "groove", "sample"],
+    "Jazz": ["jazz", "saxophone", "piano", "swing", "improvisation", "smooth", "fusion", "blues", "trumpet", "ensemble"],
+    "R&B/Soul": ["soul", "r&b", "vocals", "groove", "smooth", "emotion", "funk", "motown", "gospel"],
+    "Classical/Orchestral": ["orchestra", "symphony", "classical", "piano", "violin", "cello", "conductor", "score", "cinematic"],
+    "Pop": ["pop", "chorus", "melody", "hit", "radio", "catchy", "vocal", "mainstream", "ballad"],
+    "Metal": ["metal", "heavy", "growl", "blast beat", "shredding", "doom", "thrash", "double kick"],
+    "Country/Folk": ["acoustic", "guitar", "folk", "country", "storytelling", "banjo", "americana", "roots"],
+    "Reggae/Dub": ["reggae", "dub", "roots", "jamaican", "offbeat", "rhythm", "bass", "echo", "ska"]
+};
+
+// Data structure holding decade-specific descriptions for various genres
+const GENRE_EVOLUTION_DATA = {
+    "Electronic": {
+        1950: "Early experiments, musique concrète, tape loops, oscillators, theremin, avant-garde, raw waveforms.",
+        1960: "Moog modular exploration, BBC radiophonic, tape manipulation, early space-age pop, psychedelic electronics.",
+        1970: "Kraftwerk precision, disco synths, Berlin School sequences, analog warmth, vocoders, Jean-Michel Jarre soundscapes.",
+        1980: "Synth-pop explosion, Yamaha DX7 digital bells, gated reverb drums, LinnDrum beats, Italo disco, New Wave.",
+        1990: "Rave culture, breakbeats, IDM complexity, trance arpeggios, big beat energy, house piano, jungle rhythms.",
+        2000: "Electroclash, minimal techno, french touch compression, dubstep bass wobbles, digital crispness, auto-tune experiments.",
+        2010: "EDM festival big room, trap hi-hats, future bass chords, vaporwave nostalgia, heavy sidechain, lo-fi beats.",
+        2020: "Hyperpop glitch, AI-assisted design, immersive 3D audio textures, genre-fluid aesthetics, atmospheric phonk."
+    },
+    "Rock": {
+        1950: "Rock'n'roll birth, slapback delay vocals, twangy electric guitars, upright bass, swing rhythms, raw amp overdrive.",
+        1960: "British Invasion jangle, psychedelic fuzz, tape flanging, Hammond organ, surf reverb, experimental studio techniques.",
+        1970: "Classic rock power, dry drum sounds, Marshall stack distortion, progressive rock complexity, punk raw energy.",
+        1980: "Hair metal excess, gated snare drums, chorus on guitars, digital delay, stadium rock production, synth integration.",
+        1990: "Grunge distortion, loud-quiet dynamics, lo-fi aesthetic, britpop jangle, industrial mechanical rhythms, nu-metal tuning.",
+        2000: "Garage rock revival, post-punk revival, indie sleaze, emo dynamics, polished pop-punk production, retro styling.",
+        2010: "Indie folk blend, psychedelic revival, lo-fi surf, shoegaze textures, math-rock precision, bedroom pop DIY ethos.",
+        2020: "Genre-bending hybrids, hyper-clean modern metal, nostalgic pop-punk revival, atmospheric post-rock, digital amp modeling."
+    },
+    "Hip Hop": {
+        1950: "Spoken word precursors, jazz poetry, early R&B grooves, doo-wop harmonies (Foundations).",
+        1960: "Funk breaks, soul samples, block party roots, rhythmic speech, political poetry (Pre-history).",
+        1970: "The breaks, turntablism birth, disco samples, sugarhill vibes, raw MCing, block party energy.",
+        1980: "Boom bat, drum machines (808/909), sampling revolution, scratching, golden age lyricism, jazz rap fusion.",
+        1990: "G-Funk synthesizers, East Coast boom bap, gritty samples, gangsta rap attitude, soulquarian grooves.",
+        2000: "Crunk energy, bling era polish, chipmunk soul samples, stomp-clap beats, southern takeover, auto-tune beginnings.",
+        2010: "Trap triplet hi-hats, 808 slides, mumble rap flows, cloud rap atmospheres, drill aggression, lo-fi study beats.",
+        2020: "Drill evolution, rage beats, jersey club influence, hyperpop crossovers, melodic trap, experimental textures."
+    },
+    "Jazz": {
+        1950: "Cool jazz restraint, hard bop evolution, modal experiments, west coast smooth, miles davis innovation.",
+        1960: "Free jazz chaos, avant-garde exploration, bossa nova craze, spiritual jazz intensity, post-bop complexity.",
+        1970: "Fusion energy, electric instruments, funk rhythms, rhodes piano, weather report virtuosity, smooth jazz birth.",
+        1980: "Digital production, smooth jazz radio sound, neoclassical revival, EWI synths, pop-jazz crossovers.",
+        1990: "Acid jazz grooves, hip-hop fusion, nu-jazz electronics, retro-swing revival, ECM atmospheric sound.",
+        2000: "Modern creative, nordic tone, electronic integration, beat-oriented jazz, neo-soul influence.",
+        2010: "Genre-fluid jazz, kamasi washington epic, lo-fi jazz beats, hip-hop rhythm sections, london scene energy.",
+        2020: "Hyper-fusion, bedroom production jazz, nu-gen virtuosity, electronic hybrid experimentation, spiritual revival."
+    },
+    "Pop": {
+        1950: "Crooner ballads, doo-wop harmonies, orchestral backing, early teen pop, rockabilly influence.",
+        1960: "Wall of Sound, girl groups, brill building songwriting, sunshine pop, baroque pop orchestration.",
+        1970: "Disco beats, singer-songwriter intimacy, abba-esque production, soft rock smooth, glam rock theatrics.",
+        1980: "Synth-pop dominance, drum machines, big gated drums, power ballads, michael jackson-level production polish.",
+        1990: "Teen pop explosion, max martin swedish sound, r&b crossover, boy bands, diva ballads, dance-pop beats.",
+        2000: "Autotune introduction, timbaland beats, futuristic r&b, pop-punk crossover, latin pop explosion.",
+        2010: "EDM drops in pop, trap beats, minimal production, whisper pop, retro 80s revival, streaming-optimized songs.",
+        2020: "Disco revival, hyperpop influence, bedroom pop intimacy, 80s synthwave nostalgia, sad girl pop."
+    },
+    "R&B/Soul": {
+        1950: "Doo-wop, rhythm and blues, raw soul energy, gospel influence, ray charles innovation.",
+        1960: "Motown polish, stax grit, chicago soul, funk beginnings, social consciousness, orchestral arrangements.",
+        1970: "Philly soul lushness, p-funk grooves, quiet storm smooth, disco soul, earth wind & fire precision.",
+        1980: "Electro-funk, new jack swing beats, synth-heavy ballads, prince minneapolis sound, quiet storm evolution.",
+        1990: "Neo-soul organic, new jack swing peak, hip-hop soul fusion, vocal harmony groups, smooth r&b.",
+        2000: "Futuristic production, crunk&b, neo-soul peak, acoustic guitar ballads, polished radio sound.",
+        2010: "Alternative r&b, dark atmospheric production, trap soul, retro-soul revival, electronic fusion.",
+        2020: "Bedroom r&b, genre-less soul, lo-fi aesthetics, afrobeats influence, immersive production."
+    },
+    "Classical/Orchestral": {
+        1950: "Post-war modernism, serialism, electronic experiments, neo-classicism, film noir scores.",
+        1960: "Minimalism birth, experimental notation, textural composition, psychedelic influences, epic film scores.",
+        1970: "Minimalist evolution, spectralism, post-modern eclecticism, synthesizer integration, john williams grandeur.",
+        1980: "Neo-romanticism, holy minimalism, digital recording clarity, sample-based composition, blockbuster scoring.",
+        1990: "Post-minimalism, spectral music refinement, crossover classical, epic trailer music sound, film score experimentation.",
+        2000: "Indie-classical, electronics & orchestra blend, cinematic realism, hans zimmer minimalism, choral revival.",
+        2010: "Neo-classical piano, ambient orchestral, drone music, hybrid orchestral-electronic, post-richter vibes.",
+        2020: "Immersive audio scoring, ancient instrument revival, ai-assisted composition, dark academia aesthetic, textural focus."
+    },
+    "Metal": {
+        1950: "Heavy blues roots, distorted amps, aggressive rock'n'roll (Pre-history).",
+        1960: "Psychedelic heaviness, proto-doom, distorted bass, blue cheer loudness, sabbath birth.",
+        1970: "Heavy metal birth, doom sludge, nwobhm speed, dual guitar harmonies, progressive complexity.",
+        1980: "Thrash speed, glam production, death metal birth, black metal lo-fi, shredding solos.",
+        1990: "Groove metal, nu-metal bounce, industrial crushing, gothic atmosphere, death metal technicality.",
+        2000: "Metalcore breakdowns, djent polyrhythms, symphonic grandeur, post-metal atmosphere, nu-metal peak.",
+        2010: "Djent evolution, blackgaze atmosphere, retro-doom revival, progressive technicality, modern production.",
+        2020: "Thall heaviness, trap-metal crossover, ai-generated riffs, hyper-clean production, genre-fluid heaviness."
+    },
+    "Country/Folk": {
+        1950: "Honky tonk, nashville sound, bluegrass speed, rockabilly fusion, cowboy ballads.",
+        1960: "Folk revival, protest songs, countrypolitan strings, bakersfield sound, psychedelic folk.",
+        1970: "Outlaw country, folk rock, country pop crossover, singer-songwriter introspection, southern rock.",
+        1980: "Neotraditional country, urban cowboy pop, alt-country roots, cowpunk energy, polished production.",
+        1990: "Garth brooks stadium country, alt-country evolution, americana birth, line dance hits, pop crossover.",
+        2000: "Red dirt country, pop-country dominance, bro-country beginnings, indie folk revival, bluegrass crossover.",
+        2010: "Bro-country peak, stomp-clap folk, americana mainstream, country-rap experiments, stripped back authenticity.",
+        2020: "Western gothic, indie-country integrity, trap-country hits, neo-traditional revival, lo-fi folk."
+    },
+    "Reggae/Dub": {
+        1950: "Mento roots, calypso influence, r&b sound systems, jamaican boogie.",
+        1960: "Ska energy, rocksteady soul, early reggae steps, one drop rhythm, lee perry experiments.",
+        1970: "Roots reggae golden age, dub space echo, rasta vibrations, rockers style, lovers rock smooth.",
+        1980: "Dancehall digital, rub-a-dub, slackness lyrics, casio sk-1 sounds, uk dub evolution.",
+        1990: "Ragga jungle, modern dancehall, dub poetry, conscious revival, reggaeton roots.",
+        2000: "Dancehall pop crossover, dubstep origins, roots revival, acoustic reggae, one drop evolution.",
+        2010: "Reggae revival movement, dubstep fusion, tropical house influence, digital dub production.",
+        2020: "Afrobeats fusion, lo-fi dub, modern roots, genre-fluid island vibes, spatial dub mixing."
+    },
+    "General": {
+        1950: "Vintage warmth, mono recording, tube saturation, room acoustics, analog feel.",
+        1960: "Psychedelic experimentation, plate reverb, tape saturation, stereo widening, raw energy.",
+        1970: "Dry and punchy, analog Hi-Fi, warm equalization, studio perfectionism, dead rooms.",
+        1980: "Digital sheen, gated reverb, heavy chorus, drum machines, bright and loud.",
+        1990: "Sample-heavy, grungey textures, digital clipping, heavy bass, raw attitude.",
+        2000: "Loudness war compression, autotune polish, digital clarity, punchy drums, slick mixing.",
+        2010: "Heavy sidechain, massive sub-bass, crispy high-end, retro-nostalgia, polished and wide.",
+        2020: "Immersive 3D audio, hyper-clean, AI-assisted mastering, genre-blending textures, glitchy details."
+    }
+};

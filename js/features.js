@@ -16,6 +16,7 @@ function initializeAdvancedFeatures() {
     setupVisualEngine();
     setupFutureLabTools();
     setupCustomInstruction();
+    setupGenreEvolution();
 }
 
 // === IDEA SPARK LOGIC ===
@@ -1462,6 +1463,116 @@ function setupCustomInstruction() {
             applyButton.disabled = false;
             buttonText.classList.remove('hidden');
             loader.classList.add('hidden');
+        }
+    });
+}
+
+// Helper to detect genre based on keywords
+function detectGenre(prompt) {
+    if (!prompt) return "General";
+
+    const lowerPrompt = prompt.toLowerCase();
+
+    for (const [genre, keywords] of Object.entries(GENRE_KEYWORDS)) {
+        if (keywords.some(keyword => lowerPrompt.includes(keyword))) {
+            return genre;
+        }
+    }
+
+    return "General";
+}
+
+// === GENRE EVOLUTION TIMELINE ===
+function setupGenreEvolution() {
+    const modal = document.getElementById('get-modal');
+    const openButton = document.getElementById('get-button');
+    const slider = document.getElementById('get-slider');
+    const genreSelect = document.getElementById('get-genre-select');
+    const decadeDisplay = document.getElementById('get-decade-display');
+    const decadeDescription = document.getElementById('get-decade-description');
+    const applyButton = document.getElementById('apply-get-button');
+    const loadingOverlay = document.getElementById('get-loading-overlay');
+    const loadingText = document.getElementById('get-loading-text');
+
+    if (!modal || !openButton || !slider || !applyButton || !genreSelect) return;
+
+    const modalLogic = setupModal(modal, openButton);
+
+    const updateDecadeInfo = (decade, genre) => {
+        decadeDisplay.textContent = `${decade}s`;
+
+        let genreData = GENRE_EVOLUTION_DATA[genre];
+        if (!genreData) genreData = GENRE_EVOLUTION_DATA["General"];
+
+        const description = genreData[decade] || GENRE_EVOLUTION_DATA["General"][decade] || "Beschreibung nicht verfügbar.";
+        decadeDescription.textContent = description;
+    };
+
+    // Update on slider change
+    slider.addEventListener('input', (e) => {
+        updateDecadeInfo(e.target.value, genreSelect.value);
+    });
+
+    // Update on genre change
+    genreSelect.addEventListener('change', (e) => {
+        updateDecadeInfo(slider.value, e.target.value);
+    });
+
+    // On open: detect genre and reset
+    openButton.addEventListener('click', () => {
+        const currentPrompt = document.getElementById('result-text').textContent.trim();
+        const detectedGenre = detectGenre(currentPrompt);
+
+        genreSelect.value = detectedGenre;
+        slider.value = 2020;
+        updateDecadeInfo(2020, detectedGenre);
+    });
+
+    applyButton.addEventListener('click', async () => {
+        const currentPrompt = document.getElementById('result-text').textContent.trim();
+        if (!currentPrompt) return;
+
+        // Start Loading State
+        applyButton.disabled = true;
+        // applyButton.classList.add('opacity-0'); // Hide button content visually if needed, or just overlay
+        loadingOverlay.classList.remove('hidden');
+
+        const phases = [
+            "Analysiere Vibe...",
+            "Lade Zeitmaschine...",
+            "Destilliere Ästhetik...",
+            "Veredle Prompt..."
+        ];
+
+        let phaseIndex = 0;
+        const phaseInterval = setInterval(() => {
+            phaseIndex = (phaseIndex + 1) % phases.length;
+            loadingText.textContent = phases[phaseIndex];
+        }, 800);
+
+        const selectedDecade = slider.value;
+        const selectedGenre = genreSelect.value;
+        const eraDescription = decadeDescription.textContent; // Use the text we are already showing
+
+        const userQuery = `Base prompt: "${currentPrompt}"\nTarget Decade: ${selectedDecade}s\nGenre Context: ${selectedGenre}\nEra Characteristics: ${eraDescription}`;
+
+        try {
+            const refined = await callOpenRouterAPI(userQuery, GENRE_EVOLUTION_PROMPT);
+            document.getElementById('result-text').textContent = refined;
+            if (window.QW) { window.QW.onPromptUpdated({ source: 'get:timeline' }); }
+            modalLogic.close();
+        } catch (error) {
+            console.error('Genre Evolution failed:', error);
+            loadingText.textContent = "Fehler!";
+            loadingText.classList.remove('text-blue-300');
+            loadingText.classList.add('text-red-400');
+        } finally {
+            clearInterval(phaseInterval);
+            applyButton.disabled = false;
+            loadingOverlay.classList.add('hidden');
+            loadingText.textContent = "Analysiere Vibe...";
+            loadingText.classList.add('text-blue-300');
+            loadingText.classList.remove('text-red-400');
         }
     });
 }
