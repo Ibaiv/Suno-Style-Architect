@@ -1,0 +1,64 @@
+# Visual Style Synchronization: Prompt-Image Encoding & Decoding
+
+Dieses Dokument beschreibt das Konzept für eine bidirektionale Verbindung zwischen audiovisuellen Merkmalen und bildlicher Darstellung innerhalb der Suno Style Architect App.
+
+---
+
+## 🏗️ Das Kernkonzept
+Die Idee basiert darauf, Bilder nicht nur als statische Grafiken zu sehen, sondern als **Container für musikalische Informationen**. 
+
+### 1. Encoding: Vom Sound zum Archetyp
+Ein Suno-Prompt (Text) enthält komplexe Informationen über Stimmung, Energie, Instrumentierung und Zeitgeist. Beim Encoding übersetzt die KI diese abstrakten Begriffe in eine visuelle Komposition.
+*   **Der Archetyp:** Das generierte Bild ist kein zufälliges Foto, sondern eine symbolische Darstellung des Sounds.
+*   **Nutzen:** Nutzer können ihre „Sound-Bibliothek“ visuell sortieren. Ein Blick auf das Bild genügt, um zu wissen, ob es sich um einen „Industrial Techno“ Track oder eine „Baroque Orchestral“ Komposition handelt.
+
+### 2. Decoding: Vom Bild zum Sound
+Nutzer können Bilder (eigene Fotos, Kunstwerke, Texturen) hochladen, um daraus musikalische Inspiration zu gewinnen.
+*   **Visuelle Analyse:** Eine Vision-KI (z.B. GPT-4o) analysiert das Bild auf:
+    *   **Farben & Kontrast:** Werden zu Stimmung (hell/dunkel) und Dynamik.
+    *   **Texturen:** Werden zu Sound-Attributen (glatt = clean, rau = distorted).
+    *   **Inhalt:** Ein Bild von New York bei Nacht wird zu „Urban, Jazz, Midnight, Saxophone, Fast-Paced“.
+*   **Prompt-Synthese:** Das Ergebnis ist ein fertiger Suno-Prompt, der die visuelle Essenz akustisch repliziert.
+
+---
+
+## 🛠️ Technische Blaupause & Implementierungs-Prompts
+
+### Phase A: Fix der Fal.ai Schnittstelle
+Damit die Bildgenerierung stabil läuft, muss der API-Wrapper in [js/api.js](file:///Users/felix/Documents/WebProjects/Suno-Style-Architect-Git/Suno-Style-Architect/js/api.js) modernisiert werden.
+
+> [!TIP]
+> **LLM Implementation Prompt:**
+> „Überarbeite die Funktion [callFalAPI](file:///Users/felix/Documents/WebProjects/Suno-Style-Architect-Git/Suno-Style-Architect/js/api.js#1-118) in [js/api.js](file:///Users/felix/Documents/WebProjects/Suno-Style-Architect-Git/Suno-Style-Architect/js/api.js). Stelle sicher, dass für Flux-Modelle (wie `flux-pro/kontext`) der korrekte Authorization-Header (`Key {API_KEY}`) verwendet wird. Implementiere ein robustes Fallback-System für verschiedene Payload-Strukturen (z.B. `input: { prompt }` vs. `{ prompt }`).“
+
+---
+
+### Phase B: Das Encoding-Feature (Sound -> Bild)
+Implementierung der Funktion, die aus dem generierten Ergebnis-Text ein Bild erschafft.
+
+> [!TIP]
+> **LLM Implementation Prompt:**
+> „Erstelle ein neues KLUG-Tool 'Visual Archetype'. 
+> 1. Die Logik soll den Text aus `#result-text` nehmen.
+> 2. Ein System-Prompt (`IMAGE_ARCHETYPE_PROMPT`) soll den musikalischen Prompt in eine rein visuelle Beschreibung übersetzen (z.B. 'A surreal digital abstract painting representing heavy bass, metallic clashing synths, and neon blue energy flow').
+> 3. Sende diese Beschreibung an [callFalAPI](file:///Users/felix/Documents/WebProjects/Suno-Style-Architect-Git/Suno-Style-Architect/js/api.js#1-118) und zeige das resultierende Bild in einem stylischen Modal an.“
+
+---
+
+### Phase C: Das Decoding-Feature (Bild -> Sound)
+Implementierung des Datei-Uploads und der Vision-Analyse.
+
+> [!TIP]
+> **LLM Implementation Prompt:**
+> „Erweitere die 'Visual Engine' um eine Upload-Funktion. 
+> 1. Nutzer können eine lokale Datei wählen.
+> 2. Konvertiere das Bild in einen Base64-String.
+> 3. Sende das Base64-Bild und einen speziellen Vision-System-Prompt (`SOUND_DECODER_PROMPT`) an OpenRouter (multimodaler Call).
+> 4. Das Modell soll den musikalischen Stil des Bildes als Suno-Prompt zurückgeben.“
+
+---
+
+## 🎨 Design-Vorschlag für die UI
+- **Integration:** Das Feature sollte unter der Kachel **„Ideen-Starter“** (ehemals Co-Creator) platziert werden und könnte **„Stil-Synchronisator“** heißen.
+- **Interaktion:** Ein Drag-and-Drop Bereich für Bilder mit einem „Glow“-Effekt um den Rahmen, wenn ein Bild erkannt wird.
+- **Vorschau:** Generierte Archetypen sollten in der Prompt-Historie als Thumbnails neben dem Text erscheinen.

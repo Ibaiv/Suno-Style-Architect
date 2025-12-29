@@ -29,16 +29,29 @@ async function callFalAPI(prompt, options = {}) {
     for (const endpoint of candidates) {
         const url = FAL_BASE_URL + endpoint;
         const buildPayloads = (ep) => {
-            const sizeA = '1024x1024';
-            const sizeB = 'square_hd';
+            // Nano Banana Pro payload format (Gemini 3 based)
+            const nanoBananaPayload = {
+                prompt,
+                aspect_ratio: '1:1',
+                output_format: 'png',
+                num_images: 1
+            };
+            // FLUX.1 [dev] specific payload format
+            const fluxPayload = {
+                prompt,
+                image_size: { width: 1024, height: 1024 },
+                num_inference_steps: 28,
+                guidance_scale: 3.5,
+                num_images: 1,
+                enable_safety_checker: false
+            };
+            // Alternative payload formats for different models
             return [
-                { prompt },
-                { input: prompt },
-                { text: prompt },
-                { prompt: { text: prompt } },
-                { prompt, num_images: 1 },
-                { prompt, image_size: sizeA },
-                { prompt, size: sizeB }
+                nanoBananaPayload,                            // Nano Banana Pro
+                fluxPayload,                                  // FLUX.1 [dev] standard
+                { prompt, image_size: 'square_hd' },          // FLUX schnell
+                { prompt, num_images: 1 },                    // Generic
+                { prompt },                                   // Minimal
             ];
         };
         const payloads = buildPayloads(endpoint);
@@ -273,7 +286,8 @@ function setupModal(modal, openButton) {
     if (!modal) return { open: () => { }, close: () => { } };
     const closeButtons = modal.querySelectorAll('.close-modal-button');
     const open = () => {
-        if (!isPromptGenerated && modal.id !== 'idea-modal') {
+        // Allow idea-modal and style-sync-modal to open without a generated prompt
+        if (!isPromptGenerated && modal.id !== 'idea-modal' && modal.id !== 'style-sync-modal') {
             console.log('Tools are disabled - generate a prompt first!');
             return;
         }

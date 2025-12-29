@@ -17,6 +17,7 @@ function initializeAdvancedFeatures() {
     setupFutureLabTools();
     setupCustomInstruction();
     setupGenreEvolution();
+    setupStyleSync();
 }
 
 // === IDEA SPARK LOGIC ===
@@ -1576,3 +1577,252 @@ function setupGenreEvolution() {
         }
     });
 }
+
+// === STYLE SYNC (Stil-Synchronisator) ===
+function setupStyleSync() {
+    const modal = document.getElementById('style-sync-modal');
+    const openButton = document.getElementById('style-sync-tile');
+
+    if (!modal || !openButton) return;
+
+    const modalLogic = setupModal(modal, openButton);
+
+    // Tab elements
+    const tabEncode = document.getElementById('style-sync-tab-encode');
+    const tabDecode = document.getElementById('style-sync-tab-decode');
+    const contentEncode = document.getElementById('style-sync-encode-content');
+    const contentDecode = document.getElementById('style-sync-decode-content');
+
+    // Encoding elements
+    const generateButton = document.getElementById('style-sync-generate-archetype');
+    const generateText = document.getElementById('style-sync-generate-text');
+    const generateLoader = document.getElementById('style-sync-generate-loader');
+    const encodePreview = document.getElementById('style-sync-encode-preview');
+    const encodePlaceholder = document.getElementById('style-sync-encode-placeholder');
+    const encodeImage = document.getElementById('style-sync-encode-image');
+    const encodeError = document.getElementById('style-sync-encode-error');
+
+    // Decoding elements
+    const dropZone = document.getElementById('style-sync-drop-zone');
+    const fileInput = document.getElementById('style-sync-file-input');
+    const dropPlaceholder = document.getElementById('style-sync-drop-placeholder');
+    const decodePreview = document.getElementById('style-sync-decode-preview');
+    const analyzeButton = document.getElementById('style-sync-analyze-image');
+    const analyzeText = document.getElementById('style-sync-analyze-text');
+    const analyzeLoader = document.getElementById('style-sync-analyze-loader');
+    const decodeOutput = document.getElementById('style-sync-decode-output');
+    const decodedPrompt = document.getElementById('style-sync-decoded-prompt');
+    const applyPromptButton = document.getElementById('style-sync-apply-prompt');
+    const decodeError = document.getElementById('style-sync-decode-error');
+
+    let uploadedImageBase64 = null;
+    let generatedPromptText = '';
+
+    // Tab switching
+    const switchToTab = (tab) => {
+        const isEncode = tab === 'encode';
+
+        tabEncode.classList.toggle('active', isEncode);
+        tabEncode.classList.toggle('bg-purple-500/20', isEncode);
+        tabEncode.classList.toggle('border-purple-500/40', isEncode);
+        tabEncode.classList.toggle('text-purple-300', isEncode);
+        tabEncode.classList.toggle('bg-neutral-800/50', !isEncode);
+        tabEncode.classList.toggle('border-neutral-700', !isEncode);
+        tabEncode.classList.toggle('text-neutral-400', !isEncode);
+
+        tabDecode.classList.toggle('active', !isEncode);
+        tabDecode.classList.toggle('bg-purple-500/20', !isEncode);
+        tabDecode.classList.toggle('border-purple-500/40', !isEncode);
+        tabDecode.classList.toggle('text-purple-300', !isEncode);
+        tabDecode.classList.toggle('bg-neutral-800/50', isEncode);
+        tabDecode.classList.toggle('border-neutral-700', isEncode);
+        tabDecode.classList.toggle('text-neutral-400', isEncode);
+
+        contentEncode.classList.toggle('hidden', !isEncode);
+        contentDecode.classList.toggle('hidden', isEncode);
+    };
+
+    tabEncode?.addEventListener('click', () => switchToTab('encode'));
+    tabDecode?.addEventListener('click', () => switchToTab('decode'));
+
+    // Reset UI on modal open
+    const resetUI = () => {
+        // Reset encoding
+        encodePlaceholder?.classList.remove('hidden');
+        encodeImage?.classList.add('hidden');
+        encodeImage.src = '';
+        encodeError?.classList.add('hidden');
+
+        // Reset decoding
+        dropPlaceholder?.classList.remove('hidden');
+        decodePreview?.classList.add('hidden');
+        decodeOutput?.classList.add('hidden');
+        applyPromptButton?.classList.add('hidden');
+        analyzeButton.disabled = true;
+        decodeError?.classList.add('hidden');
+        uploadedImageBase64 = null;
+        generatedPromptText = '';
+
+        switchToTab('encode');
+    };
+
+    document.addEventListener('modal:open', (ev) => {
+        if (ev.detail?.id === 'style-sync-modal') resetUI();
+    });
+
+    // === ENCODING: Sound → Image ===
+    const setEncodeLoading = (isLoading) => {
+        generateButton.disabled = isLoading;
+        generateText?.classList.toggle('hidden', isLoading);
+        generateLoader?.classList.toggle('hidden', !isLoading);
+    };
+
+    generateButton?.addEventListener('click', async () => {
+        const currentPrompt = document.getElementById('result-text')?.textContent?.trim();
+        if (!currentPrompt) {
+            encodeError.textContent = 'Bitte generiere zuerst einen Musik-Prompt.';
+            encodeError.classList.remove('hidden');
+            return;
+        }
+
+        if (!FAL_API_KEY) {
+            encodeError.textContent = 'Bitte hinterlege einen Fal.ai API Key in den Einstellungen.';
+            encodeError.classList.remove('hidden');
+            if (typeof showSettings === 'function') showSettings();
+            return;
+        }
+
+        encodeError.classList.add('hidden');
+        setEncodeLoading(true);
+        encodePlaceholder.textContent = 'Übersetze Sound in visuelle Sprache...';
+
+        try {
+            // Step 1: Translate music prompt to visual description
+            const visualDescription = await callOpenRouterAPI(currentPrompt, IMAGE_ARCHETYPE_PROMPT);
+
+            encodePlaceholder.textContent = 'Generiere Archetyp-Bild...';
+
+            // Step 2: Generate image from visual description
+            const imageUrl = await callFalAPI(visualDescription, { timeoutMs: 60000, retries: 2 });
+
+            // Preload image
+            await new Promise((resolve, reject) => {
+                const img = new Image();
+                img.onload = resolve;
+                img.onerror = reject;
+                img.src = imageUrl;
+            });
+
+            // Display image
+            encodePlaceholder.classList.add('hidden');
+            encodeImage.src = imageUrl;
+            encodeImage.classList.remove('hidden');
+
+        } catch (error) {
+            console.error('Style Sync Encoding failed:', error);
+            encodeError.textContent = `Fehler: ${error.message}`;
+            encodeError.classList.remove('hidden');
+        } finally {
+            setEncodeLoading(false);
+            encodePlaceholder.textContent = 'Das Archetyp-Bild erscheint hier...';
+        }
+    });
+
+    // === DECODING: Image → Sound ===
+    const handleFileSelect = (file) => {
+        if (!file || !file.type.startsWith('image/')) return;
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            uploadedImageBase64 = e.target.result;
+            decodePreview.src = uploadedImageBase64;
+            decodePreview.classList.remove('hidden');
+            dropPlaceholder.classList.add('hidden');
+            analyzeButton.disabled = false;
+            decodeOutput.classList.add('hidden');
+            applyPromptButton.classList.add('hidden');
+            decodeError.classList.add('hidden');
+        };
+        reader.readAsDataURL(file);
+    };
+
+    // Click to upload
+    dropZone?.addEventListener('click', () => fileInput?.click());
+    fileInput?.addEventListener('change', (e) => {
+        const file = e.target.files?.[0];
+        if (file) handleFileSelect(file);
+    });
+
+    // Drag and drop
+    dropZone?.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.classList.add('border-purple-500', 'bg-purple-500/10');
+        dropZone.classList.add('shadow-[0_0_20px_rgba(168,85,247,0.3)]');
+    });
+
+    dropZone?.addEventListener('dragleave', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('border-purple-500', 'bg-purple-500/10');
+        dropZone.classList.remove('shadow-[0_0_20px_rgba(168,85,247,0.3)]');
+    });
+
+    dropZone?.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('border-purple-500', 'bg-purple-500/10');
+        dropZone.classList.remove('shadow-[0_0_20px_rgba(168,85,247,0.3)]');
+        const file = e.dataTransfer?.files?.[0];
+        if (file) handleFileSelect(file);
+    });
+
+    const setDecodeLoading = (isLoading) => {
+        analyzeButton.disabled = isLoading;
+        analyzeText?.classList.toggle('hidden', isLoading);
+        analyzeLoader?.classList.toggle('hidden', !isLoading);
+    };
+
+    analyzeButton?.addEventListener('click', async () => {
+        if (!uploadedImageBase64) return;
+
+        if (!API_KEY) {
+            decodeError.textContent = 'Bitte konfiguriere deinen OpenRouter API Key.';
+            decodeError.classList.remove('hidden');
+            return;
+        }
+
+        decodeError.classList.add('hidden');
+        setDecodeLoading(true);
+
+        try {
+            // Call Vision API with the image
+            const result = await callOpenRouterAPI(
+                'Analyze this image and generate a Suno-compatible music prompt based on its visual elements, mood, and atmosphere.',
+                SOUND_DECODER_PROMPT,
+                uploadedImageBase64
+            );
+
+            generatedPromptText = result.trim();
+            decodedPrompt.textContent = generatedPromptText;
+            decodeOutput.classList.remove('hidden');
+            applyPromptButton.classList.remove('hidden');
+
+        } catch (error) {
+            console.error('Style Sync Decoding failed:', error);
+            decodeError.textContent = `Fehler: ${error.message}`;
+            decodeError.classList.remove('hidden');
+        } finally {
+            setDecodeLoading(false);
+        }
+    });
+
+    applyPromptButton?.addEventListener('click', () => {
+        if (!generatedPromptText) return;
+
+        const ideaInput = document.getElementById('idea-input');
+        if (ideaInput) {
+            ideaInput.value = generatedPromptText;
+        }
+
+        modalLogic.close();
+    });
+}
+
