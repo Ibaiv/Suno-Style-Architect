@@ -368,6 +368,10 @@ function setupVisualEngine() {
 
     if (!modal || !openButton || !input || !generateButton || !output || !analyzeButton) return;
 
+    // Prevent double initialization
+    if (modal.dataset.initialized === 'true') return;
+    modal.dataset.initialized = 'true';
+
     // Block opening when Fal key is missing
     openButton.addEventListener('click', (e) => {
         if (!FAL_API_KEY) {
@@ -421,9 +425,10 @@ function setupVisualEngine() {
         output.innerHTML = `<div class="animate-spin h-6 w-6 text-blue-400"></div>`;
         analyzeButton.classList.add('hidden');
         try {
-            const url = await callFalAPI(prompt, { timeoutMs: 45000, retries: 2 });
+            // Use default timeout (120s) from api.js to support slower models like Nano Banana Pro
+            const url = await callFalAPI(prompt, { retries: 2 });
             if (myId !== genReqId) return; // stale
-            // Preload to ensure the image is valid
+            // Preload image
             await new Promise((resolve, reject) => {
                 const img = new Image();
                 img.onload = resolve;
@@ -1585,6 +1590,10 @@ function setupStyleSync() {
 
     if (!modal || !openButton) return;
 
+    // Prevent double initialization
+    if (modal.dataset.initialized === 'true') return;
+    modal.dataset.initialized = 'true';
+
     const modalLogic = setupModal(modal, openButton);
 
     // Tab elements
@@ -1698,12 +1707,19 @@ function setupStyleSync() {
 
         try {
             // Step 1: Translate music prompt to visual description
-            const visualDescription = await callOpenRouterAPI(currentPrompt, IMAGE_ARCHETYPE_PROMPT);
+            const rawDescription = await callOpenRouterAPI(currentPrompt, IMAGE_ARCHETYPE_PROMPT);
+
+            // Clean up response: remove quotes and chatty prefixes if present
+            const visualDescription = rawDescription
+                .replace(/^["']|["']$/g, '') // remove surrounding quotes
+                .replace(/^(I have generated|Here is|Sure|The prompt is).*?:/i, '') // remove conversational prefixes
+                .trim();
 
             encodePlaceholder.textContent = 'Generiere Archetyp-Bild...';
 
             // Step 2: Generate image from visual description
-            const imageUrl = await callFalAPI(visualDescription, { timeoutMs: 60000, retries: 2 });
+            // Removed 60s timeout override to use global default (120s) in api.js
+            const imageUrl = await callFalAPI(visualDescription, { retries: 2 });
 
             // Preload image
             await new Promise((resolve, reject) => {

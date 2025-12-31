@@ -5,7 +5,7 @@ async function callFalAPI(prompt, options = {}) {
     }
 
     const {
-        timeoutMs = 45000,
+        timeoutMs = 120000, // Increased default timeout to 120s for slower models
         retries = 2,
         signal = null
     } = options;
@@ -19,9 +19,6 @@ async function callFalAPI(prompt, options = {}) {
     const push = (x) => { const n = normalized(x); if (!seen.has(n)) { seen.add(n); candidates.push(n); } };
     push(base);
     if (!/^[-\w]+\//.test(base)) { push(`fal-ai/${base}`); push(`google/${base}`); }
-    if (FAL_MODEL === 'imagen4/preview') push('google/imagen-4/preview');
-    if (FAL_MODEL === 'flux-pro/kontext') push('fal-ai/flux-pro/kontext');
-    if (FAL_MODEL === 'flux-krea-lora/stream') push('fal-ai/flux-krea-lora/stream');
 
     const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
@@ -29,13 +26,41 @@ async function callFalAPI(prompt, options = {}) {
     for (const endpoint of candidates) {
         const url = FAL_BASE_URL + endpoint;
         const buildPayloads = (ep) => {
-            // Nano Banana Pro payload format (Gemini 3 based)
+            // Nano Banana Pro payload (Standard)
             const nanoBananaPayload = {
                 prompt,
-                aspect_ratio: '1:1',
-                output_format: 'png',
-                num_images: 1
+                num_images: 1,
+                aspect_ratio: '16:9', // Defaulting to wide for better presentation
+                output_format: 'png'
             };
+
+            // Recraft V3 payload
+            const recraftPayload = {
+                prompt,
+                image_size: 'landscape_16_9',
+                style: 'digital_illustration', // Default style
+                colors: []
+            };
+
+            // FLUX Pro Context payload
+            const fluxKontextPayload = {
+                prompt,
+                guidance_scale: 3.5,
+                safety_tolerance: "2",
+                aspect_ratio: '16:9',
+                num_images: 1,
+                output_format: 'jpeg'
+            };
+
+            // GPT-Image 1.5 payload
+            const gptImagePayload = {
+                prompt,
+                image_size: '1536x1024', // 3:2 landscape
+                quality: 'high',
+                num_images: 1,
+                output_format: 'png'
+            };
+
             // FLUX.1 [dev] specific payload format
             const fluxPayload = {
                 prompt,
@@ -45,13 +70,18 @@ async function callFalAPI(prompt, options = {}) {
                 num_images: 1,
                 enable_safety_checker: false
             };
-            // Alternative payload formats for different models
+
+            // Select payload based on model
+            if (FAL_MODEL === 'fal-ai/nano-banana-pro') return [nanoBananaPayload];
+            if (FAL_MODEL === 'fal-ai/recraft/v3/text-to-image') return [recraftPayload];
+            if (FAL_MODEL === 'fal-ai/flux-pro/kontext') return [fluxKontextPayload];
+            if (FAL_MODEL === 'fal-ai/gpt-image-1.5') return [gptImagePayload];
+            if (FAL_MODEL === 'fal-ai/flux/dev') return [fluxPayload];
+
+            // Fallbacks for unknown models
             return [
-                nanoBananaPayload,                            // Nano Banana Pro
-                fluxPayload,                                  // FLUX.1 [dev] standard
-                { prompt, image_size: 'square_hd' },          // FLUX schnell
-                { prompt, num_images: 1 },                    // Generic
-                { prompt },                                   // Minimal
+                { prompt, num_images: 1 },
+                { prompt }
             ];
         };
         const payloads = buildPayloads(endpoint);

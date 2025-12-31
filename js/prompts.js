@@ -371,6 +371,7 @@ The user provides a Suno music prompt. Analyze its:
 
 **Output Rules:**
 - Output ONLY the image description prompt.
+- DO NOT include conversational filler like "Here is the prompt" or "I have generated...".
 - Create a surreal, symbolic, abstract art representation - NOT a literal scene of musicians.
 - Focus on atmosphere, textures, colors, and emotional resonance.
 - Use professional art terminology (chiaroscuro, volumetric lighting, etc.).

@@ -5,23 +5,20 @@ const FAL_BASE_URL = 'https://fal.run/'; // fal.ai proxy URL
 
 // Model display names for fal.ai
 const FAL_MODEL_NAMES = {
-    'fal-ai/nano-banana-pro': 'Nano Banana Pro (Gemini 3)',
-    'fal-ai/flux/dev': 'FLUX.1 [dev]',
-    'fal-ai/flux-pro': 'FLUX Pro',
-    'fal-ai/flux/schnell': 'FLUX.1 Schnell (Fast)',
-    'fal-ai/fast-sdxl': 'Fast SDXL (Legacy)',
-    'fal-ai/realistic-vision-v5': 'Realistic Vision v5'
+    'fal-ai/nano-banana-pro': 'Nano Banana Pro',
+    'fal-ai/recraft/v3/text-to-image': 'Recraft V3',
+    'fal-ai/flux-pro/kontext': 'Flux Pro Context',
+    'fal-ai/gpt-image-1.5': 'GPT-Image 1.5',
+    'fal-ai/flux/dev': 'FLUX.1 [dev]'
 };
 
 // FAL endpoint mapping (selection value -> API path)
-// This allows us to support models hosted under different orgs (e.g., google/*, fal-ai/*)
 const FAL_MODEL_ENDPOINTS = {
     'fal-ai/nano-banana-pro': 'fal-ai/nano-banana-pro',
-    'fal-ai/flux/dev': 'fal-ai/flux/dev',
-    'fal-ai/flux-pro': 'fal-ai/flux-pro',
-    'fal-ai/flux/schnell': 'fal-ai/flux/schnell',
-    'fal-ai/fast-sdxl': 'fal-ai/fast-sdxl',
-    'fal-ai/realistic-vision-v5': 'fal-ai/realistic-vision-v5'
+    'fal-ai/recraft/v3/text-to-image': 'fal-ai/recraft/v3/text-to-image',
+    'fal-ai/flux-pro/kontext': 'fal-ai/flux-pro/kontext',
+    'fal-ai/gpt-image-1.5': 'fal-ai/gpt-image-1.5',
+    'fal-ai/flux/dev': 'fal-ai/flux/dev'
 };
 
 // === APP STATE ===
