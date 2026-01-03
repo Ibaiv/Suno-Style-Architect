@@ -1583,262 +1583,187 @@ function setupGenreEvolution() {
     });
 }
 
-// === STYLE SYNC (Stil-Synchronisator) ===
+// === STYLE SYNC STUDIO V2 LOGIC ===
 function setupStyleSync() {
-    const modal = document.getElementById('style-sync-modal');
+    const studioModal = document.getElementById('style-sync-studio');
+    // We use the tile button from the main grid (id="style-sync-tile") to open it
     const openButton = document.getElementById('style-sync-tile');
 
-    if (!modal || !openButton) return;
+    // Header & Actions
+    const closeButton = document.getElementById('close-style-studio');
 
-    // Prevent double initialization
-    if (modal.dataset.initialized === 'true') return;
-    modal.dataset.initialized = 'true';
+    // ### LEFT PANEL: ENCODER (Sound -> Image) ###
+    const masterPromptDisplay = document.getElementById('studio-master-prompt-display');
+    const transcodeBtn = document.getElementById('studio-transcode-btn');
+    const visualPlaceholder = document.getElementById('studio-visual-placeholder');
+    const visualResult = document.getElementById('studio-visual-result');
 
-    const modalLogic = setupModal(modal, openButton);
+    // ### RIGHT PANEL: DECODER (Image -> Sound) ###
+    const dropZone = document.getElementById('studio-drop-zone');
+    const fileInput = document.getElementById('studio-file-input');
+    const dropContent = document.getElementById('studio-drop-content');
+    const dropPreview = document.getElementById('studio-drop-preview');
+    const decodeBtn = document.getElementById('studio-decode-btn');
+    const decodeResult = document.getElementById('studio-decode-result');
+    const applyBtn = document.getElementById('studio-apply-btn');
 
-    // Tab elements
-    const tabEncode = document.getElementById('style-sync-tab-encode');
-    const tabDecode = document.getElementById('style-sync-tab-decode');
-    const contentEncode = document.getElementById('style-sync-encode-content');
-    const contentDecode = document.getElementById('style-sync-decode-content');
+    if (!studioModal || !openButton) return;
 
-    // Encoding elements
-    const generateButton = document.getElementById('style-sync-generate-archetype');
-    const generateText = document.getElementById('style-sync-generate-text');
-    const generateLoader = document.getElementById('style-sync-generate-loader');
-    const encodePreview = document.getElementById('style-sync-encode-preview');
-    const encodePlaceholder = document.getElementById('style-sync-encode-placeholder');
-    const encodeImage = document.getElementById('style-sync-encode-image');
-    const encodeError = document.getElementById('style-sync-encode-error');
+    // --- Modal Control ---
+    const openStudio = () => {
+        // Feed current prompt into the "Master Prompt" display
+        const currentText = document.getElementById('result-text')?.textContent || '';
+        if (masterPromptDisplay) masterPromptDisplay.textContent = currentText || '// Warten auf Input...';
 
-    // Decoding elements
-    const dropZone = document.getElementById('style-sync-drop-zone');
-    const fileInput = document.getElementById('style-sync-file-input');
-    const dropPlaceholder = document.getElementById('style-sync-drop-placeholder');
-    const decodePreview = document.getElementById('style-sync-decode-preview');
-    const analyzeButton = document.getElementById('style-sync-analyze-image');
-    const analyzeText = document.getElementById('style-sync-analyze-text');
-    const analyzeLoader = document.getElementById('style-sync-analyze-loader');
-    const decodeOutput = document.getElementById('style-sync-decode-output');
-    const decodedPrompt = document.getElementById('style-sync-decoded-prompt');
-    const applyPromptButton = document.getElementById('style-sync-apply-prompt');
-    const decodeError = document.getElementById('style-sync-decode-error');
-
-    let uploadedImageBase64 = null;
-    let generatedPromptText = '';
-
-    // Tab switching
-    const switchToTab = (tab) => {
-        const isEncode = tab === 'encode';
-
-        tabEncode.classList.toggle('active', isEncode);
-        tabEncode.classList.toggle('bg-purple-500/20', isEncode);
-        tabEncode.classList.toggle('border-purple-500/40', isEncode);
-        tabEncode.classList.toggle('text-purple-300', isEncode);
-        tabEncode.classList.toggle('bg-neutral-800/50', !isEncode);
-        tabEncode.classList.toggle('border-neutral-700', !isEncode);
-        tabEncode.classList.toggle('text-neutral-400', !isEncode);
-
-        tabDecode.classList.toggle('active', !isEncode);
-        tabDecode.classList.toggle('bg-purple-500/20', !isEncode);
-        tabDecode.classList.toggle('border-purple-500/40', !isEncode);
-        tabDecode.classList.toggle('text-purple-300', !isEncode);
-        tabDecode.classList.toggle('bg-neutral-800/50', isEncode);
-        tabDecode.classList.toggle('border-neutral-700', isEncode);
-        tabDecode.classList.toggle('text-neutral-400', isEncode);
-
-        contentEncode.classList.toggle('hidden', !isEncode);
-        contentDecode.classList.toggle('hidden', isEncode);
+        studioModal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
     };
 
-    tabEncode?.addEventListener('click', () => switchToTab('encode'));
-    tabDecode?.addEventListener('click', () => switchToTab('decode'));
-
-    // Reset UI on modal open
-    const resetUI = () => {
-        // Reset encoding
-        encodePlaceholder?.classList.remove('hidden');
-        encodeImage?.classList.add('hidden');
-        encodeImage.src = '';
-        encodeError?.classList.add('hidden');
-
-        // Reset decoding
-        dropPlaceholder?.classList.remove('hidden');
-        decodePreview?.classList.add('hidden');
-        decodeOutput?.classList.add('hidden');
-        applyPromptButton?.classList.add('hidden');
-        analyzeButton.disabled = true;
-        decodeError?.classList.add('hidden');
-        uploadedImageBase64 = null;
-        generatedPromptText = '';
-
-        switchToTab('encode');
+    const closeStudio = () => {
+        studioModal.classList.add('hidden');
+        document.body.style.overflow = '';
     };
 
-    document.addEventListener('modal:open', (ev) => {
-        if (ev.detail?.id === 'style-sync-modal') resetUI();
-    });
+    openButton.addEventListener('click', openStudio);
+    if (closeButton) closeButton.addEventListener('click', closeStudio);
 
-    // === ENCODING: Sound → Image ===
-    const setEncodeLoading = (isLoading) => {
-        generateButton.disabled = isLoading;
-        generateText?.classList.toggle('hidden', isLoading);
-        generateLoader?.classList.toggle('hidden', !isLoading);
-    };
+    // --- ENCODER LOGIC (Text -> Image) ---
+    if (transcodeBtn) {
+        transcodeBtn.addEventListener('click', async () => {
+            const promptText = masterPromptDisplay.textContent;
+            if (!promptText || promptText.startsWith('//')) {
+                alert('Bitte erstelle zuerst einen Musik-Prompt im Hauptfenster.');
+                return;
+            }
 
-    generateButton?.addEventListener('click', async () => {
-        const currentPrompt = document.getElementById('result-text')?.textContent?.trim();
-        if (!currentPrompt) {
-            encodeError.textContent = 'Bitte generiere zuerst einen Musik-Prompt.';
-            encodeError.classList.remove('hidden');
-            return;
+            // Visual feedback
+            transcodeBtn.classList.add('animate-pulse');
+            visualPlaceholder.innerHTML = '<div class="animate-spin h-8 w-8 text-purple-400"></div><p class="text-xs text-purple-300 mt-2">Analysiere Klangspektrum...</p>';
+
+            try {
+                // 1. Translate Music Prompt -> Visual Description
+                const visualPrompt = await callOpenRouterAPI(promptText, STYLE_SYNC_ENCODER_PROMPT);
+                console.log('Visual Prompt:', visualPrompt);
+
+                // 2. Generate Image via Fal.ai
+                visualPlaceholder.innerHTML = '<div class="animate-spin h-8 w-8 text-indigo-400"></div><p class="text-xs text-indigo-300 mt-2">Rendere Archetyp...</p>';
+                const imageUrl = await callFalAPI(visualPrompt);
+
+                // 3. Show Result
+                visualResult.src = imageUrl;
+                visualResult.classList.remove('hidden');
+                visualPlaceholder.classList.add('hidden');
+
+            } catch (error) {
+                console.error('Encoder Error:', error);
+                visualPlaceholder.innerHTML = `<p class="text-red-400 text-xs text-center px-4">Fehler: ${error.message}</p>`;
+            } finally {
+                transcodeBtn.classList.remove('animate-pulse');
+            }
+        });
+    }
+
+    // --- DECODER LOGIC (Image -> Sound) ---
+
+    // Drag & Drop Handling
+    if (dropZone && fileInput) {
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
         }
 
-        if (!FAL_API_KEY) {
-            encodeError.textContent = 'Bitte hinterlege einen Fal.ai API Key in den Einstellungen.';
-            encodeError.classList.remove('hidden');
-            if (typeof showSettings === 'function') showSettings();
-            return;
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => dropZone.classList.add('border-indigo-500', 'bg-indigo-500/10'), false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => dropZone.classList.remove('border-indigo-500', 'bg-indigo-500/10'), false);
+        });
+
+        dropZone.addEventListener('drop', handleDrop, false);
+        dropZone.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
+    }
+
+    function handleDrop(e) {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        handleFiles(files);
+    }
+
+    function handleFiles(files) {
+        if (files.length > 0) {
+            const file = files[0];
+            if (!file.type.startsWith('image/')) return;
+
+            const reader = new FileReader();
+            reader.onloadend = function () {
+                dropPreview.src = reader.result;
+                dropPreview.classList.remove('hidden');
+                dropContent.classList.add('opacity-0'); // Hide text but keep layout
+                decodeBtn.disabled = false; // Enable decode button
+
+                // Store base64 for API call
+                dropZone.dataset.base64 = reader.result;
+            }
+            reader.readAsDataURL(file);
         }
+    }
 
-        encodeError.classList.add('hidden');
-        setEncodeLoading(true);
-        encodePlaceholder.textContent = 'Übersetze Sound in visuelle Sprache...';
+    // Decode Action
+    if (decodeBtn) {
+        decodeBtn.addEventListener('click', async () => {
+            const base64Image = dropZone.dataset.base64;
+            if (!base64Image) return;
 
-        try {
-            // Step 1: Translate music prompt to visual description
-            const rawDescription = await callOpenRouterAPI(currentPrompt, IMAGE_ARCHETYPE_PROMPT);
+            // UI Feedback
+            decodeBtn.classList.add('animate-pulse');
+            decodeResult.value = 'Höre mir das Bild an... analysiere Farben, Licht und Texturen...';
 
-            // Clean up response: remove quotes and chatty prefixes if present
-            const visualDescription = rawDescription
-                .replace(/^["']|["']$/g, '') // remove surrounding quotes
-                .replace(/^(I have generated|Here is|Sure|The prompt is).*?:/i, '') // remove conversational prefixes
-                .trim();
+            try {
+                // 1. Analyze Image -> Music Prompt
+                // Use undefined handling for imageUrl in callOpenRouterAPI if it handles base64, 
+                // BUT callOpenRouterAPI helper expects a URL. 
+                // NOTE: OpenRouter vision models typically support URL. Sending Base64 data:image... 
+                // directly as URL usually works for many providers or needs specific handling.
+                // Re-reading api.js check: it sends { type: 'image_url', image_url: { url: imageUrl } }.
+                // Data-URIs work with OpenAI-compatible Vision endpoints.
 
-            encodePlaceholder.textContent = 'Generiere Archetyp-Bild...';
+                const musicPrompt = await callOpenRouterAPI("Analysiere dieses Bild.", STYLE_SYNC_DECODER_PROMPT, base64Image);
 
-            // Step 2: Generate image from visual description
-            // Removed 60s timeout override to use global default (120s) in api.js
-            const imageUrl = await callFalAPI(visualDescription, { retries: 2 });
+                decodeResult.value = musicPrompt;
 
-            // Preload image
-            await new Promise((resolve, reject) => {
-                const img = new Image();
-                img.onload = resolve;
-                img.onerror = reject;
-                img.src = imageUrl;
-            });
+            } catch (error) {
+                console.error('Decoder Error:', error);
+                decodeResult.value = `Fehler bei der Analyse: ${error.message}`;
+            } finally {
+                decodeBtn.classList.remove('animate-pulse');
+            }
+        });
+    }
 
-            // Display image
-            encodePlaceholder.classList.add('hidden');
-            encodeImage.src = imageUrl;
-            encodeImage.classList.remove('hidden');
+    // Apply Action
+    if (applyBtn) {
+        applyBtn.addEventListener('click', () => {
+            const generatedText = decodeResult.value;
+            if (!generatedText || generatedText.startsWith('Fehler') || generatedText.startsWith('Höre')) return;
 
-        } catch (error) {
-            console.error('Style Sync Encoding failed:', error);
-            encodeError.textContent = `Fehler: ${error.message}`;
-            encodeError.classList.remove('hidden');
-        } finally {
-            setEncodeLoading(false);
-            encodePlaceholder.textContent = 'Das Archetyp-Bild erscheint hier...';
-        }
-    });
-
-    // === DECODING: Image → Sound ===
-    const handleFileSelect = (file) => {
-        if (!file || !file.type.startsWith('image/')) return;
-
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            uploadedImageBase64 = e.target.result;
-            decodePreview.src = uploadedImageBase64;
-            decodePreview.classList.remove('hidden');
-            dropPlaceholder.classList.add('hidden');
-            analyzeButton.disabled = false;
-            decodeOutput.classList.add('hidden');
-            applyPromptButton.classList.add('hidden');
-            decodeError.classList.add('hidden');
-        };
-        reader.readAsDataURL(file);
-    };
-
-    // Click to upload
-    dropZone?.addEventListener('click', () => fileInput?.click());
-    fileInput?.addEventListener('change', (e) => {
-        const file = e.target.files?.[0];
-        if (file) handleFileSelect(file);
-    });
-
-    // Drag and drop
-    dropZone?.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        dropZone.classList.add('border-purple-500', 'bg-purple-500/10');
-        dropZone.classList.add('shadow-[0_0_20px_rgba(168,85,247,0.3)]');
-    });
-
-    dropZone?.addEventListener('dragleave', (e) => {
-        e.preventDefault();
-        dropZone.classList.remove('border-purple-500', 'bg-purple-500/10');
-        dropZone.classList.remove('shadow-[0_0_20px_rgba(168,85,247,0.3)]');
-    });
-
-    dropZone?.addEventListener('drop', (e) => {
-        e.preventDefault();
-        dropZone.classList.remove('border-purple-500', 'bg-purple-500/10');
-        dropZone.classList.remove('shadow-[0_0_20px_rgba(168,85,247,0.3)]');
-        const file = e.dataTransfer?.files?.[0];
-        if (file) handleFileSelect(file);
-    });
-
-    const setDecodeLoading = (isLoading) => {
-        analyzeButton.disabled = isLoading;
-        analyzeText?.classList.toggle('hidden', isLoading);
-        analyzeLoader?.classList.toggle('hidden', !isLoading);
-    };
-
-    analyzeButton?.addEventListener('click', async () => {
-        if (!uploadedImageBase64) return;
-
-        if (!API_KEY) {
-            decodeError.textContent = 'Bitte konfiguriere deinen OpenRouter API Key.';
-            decodeError.classList.remove('hidden');
-            return;
-        }
-
-        decodeError.classList.add('hidden');
-        setDecodeLoading(true);
-
-        try {
-            // Call Vision API with the image
-            const result = await callOpenRouterAPI(
-                'Analyze this image and generate a Suno-compatible music prompt based on its visual elements, mood, and atmosphere.',
-                SOUND_DECODER_PROMPT,
-                uploadedImageBase64
-            );
-
-            generatedPromptText = result.trim();
-            decodedPrompt.textContent = generatedPromptText;
-            decodeOutput.classList.remove('hidden');
-            applyPromptButton.classList.remove('hidden');
-
-        } catch (error) {
-            console.error('Style Sync Decoding failed:', error);
-            decodeError.textContent = `Fehler: ${error.message}`;
-            decodeError.classList.remove('hidden');
-        } finally {
-            setDecodeLoading(false);
-        }
-    });
-
-    applyPromptButton?.addEventListener('click', () => {
-        if (!generatedPromptText) return;
-
-        const ideaInput = document.getElementById('idea-input');
-        if (ideaInput) {
-            ideaInput.value = generatedPromptText;
-        }
-
-        modalLogic.close();
-    });
+            // Insert into main app
+            const mainInput = document.getElementById('idea-input');
+            if (mainInput) {
+                mainInput.value = generatedText;
+                // Visual feedback
+                applyBtn.innerHTML = '<span>Kopiert!</span> <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" title="Check"><polyline points="20 6 9 17 4 12"/></svg>';
+                setTimeout(() => {
+                    applyBtn.innerHTML = '<span>APPLY TO PROMPT</span> <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';
+                    // Close studio to show result
+                    closeStudio();
+                }, 1000);
+            }
+        });
+    }
 }
-
