@@ -4655,14 +4655,38 @@ function handleTextSelection(e) {
         return;
     }
 
+    // Ignore if selecting within already marked text (prevent double-marking)
+    if (e.target.closest('.custom-selection')) {
+        return;
+    }
+
+    // Ignore if selecting within headings (h1-h6 should not be markable)
+    if (e.target.closest('h1, h2, h3, h4, h5, h6')) {
+        return;
+    }
+
     // Ignore empty or very short selections
     if (!selectedText || selectedText.length < 2) {
         hideSelectionPopup();
         return;
     }
 
+    // Additional check: ensure selection range doesn't start or end inside restricted elements
+    const range = selection.getRangeAt(0);
+    const startContainer = range.startContainer.parentElement;
+    const endContainer = range.endContainer.parentElement;
+
+    // Check if selection starts or ends inside a heading or already-marked text
+    if (startContainer?.closest('h1, h2, h3, h4, h5, h6') ||
+        endContainer?.closest('h1, h2, h3, h4, h5, h6') ||
+        startContainer?.closest('.custom-selection') ||
+        endContainer?.closest('.custom-selection')) {
+        hideSelectionPopup();
+        return;
+    }
+
     // Show popup at cursor position
-    showSelectionPopup(e.clientX, e.clientY, selectedText, selection.getRangeAt(0));
+    showSelectionPopup(e.clientX, e.clientY, selectedText, range);
 }
 
 function showSelectionPopup(x, y, selectedText, range) {
@@ -4758,7 +4782,8 @@ function markSelectedText(text, range, note) {
     // Find and auto-select any interactive-terms within the range
     autoSelectInteractiveTermsInRange(range);
 
-    // Wrap the range in a span
+    // Wrap the range in a span using extractContents + insertNode
+    // (This works across element boundaries, unlike surroundContents)
     try {
         const wrapper = document.createElement('span');
         wrapper.className = 'custom-selection';
@@ -4767,12 +4792,17 @@ function markSelectedText(text, range, note) {
             wrapper.dataset.note = note;
             wrapper.classList.add('has-note');
         }
-        range.surroundContents(wrapper);
+
+        // Extract the selected contents and wrap them
+        // This approach correctly handles selections spanning multiple elements
+        const contents = range.extractContents();
+        wrapper.appendChild(contents);
+        range.insertNode(wrapper);
 
         // Add click handler to remove
         wrapper.addEventListener('click', handleCustomSelectionClick);
     } catch (e) {
-        // surroundContents can fail if selection spans multiple elements
+        // Fallback: log warning if wrapping fails for unexpected reasons
         console.warn('Could not wrap selection visually, storing text only:', e);
     }
 
