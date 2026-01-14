@@ -1,0 +1,139 @@
+{
+  "worlds": [
+    {
+      "id": "orchestra_treatise",
+      "name": "Das Orchester",
+      "icon": "🎻",
+      "group": "orchestra_group"
+    },
+    {
+      "id": "orchestra",
+      "name": "Sinfonieorchester",
+      "icon": "🎻",
+      "group": "orchestra_group"
+    },
+    {
+      "id": "baroque",
+      "name": "Barockorchetser",
+      "icon": "🎼",
+      "group": "orchestra_group"
+    },
+    {
+      "id": "chamber",
+      "name": "Kammerorchester",
+      "icon": "🎻",
+      "group": "orchestra_group"
+    },
+    {
+      "id": "string_quartet",
+      "name": "Streichquartett",
+      "icon": "🎻",
+      "group": "orchestra_group"
+    },
+    {
+      "id": "wind_octet",
+      "name": "Harmoniemusik-Oktett",
+      "icon": "🎷",
+      "group": "orchestra_group"
+    },
+    {
+      "id": "renaissance_consort",
+      "name": "Renaissance-Consort",
+      "icon": "🪕",
+      "group": "orchestra_group"
+    },
+    {
+      "id": "garage",
+      "name": "Garage Rock",
+      "icon": "🎸"
+    },
+    {
+      "id": "synthwave",
+      "name": "Synthwave",
+      "icon": "Neon"
+    },
+    {
+      "id": "ambient",
+      "name": "Ambient Musik",
+      "icon": "🌌"
+    },
+    {
+      "id": "world_orchestra_treatise",
+      "name": "Welt-Orchester",
+      "icon": "🌏",
+      "group": "world_orchestra_group"
+    },
+    {
+      "id": "gamelan",
+      "name": "Gamelan",
+      "icon": "🎍",
+      "group": "world_orchestra_group"
+    },
+    {
+      "id": "gagaku",
+      "name": "Gagaku",
+      "icon": "⛩️",
+      "group": "world_orchestra_group"
+    },
+    {
+      "id": "mariachi",
+      "name": "Mariachi-Ensemble",
+      "icon": "🎺",
+      "group": "world_orchestra_group"
+    },
+    {
+      "id": "steel_pan",
+      "name": "Steel Pan-Orchester",
+      "icon": "🛢️",
+      "group": "orchestra_group"
+    },
+    {
+      "id": "sound_feeling_main",
+      "name": "Sound Feeling",
+      "icon": "🔊",
+      "group": "sound_feeling_group"
+    },
+    {
+      "id": "turntablism",
+      "name": "Turntablism Crew",
+      "icon": "🎧",
+      "group": "sound_feeling_group"
+    },
+    {
+      "id": "sound_system",
+      "name": "Jamaikanisches Sound System",
+      "icon": "🇯🇲",
+      "group": "sound_feeling_group"
+    },
+    {
+      "id": "modular_synthesis",
+      "name": "Modulare Synthese",
+      "icon": "🎛️",
+      "group": "sound_feeling_group"
+    },
+    {
+      "id": "carillon",
+      "name": "Carillon",
+      "icon": "🔔",
+      "group": "sound_feeling_group"
+    },
+    {
+      "id": "venetian",
+      "name": "Venezianische Mehrchörigkeit",
+      "icon": "🎭",
+      "group": "sound_feeling_group"
+    },
+    {
+      "id": "military_signal",
+      "name": "Militärische Signalgebung",
+      "icon": "🎺",
+      "group": "sound_feeling_group"
+    },
+    {
+      "id": "prepared_piano",
+      "name": "Cage's Prepared Piano",
+      "icon": "🎹",
+      "group": "sound_feeling_group"
+    }
+  ]
+}
