@@ -1101,6 +1101,7 @@ input:checked+.synth-effect-pill {
 .world-tab {
     position: relative;
 }
+
 /* --- Studio Interface V2 (Full Screen) --- */
 
 /* Studio Modal Container */
@@ -1156,8 +1157,13 @@ input:checked+.synth-effect-pill {
 
 /* Custom Animations */
 @keyframes spin-slow {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .animate-spin-slow {
@@ -1165,8 +1171,17 @@ input:checked+.synth-effect-pill {
 }
 
 @keyframes pulse-slow {
-    0%, 100% { opacity: 0.3; transform: scale(1); }
-    50% { opacity: 0.6; transform: scale(1.1); }
+
+    0%,
+    100% {
+        opacity: 0.3;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.6;
+        transform: scale(1.1);
+    }
 }
 
 .animate-pulse-slow {
@@ -1181,4 +1196,872 @@ input:checked+.synth-effect-pill {
 .text-transparent {
     -webkit-background-clip: text;
     background-clip: text;
+}
+
+/* ============================================
+   KLANG-STUDIO DESIGN SYSTEM
+   ============================================ */
+
+/* Klang-Studio Color Variables */
+:root {
+    --ks-primary: #06b6d4;
+    /* Cyan 500 */
+    --ks-primary-light: #22d3ee;
+    /* Cyan 400 */
+    --ks-primary-dark: #0891b2;
+    /* Cyan 600 */
+    --ks-accent: #14b8a6;
+    /* Teal 500 */
+    --ks-glow: rgba(6, 182, 212, 0.3);
+    --ks-glow-intense: rgba(6, 182, 212, 0.5);
+
+    /* Module-specific accent colors */
+    --ks-synth: #8b5cf6;
+    /* Violet */
+    --ks-orchestra: #f59e0b;
+    /* Amber */
+    --ks-blender: #ec4899;
+    /* Pink */
+    --ks-vocal: #10b981;
+    /* Emerald */
+    --ks-rhythm: #ef4444;
+    /* Red */
+    --ks-ambient: #6366f1;
+    /* Indigo */
+}
+
+/* Klang-Studio Tab Navigation */
+.ks-tab {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #a3a3a3;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.ks-tab:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #e5e5e5;
+    transform: translateY(-1px);
+}
+
+.ks-tab.active {
+    background: linear-gradient(135deg, rgba(6, 182, 212, 0.2) 0%, rgba(20, 184, 166, 0.2) 100%);
+    border-color: var(--ks-primary);
+    color: white;
+    box-shadow: 0 0 20px var(--ks-glow);
+    font-weight: 600;
+}
+
+.ks-tab .icon {
+    font-size: 1.1rem;
+}
+
+/* Module-specific tab active states */
+.ks-tab[data-module="synth"].active {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(139, 92, 246, 0.1) 100%);
+    border-color: var(--ks-synth);
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+}
+
+.ks-tab[data-module="orchestra"].active {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, rgba(245, 158, 11, 0.1) 100%);
+    border-color: var(--ks-orchestra);
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
+}
+
+.ks-tab[data-module="blender"].active {
+    background: linear-gradient(135deg, rgba(236, 72, 153, 0.2) 0%, rgba(236, 72, 153, 0.1) 100%);
+    border-color: var(--ks-blender);
+    box-shadow: 0 0 20px rgba(236, 72, 153, 0.3);
+}
+
+.ks-tab[data-module="vocal"].active {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(16, 185, 129, 0.1) 100%);
+    border-color: var(--ks-vocal);
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+}
+
+.ks-tab[data-module="rhythm"].active {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(239, 68, 68, 0.1) 100%);
+    border-color: var(--ks-rhythm);
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+}
+
+.ks-tab[data-module="ambient"].active {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(99, 102, 241, 0.1) 100%);
+    border-color: var(--ks-ambient);
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+}
+
+/* Klang-Studio Panel Styling */
+.ks-panel {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 24px;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+.ks-panel-header {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #737373;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 16px;
+}
+
+/* Klang-Studio Radio Cards */
+.ks-radio-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+}
+
+.ks-radio-card:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+}
+
+input:checked+.ks-radio-card {
+    background: rgba(6, 182, 212, 0.15);
+    border-color: var(--ks-primary);
+    box-shadow: 0 0 20px var(--ks-glow);
+}
+
+input:checked+.ks-radio-card .ks-card-icon {
+    color: var(--ks-primary-light);
+}
+
+input:checked+.ks-radio-card .ks-card-label {
+    color: white;
+}
+
+.ks-card-icon {
+    font-size: 1.75rem;
+    color: #737373;
+    transition: color 0.2s;
+}
+
+.ks-card-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #a3a3a3;
+    transition: color 0.2s;
+}
+
+.ks-card-sublabel {
+    font-size: 0.7rem;
+    color: #525252;
+}
+
+/* Klang-Studio Sliders */
+.ks-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(to right,
+            rgba(6, 182, 212, 0.3) 0%,
+            rgba(20, 184, 166, 0.3) 100%);
+    border-radius: 3px;
+    outline: none;
+    cursor: pointer;
+}
+
+.ks-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    background: linear-gradient(135deg, var(--ks-primary), var(--ks-accent));
+    border: 3px solid #0f172a;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 15px var(--ks-glow-intense);
+    transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.ks-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 25px var(--ks-glow-intense);
+}
+
+.ks-slider::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    background: linear-gradient(135deg, var(--ks-primary), var(--ks-accent));
+    border: 3px solid #0f172a;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 15px var(--ks-glow-intense);
+}
+
+/* Klang-Studio Checkbox Pills */
+.ks-effect-pill {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 9999px;
+    padding: 8px 18px;
+    font-size: 0.875rem;
+    color: #a3a3a3;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.ks-effect-pill:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: white;
+}
+
+input:checked+.ks-effect-pill {
+    background: linear-gradient(135deg, rgba(6, 182, 212, 0.3), rgba(20, 184, 166, 0.2));
+    border-color: var(--ks-primary);
+    color: white;
+    box-shadow: 0 0 15px var(--ks-glow);
+}
+
+/* Klang-Studio Terminal Preview */
+.ks-terminal {
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 16px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.8rem;
+    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.ks-terminal-header {
+    color: #525252;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.ks-terminal-content {
+    color: var(--ks-primary-light);
+    line-height: 1.5;
+    word-break: break-word;
+}
+
+/* Klang-Studio Dropdown/Select */
+.ks-select {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 10px 36px 10px 14px;
+    color: #e5e5e5;
+    font-size: 0.9rem;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23737373' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.ks-select:focus {
+    outline: none;
+    border-color: var(--ks-primary);
+    box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.15);
+}
+
+.ks-select:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Klang-Studio Orchestra Seat Visualization */
+.ks-orchestra-stage {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 24px;
+    position: relative;
+}
+
+.ks-conductor {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+.ks-section-row {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+
+.ks-instrument-seat {
+    width: 44px;
+    height: 44px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    color: #737373;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.ks-instrument-seat:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.ks-instrument-seat.active {
+    background: rgba(6, 182, 212, 0.2);
+    border-color: var(--ks-primary);
+    color: var(--ks-primary-light);
+    box-shadow: 0 0 10px var(--ks-glow);
+}
+
+.ks-instrument-seat.disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+/* Klang-Studio Section Dominance Sliders */
+.ks-dominance-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.ks-dominance-label {
+    width: 100px;
+    font-size: 0.8rem;
+    color: #a3a3a3;
+}
+
+.ks-dominance-slider {
+    flex: 1;
+}
+
+.ks-dominance-value {
+    width: 50px;
+    text-align: right;
+    font-size: 0.75rem;
+    color: #737373;
+}
+
+/* Klang-Studio Preset Cards */
+.ks-preset-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    text-align: center;
+}
+
+.ks-preset-card:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+}
+
+input:checked+.ks-preset-card,
+.ks-preset-card.active {
+    background: rgba(6, 182, 212, 0.12);
+    border-color: var(--ks-primary);
+    box-shadow: 0 0 20px var(--ks-glow);
+}
+
+.ks-preset-icon {
+    font-size: 2rem;
+    margin-bottom: 8px;
+}
+
+.ks-preset-name {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 4px;
+}
+
+.ks-preset-count {
+    font-size: 0.7rem;
+    color: #525252;
+}
+
+/* Klang-Studio Module Content Areas */
+.ks-module-content {
+    display: none;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.ks-module-content.active {
+    display: block;
+}
+
+/* Klang-Studio Blend Visualization */
+.ks-blend-container {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 16px;
+}
+
+.ks-blend-label {
+    font-size: 0.8rem;
+    color: #737373;
+    min-width: 80px;
+    text-align: center;
+}
+
+.ks-blend-slider-container {
+    flex: 1;
+    position: relative;
+}
+
+.ks-blend-percentage {
+    text-align: center;
+    margin-top: 8px;
+    font-size: 0.85rem;
+    color: var(--ks-primary-light);
+    font-weight: 500;
+}
+
+/* Klang-Studio Action Buttons */
+.ks-btn-primary {
+    background: linear-gradient(135deg, var(--ks-primary), var(--ks-primary-dark));
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    font-weight: 600;
+    padding: 14px 28px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 15px var(--ks-glow);
+}
+
+.ks-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px var(--ks-glow-intense);
+}
+
+.ks-btn-secondary {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #e5e5e5;
+    font-weight: 500;
+    padding: 12px 24px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.ks-btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Klang-Studio Coming Soon Placeholder */
+.ks-coming-soon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    color: #525252;
+    text-align: center;
+}
+
+.ks-coming-soon-icon {
+    font-size: 3rem;
+    margin-bottom: 16px;
+    opacity: 0.5;
+}
+
+.ks-coming-soon-text {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.ks-coming-soon-sub {
+    font-size: 0.85rem;
+    opacity: 0.7;
+}
+
+/* ============================================
+   KLANG-STUDIO FIXED FULLSCREEN LAYOUT
+   ============================================ */
+
+/* Main Layout Container - No Scroll */
+.ks-layout {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Header with Tabs */
+.ks-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(0, 0, 0, 0.4);
+    padding: 16px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    z-index: 20;
+}
+
+.ks-header-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Main Grid - 2 Rows */
+.ks-main-grid {
+    display: grid;
+    grid-template-rows: 55fr 40fr;
+    gap: 16px;
+    padding: 16px 24px;
+    overflow: hidden;
+    min-height: 0;
+}
+
+/* Top Section - Module Controls */
+.ks-top-section {
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 8px;
+    min-height: 0;
+}
+
+.ks-top-section::-webkit-scrollbar {
+    width: 4px;
+}
+
+.ks-top-section::-webkit-scrollbar-thumb {
+    background: rgba(6, 182, 212, 0.3);
+    border-radius: 2px;
+}
+
+/* Bottom Section - 3 Columns */
+.ks-bottom-section {
+    display: grid;
+    grid-template-columns: 1fr 1.8fr 1.2fr;
+    gap: 16px;
+    min-height: 0;
+    overflow: hidden;
+}
+
+/* Effects Column (Left) */
+.ks-effects-col {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.ks-effects-col::-webkit-scrollbar {
+    width: 3px;
+}
+
+.ks-effects-col::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+}
+
+.ks-effect-btn {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    padding: 12px 16px;
+    color: #a3a3a3;
+    font-size: 0.85rem;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ks-effect-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.15);
+    color: white;
+}
+
+.ks-effect-btn.active {
+    background: rgba(6, 182, 212, 0.15);
+    border-color: var(--ks-primary);
+    color: white;
+    box-shadow: 0 0 15px var(--ks-glow);
+}
+
+.ks-effect-btn .effect-icon {
+    font-size: 1rem;
+    opacity: 0.7;
+}
+
+.ks-effect-btn.active .effect-icon {
+    opacity: 1;
+}
+
+/* Features Column (Center) */
+.ks-features-col {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 16px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.ks-features-col::-webkit-scrollbar {
+    width: 4px;
+}
+
+.ks-features-col::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+}
+
+.ks-section-title {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #525252;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 12px;
+}
+
+.ks-feature-placeholder {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #404040;
+    text-align: center;
+}
+
+.ks-feature-placeholder-icon {
+    font-size: 2rem;
+    opacity: 0.4;
+    margin-bottom: 8px;
+}
+
+.ks-feature-placeholder-text {
+    font-size: 0.8rem;
+}
+
+/* Terminal Column (Right) */
+.ks-terminal-col {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.ks-terminal-col .ks-terminal {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.ks-terminal-col .ks-terminal-content {
+    flex: 1;
+    overflow-y: auto;
+    font-size: 0.75rem;
+    line-height: 1.6;
+}
+
+.ks-terminal-col .ks-terminal-content::-webkit-scrollbar {
+    width: 3px;
+}
+
+.ks-terminal-col .ks-terminal-content::-webkit-scrollbar-thumb {
+    background: rgba(6, 182, 212, 0.3);
+    border-radius: 2px;
+}
+
+.ks-terminal-stats {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 0.7rem;
+}
+
+/* Footer Actions */
+.ks-footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(0, 0, 0, 0.4);
+    padding: 12px 24px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+    z-index: 20;
+}
+
+.ks-footer-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #a3a3a3;
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.ks-footer-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.ks-footer-btn.primary {
+    background: linear-gradient(135deg, var(--ks-primary), var(--ks-primary-dark));
+    border-color: transparent;
+    color: white;
+    font-weight: 600;
+    box-shadow: 0 4px 15px var(--ks-glow);
+}
+
+.ks-footer-btn.primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px var(--ks-glow-intense);
+}
+
+.ks-footer-btn.danger {
+    color: #f87171;
+    border-color: rgba(248, 113, 113, 0.2);
+}
+
+.ks-footer-btn.danger:hover {
+    background: rgba(248, 113, 113, 0.1);
+    border-color: rgba(248, 113, 113, 0.4);
+}
+
+/* Compact Module Content for Fixed Layout */
+.ks-module-content.compact {
+    display: none;
+}
+
+.ks-module-content.compact.active {
+    display: block;
+}
+
+/* Compact Panel Adjustments */
+.ks-panel.compact {
+    padding: 16px;
+    margin-bottom: 12px;
+}
+
+.ks-panel.compact .ks-panel-header {
+    margin-bottom: 10px;
+    font-size: 0.6rem;
+}
+
+/* Compact Radio Cards */
+.ks-radio-card.compact {
+    padding: 10px 12px;
+}
+
+.ks-radio-card.compact .ks-card-icon {
+    font-size: 1.25rem;
+}
+
+.ks-radio-card.compact .ks-card-label {
+    font-size: 0.75rem;
+}
+
+/* Two-column grid for compact synth controls */
+.ks-compact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.ks-compact-grid .ks-panel {
+    margin-bottom: 0;
+}
+
+/* Compact Orchestra Stage */
+.ks-orchestra-stage.compact {
+    padding: 16px;
+}
+
+.ks-orchestra-stage.compact .ks-conductor {
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+}
+
+.ks-orchestra-stage.compact .ks-instrument-seat {
+    width: 36px;
+    height: 36px;
+    font-size: 0.6rem;
+}
+
+/* Compact Blend Container */
+.ks-blend-container.compact {
+    padding: 12px;
+    gap: 12px;
+}
+
+.ks-blend-container.compact .ks-blend-label {
+    font-size: 0.7rem;
+    min-width: 60px;
+}
+
+/* Compact Coming Soon */
+.ks-coming-soon.compact {
+    min-height: 150px;
+}
+
+.ks-coming-soon.compact .ks-coming-soon-icon {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.ks-coming-soon.compact .ks-coming-soon-text {
+    font-size: 0.95rem;
 }

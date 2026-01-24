@@ -18,6 +18,7 @@ function initializeAdvancedFeatures() {
     setupCustomInstruction();
     setupGenreEvolution();
     setupStyleSync();
+    setupKlangStudio();
 }
 
 // === IDEA SPARK LOGIC ===
@@ -1766,4 +1767,455 @@ function setupStyleSync() {
             }
         });
     }
+}
+
+// === KLANG-STUDIO LOGIC ===
+function setupKlangStudio() {
+    const modal = document.getElementById('klang-studio-modal');
+    const openTile = document.getElementById('klang-studio-tile');
+    const closeBtn = document.getElementById('close-klang-studio');
+    const tabs = document.querySelectorAll('#ks-module-tabs .ks-tab');
+    const contentArea = document.getElementById('ks-content-area');
+    const filterSlider = document.getElementById('ks-filter-slider');
+    const filterLabel = document.getElementById('ks-filter-label');
+    const blendRatioSlider = document.getElementById('ks-blend-ratio');
+    const blendDisplay = document.getElementById('ks-blend-display');
+    const blenderRatioSlider = document.getElementById('ks-blender-ratio');
+    const blenderDisplay = document.getElementById('ks-blender-display');
+    const instrumentSeats = document.querySelectorAll('.ks-instrument-seat');
+    const dominanceSliders = document.querySelectorAll('.ks-dominance-slider');
+    const copyBtn = document.getElementById('ks-copy-btn');
+    const applyBtn = document.getElementById('ks-apply-btn');
+    const tokenPreview = document.getElementById('ks-token-preview');
+    const charCount = document.getElementById('ks-char-count');
+
+    if (!modal || !openTile) return;
+
+    // Prevent double initialization
+    if (modal.dataset.ksInitialized === 'true') return;
+    modal.dataset.ksInitialized = 'true';
+
+    // Open Modal
+    openTile.addEventListener('click', () => {
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+        updateTokenPreview();
+    });
+
+    // Close Modal
+    const closeModal = () => {
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+    };
+
+    closeBtn?.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal || e.target.classList.contains('bg-black/95')) {
+            closeModal();
+        }
+    });
+
+    // ESC key to close
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+            closeModal();
+        }
+    });
+
+    // Tab Switching
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const module = tab.dataset.module;
+
+            // Update tab active states
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+
+            // Show corresponding content
+            const contents = contentArea.querySelectorAll('.ks-module-content');
+            contents.forEach(content => {
+                content.classList.remove('active');
+                if (content.id === `ks-module-${module}`) {
+                    content.classList.add('active');
+                }
+            });
+
+            // Update token preview for new module
+            updateTokenPreview();
+        });
+    });
+
+    // Filter Slider Labels
+    const filterLabels = {
+        0: 'Sehr Dunkel',
+        20: 'Dunkel',
+        40: 'Warm-Dunkel',
+        50: 'Warm-Mittig',
+        60: 'Neutral-Offen',
+        80: 'Hell-Offen',
+        100: 'Sehr Hell'
+    };
+
+    const updateFilterLabel = () => {
+        if (!filterSlider || !filterLabel) return;
+        const value = parseInt(filterSlider.value);
+        const thresholds = Object.keys(filterLabels).map(Number).sort((a, b) => a - b);
+        let label = filterLabels[0];
+        for (const threshold of thresholds) {
+            if (value >= threshold) label = filterLabels[threshold];
+        }
+        filterLabel.textContent = label;
+    };
+
+    filterSlider?.addEventListener('input', () => {
+        updateFilterLabel();
+        updateTokenPreview();
+    });
+
+    // Blend Ratio Display
+    const updateBlendDisplay = () => {
+        if (!blendRatioSlider || !blendDisplay) return;
+        const value = parseInt(blendRatioSlider.value);
+        blendDisplay.textContent = `${value}% Synth / ${100 - value}% Blend`;
+    };
+
+    blendRatioSlider?.addEventListener('input', () => {
+        updateBlendDisplay();
+        updateTokenPreview();
+    });
+
+    // Blender Module Ratio Display
+    const updateBlenderDisplay = () => {
+        if (!blenderRatioSlider || !blenderDisplay) return;
+        const value = parseInt(blenderRatioSlider.value);
+        blenderDisplay.textContent = `${value}% Primär / ${100 - value}% Sekundär`;
+    };
+
+    blenderRatioSlider?.addEventListener('input', () => {
+        updateBlenderDisplay();
+        updateTokenPreview();
+    });
+
+    // Orchestra Instrument Seat Toggle
+    instrumentSeats.forEach(seat => {
+        seat.addEventListener('click', () => {
+            seat.classList.toggle('active');
+            updateTokenPreview();
+        });
+    });
+
+    // Section Dominance Sliders
+    dominanceSliders.forEach(slider => {
+        slider.addEventListener('input', () => {
+            const valueDisplay = slider.parentElement.querySelector('.ks-dominance-value');
+            if (valueDisplay) {
+                valueDisplay.textContent = `${slider.value}%`;
+            }
+            updateTokenPreview();
+        });
+    });
+
+    // Radio/checkbox changes trigger token preview update
+    modal.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(input => {
+        input.addEventListener('change', updateTokenPreview);
+    });
+
+    // Select changes trigger token preview update
+    modal.querySelectorAll('select').forEach(select => {
+        select.addEventListener('change', updateTokenPreview);
+    });
+
+    // Token Preview Generation
+    function updateTokenPreview() {
+        const activeTab = document.querySelector('#ks-module-tabs .ks-tab.active');
+        const currentModule = activeTab?.dataset.module || 'synth';
+
+        let token = '';
+
+        if (currentModule === 'synth') {
+            token = generateSynthToken();
+        } else if (currentModule === 'orchestra') {
+            token = generateOrchestraToken();
+        } else if (currentModule === 'blender') {
+            token = generateBlenderToken();
+        } else {
+            token = 'Module kommt in Phase 2...';
+        }
+
+        if (tokenPreview) tokenPreview.textContent = token;
+        if (charCount) charCount.textContent = `${token.length} Zeichen`;
+
+        // Update health indicator
+        const healthEl = document.getElementById('ks-token-health');
+        if (healthEl) {
+            if (token.length < 50) {
+                healthEl.textContent = 'Kurz';
+                healthEl.className = 'text-yellow-400';
+            } else if (token.length < 150) {
+                healthEl.textContent = 'Optimal';
+                healthEl.className = 'text-green-400';
+            } else if (token.length < 250) {
+                healthEl.textContent = 'Gut';
+                healthEl.className = 'text-green-300';
+            } else {
+                healthEl.textContent = 'Ausführlich';
+                healthEl.className = 'text-amber-400';
+            }
+        }
+    }
+
+    function generateSynthToken() {
+        const waveform = modal.querySelector('input[name="ks-waveform"]:checked')?.value || 'sawtooth';
+        const cutoff = modal.querySelector('input[name="ks-cutoff"]:checked')?.value || '8000';
+        const envelope = modal.querySelector('input[name="ks-envelope"]:checked')?.value || 'pad';
+        const effects = Array.from(modal.querySelectorAll('input[name="ks-effects"]:checked')).map(el => el.value);
+        const blendSound = document.getElementById('ks-blend-sound')?.value || '';
+        const blendRatio = parseInt(document.getElementById('ks-blend-ratio')?.value || 70);
+
+        const waveformMap = {
+            'sawtooth': 'sawtooth waveform synthesizer',
+            'sine': 'smooth sine wave synthesizer',
+            'triangle': 'mellow triangle wave synth',
+            'square': 'punchy square wave synth'
+        };
+
+        const cutoffMap = {
+            '2000': 'dark and muffled with low-pass filter below 2000Hz',
+            '8000': 'warm low-pass filtered below 8000Hz',
+            '15000': 'open filtered below 15000Hz',
+            'none': 'full brightness with no filter'
+        };
+
+        const envelopeMap = {
+            'percussive': 'short percussive attack',
+            'pad': 'soft attack with long release',
+            'plucky': 'plucky articulation with quick decay',
+            'sustained': 'sustained hold with gradual release'
+        };
+
+        const effectsMap = {
+            'reverb': 'drenched in reverb',
+            'delay': 'with spacious delay',
+            'chorus': 'with chorus modulation',
+            'distortion': 'with subtle saturation',
+            'phaser': 'with swirling phaser'
+        };
+
+        const parts = [];
+        parts.push(waveformMap[waveform]);
+        parts.push(cutoffMap[cutoff]);
+        parts.push(envelopeMap[envelope]);
+        effects.forEach(fx => parts.push(effectsMap[fx]));
+
+        if (blendSound && blendRatio < 100) {
+            const blendMap = {
+                'native_flute': 'native American flute textures',
+                'shakuhachi': 'shakuhachi flute tones',
+                'duduk': 'duduk woodwind character',
+                'sitar': 'sitar resonance',
+                'erhu': 'erhu string overtones',
+                'violin': 'violin streaks',
+                'cello': 'cello warmth',
+                'strings': 'string ensemble layers',
+                'piano': 'piano tones',
+                'organ': 'organ textures',
+                'harp': 'harp glissando elements'
+            };
+            parts.push(`blended with ${100 - blendRatio}% ${blendMap[blendSound] || blendSound}`);
+        }
+
+        return parts.join(', ');
+    }
+
+    function generateOrchestraToken() {
+        const preset = modal.querySelector('input[name="ks-orch-preset"]:checked')?.value || 'symphony';
+        const acoustics = modal.querySelector('input[name="ks-acoustics"]:checked')?.value || 'concert';
+
+        const presetMap = {
+            'symphony': 'full symphony orchestra',
+            'chamber': 'intimate chamber orchestra',
+            'quartet': 'string quartet',
+            'brass': 'brass ensemble',
+            'woodwind': 'woodwind section',
+            'solo': 'solo instrument'
+        };
+
+        const acousticsMap = {
+            'intimate': 'intimate chamber room acoustics',
+            'concert': 'lush concert hall reverberation',
+            'cathedral': 'massive cathedral reverb',
+            'dry': 'dry studio recording'
+        };
+
+        const parts = [presetMap[preset]];
+
+        // Check dominance
+        dominanceSliders.forEach(slider => {
+            const section = slider.dataset.section;
+            const value = parseInt(slider.value);
+            if (value > 70) {
+                const sectionNames = {
+                    'strings': 'prominent strings',
+                    'woodwinds': 'emphasized woodwinds',
+                    'brass': 'powerful brass',
+                    'percussion': 'driving percussion'
+                };
+                parts.push(sectionNames[section]);
+            }
+        });
+
+        parts.push(acousticsMap[acoustics]);
+
+        return parts.join(', ');
+    }
+
+    function generateBlenderToken() {
+        const primary = document.getElementById('ks-primary-sound')?.value || 'synth_lead';
+        const secondary = document.getElementById('ks-secondary-sound')?.value || 'shakuhachi';
+        const ratio = parseInt(document.getElementById('ks-blender-ratio')?.value || 60);
+        const mode = modal.querySelector('input[name="ks-blend-mode"]:checked')?.value || 'harmonic';
+
+        const soundNames = {
+            'synth_pad': 'synth pad',
+            'synth_lead': 'synth lead',
+            'synth_bass': 'synth bass',
+            'synth_pluck': 'synth pluck',
+            'violin': 'violin',
+            'cello': 'cello',
+            'string_section': 'string section',
+            'piano': 'piano',
+            'organ': 'organ',
+            'electric_piano': 'electric piano',
+            'sitar': 'sitar',
+            'shakuhachi': 'shakuhachi',
+            'duduk': 'duduk',
+            'pan_flute': 'pan flute',
+            'native_flute': 'native flute',
+            'erhu': 'erhu',
+            'koto': 'koto',
+            'flute': 'flute',
+            'clarinet': 'clarinet',
+            'saxophone': 'saxophone',
+            'harp': 'harp',
+            'guitar': 'guitar'
+        };
+
+        const modeMap = {
+            'harmonic': 'harmonically blended',
+            'contrast': 'contrasting textures',
+            'layered': 'layered together',
+            'freq_split': 'frequency-split fusion'
+        };
+
+        return `${soundNames[primary] || primary} and ${soundNames[secondary] || secondary} ${modeMap[mode]}, ${ratio}% primary ${100 - ratio}% secondary blend`;
+    }
+
+    // Copy Button
+    copyBtn?.addEventListener('click', () => {
+        const text = tokenPreview?.textContent || '';
+        navigator.clipboard.writeText(text).then(() => {
+            const originalText = copyBtn.innerHTML;
+            copyBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Kopiert!';
+            setTimeout(() => { copyBtn.innerHTML = originalText; }, 1500);
+        });
+    });
+
+    // Apply Button
+    applyBtn?.addEventListener('click', () => {
+        const token = tokenPreview?.textContent || '';
+        const resultText = document.getElementById('result-text');
+
+        if (resultText && token) {
+            const currentPrompt = resultText.textContent.trim();
+            const updatedPrompt = currentPrompt
+                ? `${currentPrompt}, ${token}`
+                : token;
+            resultText.textContent = updatedPrompt;
+
+            if (window.QW) {
+                window.QW.onPromptUpdated({ source: 'klang-studio' });
+            }
+        }
+
+        closeModal();
+    });
+
+    // Initialize labels on load
+    updateFilterLabel();
+    updateBlendDisplay();
+    updateBlenderDisplay();
+
+    // === NEW LAYOUT HANDLERS ===
+
+    // Effect Buttons Toggle (triggers only, logic in Phase 2)
+    const effectBtns = modal.querySelectorAll('.ks-effect-btn');
+    effectBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            btn.classList.toggle('active');
+            updateTokenPreview();
+        });
+    });
+
+    // Revert Button - reset all settings
+    const revertBtn = document.getElementById('ks-revert-btn');
+    revertBtn?.addEventListener('click', () => {
+        // Reset waveform
+        const sawtoothRadio = modal.querySelector('input[name="ks-waveform"][value="sawtooth"]');
+        if (sawtoothRadio) sawtoothRadio.checked = true;
+
+        // Reset cutoff
+        const cutoff8k = modal.querySelector('input[name="ks-cutoff"][value="8000"]');
+        if (cutoff8k) cutoff8k.checked = true;
+
+        // Reset filter slider
+        if (filterSlider) {
+            filterSlider.value = 50;
+            updateFilterLabel();
+        }
+
+        // Reset envelope
+        const padEnvelope = modal.querySelector('input[name="ks-envelope"][value="pad"]');
+        if (padEnvelope) padEnvelope.checked = true;
+
+        // Reset blend
+        const blendSelect = document.getElementById('ks-blend-sound');
+        if (blendSelect) blendSelect.value = '';
+        if (blendRatioSlider) {
+            blendRatioSlider.value = 70;
+            updateBlendDisplay();
+        }
+
+        // Reset effects
+        effectBtns.forEach((btn, i) => {
+            if (i < 2) btn.classList.add('active'); // Reverb & Echo on
+            else btn.classList.remove('active');
+        });
+
+        updateTokenPreview();
+    });
+
+    // Decline Button - close without applying
+    const declineBtn = document.getElementById('ks-decline-btn');
+    declineBtn?.addEventListener('click', closeModal);
+
+    // Accept Button - apply token and close
+    const acceptBtn = document.getElementById('ks-accept-btn');
+    acceptBtn?.addEventListener('click', () => {
+        const token = tokenPreview?.textContent || '';
+        const resultText = document.getElementById('result-text');
+
+        if (resultText && token && token !== 'Module kommt in Phase 2...') {
+            const currentPrompt = resultText.textContent.trim();
+            const updatedPrompt = currentPrompt
+                ? `${currentPrompt}, ${token}`
+                : token;
+            resultText.textContent = updatedPrompt;
+
+            if (window.QW) {
+                window.QW.onPromptUpdated({ source: 'klang-studio' });
+            }
+        }
+
+        closeModal();
+    });
 }
