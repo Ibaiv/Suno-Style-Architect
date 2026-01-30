@@ -2065,3 +2065,14 @@ input:checked+.ks-preset-card,
 .ks-coming-soon.compact .ks-coming-soon-text {
     font-size: 0.95rem;
 }
+
+/* Force terminal look for studio decode result textarea */
+#studio-decode-result {
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    color: #a5b4fc !important; /* text-indigo-300 */
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
+}
