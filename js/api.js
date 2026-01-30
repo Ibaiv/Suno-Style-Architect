@@ -42,13 +42,24 @@ async function callFalAPI(prompt, options = {}) {
                 colors: []
             };
 
-            // FLUX Pro Context payload
+            // FLUX Pro Context payload (image-to-image, requires image_url)
             const fluxKontextPayload = {
                 prompt,
                 guidance_scale: 3.5,
                 safety_tolerance: "2",
                 aspect_ratio: '16:9',
                 num_images: 1,
+                output_format: 'jpeg'
+            };
+
+            // FLUX Pro text-to-image payload
+            const fluxProPayload = {
+                prompt,
+                image_size: 'landscape_16_9',
+                num_inference_steps: 28,
+                guidance_scale: 3.5,
+                num_images: 1,
+                safety_tolerance: "2",
                 output_format: 'jpeg'
             };
 
@@ -74,6 +85,7 @@ async function callFalAPI(prompt, options = {}) {
             // Select payload based on model
             if (FAL_MODEL === 'fal-ai/nano-banana-pro') return [nanoBananaPayload];
             if (FAL_MODEL === 'fal-ai/recraft/v3/text-to-image') return [recraftPayload];
+            if (FAL_MODEL === 'fal-ai/flux-pro') return [fluxProPayload];
             if (FAL_MODEL === 'fal-ai/flux-pro/kontext') return [fluxKontextPayload];
             if (FAL_MODEL === 'fal-ai/gpt-image-1.5') return [gptImagePayload];
             if (FAL_MODEL === 'fal-ai/flux/dev') return [fluxPayload];

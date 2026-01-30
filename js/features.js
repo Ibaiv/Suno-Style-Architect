@@ -1629,7 +1629,9 @@ function setupStyleSync() {
     if (closeButton) closeButton.addEventListener('click', closeStudio);
 
     // --- ENCODER LOGIC (Text -> Image) ---
-    if (transcodeBtn) {
+    // Guard against multiple event listener attachments
+    if (transcodeBtn && !transcodeBtn.dataset.listenerAttached) {
+        transcodeBtn.dataset.listenerAttached = 'true';
         transcodeBtn.addEventListener('click', async () => {
             const promptText = masterPromptDisplay.textContent;
             if (!promptText || promptText.startsWith('//')) {
@@ -1660,6 +1662,56 @@ function setupStyleSync() {
                 visualPlaceholder.innerHTML = `<p class="text-red-400 text-xs text-center px-4">Fehler: ${error.message}</p>`;
             } finally {
                 transcodeBtn.classList.remove('animate-pulse');
+            }
+        });
+    }
+
+    // --- DOWNLOAD & COPY BUTTONS ---
+    const downloadBtn = document.getElementById('studio-download-btn');
+    const copyBtn = document.getElementById('studio-copy-btn');
+
+    if (downloadBtn && !downloadBtn.dataset.listenerAttached) {
+        downloadBtn.dataset.listenerAttached = 'true';
+        downloadBtn.addEventListener('click', async () => {
+            if (!visualResult || visualResult.classList.contains('hidden') || !visualResult.src) {
+                return;
+            }
+            try {
+                const response = await fetch(visualResult.src);
+                const blob = await response.blob();
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `style-sync-${Date.now()}.png`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            } catch (error) {
+                console.error('Download Error:', error);
+                alert('Fehler beim Herunterladen des Bildes.');
+            }
+        });
+    }
+
+    if (copyBtn && !copyBtn.dataset.listenerAttached) {
+        copyBtn.dataset.listenerAttached = 'true';
+        copyBtn.addEventListener('click', async () => {
+            if (!visualResult || visualResult.classList.contains('hidden') || !visualResult.src) {
+                return;
+            }
+            try {
+                const response = await fetch(visualResult.src);
+                const blob = await response.blob();
+                await navigator.clipboard.write([
+                    new ClipboardItem({ [blob.type]: blob })
+                ]);
+                // Visual feedback
+                copyBtn.classList.add('bg-green-500/50');
+                setTimeout(() => copyBtn.classList.remove('bg-green-500/50'), 1000);
+            } catch (error) {
+                console.error('Copy Error:', error);
+                alert('Fehler beim Kopieren. Bitte versuche es erneut.');
             }
         });
     }

@@ -5,18 +5,20 @@ const FAL_BASE_URL = 'https://fal.run/'; // fal.ai proxy URL
 
 // Model display names for fal.ai
 const FAL_MODEL_NAMES = {
+    'fal-ai/flux-pro': 'Flux Pro',
+    'fal-ai/flux-pro/kontext': 'Flux Pro Kontext (img2img)',
     'fal-ai/nano-banana-pro': 'Nano Banana Pro',
     'fal-ai/recraft/v3/text-to-image': 'Recraft V3',
-    'fal-ai/flux-pro/kontext': 'Flux Pro Context',
     'fal-ai/gpt-image-1.5': 'GPT-Image 1.5',
     'fal-ai/flux/dev': 'FLUX.1 [dev]'
 };
 
 // FAL endpoint mapping (selection value -> API path)
 const FAL_MODEL_ENDPOINTS = {
+    'fal-ai/flux-pro': 'fal-ai/flux-pro',
+    'fal-ai/flux-pro/kontext': 'fal-ai/flux-pro/kontext',
     'fal-ai/nano-banana-pro': 'fal-ai/nano-banana-pro',
     'fal-ai/recraft/v3/text-to-image': 'fal-ai/recraft/v3/text-to-image',
-    'fal-ai/flux-pro/kontext': 'fal-ai/flux-pro/kontext',
     'fal-ai/gpt-image-1.5': 'fal-ai/gpt-image-1.5',
     'fal-ai/flux/dev': 'fal-ai/flux/dev'
 };

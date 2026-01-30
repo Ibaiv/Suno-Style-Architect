@@ -78,7 +78,8 @@
                         class="w-full bg-neutral-900/70 border border-neutral-600 rounded-lg p-3 text-neutral-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
                         <option value="fal-ai/nano-banana-pro" selected>Nano Banana Pro</option>
                         <option value="fal-ai/recraft/v3/text-to-image">Recraft V3</option>
-                        <option value="fal-ai/flux-pro/kontext">Flux Pro Context</option>
+                        <option value="fal-ai/flux-pro">Flux Pro</option>
+                        <option value="fal-ai/flux-pro/kontext">Flux Pro Kontext (img2img)</option>
                         <option value="fal-ai/gpt-image-1.5">GPT-Image 1.5</option>
                         <option value="fal-ai/flux/dev">FLUX.1 [dev]</option>
                     </select>
@@ -1557,16 +1558,18 @@
                         <!-- Overlay Actions -->
                         <div
                             class="absolute bottom-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <button class="p-2 bg-black/60 backdrop-blur rounded-lg hover:bg-white/10 text-white"><svg
-                                    xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2">
+                            <button id="studio-download-btn"
+                                class="p-2 bg-black/60 backdrop-blur rounded-lg hover:bg-white/10 text-white"
+                                title="Download Image"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                                     <polyline points="7 10 12 15 17 10" />
                                     <line x1="12" x2="12" y1="15" y2="3" />
                                 </svg></button>
-                            <button class="p-2 bg-black/60 backdrop-blur rounded-lg hover:bg-white/10 text-white"><svg
-                                    xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2">
+                            <button id="studio-copy-btn"
+                                class="p-2 bg-black/60 backdrop-blur rounded-lg hover:bg-white/10 text-white"
+                                title="Copy Image"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <rect width="8" height="4" x="8" y="2" rx="1" ry="1" />
                                     <path
                                         d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />

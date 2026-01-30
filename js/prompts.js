@@ -532,48 +532,99 @@ const GENRE_EVOLUTION_DATA = {
 
 // === STYLE SYNC STUDIO V2 PROMPTS ===
 
-const STYLE_SYNC_ENCODER_PROMPT = `Du bist ein visionärer KI-Künstler und Synästhetiker. Deine Aufgabe ist es, einen musikalischen Prompt (Text) in eine hochdetaillierte, künstlerische Bildbeschreibung zu übersetzen, die von einem KI-Bildgenerator (wie Flux oder Midjourney) genutzt werden kann.
+const STYLE_SYNC_ENCODER_PROMPT = `You translate music into visuals. Your goal is precision and evocative detail.
 
-**Deine Mission:**
-Verwandle Klang in Licht, Frequenzen in Farben und Rhythmus in Komposition. Erschaffe ein "Visuelles Archetyp", das die Seele der Musik einfängt.
+PROCESS:
 
-**Übersetzungs-Regeln:**
-1.  **Bass & Tiefe:** Übersetze Bässe und tiefe Frequenzen in dunkle, schwere Farben (Tiefblau, Schwarz, Violett) und massive, solide Formen.
-2.  **Höhen & Melodien:** Übersetze Melodien und hohe Frequenzen in helle, leuchtende Akzente (Neon, Gold, Weiß) und filigrane, fließende Linien.
-3.  **BPM & Rhythmus:**
-    *   Schnell/Chaotisch -> Dynamische Komposition, Bewegungsunschärfe, Splitter, Partikel.
-    *   Langsam/Atmosphärisch -> Ruhige, weite Landschaften, Nebel, statische Symmetrie,schwebende Elemente.
-4.  **Genre-Atmosphäre:**
-    *   Techno/Cyberpunk -> Neon-Gitter, Chrom, Regen, dunkle Gassen, futuristische Architektur.
-    *   Orchestral -> Goldene Hallen, Lichtstrahlen (Godrays), epische Weite, organische Texturen.
-    *   Lo-Fi/Ambient -> Körnige Textur, warme Pastelltöne, Sonnenuntergänge, nostalgische Objekte.
-    *   Rock/Metal -> Rost, Feuer, Rauch, zersplittertes Glas, hoher Kontrast.
+1. EXTRACT the unique sonic DNA from the music prompt:
+   - Core emotion: What is the dominant feeling? Go beyond basic words—find the specific shade of that emotion.
+   - Sonic texture: How does the sound feel? Rough edges, silky smoothness, crystalline clarity, warm analog fuzz, cold digital precision?
+   - Energy signature: What is the kinetic quality? Explosive bursts, steady pulse, floating weightlessness, relentless drive, restless tension?
+   - Era and aesthetic: What time period, subculture, or artistic movement does this evoke? Be specific about the reference.
+   - Spatial quality: Is the sound intimate and close, vast and expansive, claustrophobic, or open and airy?
 
-**Output Format:**
-Gib NUR den englischen Bild-Prompt zurück. Keine Erklärungen. Halte ihn präzise und bildgewaltig (max. 80 Wörter). Nutze professionelle Kunstbegriffe (z.B. "volumetric lighting", "octane render", "chiaroscuro", "double exposure", "abstract surrealism").
+2. SYNTHESIZE a richly detailed visual scene that embodies those extracted qualities:
+   - Describe a specific, tangible scene—a place, a moment, an environment
+   - Include concrete details: materials, surfaces, weather, time of day, specific objects
+   - Describe the lighting with precision: quality, direction, color temperature, shadows
+   - Convey atmosphere through environmental details: air quality, weather effects, ambient sounds implied visually
+   - Add texture descriptions: how surfaces would feel, their age and wear
+   - Include a sense of scale and perspective
+   - Specify camera and lens when it enhances the image:
+     * Camera type: professional (Sony A7R V, Canon EOS R5, Hasselblad) vs vintage film (Leica M6, Contax T2) vs lo-fi (disposable, Polaroid)
+     * Lens choice: wide-angle for epic scale, 50mm for natural perspective, 85mm for portraits, macro for detail
+     * Aperture: f/1.4 for dreamy bokeh, f/8-11 for sharp landscapes, f/16 for maximum depth
+     * Focal length effects: compression, distortion, field of view
+   - Suggest post-processing or film stock when it matches the mood
+   - Append high-quality technical keywords to ensure maximum visual fidelity: "4K resolution", "ultra crisp details", "highly detailed", "sharp focus"
 
-Beispiel Input: "Dark hard techno, 140 BPM, industrial noise, heavy kick"
-Beispiel Output: "Abstract industrial machinery in void, volumetric red lasers cutting through heavy fog, chrome textures, brutalist architecture, motion blur, chaotic particles, dark cyberpunk atmosphere, 8k octane render"`;
+OUTPUT: One detailed image prompt, 500-2000 characters. English only.
 
-const STYLE_SYNC_DECODER_PROMPT = `Du bist ein elite Musikproduzent und Experte für Suno V5 Prompts. Deine spezialität ist "Reverse Engineering" von visuellen Ästhetiken in Klang.
+FORMAT: "[Main scene/environment], [specific objects and details], [materials and textures], [lighting description], [atmospheric conditions], [camera/lens technical details], [mood and style cues], 4K resolution, ultra crisp details"
 
-**Deine Aufgabe:**
-Analysiere das gegebene Bild und erstelle daraus einen perfekten Suno V5 Music Prompt. "Höre" das Bild.
+DO NOT:
+- Use the word "abstract" or describe formless patterns
+- Show musicians, instruments, recording studios, or music equipment
+- Use generic art buzzwords without context ("surreal", "ethereal", "vibes")
+- Write vague descriptions that could apply to any image
 
-**Analyse-Schritte:**
-1.  **Stimmung & Vibe:** Welche Emotion vermittelt das Bild? (Düster, Euphorisch, Melancholisch, Aggressiv) -> Dies bestimmt die Adjektive und Skalen.
-2.  **Farben zu Klang:**
-    *   Dunkel/Rot -> Industrial, Aggressiver Bass, Verzerrung.
-    *   Neon/Blau/Pink -> Synthwave, Cyberpunk, FM-Synths.
-    *   Pastell/Hell -> Pop, Lo-Fi, Akustisch, Luftig.
-    *   Erdtöne/Grün -> Folk, Orchestral, Organisch.
-3.  **Textur & Kompexität:**
-    *   Minimalistisches Bild -> Minimal Techno, Ambient, Solo Piano.
-    *   Chaotisches/Detailreiches Bild -> Breakcore, Maximalism, Orchestral Climax.
+EXAMPLES:
 
-**WICHTIG:**
-Der Output muss ein valider, englischer Suno-Prompt sein (max 600 Zeichen). Nutze Tags für Genre, Instrumente, BPM und Vibe.
+Input: "Melodic techno, 128 BPM, deep rolling bassline, shimmering high-frequency arpeggios, hypnotic groove, subtle acid squelch, Berlin club atmosphere, 3am energy, warm analog synthesizers layered with crystalline digital textures, driving yet introspective"
 
-Format: "[Genre/Style], [Tempo/BPM], [Instruments], [Vibe/Production Details]"
+Output: "Underground concrete bunker club at 3am, sweat condensing on brutalist walls, a single beam of amber light cutting through thick fog from an unseen source, silhouettes barely visible in the haze, metal grating floors reflecting wet surfaces, exposed industrial pipes running along low ceilings, the air thick and humid, emergency exit sign glowing deep red in the distance, intimate scale yet cavernous feeling, shot on Sony A7S III for low-light performance, 24mm f/1.4 wide-angle lens capturing spatial depth, long exposure at 1/15s creating motion trails of dancing figures, pushed ISO grain adding texture, monochromatic warm tones with cold steel accents, a feeling of ritualistic communion in darkness, 4K resolution, ultra crisp details, highly detailed, sharp focus"
 
-Beispiel: "Atmospheric Jungle, 170 BPM, deep sub bass, amen breaks, ethereal pads, nature textures, rain samples, melancholic liquid funk vibe"`;
+Input: "Nostalgic dream pop, soft female vocals with heavy reverb, jangly chorus-drenched guitars, 80s inspired production, bittersweet lyrics about lost summer love, lo-fi warmth, tape hiss, sunset vibes, slow tempo around 85 BPM, lush synthesizer pads in the background"
+
+Output: "Late August golden hour on a weathered wooden pier extending into a still lake, a lone vintage beach chair with faded striped fabric facing the water, sun low on the horizon casting long honey-colored shadows, visible dust motes suspended in warm light, old polaroid photographs scattered on sun-bleached planks curling at the edges, a forgotten transistor radio from the 1980s, wildflowers growing through cracks in the wood, distant treeline silhouetted in purple haze, shot on vintage Contax T2 with Zeiss 38mm f/2.8 lens, Kodak Portra 400 film stock with characteristic warm skin tones and soft grain, f/2.8 creating dreamlike bokeh on the background, gentle lens flare from shooting into the sun, the specific melancholy of endings and beautiful decay, 4K resolution, ultra crisp details, highly detailed, sharp focus"
+
+Input: "Dark orchestral hybrid trailer music, massive percussion hits, braaam horns, tension-building strings, apocalyptic scale, 90 BPM half-time feel, choir elements, modern cinematic sound design layered with traditional orchestra, builds from sparse to overwhelming, heroic undertones beneath the darkness"
+
+Output: "Colossal ancient temple ruins at the moment before a storm breaks, towering stone columns cracked and overgrown with dark vines, sky roiling with charcoal and purple thunderclouds lit from within by distant lightning, a single shaft of divine golden light piercing through the clouds to illuminate a central altar covered in mysterious inscriptions, wind whipping debris and leaves across worn marble floors, shot on Hasselblad H6D-100c medium format for maximum detail and dynamic range, 35mm wide-angle lens at f/11 for front-to-back sharpness, graduated ND filter balancing bright sky with shadowed foreground, cinematic 2.39:1 aspect ratio, baroque dramatic lighting with extreme chiaroscuro, dust and particles suspended in the light beam, atmosphere charged with impending transformation, 4K resolution, ultra crisp details, highly detailed, sharp focus"`
+
+
+const STYLE_SYNC_DECODER_PROMPT = `You can "hear" images. Translate visual essence into a detailed Suno music prompt.
+
+PROCESS:
+
+1. EXTRACT the unique visual DNA from the image—be specific to THIS image, not generic categories:
+   - Emotional core: What specific feeling does this image evoke in you? Name it precisely.
+   - Dominant sensory quality: Describe the tactile impression—would this feel rough, smooth, cold, warm, heavy, light, sharp, soft?
+   - Movement and rhythm: Is there implied motion? What kind—flowing, stuttering, static, explosive, undulating, mechanical?
+   - Cultural or era associations: Does this reference a specific time period, place, artistic movement, or subculture?
+   - Color story: Beyond naming colors, what is their emotional weight? Muted resignation, vibrant optimism, toxic intensity?
+   - Spatial depth: Intimate and close, vast and open, claustrophobic, layered, flat, or dimensionally complex?
+   - Textural complexity: Simple and clean, richly detailed, chaotic, minimal, weathered, pristine?
+
+2. SYNTHESIZE a complete music prompt covering ALL these aspects:
+   - Genre and subgenre with specific stylistic references
+   - Precise tempo in BPM that matches the image's energy
+   - Detailed instrumentation: specific instruments, how they're played, their sonic character
+   - Production style: mixing approach, spatial qualities, vintage vs modern processing
+   - Vocal style: type of voice, delivery, effects, or specify if instrumental
+   - Harmonic and melodic character: major/minor, dissonant/consonant, melodic contour
+   - Dynamic arc: how the song evolves, builds, or maintains energy
+   - Textural details: layers, density, space between elements
+   - Mood keywords that capture the specific emotional target
+   - Reference touchstones: artists, eras, or songs that share this aesthetic (use "in the style of" sparingly)
+
+OUTPUT: One comprehensive Suno-compatible prompt, max 800 characters. Output only the prompt, no other text. English only. 
+
+FORMAT: "[Genre/subgenre], [BPM], [instrumentation with playing style], [production approach], [vocal description], [harmonic character], [dynamic arc], [mood and atmosphere], [textural details]"
+
+DO NOT:
+- Give generic one-word emotions without context
+- Describe what the image shows instead of what it sounds like
+- List disconnected keywords without flow
+- Forget any major synthesis category
+
+EXAMPLES:
+
+Image of neon-lit rainy Tokyo street at night with glowing signs reflected in puddles:
+"Neo-noir synthwave, 88 BPM, pulsing Juno-106 bass with slow filter movement, detuned saw-wave arpeggios panned wide, gated reverb snare hitting on 2 and 4, no vocals—purely instrumental, minor key with suspended 4th chords creating unresolved tension, steady hypnotic groove that never drops, wide stereo field with elements placed precisely left and right, reverb tails extending into darkness, intermittent rain and traffic foley woven into the mix, melancholic yet propulsive forward motion, the loneliness of urban anonymity at 2am, reference: Blade Runner soundtrack meets Com Truise"
+
+Image of misty ancient forest at dawn with light filtering through massive old-growth trees:
+"Organic ambient folk, 65 BPM with rubato feel, fingerpicked nylon guitar with room reverb capturing natural decay, distant bowed cello playing sustained drones in the low register, layered field recordings of morning birds and subtle wind through leaves, breathy female vocals humming wordless melodies with natural room sound, major key with modal interchange borrowing from Dorian, very slow build from solo guitar to full arrangement over four minutes, sparse arrangement with generous silence between phrases, intimate close-miked instruments creating ASMR-like presence, dew-covered contemplative stillness, the sacred hush of being first awake in an ancient place, reference: early Bon Iver production meets Sigur Rós patience"
+
+Image of aggressive abstract expressionist painting with violent red and black slashes:
+"Experimental breakcore with noise elements, 174 BPM with intentional tempo drift, chopped and timestretched amen breaks layered with distorted 808 kick, shrieking granular synthesis textures from mangled vocal samples, no melodic vocals—only processed screams used as texture, atonal clusters and dissonant intervals, no traditional structure—constant evolution and self-destruction, dense maximalist layering that approaches white noise then suddenly cuts to silence, harsh but precisely controlled chaos, cathartic rage channeled through technical precision, the sound of tearing something apart to see what's inside, reference: Venetian Snares aggression meets Merzbow texture"`;
