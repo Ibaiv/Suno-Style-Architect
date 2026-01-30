@@ -1719,7 +1719,10 @@ function setupStyleSync() {
     // --- DECODER LOGIC (Image -> Sound) ---
 
     // Drag & Drop Handling
-    if (dropZone && fileInput) {
+    // Drag & Drop Handling
+    if (dropZone && fileInput && !dropZone.dataset.listenerAttached) {
+        dropZone.dataset.listenerAttached = 'true';
+
         ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
             dropZone.addEventListener(eventName, preventDefaults, false);
         });
