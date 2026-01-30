@@ -1746,9 +1746,43 @@ function setupStyleSync() {
     }
 
     function handleDrop(e) {
+        // Prevent default behavior (prevent file from being opened)
+        e.preventDefault();
+        e.stopPropagation();
+
         const dt = e.dataTransfer;
         const files = dt.files;
-        handleFiles(files);
+
+        if (files && files.length > 0) {
+            handleFiles(files);
+        } else {
+            // Try to extract image URL from dragged element (for internal drag & drop)
+            const html = dt.getData('text/html');
+            const dataUrl = dt.getData('text/uri-list');
+            let imageUrl = null;
+
+            if (html) {
+                const match = html.match(/src="?([^"\s]+)"?/);
+                if (match && match[1]) {
+                    imageUrl = match[1];
+                }
+            } else if (dataUrl) {
+                imageUrl = dataUrl;
+            }
+
+            if (imageUrl) {
+                // Decode HTML entities if necessary (basic check)
+                imageUrl = imageUrl.replace(/&amp;/g, '&');
+
+                dropPreview.src = imageUrl;
+                dropPreview.classList.remove('hidden');
+                dropContent.classList.add('opacity-0');
+                decodeBtn.disabled = false;
+
+                // Store URL for API call (reusing dataset.base64 property for simplicity)
+                dropZone.dataset.base64 = imageUrl;
+            }
+        }
     }
 
     function handleFiles(files) {
