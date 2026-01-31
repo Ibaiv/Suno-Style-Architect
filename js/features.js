@@ -1628,6 +1628,13 @@ function setupStyleSync() {
     openButton.addEventListener('click', openStudio);
     if (closeButton) closeButton.addEventListener('click', closeStudio);
 
+    // ESC key closes the modal
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !studioModal.classList.contains('hidden')) {
+            closeStudio();
+        }
+    });
+
     // --- ENCODER LOGIC (Text -> Image) ---
     // Guard against multiple event listener attachments
     if (transcodeBtn && !transcodeBtn.dataset.listenerAttached) {
@@ -1789,6 +1796,14 @@ function setupStyleSync() {
         if (files.length > 0) {
             const file = files[0];
             if (!file.type.startsWith('image/')) return;
+
+            // Check file size (max 5MB for fal.ai)
+            const maxSizeMB = 5;
+            const maxSizeBytes = maxSizeMB * 1024 * 1024;
+            if (file.size > maxSizeBytes) {
+                alert(`Die Datei ist zu groß (${(file.size / 1024 / 1024).toFixed(1)} MB). Maximale Größe: ${maxSizeMB} MB.`);
+                return;
+            }
 
             const reader = new FileReader();
             reader.onloadend = function () {

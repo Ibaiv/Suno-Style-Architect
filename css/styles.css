@@ -2075,4 +2075,10 @@ input:checked+.ks-preset-card,
     padding: 0 !important;
     color: #a5b4fc !important; /* text-indigo-300 */
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
+    font-size: 1rem !important; /* Larger text for better readability */
+}
+
+/* Larger text for master prompt display */
+#studio-master-prompt-display {
+    font-size: 1rem !important;
 }
