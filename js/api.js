@@ -5,23 +5,20 @@ async function callFalAPI(prompt, options = {}) {
     }
 
     const {
-        timeoutMs = 45000,
+        timeoutMs = 120000, // Increased default timeout to 120s for slower models
         retries = 2,
         signal = null
     } = options;
 
     // Resolve endpoint path from mapping, with smart fallbacks
     const endpointFromMap = (typeof FAL_MODEL_ENDPOINTS !== 'undefined') ? FAL_MODEL_ENDPOINTS[FAL_MODEL] : null;
-    const normalized = (v)=> v.replace(/^\/+|\/+$/g,'');
+    const normalized = (v) => v.replace(/^\/+|\/+$/g, '');
     const base = endpointFromMap || FAL_MODEL;
     const candidates = [];
     const seen = new Set();
-    const push = (x)=>{ const n=normalized(x); if(!seen.has(n)){ seen.add(n); candidates.push(n); }};
+    const push = (x) => { const n = normalized(x); if (!seen.has(n)) { seen.add(n); candidates.push(n); } };
     push(base);
     if (!/^[-\w]+\//.test(base)) { push(`fal-ai/${base}`); push(`google/${base}`); }
-    if (FAL_MODEL === 'imagen4/preview') push('google/imagen-4/preview');
-    if (FAL_MODEL === 'flux-pro/kontext') push('fal-ai/flux-pro/kontext');
-    if (FAL_MODEL === 'flux-krea-lora/stream') push('fal-ai/flux-krea-lora/stream');
 
     const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
@@ -29,16 +26,74 @@ async function callFalAPI(prompt, options = {}) {
     for (const endpoint of candidates) {
         const url = FAL_BASE_URL + endpoint;
         const buildPayloads = (ep) => {
-            const sizeA = '1024x1024';
-            const sizeB = 'square_hd';
+            // Nano Banana Pro payload (Standard)
+            const nanoBananaPayload = {
+                prompt,
+                num_images: 1,
+                aspect_ratio: '16:9', // Defaulting to wide for better presentation
+                output_format: 'png'
+            };
+
+            // Recraft V3 payload
+            const recraftPayload = {
+                prompt,
+                image_size: 'landscape_16_9',
+                style: 'digital_illustration', // Default style
+                colors: []
+            };
+
+            // FLUX Pro Context payload (image-to-image, requires image_url)
+            const fluxKontextPayload = {
+                prompt,
+                guidance_scale: 3.5,
+                safety_tolerance: "2",
+                aspect_ratio: '16:9',
+                num_images: 1,
+                output_format: 'jpeg'
+            };
+
+            // FLUX Pro text-to-image payload
+            const fluxProPayload = {
+                prompt,
+                image_size: 'landscape_16_9',
+                num_inference_steps: 28,
+                guidance_scale: 3.5,
+                num_images: 1,
+                safety_tolerance: "2",
+                output_format: 'jpeg'
+            };
+
+            // GPT-Image 1.5 payload
+            const gptImagePayload = {
+                prompt,
+                image_size: '1536x1024', // 3:2 landscape
+                quality: 'high',
+                num_images: 1,
+                output_format: 'png'
+            };
+
+            // FLUX.1 [dev] specific payload format
+            const fluxPayload = {
+                prompt,
+                image_size: { width: 1024, height: 1024 },
+                num_inference_steps: 28,
+                guidance_scale: 3.5,
+                num_images: 1,
+                enable_safety_checker: false
+            };
+
+            // Select payload based on model
+            if (FAL_MODEL === 'fal-ai/nano-banana-pro') return [nanoBananaPayload];
+            if (FAL_MODEL === 'fal-ai/recraft/v3/text-to-image') return [recraftPayload];
+            if (FAL_MODEL === 'fal-ai/flux-pro') return [fluxProPayload];
+            if (FAL_MODEL === 'fal-ai/flux-pro/kontext') return [fluxKontextPayload];
+            if (FAL_MODEL === 'fal-ai/gpt-image-1.5') return [gptImagePayload];
+            if (FAL_MODEL === 'fal-ai/flux/dev') return [fluxPayload];
+
+            // Fallbacks for unknown models
             return [
-                { prompt },
-                { input: prompt },
-                { text: prompt },
-                { prompt: { text: prompt } },
                 { prompt, num_images: 1 },
-                { prompt, image_size: sizeA },
-                { prompt, size: sizeB }
+                { prompt }
             ];
         };
         const payloads = buildPayloads(endpoint);
@@ -126,7 +181,7 @@ async function callOpenRouterAPI(userMessage, systemPrompt, imageUrl = null) {
         ? [
             { type: 'text', text: userMessage },
             { type: 'image_url', image_url: { url: imageUrl } }
-          ]
+        ]
         : userMessage;
 
     const payload = {
@@ -157,7 +212,7 @@ async function callOpenRouterAPI(userMessage, systemPrompt, imageUrl = null) {
     }
 
     const result = await response.json();
-    
+
     if (result.choices?.[0]?.message?.content) {
         return result.choices[0].message.content.trim();
     } else if (result.error) {
@@ -169,13 +224,13 @@ async function callOpenRouterAPI(userMessage, systemPrompt, imageUrl = null) {
 
 // === UTILITY FUNCTIONS ===
 // Robust copy helper with fallback
-async function safeCopyText(text){
+async function safeCopyText(text) {
     try {
         if (navigator.clipboard && window.isSecureContext) {
             await navigator.clipboard.writeText(text);
             return true;
         }
-    } catch(e) {
+    } catch (e) {
         console.warn('Clipboard API failed, falling back', e);
     }
     // Fallback: hidden textarea + execCommand
@@ -190,17 +245,17 @@ async function safeCopyText(text){
         const ok = document.execCommand('copy');
         document.body.removeChild(ta);
         return ok;
-    } catch(e) {
+    } catch (e) {
         console.error('Fallback copy failed', e);
         return false;
     }
 }
 
-window.copyResult = async function(){
-    const text = (document.getElementById('result-text')?.textContent)||'';
+window.copyResult = async function () {
+    const text = (document.getElementById('result-text')?.textContent) || '';
     const ok = await safeCopyText(text);
-    if(ok){
-        document.dispatchEvent(new CustomEvent('keys:action', { detail: { id:'copy.result', label:'Kopiert', source:'program' }}));
+    if (ok) {
+        document.dispatchEvent(new CustomEvent('keys:action', { detail: { id: 'copy.result', label: 'Kopiert', source: 'program' } }));
     }
     return ok;
 };
@@ -210,7 +265,7 @@ function setupCopyButton(button, icon, check, textElement) {
     button.addEventListener('click', async () => {
         const textToCopy = textElement.textContent || '';
         const ok = await safeCopyText(textToCopy);
-        if(ok){
+        if (ok) {
             icon.classList.add('hidden');
             check.classList.remove('hidden');
             setTimeout(() => {
@@ -230,11 +285,13 @@ try {
         window.setupCopyButton = setupCopyButton;
         window.setKlugToolsState = setKlugToolsState;
     }
-} catch (_) {}
+} catch (_) { }
 
 function setKlugToolsState(enabled) {
     isPromptGenerated = enabled;
     const allTools = document.querySelectorAll('.klug-btn');
+
+    // Toggle button states
     allTools.forEach(button => {
         button.disabled = !enabled;
         if (!enabled) {
@@ -245,28 +302,34 @@ function setKlugToolsState(enabled) {
             button.classList.add('hover:bg-neutral-700');
         }
     });
-    
-    // Show/hide notice messages
-    const expertNotice = document.getElementById('expert-disabled-notice');
-    const klugNotice = document.getElementById('klug-disabled-notice');
-    const labNotice = document.getElementById('lab-disabled-notice');
-    if (expertNotice) {
-        expertNotice.style.display = enabled ? 'none' : 'block';
-    }
-    if (klugNotice) {
-        klugNotice.style.display = enabled ? 'none' : 'block';
-    }
-    if (labNotice) {
-        labNotice.style.display = enabled ? 'none' : 'block';
-    }
+
+    // Toggle container visual states
+    const containers = [
+        document.getElementById('expert-container'),
+        document.getElementById('klug-container'),
+        document.getElementById('lab-container')
+    ];
+
+    containers.forEach(container => {
+        if (container) {
+            if (enabled) {
+                container.classList.remove('inactive-box');
+                container.classList.add('active-box');
+            } else {
+                container.classList.remove('active-box');
+                container.classList.add('inactive-box');
+            }
+        }
+    });
 }
 
 // Modal setup function
 function setupModal(modal, openButton) {
-    if (!modal) return { open: () => {}, close: () => {} };
+    if (!modal) return { open: () => { }, close: () => { } };
     const closeButtons = modal.querySelectorAll('.close-modal-button');
     const open = () => {
-        if (!isPromptGenerated && modal.id !== 'idea-modal') {
+        // Allow idea-modal and style-sync-modal to open without a generated prompt
+        if (!isPromptGenerated && modal.id !== 'idea-modal' && modal.id !== 'style-sync-modal') {
             console.log('Tools are disabled - generate a prompt first!');
             return;
         }
@@ -285,7 +348,7 @@ function setupModal(modal, openButton) {
             document.dispatchEvent(new CustomEvent('modal:close', { detail: { id: modal.id } }));
         }, 200);
     };
-    if(openButton) openButton.addEventListener('click', open);
+    if (openButton) openButton.addEventListener('click', open);
     closeButtons.forEach(btn => btn.addEventListener('click', close));
     modal.addEventListener('click', (e) => {
         if (e.target === modal) close();

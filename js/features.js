@@ -16,6 +16,9 @@ function initializeAdvancedFeatures() {
     setupVisualEngine();
     setupFutureLabTools();
     setupCustomInstruction();
+    setupGenreEvolution();
+    setupStyleSync();
+    setupKlangStudio();
 }
 
 // === IDEA SPARK LOGIC ===
@@ -27,17 +30,17 @@ function setupIdeaSpark() {
     const ideasOutput = document.getElementById('ideas-output');
     const ideaLoader = document.getElementById('idea-loader');
     const ideaButtonText = document.getElementById('idea-button-text');
-    
+
     if (!ideaModal) return;
-    
+
     const ideaModalLogic = setupModal(ideaModal, sparkIdeaButton);
-    
+
     const setIdeaLoading = (isLoading) => {
         generateIdeasButton.disabled = isLoading;
         ideaButtonText.classList.toggle('hidden', isLoading);
         ideaLoader.classList.toggle('hidden', !isLoading);
     };
-    
+
     const generateIdeas = async () => {
         const keyword = keywordInput.value.trim();
         if (!keyword) {
@@ -67,7 +70,7 @@ function setupIdeaSpark() {
             setIdeaLoading(false);
         }
     };
-    
+
     generateIdeasButton.addEventListener('click', generateIdeas);
     keywordInput.addEventListener('keydown', (e) => e.key === 'Enter' && (e.preventDefault(), generateIdeas()));
 }
@@ -84,11 +87,11 @@ function setupExpertRefinements() {
         { type: 'vocal-harmony', prompt: VOCAL_HARMONY_REFINER_PROMPT },
         { type: 'ethno', prompt: ETHNO_REFINER_PROMPT }
     ];
-    
+
     experts.forEach(expert => {
         setupExpertRefinement(expert.type, expert.prompt);
     });
-    
+
     // Setup sound engineer separately as it has different UI
     setupSoundEngineer();
 }
@@ -100,25 +103,25 @@ function setupExpertRefinement(type, systemPrompt) {
     const applyButton = document.getElementById(`apply-${type}-button`);
     const buttonText = document.getElementById(`apply-${type}-text`);
     const loader = document.getElementById(`apply-${type}-loader`);
-    
+
     if (!modal || !openButton || !applyButton) return;
-    
+
     const modalLogic = setupModal(modal, openButton);
-    
+
     applyButton.addEventListener('click', async () => {
         const influence = slider.value;
         const currentPrompt = document.getElementById('result-text').textContent.trim();
         if (!currentPrompt) return;
-        
+
         applyButton.disabled = true;
         buttonText.classList.add('hidden');
         loader.classList.remove('hidden');
-        
+
         const userQuery = `Prompt: "${currentPrompt}"\nInfluence Level: ${influence}`;
         try {
             const refined = await callOpenRouterAPI(userQuery, systemPrompt);
             document.getElementById('result-text').textContent = refined;
-            if(window.QW){ window.QW.onPromptUpdated({source:`expert:${type}`}); }
+            if (window.QW) { window.QW.onPromptUpdated({ source: `expert:${type}` }); }
             modalLogic.close();
         } catch (error) {
             console.error(`Error refining with ${type}:`, error);
@@ -138,32 +141,32 @@ function setupSoundEngineer() {
     const applyButton = document.getElementById('apply-sound-engineer-button');
     const buttonText = document.getElementById('apply-sound-engineer-text');
     const loader = document.getElementById('apply-sound-engineer-loader');
-    
+
     if (!modal || !openButton || !applyButton) return;
-    
+
     const modalLogic = setupModal(modal, openButton);
-    
+
     applyButton.addEventListener('click', async () => {
         const instructions = Array.from(modal.querySelectorAll('.sound-engineer-input'))
             .map(input => input.value.trim())
             .filter(Boolean);
-        
+
         const currentPrompt = document.getElementById('result-text').textContent.trim();
         if (instructions.length === 0 || !currentPrompt) return;
-        
+
         applyButton.disabled = true;
         buttonText.classList.add('hidden');
         loader.classList.remove('hidden');
-        
+
         let userQuery = `Base prompt: "${currentPrompt}"\n\nIncorporate the following specific instructions:\n`;
         instructions.forEach((inst, index) => {
             userQuery += `${index + 1}. ${inst}\n`;
         });
-        
+
         try {
             const refined = await callOpenRouterAPI(userQuery, SOUND_ENGINEER_PROMPT);
             document.getElementById('result-text').textContent = refined;
-            if(window.QW){ window.QW.onPromptUpdated({source:'sound-engineer'}); }
+            if (window.QW) { window.QW.onPromptUpdated({ source: 'sound-engineer' }); }
             modalLogic.close();
         } catch (error) {
             console.error('Error with sound engineer instruction:', error);
@@ -184,7 +187,7 @@ function setupKlugTools() {
     setupVibeEnhancer();
     setupArtistSuggester();
     setupTempoFinder();
-    
+
     // Setup tagger tools
     const taggerTools = [
         { id: 'mood-analyzer', prompt: MOOD_ANALYZER_PROMPT },
@@ -194,7 +197,7 @@ function setupKlugTools() {
         { id: 'performance-coach', prompt: PERFORMANCE_COACH_PROMPT },
         { id: 'effect-chain', prompt: EFFECT_CHAIN_PROMPT }
     ];
-    
+
     taggerTools.forEach(tool => {
         setupKlugTagger(tool.id, tool.prompt);
     });
@@ -256,6 +259,11 @@ function setupSynthDesignerLab() {
         if (sliderValueEl) {
             sliderValueEl.textContent = info.label;
         }
+        // Update track background visualization
+        if (slider) {
+            const percent = (slider.value - slider.min) / (slider.max - slider.min) * 100;
+            slider.style.setProperty('--range-progress', `${percent}%`);
+        }
         return info;
     };
 
@@ -263,6 +271,7 @@ function setupSynthDesignerLab() {
         form.reset();
         if (slider) {
             slider.value = '50';
+            slider.style.setProperty('--range-progress', '50%');
         }
         setSliderLabel(slider ? slider.value : 50);
         if (errorEl) {
@@ -360,6 +369,10 @@ function setupVisualEngine() {
 
     if (!modal || !openButton || !input || !generateButton || !output || !analyzeButton) return;
 
+    // Prevent double initialization
+    if (modal.dataset.initialized === 'true') return;
+    modal.dataset.initialized = 'true';
+
     // Block opening when Fal key is missing
     openButton.addEventListener('click', (e) => {
         if (!FAL_API_KEY) {
@@ -397,7 +410,7 @@ function setupVisualEngine() {
         analyzeLoader?.classList.toggle('hidden', !isLoading);
     };
 
-    const withTimeout = (p, ms, label='Request') => Promise.race([
+    const withTimeout = (p, ms, label = 'Request') => Promise.race([
         p,
         new Promise((_, rej) => setTimeout(() => rej(new Error(`${label} timeout nach ${ms}ms`)), ms))
     ]);
@@ -413,9 +426,10 @@ function setupVisualEngine() {
         output.innerHTML = `<div class="animate-spin h-6 w-6 text-blue-400"></div>`;
         analyzeButton.classList.add('hidden');
         try {
-            const url = await callFalAPI(prompt, { timeoutMs: 45000, retries: 2 });
+            // Use default timeout (120s) from api.js to support slower models like Nano Banana Pro
+            const url = await callFalAPI(prompt, { retries: 2 });
             if (myId !== genReqId) return; // stale
-            // Preload to ensure the image is valid
+            // Preload image
             await new Promise((resolve, reject) => {
                 const img = new Image();
                 img.onload = resolve;
@@ -1094,24 +1108,24 @@ function setupGenreMixer() {
     const buttonText = modal?.querySelector('#mix-genres-button-text');
     const loader = modal?.querySelector('#mix-genres-loader');
     const output = modal?.querySelector('#genre-mixer-output');
-    
+
     if (!modal || !openButton) return;
-    
+
     const modalLogic = setupModal(modal, openButton);
-    
+
     // Populate genre selectors
     if (container) {
         container.innerHTML = '';
         for (let i = 0; i < 3; i++) {
             const select = document.createElement('select');
             select.className = "genre-select w-full bg-neutral-900/70 border border-neutral-600 rounded-lg p-2 text-neutral-200 focus:ring-2 focus:ring-blue-500";
-            const defaultOption = new Option(i === 0 ? "Wähle Genre 1" : `Genre ${i+1} (optional)`, "");
+            const defaultOption = new Option(i === 0 ? "Wähle Genre 1" : `Genre ${i + 1} (optional)`, "");
             select.add(defaultOption);
             musicGenres.forEach(genre => select.add(new Option(genre, genre)));
             container.appendChild(select);
         }
     }
-    
+
     if (mixButton) {
         mixButton.addEventListener('click', async () => {
             const selectedGenres = Array.from(modal.querySelectorAll('.genre-select')).map(s => s.value).filter(Boolean);
@@ -1126,7 +1140,7 @@ function setupGenreMixer() {
             try {
                 const response = await callOpenRouterAPI(prompt, GENRE_MIXER_PROMPT);
                 document.getElementById('result-text').textContent = response;
-                if(window.QW){ window.QW.onPromptUpdated({source:'genre-mixer'}); }
+                if (window.QW) { window.QW.onPromptUpdated({ source: 'genre-mixer' }); }
                 modalLogic.close();
             } catch (error) {
                 output.innerHTML = `<p class="text-red-400">Fehler beim Mischen der Genres.</p>`;
@@ -1171,11 +1185,11 @@ function setupKlugTagger(toolId, systemPrompt) {
     const applyButton = modal?.querySelector(`#${applyId}`);
     const buttonText = modal?.querySelector(`#${applyTextId}`);
     const loader = modal?.querySelector(`#${applyLoaderId}`);
-    
+
     if (!modal || !openButton || !suggestions || !applyButton) return;
-    
+
     const modalLogic = setupModal(modal, openButton);
-    
+
     openButton.addEventListener('click', async () => {
         selectedKlugItems = [];
         suggestions.innerHTML = `<div class="animate-spin h-6 w-6 text-blue-400 mx-auto"></div>`;
@@ -1185,7 +1199,7 @@ function setupKlugTagger(toolId, systemPrompt) {
             suggestions.innerHTML = '';
             items.forEach(item => {
                 const tag = document.createElement('button');
-                tag.className = 'bg-neutral-700/50 hover:bg-neutral-700 text-neutral-200 py-1 px-3 rounded-full transition-colors duration-200';
+                tag.className = 'bg-neutral-800/20 hover:bg-white/10 text-neutral-200 py-2 px-4 rounded-full transition-colors duration-200 border border-white/5';
                 tag.textContent = item;
                 tag.onclick = () => {
                     const index = selectedKlugItems.indexOf(item);
@@ -1199,11 +1213,11 @@ function setupKlugTagger(toolId, systemPrompt) {
                 };
                 suggestions.appendChild(tag);
             });
-        } catch(error) {
+        } catch (error) {
             suggestions.innerHTML = `<p class="text-red-400">Fehler bei der Analyse: ${error.message}</p>`;
         }
     });
-    
+
     applyButton.onclick = async () => {
         if (selectedKlugItems.length === 0) {
             modalLogic.close();
@@ -1216,9 +1230,9 @@ function setupKlugTagger(toolId, systemPrompt) {
         try {
             const refinedPrompt = await callOpenRouterAPI(prompt, PROMPT_REFINER_PROMPT);
             document.getElementById('result-text').textContent = refinedPrompt;
-            if(window.QW){ window.QW.onPromptUpdated({source:`klug:${toolId}`}); }
+            if (window.QW) { window.QW.onPromptUpdated({ source: `klug:${toolId}` }); }
             modalLogic.close();
-        } catch(error) {
+        } catch (error) {
             console.error("Failed to refine prompt", error);
         } finally {
             applyButton.disabled = false;
@@ -1232,20 +1246,20 @@ function setupHookGenerator() {
     const modal = document.getElementById('hook-generator-modal');
     const openButton = document.getElementById('hook-generator-button');
     const output = modal?.querySelector('#hook-generator-output');
-    
+
     if (!modal || !openButton || !output) return;
-    
+
     const modalLogic = setupModal(modal, openButton);
-    
+
     openButton.addEventListener('click', async () => {
         output.innerHTML = `<div class="animate-spin h-6 w-6 text-blue-400 mx-auto"></div>`;
         try {
             const response = await callOpenRouterAPI(document.getElementById('result-text').textContent, HOOK_GENERATOR_PROMPT);
             const [titlesPart, hooksPart] = response.split('---').map(s => s.trim());
-            
+
             const createSuggestionElement = (text, type) => {
                 const div = document.createElement('div');
-                div.className = 'p-3 bg-neutral-700/50 rounded-lg cursor-pointer hover:bg-neutral-700 transition-colors';
+                div.className = 'p-3 bg-neutral-800/20 border border-white/5 rounded-xl cursor-pointer hover:bg-white/10 transition-colors';
                 div.textContent = text.replace(/^- /, '');
                 div.onclick = () => {
                     const resultText = document.getElementById('result-text');
@@ -1254,7 +1268,7 @@ function setupHookGenerator() {
                 };
                 return div;
             };
-            
+
             output.innerHTML = '';
             if (titlesPart) {
                 const header = document.createElement('h3');
@@ -1270,7 +1284,7 @@ function setupHookGenerator() {
                 output.appendChild(header);
                 hooksPart.replace('HOOKS:', '').trim().split('\n').forEach(hook => output.appendChild(createSuggestionElement(hook, 'hook')));
             }
-        } catch(error) {
+        } catch (error) {
             output.innerHTML = `<p class="text-red-400">Fehler beim Erstellen der Vorschläge: ${error.message}</p>`;
         }
     });
@@ -1283,11 +1297,11 @@ function setupSongStructure() {
     const modal = document.getElementById('song-structure-modal');
     const openButton = document.getElementById('song-structure-button');
     const output = modal?.querySelector('#song-structure-output');
-    
+
     if (!modal || !openButton || !output) return;
-    
+
     const modalLogic = setupModal(modal, openButton);
-    
+
     openButton.addEventListener('click', async () => {
         output.innerHTML = `<div class="animate-spin h-6 w-6 text-blue-400 mx-auto"></div>`;
         try {
@@ -1306,13 +1320,13 @@ function setupSongStructure() {
                 try {
                     const integratedPrompt = await callOpenRouterAPI(`Original prompt: "${document.getElementById('result-text').textContent}". Integrate this structure: "${structure}".`, STRUCTURE_INTEGRATOR_PROMPT);
                     document.getElementById('result-text').textContent = integratedPrompt;
-                    if(window.QW){ window.QW.onPromptUpdated({source:'song-structure'}); }
+                    if (window.QW) { window.QW.onPromptUpdated({ source: 'song-structure' }); }
                     modalLogic.close();
                 } catch (error) {
                     btn.textContent = 'Fehler!';
                 }
             };
-        } catch(error) {
+        } catch (error) {
             output.innerHTML = `<p class="text-red-400">Fehler beim Erstellen des Struktur-Vorschlags: ${error.message}</p>`;
         }
     });
@@ -1322,11 +1336,11 @@ function setupVibeEnhancer() {
     const modal = document.getElementById('vibe-enhancer-modal');
     const openButton = document.getElementById('vibe-enhancer-button');
     const output = modal?.querySelector('#vibe-enhancer-output');
-    
+
     if (!modal || !openButton || !output) return;
-    
+
     const modalLogic = setupModal(modal, openButton);
-    
+
     openButton.addEventListener('click', async () => {
         output.innerHTML = `<div class="animate-spin h-6 w-6 text-blue-400 mx-auto col-span-2"></div>`;
         try {
@@ -1345,10 +1359,10 @@ function setupVibeEnhancer() {
             `;
             output.querySelector('#apply-vibe-button').onclick = () => {
                 document.getElementById('result-text').textContent = enhancedText;
-                if(window.QW){ window.QW.onPromptUpdated({source:'vibe-enhancer'}); }
+                if (window.QW) { window.QW.onPromptUpdated({ source: 'vibe-enhancer' }); }
                 modalLogic.close();
             };
-        } catch(error) {
+        } catch (error) {
             output.innerHTML = `<p class="text-red-400 text-center col-span-2">Fehler beim Veredeln des Vibes: ${error.message}</p>`;
         }
     });
@@ -1358,11 +1372,11 @@ function setupArtistSuggester() {
     const modal = document.getElementById('artist-suggester-modal');
     const openButton = document.getElementById('artist-suggester-button');
     const output = modal?.querySelector('#artist-suggester-output');
-    
+
     if (!modal || !openButton || !output) return;
-    
+
     const modalLogic = setupModal(modal, openButton);
-    
+
     openButton.addEventListener('click', async () => {
         output.innerHTML = `<div class="animate-spin h-6 w-6 text-blue-400 mx-auto"></div>`;
         try {
@@ -1373,16 +1387,16 @@ function setupArtistSuggester() {
                 const [artist, justification] = line.split(':').map(s => s.trim());
                 if (!artist || !justification) return;
                 const el = document.createElement('div');
-                el.className = 'p-3 bg-neutral-700/50 rounded-lg cursor-pointer hover:bg-neutral-700 transition-colors';
+                el.className = 'p-3 bg-neutral-800/20 border border-white/5 rounded-xl cursor-pointer hover:bg-white/10 transition-colors';
                 el.innerHTML = `<strong class="text-blue-400">${artist}</strong><p class="text-xs text-neutral-400">${justification}</p>`;
                 el.onclick = () => {
                     document.getElementById('result-text').textContent += `, in the style of ${artist}`;
-                    if(window.QW){ window.QW.onPromptUpdated({source:'artist-suggester'}); }
+                    if (window.QW) { window.QW.onPromptUpdated({ source: 'artist-suggester' }); }
                     modalLogic.close();
                 };
                 output.appendChild(el);
             });
-        } catch(error) {
+        } catch (error) {
             output.innerHTML = `<p class="text-red-400">Fehler bei der Künstlersuche: ${error.message}</p>`;
         }
     });
@@ -1392,11 +1406,11 @@ function setupTempoFinder() {
     const modal = document.getElementById('tempo-finder-modal');
     const openButton = document.getElementById('tempo-finder-button');
     const output = modal?.querySelector('#tempo-finder-output');
-    
+
     if (!modal || !openButton || !output) return;
-    
+
     const modalLogic = setupModal(modal, openButton);
-    
+
     openButton.addEventListener('click', async () => {
         output.innerHTML = `<div class="animate-spin h-6 w-6 text-blue-400 mx-auto"></div>`;
         try {
@@ -1412,10 +1426,10 @@ function setupTempoFinder() {
             `;
             output.querySelector('.add-bpm-button').onclick = () => {
                 document.getElementById('result-text').textContent += `, ${bpmValue} bpm`;
-                if(window.QW){ window.QW.onPromptUpdated({source:'tempo-finder'}); }
+                if (window.QW) { window.QW.onPromptUpdated({ source: 'tempo-finder' }); }
                 modalLogic.close();
             };
-        } catch(error) {
+        } catch (error) {
             output.innerHTML = `<p class="text-red-400">Fehler bei der Tempo-Suche: ${error.message}</p>`;
         }
     });
@@ -1429,25 +1443,25 @@ function setupCustomInstruction() {
     const applyButton = document.getElementById('apply-custom-instruction-button');
     const buttonText = document.getElementById('apply-custom-instruction-text');
     const loader = document.getElementById('apply-custom-instruction-loader');
-    
+
     if (!modal || !openButton || !applyButton) return;
-    
+
     const modalLogic = setupModal(modal, openButton);
-    
+
     applyButton.addEventListener('click', async () => {
         const instruction = input.value.trim();
         const currentPrompt = document.getElementById('result-text').textContent.trim();
         if (!instruction || !currentPrompt) return;
-        
+
         applyButton.disabled = true;
         buttonText.classList.add('hidden');
         loader.classList.remove('hidden');
-        
+
         const userQuery = `Base prompt: "${currentPrompt}"\nInstruction: "${instruction}"`;
         try {
             const refined = await callOpenRouterAPI(userQuery, CUSTOM_INSTRUCTION_PROMPT);
             document.getElementById('result-text').textContent = refined;
-            if(window.QW){ window.QW.onPromptUpdated({source:'custom-instruction'}); }
+            if (window.QW) { window.QW.onPromptUpdated({ source: 'custom-instruction' }); }
             modalLogic.close();
         } catch (error) {
             console.error('Error with custom instruction:', error);
@@ -1457,5 +1471,855 @@ function setupCustomInstruction() {
             buttonText.classList.remove('hidden');
             loader.classList.add('hidden');
         }
+    });
+}
+
+// Helper to detect genre based on keywords
+function detectGenre(prompt) {
+    if (!prompt) return "General";
+
+    const lowerPrompt = prompt.toLowerCase();
+
+    for (const [genre, keywords] of Object.entries(GENRE_KEYWORDS)) {
+        if (keywords.some(keyword => lowerPrompt.includes(keyword))) {
+            return genre;
+        }
+    }
+
+    return "General";
+}
+
+// === GENRE EVOLUTION TIMELINE ===
+function setupGenreEvolution() {
+    const modal = document.getElementById('get-modal');
+    const openButton = document.getElementById('get-button');
+    const slider = document.getElementById('get-slider');
+    const genreSelect = document.getElementById('get-genre-select');
+    const decadeDisplay = document.getElementById('get-decade-display');
+    const decadeDescription = document.getElementById('get-decade-description');
+    const applyButton = document.getElementById('apply-get-button');
+    const loadingOverlay = document.getElementById('get-loading-overlay');
+    const loadingText = document.getElementById('get-loading-text');
+
+    if (!modal || !openButton || !slider || !applyButton || !genreSelect) return;
+
+    const modalLogic = setupModal(modal, openButton);
+
+    const updateDecadeInfo = (decade, genre) => {
+        decadeDisplay.textContent = `${decade}s`;
+
+        let genreData = GENRE_EVOLUTION_DATA[genre];
+        if (!genreData) genreData = GENRE_EVOLUTION_DATA["General"];
+
+        const description = genreData[decade] || GENRE_EVOLUTION_DATA["General"][decade] || "Beschreibung nicht verfügbar.";
+        decadeDescription.textContent = description;
+    };
+
+    // Update on slider change
+    slider.addEventListener('input', (e) => {
+        updateDecadeInfo(e.target.value, genreSelect.value);
+    });
+
+    // Update on genre change
+    genreSelect.addEventListener('change', (e) => {
+        updateDecadeInfo(slider.value, e.target.value);
+    });
+
+    // On open: detect genre and reset
+    openButton.addEventListener('click', () => {
+        const currentPrompt = document.getElementById('result-text').textContent.trim();
+        const detectedGenre = detectGenre(currentPrompt);
+
+        genreSelect.value = detectedGenre;
+        slider.value = 2020;
+        updateDecadeInfo(2020, detectedGenre);
+    });
+
+    applyButton.addEventListener('click', async () => {
+        const currentPrompt = document.getElementById('result-text').textContent.trim();
+        if (!currentPrompt) return;
+
+        // Start Loading State
+        applyButton.disabled = true;
+        // applyButton.classList.add('opacity-0'); // Hide button content visually if needed, or just overlay
+        loadingOverlay.classList.remove('hidden');
+
+        const phases = [
+            "Analysiere Vibe...",
+            "Lade Zeitmaschine...",
+            "Destilliere Ästhetik...",
+            "Veredle Prompt..."
+        ];
+
+        let phaseIndex = 0;
+        const phaseInterval = setInterval(() => {
+            phaseIndex = (phaseIndex + 1) % phases.length;
+            loadingText.textContent = phases[phaseIndex];
+        }, 800);
+
+        const selectedDecade = slider.value;
+        const selectedGenre = genreSelect.value;
+        const eraDescription = decadeDescription.textContent; // Use the text we are already showing
+
+        const userQuery = `Base prompt: "${currentPrompt}"\nTarget Decade: ${selectedDecade}s\nGenre Context: ${selectedGenre}\nEra Characteristics: ${eraDescription}`;
+
+        try {
+            const refined = await callOpenRouterAPI(userQuery, GENRE_EVOLUTION_PROMPT);
+            document.getElementById('result-text').textContent = refined;
+            if (window.QW) { window.QW.onPromptUpdated({ source: 'get:timeline' }); }
+            modalLogic.close();
+        } catch (error) {
+            console.error('Genre Evolution failed:', error);
+            loadingText.textContent = "Fehler!";
+            loadingText.classList.remove('text-blue-300');
+            loadingText.classList.add('text-red-400');
+        } finally {
+            clearInterval(phaseInterval);
+            applyButton.disabled = false;
+            loadingOverlay.classList.add('hidden');
+            loadingText.textContent = "Analysiere Vibe...";
+            loadingText.classList.add('text-blue-300');
+            loadingText.classList.remove('text-red-400');
+        }
+    });
+}
+
+// === STYLE SYNC STUDIO V2 LOGIC ===
+function setupStyleSync() {
+    const studioModal = document.getElementById('style-sync-studio');
+    // We use the tile button from the main grid (id="style-sync-tile") to open it
+    const openButton = document.getElementById('style-sync-tile');
+
+    // Header & Actions
+    const closeButton = document.getElementById('close-style-studio');
+
+    // ### LEFT PANEL: ENCODER (Sound -> Image) ###
+    const masterPromptDisplay = document.getElementById('studio-master-prompt-display');
+    const transcodeBtn = document.getElementById('studio-transcode-btn');
+    const visualPlaceholder = document.getElementById('studio-visual-placeholder');
+    const visualResult = document.getElementById('studio-visual-result');
+
+    // ### RIGHT PANEL: DECODER (Image -> Sound) ###
+    const dropZone = document.getElementById('studio-drop-zone');
+    const fileInput = document.getElementById('studio-file-input');
+    const dropContent = document.getElementById('studio-drop-content');
+    const dropPreview = document.getElementById('studio-drop-preview');
+    const decodeBtn = document.getElementById('studio-decode-btn');
+    const decodeResult = document.getElementById('studio-decode-result');
+    const applyBtn = document.getElementById('studio-apply-btn');
+
+    if (!studioModal || !openButton) return;
+
+    // --- Modal Control ---
+    const openStudio = () => {
+        // Feed current prompt into the "Master Prompt" display
+        const currentText = document.getElementById('result-text')?.textContent || '';
+        if (masterPromptDisplay) masterPromptDisplay.textContent = currentText || '// Warten auf Input...';
+
+        studioModal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    };
+
+    const closeStudio = () => {
+        studioModal.classList.add('hidden');
+        document.body.style.overflow = '';
+    };
+
+    openButton.addEventListener('click', openStudio);
+    if (closeButton) closeButton.addEventListener('click', closeStudio);
+
+    // ESC key closes the modal
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !studioModal.classList.contains('hidden')) {
+            closeStudio();
+        }
+    });
+
+    // --- ENCODER LOGIC (Text -> Image) ---
+    // Guard against multiple event listener attachments
+    if (transcodeBtn && !transcodeBtn.dataset.listenerAttached) {
+        transcodeBtn.dataset.listenerAttached = 'true';
+        transcodeBtn.addEventListener('click', async () => {
+            const promptText = masterPromptDisplay.textContent;
+            if (!promptText || promptText.startsWith('//')) {
+                alert('Bitte erstelle zuerst einen Musik-Prompt im Hauptfenster.');
+                return;
+            }
+
+            // Visual feedback
+            transcodeBtn.classList.add('animate-pulse');
+            visualPlaceholder.innerHTML = '<div class="animate-spin h-8 w-8 text-purple-400"></div><p class="text-xs text-purple-300 mt-2">Analysiere Klangspektrum...</p>';
+
+            try {
+                // 1. Translate Music Prompt -> Visual Description
+                const visualPrompt = await callOpenRouterAPI(promptText, STYLE_SYNC_ENCODER_PROMPT);
+                console.log('Visual Prompt:', visualPrompt);
+
+                // 2. Generate Image via Fal.ai
+                visualPlaceholder.innerHTML = '<div class="animate-spin h-8 w-8 text-indigo-400"></div><p class="text-xs text-indigo-300 mt-2">Rendere Archetyp...</p>';
+                const imageUrl = await callFalAPI(visualPrompt);
+
+                // 3. Show Result
+                visualResult.src = imageUrl;
+                visualResult.classList.remove('hidden');
+                visualPlaceholder.classList.add('hidden');
+
+            } catch (error) {
+                console.error('Encoder Error:', error);
+                visualPlaceholder.innerHTML = `<p class="text-red-400 text-xs text-center px-4">Fehler: ${error.message}</p>`;
+            } finally {
+                transcodeBtn.classList.remove('animate-pulse');
+            }
+        });
+    }
+
+    // --- DOWNLOAD & COPY BUTTONS ---
+    const downloadBtn = document.getElementById('studio-download-btn');
+    const copyBtn = document.getElementById('studio-copy-btn');
+
+    if (downloadBtn && !downloadBtn.dataset.listenerAttached) {
+        downloadBtn.dataset.listenerAttached = 'true';
+        downloadBtn.addEventListener('click', async () => {
+            if (!visualResult || visualResult.classList.contains('hidden') || !visualResult.src) {
+                return;
+            }
+            try {
+                const response = await fetch(visualResult.src);
+                const blob = await response.blob();
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `style-sync-${Date.now()}.png`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            } catch (error) {
+                console.error('Download Error:', error);
+                alert('Fehler beim Herunterladen des Bildes.');
+            }
+        });
+    }
+
+    if (copyBtn && !copyBtn.dataset.listenerAttached) {
+        copyBtn.dataset.listenerAttached = 'true';
+        copyBtn.addEventListener('click', async () => {
+            if (!visualResult || visualResult.classList.contains('hidden') || !visualResult.src) {
+                return;
+            }
+            try {
+                const response = await fetch(visualResult.src);
+                const blob = await response.blob();
+                await navigator.clipboard.write([
+                    new ClipboardItem({ [blob.type]: blob })
+                ]);
+                // Visual feedback
+                copyBtn.classList.add('bg-green-500/50');
+                setTimeout(() => copyBtn.classList.remove('bg-green-500/50'), 1000);
+            } catch (error) {
+                console.error('Copy Error:', error);
+                alert('Fehler beim Kopieren. Bitte versuche es erneut.');
+            }
+        });
+    }
+
+    // --- DECODER LOGIC (Image -> Sound) ---
+
+    // Drag & Drop Handling
+    // Drag & Drop Handling
+    if (dropZone && fileInput && !dropZone.dataset.listenerAttached) {
+        dropZone.dataset.listenerAttached = 'true';
+
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => dropZone.classList.add('border-indigo-500', 'bg-indigo-500/10'), false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => dropZone.classList.remove('border-indigo-500', 'bg-indigo-500/10'), false);
+        });
+
+        dropZone.addEventListener('drop', handleDrop, false);
+        dropZone.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
+    }
+
+    function handleDrop(e) {
+        // Prevent default behavior (prevent file from being opened)
+        e.preventDefault();
+        e.stopPropagation();
+
+        const dt = e.dataTransfer;
+        const files = dt.files;
+
+        if (files && files.length > 0) {
+            handleFiles(files);
+        } else {
+            // Try to extract image URL from dragged element (for internal drag & drop)
+            const html = dt.getData('text/html');
+            const dataUrl = dt.getData('text/uri-list');
+            let imageUrl = null;
+
+            if (html) {
+                const match = html.match(/src="?([^"\s]+)"?/);
+                if (match && match[1]) {
+                    imageUrl = match[1];
+                }
+            } else if (dataUrl) {
+                imageUrl = dataUrl;
+            }
+
+            if (imageUrl) {
+                // Decode HTML entities if necessary (basic check)
+                imageUrl = imageUrl.replace(/&amp;/g, '&');
+
+                dropPreview.src = imageUrl;
+                dropPreview.classList.remove('hidden');
+                dropContent.classList.add('opacity-0');
+                decodeBtn.disabled = false;
+
+                // Store URL for API call (reusing dataset.base64 property for simplicity)
+                dropZone.dataset.base64 = imageUrl;
+            }
+        }
+    }
+
+    function handleFiles(files) {
+        if (files.length > 0) {
+            const file = files[0];
+            if (!file.type.startsWith('image/')) return;
+
+            // Check file size (max 5MB for fal.ai)
+            const maxSizeMB = 5;
+            const maxSizeBytes = maxSizeMB * 1024 * 1024;
+            if (file.size > maxSizeBytes) {
+                alert(`Die Datei ist zu groß (${(file.size / 1024 / 1024).toFixed(1)} MB). Maximale Größe: ${maxSizeMB} MB.`);
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onloadend = function () {
+                dropPreview.src = reader.result;
+                dropPreview.classList.remove('hidden');
+                dropContent.classList.add('opacity-0'); // Hide text but keep layout
+                decodeBtn.disabled = false; // Enable decode button
+
+                // Store base64 for API call
+                dropZone.dataset.base64 = reader.result;
+            }
+            reader.readAsDataURL(file);
+        }
+    }
+
+    // Decode Action
+    if (decodeBtn) {
+        decodeBtn.addEventListener('click', async () => {
+            const base64Image = dropZone.dataset.base64;
+            if (!base64Image) return;
+
+            // UI Feedback
+            decodeBtn.classList.add('animate-pulse');
+            decodeResult.value = 'Höre mir das Bild an... analysiere Farben, Licht und Texturen...';
+
+            try {
+                // 1. Analyze Image -> Music Prompt
+                // Use undefined handling for imageUrl in callOpenRouterAPI if it handles base64, 
+                // BUT callOpenRouterAPI helper expects a URL. 
+                // NOTE: OpenRouter vision models typically support URL. Sending Base64 data:image... 
+                // directly as URL usually works for many providers or needs specific handling.
+                // Re-reading api.js check: it sends { type: 'image_url', image_url: { url: imageUrl } }.
+                // Data-URIs work with OpenAI-compatible Vision endpoints.
+
+                const musicPrompt = await callOpenRouterAPI("Analysiere dieses Bild.", STYLE_SYNC_DECODER_PROMPT, base64Image);
+
+                decodeResult.value = musicPrompt;
+
+            } catch (error) {
+                console.error('Decoder Error:', error);
+                decodeResult.value = `Fehler bei der Analyse: ${error.message}`;
+            } finally {
+                decodeBtn.classList.remove('animate-pulse');
+            }
+        });
+    }
+
+    // Apply Action
+    if (applyBtn) {
+        applyBtn.addEventListener('click', () => {
+            const generatedText = decodeResult.value;
+            if (!generatedText || generatedText.startsWith('Fehler') || generatedText.startsWith('Höre')) return;
+
+            // Insert into main app
+            const mainInput = document.getElementById('idea-input');
+            if (mainInput) {
+                mainInput.value = generatedText;
+                // Visual feedback
+                applyBtn.innerHTML = '<span>Kopiert!</span> <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" title="Check"><polyline points="20 6 9 17 4 12"/></svg>';
+                setTimeout(() => {
+                    applyBtn.innerHTML = '<span>APPLY TO PROMPT</span> <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';
+                    // Close studio to show result
+                    closeStudio();
+                }, 1000);
+            }
+        });
+    }
+}
+
+// === KLANG-STUDIO LOGIC ===
+function setupKlangStudio() {
+    const modal = document.getElementById('klang-studio-modal');
+    const openTile = document.getElementById('klang-studio-tile');
+    const closeBtn = document.getElementById('close-klang-studio');
+    const tabs = document.querySelectorAll('#ks-module-tabs .ks-tab');
+    const contentArea = document.getElementById('ks-content-area');
+    const filterSlider = document.getElementById('ks-filter-slider');
+    const filterLabel = document.getElementById('ks-filter-label');
+    const blendRatioSlider = document.getElementById('ks-blend-ratio');
+    const blendDisplay = document.getElementById('ks-blend-display');
+    const blenderRatioSlider = document.getElementById('ks-blender-ratio');
+    const blenderDisplay = document.getElementById('ks-blender-display');
+    const instrumentSeats = document.querySelectorAll('.ks-instrument-seat');
+    const dominanceSliders = document.querySelectorAll('.ks-dominance-slider');
+    const copyBtn = document.getElementById('ks-copy-btn');
+    const applyBtn = document.getElementById('ks-apply-btn');
+    const tokenPreview = document.getElementById('ks-token-preview');
+    const charCount = document.getElementById('ks-char-count');
+
+    if (!modal || !openTile) return;
+
+    // Prevent double initialization
+    if (modal.dataset.ksInitialized === 'true') return;
+    modal.dataset.ksInitialized = 'true';
+
+    // Open Modal
+    openTile.addEventListener('click', () => {
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+        updateTokenPreview();
+    });
+
+    // Close Modal
+    const closeModal = () => {
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+    };
+
+    closeBtn?.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal || e.target.classList.contains('bg-black/95')) {
+            closeModal();
+        }
+    });
+
+    // ESC key to close
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+            closeModal();
+        }
+    });
+
+    // Tab Switching
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const module = tab.dataset.module;
+
+            // Update tab active states
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+
+            // Show corresponding content
+            const contents = contentArea.querySelectorAll('.ks-module-content');
+            contents.forEach(content => {
+                content.classList.remove('active');
+                if (content.id === `ks-module-${module}`) {
+                    content.classList.add('active');
+                }
+            });
+
+            // Update token preview for new module
+            updateTokenPreview();
+        });
+    });
+
+    // Filter Slider Labels
+    const filterLabels = {
+        0: 'Sehr Dunkel',
+        20: 'Dunkel',
+        40: 'Warm-Dunkel',
+        50: 'Warm-Mittig',
+        60: 'Neutral-Offen',
+        80: 'Hell-Offen',
+        100: 'Sehr Hell'
+    };
+
+    const updateFilterLabel = () => {
+        if (!filterSlider || !filterLabel) return;
+        const value = parseInt(filterSlider.value);
+        const thresholds = Object.keys(filterLabels).map(Number).sort((a, b) => a - b);
+        let label = filterLabels[0];
+        for (const threshold of thresholds) {
+            if (value >= threshold) label = filterLabels[threshold];
+        }
+        filterLabel.textContent = label;
+    };
+
+    filterSlider?.addEventListener('input', () => {
+        updateFilterLabel();
+        updateTokenPreview();
+    });
+
+    // Blend Ratio Display
+    const updateBlendDisplay = () => {
+        if (!blendRatioSlider || !blendDisplay) return;
+        const value = parseInt(blendRatioSlider.value);
+        blendDisplay.textContent = `${value}% Synth / ${100 - value}% Blend`;
+    };
+
+    blendRatioSlider?.addEventListener('input', () => {
+        updateBlendDisplay();
+        updateTokenPreview();
+    });
+
+    // Blender Module Ratio Display
+    const updateBlenderDisplay = () => {
+        if (!blenderRatioSlider || !blenderDisplay) return;
+        const value = parseInt(blenderRatioSlider.value);
+        blenderDisplay.textContent = `${value}% Primär / ${100 - value}% Sekundär`;
+    };
+
+    blenderRatioSlider?.addEventListener('input', () => {
+        updateBlenderDisplay();
+        updateTokenPreview();
+    });
+
+    // Orchestra Instrument Seat Toggle
+    instrumentSeats.forEach(seat => {
+        seat.addEventListener('click', () => {
+            seat.classList.toggle('active');
+            updateTokenPreview();
+        });
+    });
+
+    // Section Dominance Sliders
+    dominanceSliders.forEach(slider => {
+        slider.addEventListener('input', () => {
+            const valueDisplay = slider.parentElement.querySelector('.ks-dominance-value');
+            if (valueDisplay) {
+                valueDisplay.textContent = `${slider.value}%`;
+            }
+            updateTokenPreview();
+        });
+    });
+
+    // Radio/checkbox changes trigger token preview update
+    modal.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(input => {
+        input.addEventListener('change', updateTokenPreview);
+    });
+
+    // Select changes trigger token preview update
+    modal.querySelectorAll('select').forEach(select => {
+        select.addEventListener('change', updateTokenPreview);
+    });
+
+    // Token Preview Generation
+    function updateTokenPreview() {
+        const activeTab = document.querySelector('#ks-module-tabs .ks-tab.active');
+        const currentModule = activeTab?.dataset.module || 'synth';
+
+        let token = '';
+
+        if (currentModule === 'synth') {
+            token = generateSynthToken();
+        } else if (currentModule === 'orchestra') {
+            token = generateOrchestraToken();
+        } else if (currentModule === 'blender') {
+            token = generateBlenderToken();
+        } else {
+            token = 'Module kommt in Phase 2...';
+        }
+
+        if (tokenPreview) tokenPreview.textContent = token;
+        if (charCount) charCount.textContent = `${token.length} Zeichen`;
+
+        // Update health indicator
+        const healthEl = document.getElementById('ks-token-health');
+        if (healthEl) {
+            if (token.length < 50) {
+                healthEl.textContent = 'Kurz';
+                healthEl.className = 'text-yellow-400';
+            } else if (token.length < 150) {
+                healthEl.textContent = 'Optimal';
+                healthEl.className = 'text-green-400';
+            } else if (token.length < 250) {
+                healthEl.textContent = 'Gut';
+                healthEl.className = 'text-green-300';
+            } else {
+                healthEl.textContent = 'Ausführlich';
+                healthEl.className = 'text-amber-400';
+            }
+        }
+    }
+
+    function generateSynthToken() {
+        const waveform = modal.querySelector('input[name="ks-waveform"]:checked')?.value || 'sawtooth';
+        const cutoff = modal.querySelector('input[name="ks-cutoff"]:checked')?.value || '8000';
+        const envelope = modal.querySelector('input[name="ks-envelope"]:checked')?.value || 'pad';
+        const effects = Array.from(modal.querySelectorAll('input[name="ks-effects"]:checked')).map(el => el.value);
+        const blendSound = document.getElementById('ks-blend-sound')?.value || '';
+        const blendRatio = parseInt(document.getElementById('ks-blend-ratio')?.value || 70);
+
+        const waveformMap = {
+            'sawtooth': 'sawtooth waveform synthesizer',
+            'sine': 'smooth sine wave synthesizer',
+            'triangle': 'mellow triangle wave synth',
+            'square': 'punchy square wave synth'
+        };
+
+        const cutoffMap = {
+            '2000': 'dark and muffled with low-pass filter below 2000Hz',
+            '8000': 'warm low-pass filtered below 8000Hz',
+            '15000': 'open filtered below 15000Hz',
+            'none': 'full brightness with no filter'
+        };
+
+        const envelopeMap = {
+            'percussive': 'short percussive attack',
+            'pad': 'soft attack with long release',
+            'plucky': 'plucky articulation with quick decay',
+            'sustained': 'sustained hold with gradual release'
+        };
+
+        const effectsMap = {
+            'reverb': 'drenched in reverb',
+            'delay': 'with spacious delay',
+            'chorus': 'with chorus modulation',
+            'distortion': 'with subtle saturation',
+            'phaser': 'with swirling phaser'
+        };
+
+        const parts = [];
+        parts.push(waveformMap[waveform]);
+        parts.push(cutoffMap[cutoff]);
+        parts.push(envelopeMap[envelope]);
+        effects.forEach(fx => parts.push(effectsMap[fx]));
+
+        if (blendSound && blendRatio < 100) {
+            const blendMap = {
+                'native_flute': 'native American flute textures',
+                'shakuhachi': 'shakuhachi flute tones',
+                'duduk': 'duduk woodwind character',
+                'sitar': 'sitar resonance',
+                'erhu': 'erhu string overtones',
+                'violin': 'violin streaks',
+                'cello': 'cello warmth',
+                'strings': 'string ensemble layers',
+                'piano': 'piano tones',
+                'organ': 'organ textures',
+                'harp': 'harp glissando elements'
+            };
+            parts.push(`blended with ${100 - blendRatio}% ${blendMap[blendSound] || blendSound}`);
+        }
+
+        return parts.join(', ');
+    }
+
+    function generateOrchestraToken() {
+        const preset = modal.querySelector('input[name="ks-orch-preset"]:checked')?.value || 'symphony';
+        const acoustics = modal.querySelector('input[name="ks-acoustics"]:checked')?.value || 'concert';
+
+        const presetMap = {
+            'symphony': 'full symphony orchestra',
+            'chamber': 'intimate chamber orchestra',
+            'quartet': 'string quartet',
+            'brass': 'brass ensemble',
+            'woodwind': 'woodwind section',
+            'solo': 'solo instrument'
+        };
+
+        const acousticsMap = {
+            'intimate': 'intimate chamber room acoustics',
+            'concert': 'lush concert hall reverberation',
+            'cathedral': 'massive cathedral reverb',
+            'dry': 'dry studio recording'
+        };
+
+        const parts = [presetMap[preset]];
+
+        // Check dominance
+        dominanceSliders.forEach(slider => {
+            const section = slider.dataset.section;
+            const value = parseInt(slider.value);
+            if (value > 70) {
+                const sectionNames = {
+                    'strings': 'prominent strings',
+                    'woodwinds': 'emphasized woodwinds',
+                    'brass': 'powerful brass',
+                    'percussion': 'driving percussion'
+                };
+                parts.push(sectionNames[section]);
+            }
+        });
+
+        parts.push(acousticsMap[acoustics]);
+
+        return parts.join(', ');
+    }
+
+    function generateBlenderToken() {
+        const primary = document.getElementById('ks-primary-sound')?.value || 'synth_lead';
+        const secondary = document.getElementById('ks-secondary-sound')?.value || 'shakuhachi';
+        const ratio = parseInt(document.getElementById('ks-blender-ratio')?.value || 60);
+        const mode = modal.querySelector('input[name="ks-blend-mode"]:checked')?.value || 'harmonic';
+
+        const soundNames = {
+            'synth_pad': 'synth pad',
+            'synth_lead': 'synth lead',
+            'synth_bass': 'synth bass',
+            'synth_pluck': 'synth pluck',
+            'violin': 'violin',
+            'cello': 'cello',
+            'string_section': 'string section',
+            'piano': 'piano',
+            'organ': 'organ',
+            'electric_piano': 'electric piano',
+            'sitar': 'sitar',
+            'shakuhachi': 'shakuhachi',
+            'duduk': 'duduk',
+            'pan_flute': 'pan flute',
+            'native_flute': 'native flute',
+            'erhu': 'erhu',
+            'koto': 'koto',
+            'flute': 'flute',
+            'clarinet': 'clarinet',
+            'saxophone': 'saxophone',
+            'harp': 'harp',
+            'guitar': 'guitar'
+        };
+
+        const modeMap = {
+            'harmonic': 'harmonically blended',
+            'contrast': 'contrasting textures',
+            'layered': 'layered together',
+            'freq_split': 'frequency-split fusion'
+        };
+
+        return `${soundNames[primary] || primary} and ${soundNames[secondary] || secondary} ${modeMap[mode]}, ${ratio}% primary ${100 - ratio}% secondary blend`;
+    }
+
+    // Copy Button
+    copyBtn?.addEventListener('click', () => {
+        const text = tokenPreview?.textContent || '';
+        navigator.clipboard.writeText(text).then(() => {
+            const originalText = copyBtn.innerHTML;
+            copyBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Kopiert!';
+            setTimeout(() => { copyBtn.innerHTML = originalText; }, 1500);
+        });
+    });
+
+    // Apply Button
+    applyBtn?.addEventListener('click', () => {
+        const token = tokenPreview?.textContent || '';
+        const resultText = document.getElementById('result-text');
+
+        if (resultText && token) {
+            const currentPrompt = resultText.textContent.trim();
+            const updatedPrompt = currentPrompt
+                ? `${currentPrompt}, ${token}`
+                : token;
+            resultText.textContent = updatedPrompt;
+
+            if (window.QW) {
+                window.QW.onPromptUpdated({ source: 'klang-studio' });
+            }
+        }
+
+        closeModal();
+    });
+
+    // Initialize labels on load
+    updateFilterLabel();
+    updateBlendDisplay();
+    updateBlenderDisplay();
+
+    // === NEW LAYOUT HANDLERS ===
+
+    // Effect Buttons Toggle (triggers only, logic in Phase 2)
+    const effectBtns = modal.querySelectorAll('.ks-effect-btn');
+    effectBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            btn.classList.toggle('active');
+            updateTokenPreview();
+        });
+    });
+
+    // Revert Button - reset all settings
+    const revertBtn = document.getElementById('ks-revert-btn');
+    revertBtn?.addEventListener('click', () => {
+        // Reset waveform
+        const sawtoothRadio = modal.querySelector('input[name="ks-waveform"][value="sawtooth"]');
+        if (sawtoothRadio) sawtoothRadio.checked = true;
+
+        // Reset cutoff
+        const cutoff8k = modal.querySelector('input[name="ks-cutoff"][value="8000"]');
+        if (cutoff8k) cutoff8k.checked = true;
+
+        // Reset filter slider
+        if (filterSlider) {
+            filterSlider.value = 50;
+            updateFilterLabel();
+        }
+
+        // Reset envelope
+        const padEnvelope = modal.querySelector('input[name="ks-envelope"][value="pad"]');
+        if (padEnvelope) padEnvelope.checked = true;
+
+        // Reset blend
+        const blendSelect = document.getElementById('ks-blend-sound');
+        if (blendSelect) blendSelect.value = '';
+        if (blendRatioSlider) {
+            blendRatioSlider.value = 70;
+            updateBlendDisplay();
+        }
+
+        // Reset effects
+        effectBtns.forEach((btn, i) => {
+            if (i < 2) btn.classList.add('active'); // Reverb & Echo on
+            else btn.classList.remove('active');
+        });
+
+        updateTokenPreview();
+    });
+
+    // Decline Button - close without applying
+    const declineBtn = document.getElementById('ks-decline-btn');
+    declineBtn?.addEventListener('click', closeModal);
+
+    // Accept Button - apply token and close
+    const acceptBtn = document.getElementById('ks-accept-btn');
+    acceptBtn?.addEventListener('click', () => {
+        const token = tokenPreview?.textContent || '';
+        const resultText = document.getElementById('result-text');
+
+        if (resultText && token && token !== 'Module kommt in Phase 2...') {
+            const currentPrompt = resultText.textContent.trim();
+            const updatedPrompt = currentPrompt
+                ? `${currentPrompt}, ${token}`
+                : token;
+            resultText.textContent = updatedPrompt;
+
+            if (window.QW) {
+                window.QW.onPromptUpdated({ source: 'klang-studio' });
+            }
+        }
+
+        closeModal();
     });
 }

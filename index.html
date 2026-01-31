@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,26 +14,40 @@
 
 <body class="text-neutral-200">
     <!-- ### API SETUP MODAL ### -->
-    <div id="api-setup-modal" class="fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 z-[100]">
+    <div id="api-setup-modal"
+        class="fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 z-[100]">
         <div class="bg-neutral-800/90 border border-neutral-700 rounded-3xl shadow-2xl p-8 w-full max-w-md">
             <div class="text-center mb-6">
-                <div class="w-16 h-16 bg-blue-600/20 border border-blue-500/30 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-blue-400"><path d="M9 12l2 2 4-4"/><path d="M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9c1.06 0 2.09.18 3.04.52"/><path d="M16 4L12 8l4 4"/></svg>
+                <div
+                    class="w-16 h-16 bg-blue-600/20 border border-blue-500/30 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                        class="text-blue-400">
+                        <path d="M9 12l2 2 4-4" />
+                        <path d="M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9c1.06 0 2.09.18 3.04.52" />
+                        <path d="M16 4L12 8l4 4" />
+                    </svg>
                 </div>
                 <h2 class="text-2xl font-bold text-white mb-2">Setup erforderlich</h2>
                 <p class="text-neutral-400 text-sm">Konfiguriere deine OpenRouter API-Einstellungen, um zu beginnen.</p>
             </div>
-            
+
             <div class="space-y-4">
                 <div>
-                    <label for="api-key-input" class="block text-sm font-medium text-neutral-300 mb-2">OpenRouter API Key</label>
-                    <input type="password" id="api-key-input" class="w-full bg-neutral-900/70 border border-neutral-600 rounded-lg p-3 text-neutral-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm" placeholder="sk-or-v1-...">
-                    <p class="text-xs text-neutral-500 mt-1">Hol dir deinen kostenlosen API Key von <a href="https://openrouter.ai" target="_blank" class="text-blue-400 hover:text-blue-300">openrouter.ai</a></p>
+                    <label for="api-key-input" class="block text-sm font-medium text-neutral-300 mb-2">OpenRouter API
+                        Key</label>
+                    <input type="password" id="api-key-input"
+                        class="w-full bg-neutral-900/70 border border-neutral-600 rounded-lg p-3 text-neutral-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                        placeholder="sk-or-v1-...">
+                    <p class="text-xs text-neutral-500 mt-1">Hol dir deinen kostenlosen API Key von <a
+                            href="https://openrouter.ai" target="_blank"
+                            class="text-blue-400 hover:text-blue-300">openrouter.ai</a></p>
                 </div>
-                
+
                 <div>
                     <label for="model-select" class="block text-sm font-medium text-neutral-300 mb-2">KI-Modell</label>
-                    <select id="model-select" class="w-full bg-neutral-900/70 border border-neutral-600 rounded-lg p-3 text-neutral-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+                    <select id="model-select"
+                        class="w-full bg-neutral-900/70 border border-neutral-600 rounded-lg p-3 text-neutral-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
                         <option value="openai/gpt-5-mini">GPT-5 mini</option>
                         <option value="anthropic/claude-haiku-4.5">Haiku 4.5</option>
                         <option value="deepseek/deepseek-v3.1-terminus">Deepseek 3.1 terminus</option>
@@ -46,28 +61,39 @@
                 </div>
 
                 <div>
-                    <label for="fal-api-key-input" class="block text-sm font-medium text-neutral-300 mb-2">Fal.ai API Key (Optional)</label>
-                    <input type="password" id="fal-api-key-input" class="w-full bg-neutral-900/70 border border-neutral-600 rounded-lg p-3 text-neutral-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm" placeholder="fal.ai key...">
-                    <p class="text-xs text-neutral-500 mt-1">Erforderlich für den "Visuellen Funke". Hol dir einen Key von <a href="https://fal.ai" target="_blank" class="text-blue-400 hover:text-blue-300">fal.ai</a></p>
+                    <label for="fal-api-key-input" class="block text-sm font-medium text-neutral-300 mb-2">Fal.ai API
+                        Key (Optional)</label>
+                    <input type="password" id="fal-api-key-input"
+                        class="w-full bg-neutral-900/70 border border-neutral-600 rounded-lg p-3 text-neutral-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                        placeholder="fal.ai key...">
+                    <p class="text-xs text-neutral-500 mt-1">Erforderlich für den "Visuellen Funke". Hol dir einen Key
+                        von <a href="https://fal.ai" target="_blank"
+                            class="text-blue-400 hover:text-blue-300">fal.ai</a></p>
                 </div>
 
                 <div>
-                    <label for="fal-model-select" class="block text-sm font-medium text-neutral-300 mb-2">Bild-KI-Modell</label>
-                    <select id="fal-model-select" class="w-full bg-neutral-900/70 border border-neutral-600 rounded-lg p-3 text-neutral-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
-                        <option value="fal-ai/fast-sdxl">Fast SDXL</option>
-                        <option value="fal-ai/lightning-sdxl">Lightning SDXL</option>
-                        <option value="fal-ai/sdxl-lightning-4step">SDXL Lightning (4-step)</option>
-                        <option value="fal-ai/stable-diffusion-v1-5">Stable Diffusion 1.5</option>
-                        <option value="fal-ai/realistic-vision-v5">Realistic Vision v5</option>
-                        <option value="imagen4/preview">Imagen 4 (preview)</option>
-                        <option value="flux-pro/kontext">FLUX pro Kontext</option>
-                        <option value="flux-krea-lora/stream">FLUX Krea LoRA (stream)</option>
+                    <label for="fal-model-select"
+                        class="block text-sm font-medium text-neutral-300 mb-2">Bild-KI-Modell</label>
+                    <select id="fal-model-select"
+                        class="w-full bg-neutral-900/70 border border-neutral-600 rounded-lg p-3 text-neutral-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+                        <option value="fal-ai/nano-banana-pro" selected>Nano Banana Pro</option>
+                        <option value="fal-ai/recraft/v3/text-to-image">Recraft V3</option>
+                        <option value="fal-ai/flux-pro">Flux Pro</option>
+                        <option value="fal-ai/flux-pro/kontext">Flux Pro Kontext (img2img)</option>
+                        <option value="fal-ai/gpt-image-1.5">GPT-Image 1.5</option>
+                        <option value="fal-ai/flux/dev">FLUX.1 [dev]</option>
                     </select>
                 </div>
 
                 <div class="pt-2">
-                    <button id="save-settings-button" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg btn-transition btn-press flex items-center justify-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17,21 17,13 7,13 7,21"/><polyline points="7,3 7,8 15,8"/></svg>
+                    <button id="save-settings-button"
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg btn-transition btn-press flex items-center justify-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                            <polyline points="17,21 17,13 7,13 7,21" />
+                            <polyline points="7,3 7,8 15,8" />
+                        </svg>
                         Einstellungen speichern
                     </button>
                 </div>
@@ -75,25 +101,44 @@
         </div>
     </div>
 
-    <main class="w-full max-w-[1900px] 2xl:max-w-[2100px] mx-auto p-4 md:p-8 lg:p-12" id="main-app" style="display: none;">
+    <main class="w-full max-w-[1900px] 2xl:max-w-[2100px] mx-auto p-4 md:p-8 lg:p-12" id="main-app"
+        style="display: none;">
         <!-- ### HEADER ### -->
         <header class="text-center mb-10 md:mb-16">
             <div class="inline-flex justify-center items-center gap-4 mb-3">
-                <div class="w-12 h-12 bg-blue-600/20 border border-blue-500/30 rounded-2xl flex items-center justify-center">
-                   <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-blue-400"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                <div
+                    class="w-12 h-12 bg-blue-600/20 border border-blue-500/30 rounded-2xl flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                        class="text-blue-400">
+                        <path d="M9 18V5l12-2v13" />
+                        <circle cx="6" cy="18" r="3" />
+                        <circle cx="18" cy="16" r="3" />
+                    </svg>
                 </div>
-                 <h1 class="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-white to-neutral-300 tracking-tight">Suno Style Architect</h1>
+                <h1
+                    class="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-white to-neutral-300 tracking-tight">
+                    Suno Style Architect</h1>
             </div>
-            <p class="text-neutral-400 max-w-2xl mx-auto text-lg">Erschaffe meisterhafte Prompts für die Suno Musik-KI. Von der ersten Idee zum perfekten Stil.</p>
-            
+            <p class="text-neutral-400 max-w-2xl mx-auto text-lg">Erschaffe meisterhafte Prompts für die Suno Musik-KI.
+                Von der ersten Idee zum perfekten Stil.</p>
+
             <!-- Settings indicator + toolbar -->
             <div class="mt-4 flex items-center justify-center gap-2 text-xs text-neutral-500">
                 <span id="current-model" class="bg-neutral-800/50 px-2 py-1 rounded-full">GPT-5 mini</span>
-                <button id="change-settings-button" class="bg-neutral-800/50 hover:bg-neutral-700/50 px-2 py-1 rounded-full transition-colors">⚙️ Ändern</button>
+                <button id="change-settings-button"
+                    class="bg-neutral-800/50 hover:bg-neutral-700/50 px-2 py-1 rounded-full transition-colors">⚙️
+                    Ändern</button>
                 <span class="mx-2">·</span>
-                <button id="history-toggle-button" class="bg-neutral-800/50 hover:bg-neutral-700/50 px-2 py-1 rounded-full transition-colors">🕘 Verlauf</button>
-                <button id="help-shortcuts-button" class="bg-neutral-800/50 hover:bg-neutral-700/50 px-2 py-1 rounded-full transition-colors" title="Tastenkürzel anzeigen">⌘K</button>
-                <button id="shortcuts-settings-button" class="bg-neutral-800/50 hover:bg-neutral-700/50 px-2 py-1 rounded-full transition-colors" title="Tastenkürzel anpassen">⚡ Shortcuts</button>
+                <button id="history-toggle-button"
+                    class="bg-neutral-800/50 hover:bg-neutral-700/50 px-2 py-1 rounded-full transition-colors">🕘
+                    Verlauf</button>
+                <button id="help-shortcuts-button"
+                    class="bg-neutral-800/50 hover:bg-neutral-700/50 px-2 py-1 rounded-full transition-colors"
+                    title="Tastenkürzel anzeigen">⌘K</button>
+                <button id="shortcuts-settings-button"
+                    class="bg-neutral-800/50 hover:bg-neutral-700/50 px-2 py-1 rounded-full transition-colors"
+                    title="Tastenkürzel anpassen">⚡ Shortcuts</button>
             </div>
         </header>
 
@@ -101,134 +146,328 @@
         <div class="flex flex-col gap-8 lg:gap-12">
             <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8 lg:gap-12">
                 <!-- ## ROW 1, COL 1: IDEA INPUT ## -->
-                <div class="bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20 flex flex-col">
+                <div
+                    class="bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20 flex flex-col">
                     <div class="flex justify-between items-center mb-3">
                         <label for="idea-input" class="text-xl font-semibold text-white">Deine Vision</label>
-                        <button id="spark-idea-button" class="flex items-center gap-1.5 text-sm text-blue-400 hover:text-blue-300 font-medium transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/><path d="M12 3v18"/><path d="M3 12h18"/></svg>
+                        <button id="spark-idea-button"
+                            class="flex items-center gap-1.5 text-sm text-blue-400 hover:text-blue-300 font-medium transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M5 3v4" />
+                                <path d="M19 17v4" />
+                                <path d="M3 5h4" />
+                                <path d="M17 19h4" />
+                                <path d="M12 3v18" />
+                                <path d="M3 12h18" />
+                            </svg>
                             Ideen-Funke
                         </button>
                     </div>
-                    <textarea id="idea-input" rows="6" class="w-full bg-neutral-900/70 border border-neutral-700 rounded-xl p-4 text-neutral-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow duration-300 placeholder-neutral-500 text-base flex-grow" placeholder="Beschreibe deine Musik-Vision..."></textarea>
-                    <textarea id="lyric-input" rows="4" class="w-full bg-neutral-900/70 border border-neutral-700 rounded-xl p-4 text-neutral-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow duration-300 placeholder-neutral-500 text-base flex-grow mt-3" placeholder="Lyrics (Optional)..."></textarea>
-                    <button id="generate-button" class="mt-4 w-full flex justify-center items-center gap-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3.5 px-4 rounded-xl shadow-lg shadow-blue-900/30 hover:shadow-blue-600/40 btn-transition btn-press">
-                        <svg id="generate-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-wand-2"><path d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2 18l-2 4 4-2 16.36-16.36a1.21 1.21 0 0 0 0-1.72Z"/><path d="m14 7 3 3"/></svg>
+                    <textarea id="idea-input" rows="6"
+                        class="w-full bg-neutral-900/70 border border-neutral-700 rounded-xl p-4 text-neutral-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow duration-300 placeholder-neutral-500 text-base flex-grow"
+                        placeholder="Beschreibe deine Musik-Vision..."></textarea>
+                    <textarea id="lyric-input" rows="4"
+                        class="w-full bg-neutral-900/70 border border-neutral-700 rounded-xl p-4 text-neutral-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow duration-300 placeholder-neutral-500 text-base flex-grow mt-3"
+                        placeholder="Lyrics (Optional)..."></textarea>
+                    <button id="generate-button"
+                        class="mt-4 w-full flex justify-center items-center gap-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3.5 px-4 rounded-xl shadow-lg shadow-blue-900/30 hover:shadow-blue-600/40 btn-transition btn-press">
+                        <svg id="generate-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-wand-2">
+                            <path
+                                d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2 18l-2 4 4-2 16.36-16.36a1.21 1.21 0 0 0 0-1.72Z" />
+                            <path d="m14 7 3 3" />
+                        </svg>
                         <span id="button-text">Prompt Architektieren</span>
-                        <svg id="loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        <svg id="loader" class="animate-spin h-5 w-5 text-white hidden"
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                            </circle>
+                            <path class="opacity-75" fill="currentColor"
+                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                            </path>
                         </svg>
                     </button>
                 </div>
 
                 <!-- ## ROW 1, COL 2: RESULT ## -->
-                <div class="bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20 flex flex-col">
+                <div
+                    class="bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20 flex flex-col">
                     <h2 class="text-xl font-semibold text-white mb-4">Dein Meisterstück</h2>
                     <div id="result-wrapper" class="flex-grow flex flex-col">
                         <!-- Initial State -->
-                        <div id="initial-state" class="flex-grow flex flex-col items-center justify-center text-center p-4">
-                            <div class="w-16 h-16 bg-blue-600/10 border border-blue-500/20 rounded-2xl flex items-center justify-center mb-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-blue-400 opacity-60"><path d="M12 3v18"/><path d="M3 12h18"/></svg>
+                        <div id="initial-state"
+                            class="flex-grow flex flex-col items-center justify-center text-center p-4">
+                            <div
+                                class="w-16 h-16 bg-blue-600/10 border border-blue-500/20 rounded-2xl flex items-center justify-center mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round" class="text-blue-400 opacity-60">
+                                    <path d="M12 3v18" />
+                                    <path d="M3 12h18" />
+                                </svg>
                             </div>
                             <p class="text-neutral-400">Dein optimierter Prompt für Suno erscheint hier.</p>
                         </div>
                         <!-- Result Container -->
                         <div id="result-container" class="hidden flex-grow flex flex-col">
-                        <div class="relative bg-neutral-900/70 rounded-xl border border-neutral-700 flex-grow">
-                            <button id="copy-button" class="absolute top-2.5 right-2.5 p-1.5 bg-neutral-700/50 hover:bg-neutral-700 rounded-md text-neutral-400 hover:text-white transition-all duration-200 z-10 btn-transition btn-press" title="Kopieren">
-                                <svg id="copy-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
-                                <svg id="check-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="hidden text-green-400"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                            </button>
-                            <pre id="result-text" class="whitespace-pre-wrap text-base text-neutral-300 p-4 h-full overflow-auto"></pre>
-                        </div>
-                        <!-- Counters and actions -->
-                        <div class="mt-3 flex flex-col gap-2">
-                            <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
-                                <div id="char-stats" class="text-neutral-400"></div>
-                                <div class="flex gap-2">
-                                    <button id="auto-trim-v3-button" class="px-2 py-1 rounded bg-neutral-800/70 border border-neutral-700 hover:bg-neutral-700">Auto-Trim 200</button>
-                                    <button id="export-prompt-button" class="px-2 py-1 rounded bg-neutral-800/70 border border-neutral-700 hover:bg-neutral-700">Export JSON</button>
-                                    <button id="import-prompt-button" class="px-2 py-1 rounded bg-neutral-800/70 border border-neutral-700 hover:bg-neutral-700">Import JSON</button>
-                                    <input id="import-prompt-file" type="file" accept="application/json" class="hidden" />
-                                </div>
+                            <div class="relative bg-neutral-900/70 rounded-xl border border-neutral-700 flex-grow">
+                                <button id="copy-button"
+                                    class="absolute top-2.5 right-2.5 p-1.5 bg-neutral-700/50 hover:bg-neutral-700 rounded-md text-neutral-400 hover:text-white transition-all duration-200 z-10 btn-transition btn-press"
+                                    title="Kopieren">
+                                    <svg id="copy-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+                                        <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+                                    </svg>
+                                    <svg id="check-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                                        stroke-linecap="round" stroke-linejoin="round" class="hidden text-green-400">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                </button>
+                                <pre id="result-text"
+                                    class="whitespace-pre-wrap text-base text-neutral-300 p-4 h-full overflow-auto"></pre>
                             </div>
-                            <div id="lint-hints" class="text-xs text-amber-300"></div>
-                        </div>
+                            <!-- Counters and actions -->
+                            <div class="mt-3 flex flex-col gap-2">
+                                <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
+                                    <div id="char-stats" class="text-neutral-400"></div>
+                                    <div class="flex gap-2">
+                                        <button id="auto-trim-v3-button"
+                                            class="px-2 py-1 rounded bg-neutral-800/70 border border-neutral-700 hover:bg-neutral-700">Auto-Trim
+                                            200</button>
+                                        <button id="export-prompt-button"
+                                            class="px-2 py-1 rounded bg-neutral-800/70 border border-neutral-700 hover:bg-neutral-700">Export
+                                            JSON</button>
+                                        <button id="import-prompt-button"
+                                            class="px-2 py-1 rounded bg-neutral-800/70 border border-neutral-700 hover:bg-neutral-700">Import
+                                            JSON</button>
+                                        <input id="import-prompt-file" type="file" accept="application/json"
+                                            class="hidden" />
+                                    </div>
+                                </div>
+                                <div id="lint-hints" class="text-xs text-amber-300"></div>
+                            </div>
 
-                        <div id="refinement-controls" class="hidden mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
-                            <button id="suno-pro-button" class="flex justify-center items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg btn-transition btn-press text-sm">
-                                <svg id="suno-pro-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m21 21-6-6m6 6v-4m0 4h-4"/><path d="M3 3h6v6"/><path d="M3 10v4a7 7 0 0 0 7 7h4"/></svg>
-                                <span id="suno-pro-text">Für Pro (detailliert)</span>
-                                <svg id="suno-pro-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                            </button>
-                            <button id="custom-instruction-button" class="flex justify-center items-center gap-2 bg-neutral-600 hover:bg-neutral-700 text-white font-semibold py-2 px-4 rounded-lg btn-transition btn-press text-sm">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                                <span>Eigene Anweisung</span>
-                            </button>
+                            <div id="refinement-controls" class="hidden mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                <button id="suno-pro-button"
+                                    class="flex justify-center items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg btn-transition btn-press text-sm">
+                                    <svg id="suno-pro-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="m21 21-6-6m6 6v-4m0 4h-4" />
+                                        <path d="M3 3h6v6" />
+                                        <path d="M3 10v4a7 7 0 0 0 7 7h4" />
+                                    </svg>
+                                    <span id="suno-pro-text">Für Pro (detailliert)</span>
+                                    <svg id="suno-pro-loader" class="animate-spin h-5 w-5 text-white hidden"
+                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                            stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor"
+                                            d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                        </path>
+                                    </svg>
+                                </button>
+                                <button id="custom-instruction-button"
+                                    class="flex justify-center items-center gap-2 bg-neutral-600 hover:bg-neutral-700 text-white font-semibold py-2 px-4 rounded-lg btn-transition btn-press text-sm">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                        stroke-linejoin="round" class="lucide lucide-edit">
+                                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                                    </svg>
+                                    <span>Eigene Anweisung</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
-                </div>
 
-                <!-- ## ROW 1, COL 3: PLACEHOLDER PANEL ## -->
-                <div class="bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20 flex flex-col justify-between">
-                    <div>
-                        <h2 class="text-xl font-semibold text-white mb-2">Kreativ-Kosmos</h2>
-                        <p class="text-neutral-400 text-sm mb-4">Reserviert für kommende Workflow-Magie, die deine Ideen direkt in neue Dimensionen führt.</p>
-                    </div>
-                    <div class="bg-neutral-900/50 border border-neutral-700/70 rounded-2xl p-4 text-sm text-neutral-400">
-                        <p class="font-medium text-neutral-300 mb-1">Was dich erwartet:</p>
-                        <ul class="list-disc list-inside space-y-1">
-                            <li>Interaktive Storyboards für Visionen.</li>
-                            <li>Gemeinsame Sessions mit Co-Kreatoren.</li>
-                            <li>Adaptive Presets für einzigartige Stile.</li>
-                        </ul>
+                <!-- ## ROW 1, COL 3: KREATIV KOSMOS (Vertical Tiles) ## -->
+                <div class="flex flex-col gap-4 h-full">
+                    <!-- Tile 1: Idea Starter (Active) -->
+                    <button id="idea-starter-tile"
+                        class="kreativ-panel active group relative flex-1 bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl overflow-hidden text-left transition-all duration-300 hover:scale-[1.02] hover:shadow-blue-900/20 hover:border-blue-500/30">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-br from-blue-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        </div>
+                        <div class="relative z-10 h-full flex flex-col justify-between">
+                            <div>
+                                <div
+                                    class="w-10 h-10 bg-blue-500/20 rounded-xl flex items-center justify-center mb-3 text-blue-400 group-hover:text-blue-300 group-hover:scale-110 transition-all duration-300">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path
+                                            d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z" />
+                                        <path
+                                            d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z" />
+                                        <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0" />
+                                        <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5" />
+                                    </svg>
+                                </div>
+                                <h3
+                                    class="text-xl font-bold text-white mb-1 group-hover:text-blue-200 transition-colors">
+                                    Ideen-Starter</h3>
+                                <p class="text-xs text-neutral-400 leading-relaxed">Starte mit einem Funken. Wähle eine
+                                    Welt und lass dich inspirieren.</p>
+                            </div>
+                            <div
+                                class="flex items-center text-xs font-medium text-blue-400 opacity-60 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0">
+                                Starten <span class="ml-1">→</span>
+                            </div>
+                        </div>
+                    </button>
+
+                    <!-- Tile 2: Stil-Synchronisator (Active) -->
+                    <button id="style-sync-tile"
+                        class="kreativ-panel active group relative flex-1 bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl overflow-hidden text-left transition-all duration-300 hover:scale-[1.02] hover:shadow-purple-900/20 hover:border-purple-500/30">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-br from-purple-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        </div>
+                        <div class="relative z-10 h-full flex flex-col justify-between">
+                            <div>
+                                <div
+                                    class="w-10 h-10 bg-purple-500/20 rounded-xl flex items-center justify-center mb-3 text-purple-400 group-hover:text-purple-300 group-hover:scale-110 transition-all duration-300">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path
+                                            d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2v-4M9 21H5a2 2 0 0 1-2-2v-4" />
+                                        <circle cx="5" cy="9" r="1" />
+                                        <circle cx="5" cy="15" r="1" />
+                                        <circle cx="19" cy="9" r="1" />
+                                        <circle cx="19" cy="15" r="1" />
+                                    </svg>
+                                </div>
+                                <h3
+                                    class="text-xl font-bold text-white mb-1 group-hover:text-purple-200 transition-colors">
+                                    Stil-Synchronisator</h3>
+                                <p class="text-xs text-neutral-400 leading-relaxed">Übersetze zwischen Sound und Bild.
+                                    Bidirektionale Inspiration.</p>
+                            </div>
+                            <div
+                                class="flex items-center text-xs font-medium text-purple-400 opacity-60 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0">
+                                Synchronisieren <span class="ml-1">↔</span>
+                            </div>
+                        </div>
+                    </button>
+
+                    <!-- Tile 3: Klang-Studio (Active) -->
+                    <button id="klang-studio-tile"
+                        class="kreativ-panel active group relative flex-1 bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl overflow-hidden text-left transition-all duration-300 hover:scale-[1.02] hover:shadow-cyan-900/20 hover:border-cyan-500/30">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-br from-cyan-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        </div>
+                        <div class="relative z-10 h-full flex flex-col justify-between">
+                            <div>
+                                <div
+                                    class="w-10 h-10 bg-cyan-500/20 rounded-xl flex items-center justify-center mb-3 text-cyan-400 group-hover:text-cyan-300 group-hover:scale-110 transition-all duration-300">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <rect x="4" y="4" width="6" height="6" rx="1"></rect>
+                                        <rect x="14" y="4" width="6" height="6" rx="1"></rect>
+                                        <rect x="4" y="14" width="6" height="6" rx="1"></rect>
+                                        <rect x="14" y="14" width="6" height="6" rx="1"></rect>
+                                        <line x1="7" y1="4" x2="7" y2="2"></line>
+                                        <line x1="17" y1="4" x2="17" y2="2"></line>
+                                        <line x1="7" y1="22" x2="7" y2="20"></line>
+                                        <line x1="17" y1="22" x2="17" y2="20"></line>
+                                    </svg>
+                                </div>
+                                <h3
+                                    class="text-xl font-bold text-white mb-1 group-hover:text-cyan-200 transition-colors">
+                                    Klang-Studio</h3>
+                                <p class="text-xs text-neutral-400 leading-relaxed">Textbasiertes Sound-Design.
+                                    Synths, Orchester & mehr.</p>
+                            </div>
+                            <div
+                                class="flex items-center text-xs font-medium text-cyan-400 opacity-60 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0">
+                                Designen <span class="ml-1">🎛️</span>
+                            </div>
+                        </div>
+                    </button>
+
+                    <!-- Tile 4: Placeholder -->
+                    <div
+                        class="kreativ-panel inactive flex-1 bg-neutral-800/10 border border-neutral-800 rounded-3xl p-6 relative overflow-hidden grayscale opacity-50 cursor-not-allowed">
+                        <div class="relative z-10 h-full flex flex-col justify-between">
+                            <div
+                                class="w-10 h-10 bg-neutral-700/20 rounded-xl flex items-center justify-center mb-3 text-neutral-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path
+                                        d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z" />
+                                    <path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65" />
+                                    <path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-neutral-500 mb-1">Universum</h3>
+                                <p class="text-[10px] text-neutral-600">Coming Soon</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 xl:grid-cols-3 gap-8 lg:gap-12">
                 <!-- ## ROW 2, COL 1: EXPERT REFINEMENT ## -->
-                <div class="bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20">
+                <div id="expert-container"
+                    class="bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20 inactive-box">
                     <h2 class="text-xl font-semibold text-white mb-2">Experten-Veredelung</h2>
-                    <p class="text-neutral-400 mb-4 text-sm">Lass deinen Prompt von KI-Personas mit Fachwissen überarbeiten.</p>
-                    <div id="expert-disabled-notice" class="mb-4 p-3 bg-amber-900/20 border border-amber-700/50 text-amber-300 rounded-lg text-sm">
-                        💡 <strong>Hinweis:</strong> Generiere zuerst einen Prompt, um die Experten-Tools zu aktivieren.
-                    </div>
+                    <p class="text-neutral-400 mb-4 text-sm">Lass deinen Prompt von KI-Personas mit Fachwissen
+                        überarbeiten.</p>
                     <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-                        <button id="producer-refine-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="producer-refine-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Weltklasse Produzent</h3>
                             <p class="text-xs text-neutral-400">Fokus auf Sound-Design & Mix.</p>
                         </button>
-                        <button id="musician-refine-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="musician-refine-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Weltklasse Musiker</h3>
                             <p class="text-xs text-neutral-400">Fokus auf Musikalität & Emotion.</p>
                         </button>
-                        <button id="composer-refine-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="composer-refine-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Filmkomponist</h3>
                             <p class="text-xs text-neutral-400">Fokus auf Story & Atmosphäre.</p>
                         </button>
-                        <button id="dj-refine-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="dj-refine-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">DJ / Remixer</h3>
                             <p class="text-xs text-neutral-400">Fokus auf Groove & Energie.</p>
                         </button>
-                        <button id="avantgarde-refine-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="avantgarde-refine-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Avantgarde-Klangkünstler</h3>
                             <p class="text-xs text-neutral-400">Bricht Konventionen, experimentell.</p>
                         </button>
-                        <button id="minimalist-refine-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="minimalist-refine-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Minimalist-Komponist</h3>
                             <p class="text-xs text-neutral-400">Reduziert auf die Essenz.</p>
                         </button>
-                        <button id="vocal-harmony-refine-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="vocal-harmony-refine-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Vocal-Harmony Arrangeur</h3>
                             <p class="text-xs text-neutral-400">Fokus auf komplexe Gesangs-Sätze.</p>
                         </button>
-                        <button id="ethno-refine-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="ethno-refine-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Ethno-Musiker</h3>
                             <p class="text-xs text-neutral-400">Integriert authentische Weltmusik.</p>
                         </button>
-                        <button id="sound-engineer-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="sound-engineer-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Sound-Ingenieur</h3>
                             <p class="text-xs text-neutral-400">Füge spezifische Anweisungen hinzu.</p>
                         </button>
@@ -236,103 +475,127 @@
                 </div>
 
                 <!-- ## ROW 2, COL 2: KLUG ## -->
-                <div class="bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20">
+                <div id="klug-container"
+                    class="bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20 inactive-box">
                     <h2 class="text-xl font-semibold text-white mb-2">KLUG</h2>
                     <p class="text-neutral-400 mb-4 text-sm">Intelligente Werkzeuge zur Verfeinerung deines Prompts.</p>
-                    <div id="klug-disabled-notice" class="mb-4 p-3 bg-amber-900/20 border border-amber-700/50 text-amber-300 rounded-lg text-sm">
-                        💡 <strong>Hinweis:</strong> Generiere zuerst einen Prompt, um die KLUG-Tools zu aktivieren.
-                    </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-4 gap-3 lg:gap-4">
-                        <button id="visual-engine-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="visual-engine-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">🖼️ Visueller Funke</h3>
                             <p class="text-xs text-neutral-400">Generiere Bild & analysiere Vibe.</p>
                         </button>
-                        <button id="synth-designer-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="synth-designer-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">🎛️ Synth-Designer</h3>
                             <p class="text-xs text-neutral-400">Baue gezielte Synth-Sounds.</p>
                         </button>
-                        <button id="genre-mixer-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="genre-mixer-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Genre-Mixer</h3>
                             <p class="text-xs text-neutral-400">Kombiniere Stile für Klänge.</p>
                         </button>
-                        <button id="mood-analyzer-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="mood-analyzer-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Stimmungs-Analysator</h3>
                             <p class="text-xs text-neutral-400">Finde passende Instrumente.</p>
                         </button>
-                        <button id="hook-generator-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="hook-generator-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Titel- & Hook-Generator</h3>
                             <p class="text-xs text-neutral-400">Erhalte Ideen für Titel & Refrain.</p>
                         </button>
-                        <button id="song-structure-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="song-structure-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Song-Struktur-Assistent</h3>
                             <p class="text-xs text-neutral-400">Entwerfe den Songaufbau.</p>
                         </button>
-                        <button id="vibe-enhancer-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="vibe-enhancer-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Vibe-Veredler</h3>
                             <p class="text-xs text-neutral-400">Verstärke die Atmosphäre.</p>
                         </button>
-                        <button id="artist-suggester-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="artist-suggester-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Künstler-Kompass</h3>
                             <p class="text-xs text-neutral-400">Finde ähnliche Künstler.</p>
                         </button>
-                        <button id="tempo-finder-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="tempo-finder-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Tempo & BPM-Finder</h3>
                             <p class="text-xs text-neutral-400">Finde das richtige Tempo.</p>
                         </button>
-                        <button id="production-finish-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="production-finish-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Produktions-Finish</h3>
                             <p class="text-xs text-neutral-400">Verleihe den letzten Schliff.</p>
                         </button>
-                        <button id="vocal-stylist-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="vocal-stylist-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Gesangs-Stilist</h3>
                             <p class="text-xs text-neutral-400">Definiere den Gesangsstil.</p>
                         </button>
-                        <button id="groove-meister-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="groove-meister-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Groove-Meister</h3>
                             <p class="text-xs text-neutral-400">Definiere den Rhythmus.</p>
                         </button>
-                        <button id="performance-coach-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="performance-coach-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Performance-Coach</h3>
                             <p class="text-xs text-neutral-400">Verfeinere die Spielweise.</p>
                         </button>
-                        <button id="effect-chain-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="effect-chain-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Effektketten-Designer</h3>
                             <p class="text-xs text-neutral-400">Gestalte den Sound mit Effekten.</p>
+                        </button>
+                        <button id="get-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                            <h3 class="font-semibold text-neutral-200">⏳ Genre-Evolution</h3>
+                            <p class="text-xs text-neutral-400">Zeitreise für deinen Sound.</p>
                         </button>
                     </div>
                 </div>
 
                 <!-- ## ROW 2, COL 3: FUTURE LAB ## -->
-                <div class="bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20">
+                <div id="lab-container"
+                    class="bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20 inactive-box">
                     <h2 class="text-xl font-semibold text-white mb-2">Zukunfts-Labor</h2>
-                    <p class="text-neutral-400 mb-4 text-sm">Experimentiere mit kommenden Ideen, die deinen Workflow revolutionieren könnten.</p>
-                    <div id="lab-disabled-notice" class="mb-4 p-3 bg-amber-900/20 border border-amber-700/50 text-amber-300 rounded-lg text-sm">
-                        💡 <strong>Hinweis:</strong> Generiere zuerst einen Prompt, um die Labor-Tools zu aktivieren.
-                    </div>
+                    <p class="text-neutral-400 mb-4 text-sm">Experimentiere mit kommenden Ideen, die deinen Workflow
+                        revolutionieren könnten.</p>
                     <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-2 gap-4">
-                        <button id="adaptive-flow-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="adaptive-flow-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Adaptiver Flow</h3>
                             <p class="text-xs text-neutral-400">Passe Dynamik und Energie an jede Stimmung an.</p>
                         </button>
-                        <button id="ai-collab-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="ai-collab-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">KI-Kollaboration</h3>
-                            <p class="text-xs text-neutral-400">Skizziere Interaktionen zwischen verschiedenen KI-Personas.</p>
+                            <p class="text-xs text-neutral-400">Skizziere Interaktionen zwischen verschiedenen
+                                KI-Personas.</p>
                         </button>
-                        <button id="story-arc-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="story-arc-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Story-Arc Designer</h3>
                             <p class="text-xs text-neutral-400">Baue dramaturgische Bögen für deine Musikreise.</p>
                         </button>
-                        <button id="immersive-space-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="immersive-space-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Immersive Space</h3>
                             <p class="text-xs text-neutral-400">Simuliere 3D-Soundräume für besondere Momente.</p>
                         </button>
-                        <button id="human-touch-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="human-touch-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Human Touch</h3>
                             <p class="text-xs text-neutral-400">Füge subtile Imperfektionen und Feeling hinzu.</p>
                         </button>
-                        <button id="release-forecast-button" class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
+                        <button id="release-forecast-button"
+                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
                             <h3 class="font-semibold text-neutral-200">Release Forecast</h3>
-                            <p class="text-xs text-neutral-400">Plane Veröffentlichungen mit datengetriebenen Impulsen.</p>
+                            <p class="text-xs text-neutral-400">Plane Veröffentlichungen mit datengetriebenen Impulsen.
+                            </p>
                         </button>
                     </div>
                 </div>
@@ -340,7 +603,7 @@
         </div>
 
         <!-- ### ERROR SECTION (FULL-WIDTH) ### -->
-         <div id="error-container" class="mt-8 hidden max-w-4xl mx-auto">
+        <div id="error-container" class="mt-8 hidden max-w-4xl mx-auto">
             <div class="bg-red-900/30 border border-red-700/50 text-red-300 px-4 py-3 rounded-xl relative" role="alert">
                 <strong class="font-bold">Fehler! </strong>
                 <span id="error-message"></span>
@@ -350,15 +613,19 @@
 
     <!-- History Sidebar -->
     <div id="history-overlay" class="fixed inset-0 bg-black/60 hidden z-[90]"></div>
-    <aside id="history-panel" class="fixed top-0 right-0 h-full w-[360px] max-w-[80vw] bg-neutral-900/95 border-l border-neutral-700 z-[95] translate-x-full transition-transform">
+    <aside id="history-panel"
+        class="fixed top-0 right-0 h-full w-[360px] max-w-[80vw] bg-neutral-900/95 border-l border-neutral-700 z-[95] translate-x-full transition-transform">
         <div class="h-full flex flex-col">
             <div class="p-4 border-b border-neutral-700 flex items-center justify-between">
                 <h3 class="text-lg font-semibold text-white">Verlauf</h3>
                 <div class="flex items-center gap-2">
-                    <button id="history-export-all" class="text-xs px-2 py-1 rounded bg-neutral-800/70 border border-neutral-700 hover:bg-neutral-700">Export</button>
-                    <button id="history-import" class="text-xs px-2 py-1 rounded bg-neutral-800/70 border border-neutral-700 hover:bg-neutral-700">Import</button>
+                    <button id="history-export-all"
+                        class="text-xs px-2 py-1 rounded bg-neutral-800/70 border border-neutral-700 hover:bg-neutral-700">Export</button>
+                    <button id="history-import"
+                        class="text-xs px-2 py-1 rounded bg-neutral-800/70 border border-neutral-700 hover:bg-neutral-700">Import</button>
                     <input id="history-import-file" type="file" accept="application/json" class="hidden" />
-                    <button id="history-clear" class="text-xs px-2 py-1 rounded bg-red-900/40 border border-red-700 hover:bg-red-800/60">Leeren</button>
+                    <button id="history-clear"
+                        class="text-xs px-2 py-1 rounded bg-red-900/40 border border-red-700 hover:bg-red-800/60">Leeren</button>
                     <button id="history-close" class="text-xl text-neutral-400 hover:text-white">&times;</button>
                 </div>
             </div>
@@ -367,15 +634,23 @@
     </aside>
 
     <!-- Chord hint -->
-    <div id="chord-hint" class="fixed bottom-24 left-1/2 -translate-x-1/2 bg-neutral-900/95 border border-neutral-700 text-neutral-200 text-xs px-3 py-1 rounded-lg z-[105] hidden">Ziffer drücken, 0 = mehr, Esc = abbrechen</div>
+    <div id="chord-hint"
+        class="fixed bottom-24 left-1/2 -translate-x-1/2 bg-neutral-900/95 border border-neutral-700 text-neutral-200 text-xs px-3 py-1 rounded-lg z-[105] hidden">
+        Ziffer drücken, 0 = mehr, Esc = abbrechen</div>
 
     <!-- Command Palette -->
     <div id="cmdk-overlay" class="fixed inset-0 z-[110] hidden">
         <div class="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
-        <div id="cmdk-container" class="relative mx-auto mt-20 w-[92vw] max-w-2xl bg-neutral-900/95 border border-neutral-700 rounded-2xl shadow-2xl p-4">
+        <div id="cmdk-container"
+            class="relative mx-auto mt-20 w-[92vw] max-w-2xl bg-neutral-900/95 border border-neutral-700 rounded-2xl shadow-2xl p-4">
             <div class="flex items-center gap-3 mb-2">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-neutral-400"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                <input id="cmdk-input" type="text" placeholder="Aktion suchen… (z.B. v3, pro, kopieren)" class="flex-1 bg-neutral-900/60 border border-neutral-700 rounded-md px-3 py-2 text-sm text-neutral-200 focus:outline-none focus:ring-2 focus:ring-blue-600"/>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    class="text-neutral-400">
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="m21 21-4.3-4.3" />
+                </svg>
+                <input id="cmdk-input" type="text" placeholder="Aktion suchen… (z.B. v3, pro, kopieren)"
+                    class="flex-1 bg-neutral-900/60 border border-neutral-700 rounded-md px-3 py-2 text-sm text-neutral-200 focus:outline-none focus:ring-2 focus:ring-blue-600" />
                 <button id="cmdk-close" class="text-xl text-neutral-400 hover:text-white">&times;</button>
             </div>
             <div id="cmdk-list" class="max-h-[50vh] overflow-auto divide-y divide-neutral-800"></div>
@@ -386,15 +661,19 @@
     <!-- Shortcut Settings Modal -->
     <div id="shortcut-settings-modal" class="fixed inset-0 z-[120] hidden">
         <div class="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
-        <div class="relative mx-auto mt-16 w-[94vw] max-w-3xl bg-neutral-900/95 border border-neutral-700 rounded-2xl shadow-2xl p-6">
+        <div
+            class="relative mx-auto mt-16 w-[94vw] max-w-3xl bg-neutral-900/95 border border-neutral-700 rounded-2xl shadow-2xl p-6">
             <div class="flex items-center justify-between mb-4">
                 <h3 class="text-xl font-semibold text-white">Tastenkürzel anpassen</h3>
                 <div class="flex items-center gap-2">
-                    <button id="shortcut-reset" class="text-xs px-2 py-1 rounded bg-neutral-800/70 border border-neutral-700 hover:bg-neutral-700">Standard</button>
-                    <button id="shortcut-settings-close" class="text-2xl text-neutral-400 hover:text-white">&times;</button>
+                    <button id="shortcut-reset"
+                        class="text-xs px-2 py-1 rounded bg-neutral-800/70 border border-neutral-700 hover:bg-neutral-700">Standard</button>
+                    <button id="shortcut-settings-close"
+                        class="text-2xl text-neutral-400 hover:text-white">&times;</button>
                 </div>
             </div>
-            <p class="text-neutral-400 text-sm mb-4">Klicke auf ein Feld und drücke die gewünschte Kombination. Nutze Mod für ⌘/Ctrl.</p>
+            <p class="text-neutral-400 text-sm mb-4">Klicke auf ein Feld und drücke die gewünschte Kombination. Nutze
+                Mod für ⌘/Ctrl.</p>
             <div id="shortcut-settings-list" class="max-h-[60vh] overflow-auto divide-y divide-neutral-800"></div>
         </div>
     </div>
@@ -402,12 +681,14 @@
     <!-- Shortcut Modal -->
     <div id="shortcut-modal" class="fixed inset-0 z-[100] hidden">
         <div class="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
-        <div class="relative mx-auto mt-16 w-[92vw] max-w-2xl bg-neutral-900/90 border border-neutral-700 rounded-2xl shadow-2xl p-6">
+        <div
+            class="relative mx-auto mt-16 w-[92vw] max-w-2xl bg-neutral-900/90 border border-neutral-700 rounded-2xl shadow-2xl p-6">
             <div class="flex items-center justify-between mb-4">
                 <h3 class="text-xl font-semibold text-white">Tastenkürzel</h3>
                 <button id="shortcut-close" class="text-2xl text-neutral-400 hover:text-white">&times;</button>
             </div>
-            <p class="text-neutral-400 text-sm mb-4">Nutze schnelle Aktionen ohne die Maus. Modifizierte Systemkürzel (z.B. ⌘C/⌘V) bleiben unberührt.</p>
+            <p class="text-neutral-400 text-sm mb-4">Nutze schnelle Aktionen ohne die Maus. Modifizierte Systemkürzel
+                (z.B. ⌘C/⌘V) bleiben unberührt.</p>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                 <div class="bg-neutral-800/40 rounded-xl border border-neutral-700 p-4">
                     <h4 class="font-medium text-neutral-200 mb-2">Navigation</h4>
@@ -443,11 +724,950 @@
     <div id="action-hud" class="hidden"></div>
 
     <!-- JavaScript Files -->
+    <!-- Creative Cosmos: Idea Starter Modal (V2 Wiki Style) -->
+    <div id="idea-starter-modal" class="fixed inset-0 z-[130] hidden">
+        <div class="absolute inset-0 bg-black/95 backdrop-blur-xl"></div>
+        <div class="relative w-full h-full flex items-center justify-center p-4">
+            <!-- Large Modal Window (16:9 target) -->
+            <div
+                class="bg-[#0b0b14] border border-neutral-700/50 shadow-2xl rounded-3xl w-[95vw] h-[90vh] flex flex-col overflow-hidden relative">
+
+                <!-- Header: World Selection -->
+                <div class="border-b border-white/5 bg-black/40 p-6 flex flex-col gap-6 z-20">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-3xl font-bold text-white tracking-tight flex items-center gap-3">
+                            <span
+                                class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-lg shadow-lg shadow-purple-900/30">�</span>
+                            Kreativ-Bibliothek
+                        </h2>
+                        <button id="close-idea-modal"
+                            class="text-neutral-400 hover:text-white transition-colors bg-white/5 hover:bg-white/10 p-2 rounded-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M18 6 6 18" />
+                                <path d="m6 6 12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                    <!-- World Tabs (Modern Pill Design) -->
+                    <div id="world-tabs"
+                        class="flex gap-3 overflow-x-auto pb-2 scrollbar-hide justify-start lg:justify-center">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Main Content Area (Reading Mode) -->
+                <div class="flex-1 overflow-y-auto custom-scrollbar relative bg-[#11111a] flex flex-col items-center"
+                    id="wiki-scroll-container">
+                    <div id="world-content-area"
+                        class="max-w-4xl w-full py-12 px-8 lg:px-12 opacity-0 translate-y-4 transition-all duration-500">
+                        <!-- Dynamic Content populated by JS -->
+                        <div class="text-center text-neutral-500 mt-20 flex flex-col items-center gap-4">
+                            <div class="text-6xl opacity-20">📖</div>
+                            <p class="text-xl font-medium">Wähle eine Welt aus, um den Artikel zu laden.</p>
+                            <p class="text-sm opacity-60">Markiere Text, um deine Vision zu bauen.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer: Actions -->
+                <div class="border-t border-white/5 bg-black/40 p-6 flex justify-between items-center z-20 w-full">
+                    <div class="flex items-center gap-6">
+                        <!-- Selection Counter -->
+                        <div id="selection-counter" class="text-sm text-neutral-400 hidden">
+                            <span
+                                class="inline-flex items-center gap-1.5 bg-blue-500/10 border border-blue-500/30 px-2 py-1 rounded-lg">
+                                <span id="term-count" class="text-blue-400 font-medium">0</span> Begriffe
+                            </span>
+                            <span
+                                class="inline-flex items-center gap-1.5 bg-yellow-500/10 border border-yellow-500/30 px-2 py-1 rounded-lg ml-2">
+                                <span id="passage-count" class="text-yellow-400 font-medium">0</span> Passagen
+                            </span>
+                        </div>
+                        <div class="text-xs text-neutral-500 hidden sm:block">
+                            <span class="font-medium text-indigo-400">Tipp:</span> Klicke Begriffe oder markiere Text
+                        </div>
+                    </div>
+                    <div class="flex gap-3">
+                        <button id="reset-selections-btn"
+                            class="px-4 py-2.5 rounded-xl border border-neutral-700 text-neutral-500 hover:text-red-400 hover:border-red-500/50 hover:bg-red-500/5 transition-all text-sm font-medium hidden">
+                            Zurücksetzen
+                        </button>
+                        <button id="cancel-idea-btn"
+                            class="px-6 py-3 rounded-xl border border-white/10 text-neutral-400 hover:text-white hover:bg-white/5 transition-all text-sm font-medium">
+                            Abbrechen
+                        </button>
+                        <button id="generate-idea-btn"
+                            class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-indigo-900/20 hover:shadow-indigo-900/40 transform hover:-translate-y-0.5 transition-all flex items-center gap-2">
+                            <span>Vision synthetisieren</span>
+                            <svg id="gen-spinner" class="animate-spin h-4 w-4 hidden" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                    stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                </path>
+                            </svg>
+                            <svg id="gen-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275Z" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ### KLANG-STUDIO MODAL (Full Screen - Fixed Layout) ### -->
+    <div id="klang-studio-modal" class="fixed inset-0 z-[130] hidden">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/95 backdrop-blur-xl"></div>
+
+        <!-- Modal Container -->
+        <div class="relative w-full h-full flex items-center justify-center p-4">
+            <div
+                class="bg-[#0b0b14] border border-neutral-700/50 shadow-2xl rounded-3xl w-[95vw] h-[90vh] overflow-hidden relative ks-layout">
+
+                <!-- Ambient Background Glow -->
+                <div class="absolute inset-0 overflow-hidden pointer-events-none">
+                    <div
+                        class="absolute top-[-20%] left-[-10%] w-[40%] h-[40%] bg-cyan-900/15 rounded-full blur-[100px]">
+                    </div>
+                    <div
+                        class="absolute bottom-[-20%] right-[-10%] w-[40%] h-[40%] bg-teal-900/15 rounded-full blur-[100px]">
+                    </div>
+                </div>
+
+                <!-- Header with Tabs -->
+                <div class="ks-header">
+                    <div class="ks-header-title">
+                        <h2 class="text-2xl font-bold text-white flex items-center gap-3">
+                            <span
+                                class="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-500 to-teal-600 flex items-center justify-center text-base shadow-lg shadow-cyan-900/30">🎛️</span>
+                            Klang-Studio
+                        </h2>
+                        <button id="close-klang-studio"
+                            class="text-neutral-400 hover:text-white bg-white/5 hover:bg-white/10 p-2 rounded-full transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 6 6 18" />
+                                <path d="m6 6 12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div id="ks-module-tabs" class="flex gap-2 overflow-x-auto scrollbar-hide">
+                        <button class="ks-tab active" data-module="synth"><span class="icon">🎹</span> Synth</button>
+                        <button class="ks-tab" data-module="orchestra"><span class="icon">🎻</span> Orchester</button>
+                        <button class="ks-tab" data-module="blender"><span class="icon">🔀</span> Blender</button>
+                        <button class="ks-tab" data-module="vocal"><span class="icon">🎤</span> Vocal</button>
+                        <button class="ks-tab" data-module="rhythm"><span class="icon">🥁</span> Rhythmus</button>
+                        <button class="ks-tab" data-module="ambient"><span class="icon">🌌</span> Ambient</button>
+                    </div>
+                </div>
+
+                <!-- Main Grid -->
+                <div class="ks-main-grid">
+                    <!-- TOP: Module Controls -->
+                    <div class="ks-top-section" id="ks-content-area">
+                        <!-- SYNTH MODULE -->
+                        <div id="ks-module-synth" class="ks-module-content compact active">
+
+                            <!-- Waveform Selection -->
+                            <div class="ks-panel mb-6">
+                                <p class="ks-panel-header">1. Wellenform</p>
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="ks-waveform" value="sawtooth" class="sr-only peer"
+                                            checked>
+                                        <div class="ks-radio-card">
+                                            <span class="ks-card-icon">◢</span>
+                                            <span class="ks-card-label">Sägezahn</span>
+                                        </div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="ks-waveform" value="sine" class="sr-only peer">
+                                        <div class="ks-radio-card">
+                                            <span class="ks-card-icon">∿</span>
+                                            <span class="ks-card-label">Sinus</span>
+                                        </div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="ks-waveform" value="triangle" class="sr-only peer">
+                                        <div class="ks-radio-card">
+                                            <span class="ks-card-icon">△</span>
+                                            <span class="ks-card-label">Dreieck</span>
+                                        </div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="ks-waveform" value="square" class="sr-only peer">
+                                        <div class="ks-radio-card">
+                                            <span class="ks-card-icon">▢</span>
+                                            <span class="ks-card-label">Rechteck</span>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Filter Brightness Slider -->
+                            <div class="ks-panel mb-6">
+                                <p class="ks-panel-header">2. Filter-Charakter</p>
+                                <div class="flex items-center gap-4 mb-3">
+                                    <span class="text-neutral-500 text-sm">Dunkel</span>
+                                    <input type="range" id="ks-filter-slider" min="0" max="100" value="50"
+                                        class="ks-slider flex-1">
+                                    <span class="text-neutral-500 text-sm">Hell</span>
+                                </div>
+                                <p id="ks-filter-label" class="text-center text-cyan-300 text-sm font-medium">
+                                    Warm-Mittig
+                                </p>
+                            </div>
+
+                            <!-- Cutoff Reference -->
+                            <div class="ks-panel mb-6">
+                                <p class="ks-panel-header">3. Cutoff-Referenz</p>
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="ks-cutoff" value="2000" class="sr-only peer">
+                                        <div class="ks-radio-card py-3">
+                                            <span class="ks-card-label">Unter 2kHz</span>
+                                            <span class="ks-card-sublabel">Sehr dunkel</span>
+                                        </div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="ks-cutoff" value="8000" class="sr-only peer" checked>
+                                        <div class="ks-radio-card py-3">
+                                            <span class="ks-card-label">Unter 8kHz</span>
+                                            <span class="ks-card-sublabel">Warm</span>
+                                        </div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="ks-cutoff" value="15000" class="sr-only peer">
+                                        <div class="ks-radio-card py-3">
+                                            <span class="ks-card-label">Unter 15kHz</span>
+                                            <span class="ks-card-sublabel">Offen</span>
+                                        </div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="ks-cutoff" value="none" class="sr-only peer">
+                                        <div class="ks-radio-card py-3">
+                                            <span class="ks-card-label">Kein Cutoff</span>
+                                            <span class="ks-card-sublabel">Volle Helligkeit</span>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Envelope -->
+                            <div class="ks-panel mb-6">
+                                <p class="ks-panel-header">4. Hüllkurve (Envelope)</p>
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="ks-envelope" value="percussive" class="sr-only peer">
+                                        <div class="ks-radio-card py-3">
+                                            <span class="ks-card-label">Perkussiv</span>
+                                            <span class="ks-card-sublabel">Kurzer Attack</span>
+                                        </div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="ks-envelope" value="pad" class="sr-only peer" checked>
+                                        <div class="ks-radio-card py-3">
+                                            <span class="ks-card-label">Pad-artig</span>
+                                            <span class="ks-card-sublabel">Langsam, schwebend</span>
+                                        </div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="ks-envelope" value="plucky" class="sr-only peer">
+                                        <div class="ks-radio-card py-3">
+                                            <span class="ks-card-label">Plucky</span>
+                                            <span class="ks-card-sublabel">Schnell, prägnant</span>
+                                        </div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="ks-envelope" value="sustained" class="sr-only peer">
+                                        <div class="ks-radio-card py-3">
+                                            <span class="ks-card-label">Sustained</span>
+                                            <span class="ks-card-sublabel">Hält lange</span>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Effects -->
+                            <div class="ks-panel mb-6">
+                                <p class="ks-panel-header">5. Effekte</p>
+                                <div class="flex flex-wrap gap-3">
+                                    <label class="cursor-pointer">
+                                        <input type="checkbox" name="ks-effects" value="reverb" class="sr-only peer"
+                                            checked>
+                                        <div class="ks-effect-pill">🌊 Reverb</div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="checkbox" name="ks-effects" value="delay" class="sr-only peer"
+                                            checked>
+                                        <div class="ks-effect-pill">🔁 Delay</div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="checkbox" name="ks-effects" value="chorus" class="sr-only peer">
+                                        <div class="ks-effect-pill">🎭 Chorus</div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="checkbox" name="ks-effects" value="distortion"
+                                            class="sr-only peer">
+                                        <div class="ks-effect-pill">⚡ Distortion</div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="checkbox" name="ks-effects" value="phaser" class="sr-only peer">
+                                        <div class="ks-effect-pill">🌀 Phaser</div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Blend Function -->
+                            <div class="ks-panel">
+                                <p class="ks-panel-header">6. Blend-Funktion</p>
+                                <div class="mb-4">
+                                    <label class="block text-sm text-neutral-400 mb-2">Sekundärer Sound</label>
+                                    <select id="ks-blend-sound" class="ks-select w-full">
+                                        <option value="">Kein Blend</option>
+                                        <optgroup label="Ethnische Instrumente">
+                                            <option value="native_flute">Indigene Amerikanische Flöte</option>
+                                            <option value="shakuhachi">Shakuhachi</option>
+                                            <option value="duduk">Duduk</option>
+                                            <option value="sitar">Sitar</option>
+                                            <option value="erhu">Erhu</option>
+                                        </optgroup>
+                                        <optgroup label="Streicher">
+                                            <option value="violin">Violine</option>
+                                            <option value="cello">Cello</option>
+                                            <option value="strings">Streicher-Ensemble</option>
+                                        </optgroup>
+                                        <optgroup label="Andere">
+                                            <option value="piano">Klavier</option>
+                                            <option value="organ">Orgel</option>
+                                            <option value="harp">Harfe</option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+                                <div class="ks-blend-container">
+                                    <span class="ks-blend-label">Synth</span>
+                                    <div class="ks-blend-slider-container">
+                                        <input type="range" id="ks-blend-ratio" min="0" max="100" value="70"
+                                            class="ks-slider w-full">
+                                        <p id="ks-blend-display" class="ks-blend-percentage">70% Synth / 30% Blend</p>
+                                    </div>
+                                    <span class="ks-blend-label">Blend</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ORCHESTRA DESIGNER MODULE -->
+                        <div id="ks-module-orchestra" class="ks-module-content max-w-4xl mx-auto">
+
+                            <!-- Preset Selection -->
+                            <div class="ks-panel mb-6">
+                                <p class="ks-panel-header">Orchester-Preset</p>
+                                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="ks-orch-preset" value="symphony" class="sr-only peer"
+                                            checked>
+                                        <div class="ks-preset-card">
+                                            <div class="ks-preset-icon">🎼</div>
+                                            <div class="ks-preset-name">Sinfonie</div>
+                                            <div class="ks-preset-count">[100+]</div>
+                                        </div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="ks-orch-preset" value="chamber" class="sr-only peer">
+                                        <div class="ks-preset-card">
+                                            <div class="ks-preset-icon">🎵</div>
+                                            <div class="ks-preset-name">Kammer</div>
+                                            <div class="ks-preset-count">[~25]</div>
+                                        </div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="ks-orch-preset" value="quartet" class="sr-only peer">
+                                        <div class="ks-preset-card">
+                                            <div class="ks-preset-icon">🎻</div>
+                                            <div class="ks-preset-name">Quartett</div>
+                                            <div class="ks-preset-count">[4]</div>
+                                        </div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="ks-orch-preset" value="brass" class="sr-only peer">
+                                        <div class="ks-preset-card">
+                                            <div class="ks-preset-icon">🎺</div>
+                                            <div class="ks-preset-name">Bläser</div>
+                                            <div class="ks-preset-count">[~12]</div>
+                                        </div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="ks-orch-preset" value="woodwind" class="sr-only peer">
+                                        <div class="ks-preset-card">
+                                            <div class="ks-preset-icon">🪈</div>
+                                            <div class="ks-preset-name">Holzbläser</div>
+                                            <div class="ks-preset-count">[~8]</div>
+                                        </div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="ks-orch-preset" value="solo" class="sr-only peer">
+                                        <div class="ks-preset-card">
+                                            <div class="ks-preset-icon">🎯</div>
+                                            <div class="ks-preset-name">Solo</div>
+                                            <div class="ks-preset-count">[1]</div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Orchestra Stage Visualization -->
+                            <div class="ks-panel mb-6">
+                                <p class="ks-panel-header">Sitzplan (klicke zum Aktivieren/Deaktivieren)</p>
+                                <div class="ks-orchestra-stage">
+                                    <div class="ks-conductor">🎼</div>
+                                    <div class="ks-section-row">
+                                        <div class="ks-instrument-seat active" data-instrument="1v" title="1. Violine">
+                                            1.V
+                                        </div>
+                                        <div class="ks-instrument-seat active" data-instrument="1v" title="1. Violine">
+                                            1.V
+                                        </div>
+                                        <div class="ks-instrument-seat active" data-instrument="2v" title="2. Violine">
+                                            2.V
+                                        </div>
+                                        <div class="ks-instrument-seat active" data-instrument="2v" title="2. Violine">
+                                            2.V
+                                        </div>
+                                    </div>
+                                    <div class="ks-section-row">
+                                        <div class="ks-instrument-seat active" data-instrument="vla" title="Viola">Vla
+                                        </div>
+                                        <div class="ks-instrument-seat active" data-instrument="vla" title="Viola">Vla
+                                        </div>
+                                        <div class="ks-instrument-seat active" data-instrument="vc" title="Cello">Vc
+                                        </div>
+                                        <div class="ks-instrument-seat active" data-instrument="vc" title="Cello">Vc
+                                        </div>
+                                        <div class="ks-instrument-seat" data-instrument="kb" title="Kontrabass">Kb</div>
+                                    </div>
+                                    <div class="ks-section-row mt-4">
+                                        <div class="ks-instrument-seat active" data-instrument="fl" title="Flöte">Fl
+                                        </div>
+                                        <div class="ks-instrument-seat active" data-instrument="ob" title="Oboe">Ob
+                                        </div>
+                                        <div class="ks-instrument-seat" data-instrument="kl" title="Klarinette">Kl</div>
+                                        <div class="ks-instrument-seat" data-instrument="fg" title="Fagott">Fg</div>
+                                        <div class="ks-instrument-seat active" data-instrument="hr" title="Horn">Hr
+                                        </div>
+                                        <div class="ks-instrument-seat" data-instrument="tr" title="Trompete">Tr</div>
+                                        <div class="ks-instrument-seat" data-instrument="pk" title="Pauke">Pk</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Section Dominance -->
+                            <div class="ks-panel mb-6">
+                                <p class="ks-panel-header">Sektions-Dominanz</p>
+                                <div class="ks-dominance-bar">
+                                    <span class="ks-dominance-label">Streicher</span>
+                                    <input type="range" min="0" max="100" value="80"
+                                        class="ks-slider ks-dominance-slider" data-section="strings">
+                                    <span class="ks-dominance-value">80%</span>
+                                </div>
+                                <div class="ks-dominance-bar">
+                                    <span class="ks-dominance-label">Holzbläser</span>
+                                    <input type="range" min="0" max="100" value="50"
+                                        class="ks-slider ks-dominance-slider" data-section="woodwinds">
+                                    <span class="ks-dominance-value">50%</span>
+                                </div>
+                                <div class="ks-dominance-bar">
+                                    <span class="ks-dominance-label">Blechbläser</span>
+                                    <input type="range" min="0" max="100" value="30"
+                                        class="ks-slider ks-dominance-slider" data-section="brass">
+                                    <span class="ks-dominance-value">30%</span>
+                                </div>
+                                <div class="ks-dominance-bar">
+                                    <span class="ks-dominance-label">Percussion</span>
+                                    <input type="range" min="0" max="100" value="20"
+                                        class="ks-slider ks-dominance-slider" data-section="percussion">
+                                    <span class="ks-dominance-value">20%</span>
+                                </div>
+                            </div>
+
+                            <!-- Room Acoustics -->
+                            <div class="ks-panel">
+                                <p class="ks-panel-header">Raumakustik</p>
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="ks-acoustics" value="intimate" class="sr-only peer">
+                                        <div class="ks-radio-card py-3">
+                                            <span class="ks-card-icon">🏠</span>
+                                            <span class="ks-card-label">Intim</span>
+                                        </div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="ks-acoustics" value="concert" class="sr-only peer"
+                                            checked>
+                                        <div class="ks-radio-card py-3">
+                                            <span class="ks-card-icon">🏛️</span>
+                                            <span class="ks-card-label">Konzertsaal</span>
+                                        </div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="ks-acoustics" value="cathedral" class="sr-only peer">
+                                        <div class="ks-radio-card py-3">
+                                            <span class="ks-card-icon">⛪</span>
+                                            <span class="ks-card-label">Kathedrale</span>
+                                        </div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="ks-acoustics" value="dry" class="sr-only peer">
+                                        <div class="ks-radio-card py-3">
+                                            <span class="ks-card-icon">🎬</span>
+                                            <span class="ks-card-label">Studio-trocken</span>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- INSTRUMENT BLENDER MODULE -->
+                        <div id="ks-module-blender" class="ks-module-content max-w-4xl mx-auto">
+
+                            <div class="ks-panel mb-6">
+                                <p class="ks-panel-header">Primärklang</p>
+                                <select id="ks-primary-sound" class="ks-select w-full">
+                                    <optgroup label="Synthesizer">
+                                        <option value="synth_pad">Synth Pad</option>
+                                        <option value="synth_lead" selected>Synth Lead</option>
+                                        <option value="synth_bass">Synth Bass</option>
+                                        <option value="synth_pluck">Synth Pluck</option>
+                                    </optgroup>
+                                    <optgroup label="Streicher">
+                                        <option value="violin">Violine</option>
+                                        <option value="cello">Cello</option>
+                                        <option value="string_section">Streicher-Sektion</option>
+                                    </optgroup>
+                                    <optgroup label="Tasten">
+                                        <option value="piano">Klavier</option>
+                                        <option value="organ">Orgel</option>
+                                        <option value="electric_piano">E-Piano</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+
+                            <div class="ks-panel mb-6">
+                                <p class="ks-panel-header">Sekundärklang (Blend-Partner)</p>
+                                <select id="ks-secondary-sound" class="ks-select w-full">
+                                    <optgroup label="Ethnisch">
+                                        <option value="sitar">Sitar</option>
+                                        <option value="shakuhachi" selected>Shakuhachi</option>
+                                        <option value="duduk">Duduk</option>
+                                        <option value="pan_flute">Panflöte</option>
+                                        <option value="native_flute">Indigene Flöte</option>
+                                        <option value="erhu">Erhu</option>
+                                        <option value="koto">Koto</option>
+                                    </optgroup>
+                                    <optgroup label="Bläser">
+                                        <option value="flute">Flöte</option>
+                                        <option value="clarinet">Klarinette</option>
+                                        <option value="saxophone">Saxophon</option>
+                                    </optgroup>
+                                    <optgroup label="Andere">
+                                        <option value="harp">Harfe</option>
+                                        <option value="guitar">Gitarre</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+
+                            <div class="ks-panel mb-6">
+                                <p class="ks-panel-header">Mix-Verhältnis</p>
+                                <div class="ks-blend-container">
+                                    <span class="ks-blend-label text-pink-400">Primär</span>
+                                    <div class="ks-blend-slider-container">
+                                        <input type="range" id="ks-blender-ratio" min="0" max="100" value="60"
+                                            class="ks-slider w-full">
+                                        <p id="ks-blender-display" class="ks-blend-percentage">60% Primär / 40% Sekundär
+                                        </p>
+                                    </div>
+                                    <span class="ks-blend-label text-pink-400">Sekundär</span>
+                                </div>
+                            </div>
+
+                            <div class="ks-panel">
+                                <p class="ks-panel-header">Blend-Modus</p>
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="ks-blend-mode" value="harmonic" class="sr-only peer"
+                                            checked>
+                                        <div class="ks-radio-card py-3">
+                                            <span class="ks-card-icon">🎶</span>
+                                            <span class="ks-card-label">Harmonisch</span>
+                                        </div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="ks-blend-mode" value="contrast" class="sr-only peer">
+                                        <div class="ks-radio-card py-3">
+                                            <span class="ks-card-icon">⚡</span>
+                                            <span class="ks-card-label">Kontrastierend</span>
+                                        </div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="ks-blend-mode" value="layered" class="sr-only peer">
+                                        <div class="ks-radio-card py-3">
+                                            <span class="ks-card-icon">📚</span>
+                                            <span class="ks-card-label">Layered</span>
+                                        </div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="ks-blend-mode" value="freq_split"
+                                            class="sr-only peer">
+                                        <div class="ks-radio-card py-3">
+                                            <span class="ks-card-icon">📊</span>
+                                            <span class="ks-card-label">Frequenz-Split</span>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- VOCAL MODULE (Coming Soon) -->
+                        <div id="ks-module-vocal" class="ks-module-content max-w-4xl mx-auto">
+                            <div class="ks-coming-soon">
+                                <div class="ks-coming-soon-icon">🎤</div>
+                                <p class="ks-coming-soon-text">Vocal-Designer</p>
+                                <p class="ks-coming-soon-sub">Kommt in Phase 2</p>
+                            </div>
+                        </div>
+
+                        <!-- RHYTHM MODULE (Coming Soon) -->
+                        <div id="ks-module-rhythm" class="ks-module-content max-w-4xl mx-auto">
+                            <div class="ks-coming-soon">
+                                <div class="ks-coming-soon-icon">🥁</div>
+                                <p class="ks-coming-soon-text">Rhythmus-Labor</p>
+                                <p class="ks-coming-soon-sub">Kommt in Phase 2</p>
+                            </div>
+                        </div>
+
+                        <!-- AMBIENT MODULE (Coming Soon) -->
+                        <div id="ks-module-ambient" class="ks-module-content max-w-4xl mx-auto">
+                            <div class="ks-coming-soon">
+                                <div class="ks-coming-soon-icon">🌌</div>
+                                <p class="ks-coming-soon-text">Ambient-Architekt</p>
+                                <p class="ks-coming-soon-sub">Kommt in Phase 2</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- BOTTOM: 3 Columns -->
+                    <div class="ks-bottom-section">
+                        <!-- Effects Column -->
+                        <div class="ks-effects-col">
+                            <button class="ks-effect-btn active" data-effect="reverb"><span
+                                    class="effect-icon">🌊</span> Reverb</button>
+                            <button class="ks-effect-btn active" data-effect="echo"><span class="effect-icon">🔁</span>
+                                Echo</button>
+                            <button class="ks-effect-btn" data-effect="compression"><span class="effect-icon">📦</span>
+                                Compression</button>
+                            <button class="ks-effect-btn" data-effect="vocoder"><span class="effect-icon">🤖</span>
+                                Vocoder</button>
+                            <button class="ks-effect-btn" data-effect="eq"><span class="effect-icon">📊</span>
+                                EQ</button>
+                        </div>
+                        <!-- Features Column -->
+                        <div class="ks-features-col">
+                            <p class="ks-section-title">Feature for your like</p>
+                            <div class="ks-feature-placeholder">
+                                <div class="ks-feature-placeholder-icon">✨</div>
+                                <p class="ks-feature-placeholder-text">Kreative Vorschläge</p>
+                            </div>
+                        </div>
+                        <!-- Terminal Column -->
+                        <div class="ks-terminal-col">
+                            <div class="ks-terminal">
+                                <div class="ks-terminal-header"><span>></span> TOKEN_PREVIEW</div>
+                                <p id="ks-token-preview" class="ks-terminal-content">sawtooth synthesizer...</p>
+                            </div>
+                            <div class="ks-terminal-stats">
+                                <span id="ks-char-count" class="text-neutral-500">0</span>
+                                <span class="text-neutral-600">|</span>
+                                <span id="ks-token-health" class="text-green-400">Optimal</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="ks-footer">
+                    <button id="ks-revert-btn" class="ks-footer-btn danger">↩ Revert</button>
+                    <button id="ks-decline-btn" class="ks-footer-btn">✕ Decline</button>
+                    <button id="ks-accept-btn" class="ks-footer-btn primary">✓ Accept</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Context Menu (Global) -->
+    <div id="wiki-context-menu"
+        class="fixed hidden z-[150] bg-neutral-900 border border-neutral-700/80 shadow-2xl rounded-lg overflow-hidden flex-col w-48 backdrop-blur-lg transform transition-all duration-200 origin-top-left">
+        <button
+            class="menu-action w-full text-left px-4 py-3 text-sm text-white hover:bg-white/10 flex items-center gap-2"
+            data-action="select">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="text-green-400">
+                <polyline points="20 6 9 17 4 12" />
+            </svg>
+            <span>Auswählen</span>
+        </button>
+        <button
+            class="menu-action w-full text-left px-4 py-3 text-sm text-white hover:bg-white/10 flex items-center gap-2 border-t border-white/5"
+            data-action="note">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="text-yellow-400">
+                <path d="M12 20h9" />
+                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+            </svg>
+            Notiz hinzufügen
+        </button>
+    </div>
+
+    <!-- ### STYLE SYNC STUDIO (Full Screen V2) ### -->
+    <div id="style-sync-studio" class="fixed inset-0 z-[140] hidden studio-modal bg-black/95 text-white">
+        <!-- Background Ambient -->
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+            <div
+                class="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-purple-900/20 rounded-full blur-[120px] animate-pulse-slow">
+            </div>
+            <div
+                class="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-indigo-900/20 rounded-full blur-[120px] animate-pulse-slow delay-1000">
+            </div>
+        </div>
+
+        <div class="relative z-10 w-full h-full flex flex-col p-6">
+            <!-- Header -->
+            <div class="flex justify-between items-center mb-6 px-4">
+                <div class="flex items-center gap-4">
+                    <div
+                        class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-purple-500/20">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="text-white">
+                            <path d="M21 12H3" />
+                            <path d="M21 6H3" />
+                            <path d="M21 18H3" />
+                            <circle cx="18" cy="6" r="3" />
+                            <circle cx="6" cy="12" r="3" />
+                            <circle cx="18" cy="18" r="3" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h2
+                            class="text-2xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white to-purple-200">
+                            Stil-Synchronisator</h2>
+                        <p class="text-xs text-purple-300/60 uppercase tracking-widest font-medium">Studio Interface
+                            V2
+                        </p>
+                    </div>
+                </div>
+                <button id="close-style-studio"
+                    class="p-3 rounded-full hover:bg-white/10 text-neutral-400 hover:text-white transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Main Studio Split -->
+            <div class="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-6 overflow-y-auto custom-scrollbar">
+
+                <!-- Left Panel: ENCODER (Sound to Image) -->
+                <div
+                    class="glass-panel rounded-3xl p-6 flex flex-col relative overflow-hidden group border border-purple-500/10 hover:border-purple-500/30 transition-colors">
+                    <div
+                        class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 to-transparent opacity-50">
+                    </div>
+
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold text-purple-200 flex items-center gap-2">
+                            <span class="text-xs bg-purple-500/20 px-2 py-1 rounded text-purple-300">ENCODER</span>
+                            Sound Transformation
+                        </h3>
+                        <div class="flex gap-2">
+                            <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                            <span class="text-[10px] text-neutral-500 uppercase">Live Input</span>
+                        </div>
+                    </div>
+
+                    <!-- Terminal Display -->
+                    <div
+                        class="terminal-display bg-[#0a0a10] rounded-xl p-4 font-mono text-sm h-1/3 overflow-y-auto custom-scrollbar border border-white/5 mb-4 shadow-inner">
+                        <div class="flex items-center gap-2 text-neutral-500 mb-2 text-xs border-b border-white/5 pb-2">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <polyline points="4 17 10 11 4 5" />
+                                <line x1="12" x2="20" y1="19" y2="19" />
+                            </svg>
+                            MASTER_PROMPT_INPUT
+                        </div>
+                        <p id="studio-master-prompt-display" class="text-green-400/90 leading-relaxed"></p>
+                    </div>
+
+                    <!-- Transcode Action -->
+                    <div class="relative h-12 flex items-center justify-center my-2">
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="w-full border-t border-purple-500/20 dashed-line"></div>
+                        </div>
+                        <button id="studio-transcode-btn"
+                            class="studio-btn relative z-10 bg-[#0f0f16] border border-purple-500/50 hover:border-purple-400 text-purple-300 hover:text-white p-3 rounded-xl shadow-[0_0_15px_rgba(168,85,247,0.2)] hover:shadow-[0_0_25px_rgba(168,85,247,0.4)] transition-all transform hover:scale-105 active:scale-95 group-hover:animate-pulse">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M12 5v14" />
+                                <path d="m19 12-7 7-7-7" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Visual Output -->
+                    <div
+                        class="flex-1 bg-black/40 rounded-xl border border-white/5 relative flex items-center justify-center overflow-hidden group-hover:border-purple-500/20 transition-colors">
+                        <div id="studio-visual-placeholder" class="text-center">
+                            <div
+                                class="w-16 h-16 rounded-full bg-white/5 mx-auto mb-3 flex items-center justify-center animate-spin-slow">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                    stroke-linejoin="round" class="text-neutral-600">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <path d="M12 8v8" />
+                                    <path d="M8 12h8" />
+                                </svg>
+                            </div>
+                            <p class="text-neutral-500 text-sm">Waiting for Transcode...</p>
+                        </div>
+                        <img id="studio-visual-result" class="absolute inset-0 w-full h-full object-cover hidden"
+                            alt="Visual Archetype" />
+                        <!-- Overlay Actions -->
+                        <div
+                            class="absolute bottom-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button id="studio-download-btn"
+                                class="p-2 bg-black/60 backdrop-blur rounded-lg hover:bg-white/10 text-white"
+                                title="Download Image"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                    <polyline points="7 10 12 15 17 10" />
+                                    <line x1="12" x2="12" y1="15" y2="3" />
+                                </svg></button>
+                            <button id="studio-copy-btn"
+                                class="p-2 bg-black/60 backdrop-blur rounded-lg hover:bg-white/10 text-white"
+                                title="Copy Image"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect width="8" height="4" x="8" y="2" rx="1" ry="1" />
+                                    <path
+                                        d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                                </svg></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Panel: DECODER (Image to Sound) -->
+                <div
+                    class="glass-panel rounded-3xl p-6 flex flex-col relative overflow-hidden group border border-indigo-500/10 hover:border-indigo-500/30 transition-colors">
+                    <div
+                        class="absolute top-0 right-0 w-full h-1 bg-gradient-to-l from-indigo-500 to-transparent opacity-50">
+                    </div>
+
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold text-indigo-200 flex items-center gap-2">
+                            <span class="text-xs bg-indigo-500/20 px-2 py-1 rounded text-indigo-300">DECODER</span>
+                            Image Interpretation
+                        </h3>
+                    </div>
+
+                    <!-- Drop Zone -->
+                    <div id="studio-drop-zone"
+                        class="drop-zone h-1/3 border-2 border-dashed border-neutral-700/50 rounded-xl bg-neutral-900/30 flex flex-col items-center justify-center cursor-pointer transition-all hover:bg-indigo-500/5 hover:border-indigo-400/40 group-hover:shadow-[inset_0_0_20px_rgba(99,102,241,0.05)] relative overflow-hidden">
+                        <input type="file" id="studio-file-input" accept="image/*" class="hidden" />
+                        <div id="studio-drop-content" class="text-center p-4 transition-transform duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="mx-auto mb-3 text-neutral-500 group-hover:text-indigo-400 transition-colors">
+                                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7" />
+                                <line x1="16" x2="22" y1="5" y2="5" />
+                                <line x1="19" x2="19" y1="2" y2="8" />
+                                <circle cx="9" cy="9" r="2" />
+                                <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
+                            </svg>
+                            <p class="text-neutral-400 text-sm font-medium">Drop Reference Image</p>
+                        </div>
+                        <img id="studio-drop-preview"
+                            class="absolute inset-0 w-full h-full object-cover hidden opacity-50" />
+                    </div>
+
+                    <!-- Decode Action -->
+                    <div class="relative h-12 flex items-center justify-center my-2">
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="w-full border-t border-indigo-500/20 dashed-line"></div>
+                        </div>
+                        <button id="studio-decode-btn"
+                            class="studio-btn relative z-10 bg-[#0f0f16] border border-indigo-500/50 hover:border-indigo-400 text-indigo-300 hover:text-white p-3 rounded-xl shadow-[0_0_15px_rgba(99,102,241,0.2)] hover:shadow-[0_0_25px_rgba(99,102,241,0.4)] transition-all transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M12 5v14" />
+                                <path d="m19 12-7 7-7-7" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Text Output -->
+                    <div
+                        class="terminal-display bg-[#0a0a10] rounded-xl p-4 font-mono text-sm flex-1 flex flex-col border border-white/5 shadow-inner">
+                        <div class="flex items-center gap-2 text-neutral-500 mb-2 text-xs border-b border-white/5 pb-2">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <polyline points="4 17 10 11 4 5" />
+                                <line x1="12" x2="20" y1="19" y2="19" />
+                            </svg>
+                            SONIC_INTERPRETATION_OUTPUT
+                        </div>
+                        <textarea id="studio-decode-result"
+                            class="flex-1 bg-transparent border-none resize-none text-indigo-300 font-mono text-sm focus:ring-0 placeholder-neutral-700 custom-scrollbar p-0 leading-relaxed"
+                            placeholder="// Analyzed traits will appear here..."></textarea>
+
+                        <div class="flex justify-end mt-2 pt-2 border-t border-white/5">
+                            <button id="studio-apply-btn"
+                                class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold py-2 px-4 rounded-lg shadow-lg flex items-center gap-2 transform active:scale-95 transition-all">
+                                <span>APPLY TO PROMPT</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="js/config.js"></script>
     <script src="js/prompts.js"></script>
     <script src="js/api.js"></script>
     <script src="js/modals.js"></script>
     <script src="js/features.js"></script>
+    <script src="js/creative_cosmos.js"></script>
     <script src="js/keys.js"></script>
     <script src="js/palette.js"></script>
     <script src="js/chords.js"></script>
@@ -455,4 +1675,5 @@
     <script src="js/quickwins.js"></script>
     <script src="js/app.js"></script>
 </body>
+
 </html>

@@ -359,3 +359,272 @@ No explanations, no introductory phrases.
 The output must always be in English.
 
 The total length must not exceed 800 characters.`;
+
+// === VISUAL STYLE SYNC PROMPTS ===
+const IMAGE_ARCHETYPE_PROMPT = `You are a visual translation engine for music. Your task is to convert a music style prompt into a vivid, artistic image description suitable for AI image generators like DALL-E or Stable Diffusion.
+
+The user provides a Suno music prompt. Analyze its:
+- **Mood & Emotion**: Translate to color palettes and lighting (e.g., melancholic = deep blues, muted tones, soft shadows)
+- **Energy & Tempo**: Translate to visual dynamics (e.g., high energy = sharp lines, motion blur, explosive compositions)
+- **Genre & Era**: Translate to art styles and visual references (e.g., synthwave = neon grids, 80s retrofuturism)
+- **Instrumentation**: Translate to textures and shapes (e.g., heavy bass = organic, flowing forms; sharp synths = geometric, crystalline structures)
+
+**Output Rules:**
+- Output ONLY the image description prompt.
+- DO NOT include conversational filler like "Here is the prompt" or "I have generated...".
+- Create a surreal, symbolic, abstract art representation - NOT a literal scene of musicians.
+- Focus on atmosphere, textures, colors, and emotional resonance.
+- Use professional art terminology (chiaroscuro, volumetric lighting, etc.).
+- The output must be under 300 characters to fit image generator limits.
+
+Example Output: "Surreal digital painting, deep indigo void with pulsing neon circuits, crystalline synth waves fracturing into warm analog amber, volumetric fog, cinematic lighting, 80s retrofuturism"`;
+
+const SOUND_DECODER_PROMPT = `You are a synesthetic AI that perceives music within images. Your task is to analyze an uploaded image and extract its musical essence as a Suno AI prompt.
+
+Analyze the image for:
+- **Colors**: What musical moods do they evoke? (Warm colors = major keys, organic sounds; Cool colors = minor keys, electronic textures)
+- **Lighting & Contrast**: What dynamics and energy? (High contrast = intense, punchy; Soft lighting = ambient, mellow)
+- **Textures & Patterns**: What instrumentation? (Smooth = pads, strings; Rough = distorted guitars, gritty beats; Geometric = precise synths)
+- **Subject & Scene**: What genre and narrative? (Urban = hip-hop, electronic; Nature = folk, ambient; Abstract = experimental)
+- **Composition & Movement**: What tempo and structure? (Dynamic = fast, driving; Static = slow, contemplative)
+
+**Output Rules:**
+- Output ONLY a Suno-compatible music style prompt.
+- Include genre, instrumentation, production style, vocal style (if applicable), mood, and tempo.
+- Use professional music terminology that Suno understands.
+- The output must be in English and under 800 characters.
+
+Example: "Atmospheric synthwave, 92 BPM, pulsing analog bassline, shimmering retro arpeggios, ethereal female vocals with heavy reverb, neon-drenched nocturnal mood, wide stereo image, vintage warmth with modern clarity"`;
+
+const GENRE_EVOLUTION_PROMPT = `You are a music historian and producer specialist. Your task is to rewrite the user's prompt to reflect the specific aesthetic, production techniques, and instrumentation of a chosen decade. Keep the core musical idea (melody, mood) but transport it in time. Use specific keywords from that era (e.g., 'gated reverb' for 80s, 'tape saturation' for 60s).
+
+**Output Rules:**
+- The output must be ONLY the refined prompt.
+- The output must be in English.
+- The total length must not exceed 800 characters.`;
+
+const GENRE_KEYWORDS = {
+    "Electronic": ["synth", "techno", "electronic", "beat", "bass", "digital", "dance", "edm", "house", "trance", "ambient", "dubstep"],
+    "Rock": ["guitar", "rock", "band", "drums", "distortion", "metal", "punk", "indie", "alternative", "riff", "solo"],
+    "Hip Hop": ["rap", "hip hop", "beats", "flow", "808", "rhyme", "trap", "urban", "groove", "sample"],
+    "Jazz": ["jazz", "saxophone", "piano", "swing", "improvisation", "smooth", "fusion", "blues", "trumpet", "ensemble"],
+    "R&B/Soul": ["soul", "r&b", "vocals", "groove", "smooth", "emotion", "funk", "motown", "gospel"],
+    "Classical/Orchestral": ["orchestra", "symphony", "classical", "piano", "violin", "cello", "conductor", "score", "cinematic"],
+    "Pop": ["pop", "chorus", "melody", "hit", "radio", "catchy", "vocal", "mainstream", "ballad"],
+    "Metal": ["metal", "heavy", "growl", "blast beat", "shredding", "doom", "thrash", "double kick"],
+    "Country/Folk": ["acoustic", "guitar", "folk", "country", "storytelling", "banjo", "americana", "roots"],
+    "Reggae/Dub": ["reggae", "dub", "roots", "jamaican", "offbeat", "rhythm", "bass", "echo", "ska"]
+};
+
+// Data structure holding decade-specific descriptions for various genres
+const GENRE_EVOLUTION_DATA = {
+    "Electronic": {
+        1950: "Early experiments, musique concrète, tape loops, oscillators, theremin, avant-garde, raw waveforms.",
+        1960: "Moog modular exploration, BBC radiophonic, tape manipulation, early space-age pop, psychedelic electronics.",
+        1970: "Kraftwerk precision, disco synths, Berlin School sequences, analog warmth, vocoders, Jean-Michel Jarre soundscapes.",
+        1980: "Synth-pop explosion, Yamaha DX7 digital bells, gated reverb drums, LinnDrum beats, Italo disco, New Wave.",
+        1990: "Rave culture, breakbeats, IDM complexity, trance arpeggios, big beat energy, house piano, jungle rhythms.",
+        2000: "Electroclash, minimal techno, french touch compression, dubstep bass wobbles, digital crispness, auto-tune experiments.",
+        2010: "EDM festival big room, trap hi-hats, future bass chords, vaporwave nostalgia, heavy sidechain, lo-fi beats.",
+        2020: "Hyperpop glitch, AI-assisted design, immersive 3D audio textures, genre-fluid aesthetics, atmospheric phonk."
+    },
+    "Rock": {
+        1950: "Rock'n'roll birth, slapback delay vocals, twangy electric guitars, upright bass, swing rhythms, raw amp overdrive.",
+        1960: "British Invasion jangle, psychedelic fuzz, tape flanging, Hammond organ, surf reverb, experimental studio techniques.",
+        1970: "Classic rock power, dry drum sounds, Marshall stack distortion, progressive rock complexity, punk raw energy.",
+        1980: "Hair metal excess, gated snare drums, chorus on guitars, digital delay, stadium rock production, synth integration.",
+        1990: "Grunge distortion, loud-quiet dynamics, lo-fi aesthetic, britpop jangle, industrial mechanical rhythms, nu-metal tuning.",
+        2000: "Garage rock revival, post-punk revival, indie sleaze, emo dynamics, polished pop-punk production, retro styling.",
+        2010: "Indie folk blend, psychedelic revival, lo-fi surf, shoegaze textures, math-rock precision, bedroom pop DIY ethos.",
+        2020: "Genre-bending hybrids, hyper-clean modern metal, nostalgic pop-punk revival, atmospheric post-rock, digital amp modeling."
+    },
+    "Hip Hop": {
+        1950: "Spoken word precursors, jazz poetry, early R&B grooves, doo-wop harmonies (Foundations).",
+        1960: "Funk breaks, soul samples, block party roots, rhythmic speech, political poetry (Pre-history).",
+        1970: "The breaks, turntablism birth, disco samples, sugarhill vibes, raw MCing, block party energy.",
+        1980: "Boom bat, drum machines (808/909), sampling revolution, scratching, golden age lyricism, jazz rap fusion.",
+        1990: "G-Funk synthesizers, East Coast boom bap, gritty samples, gangsta rap attitude, soulquarian grooves.",
+        2000: "Crunk energy, bling era polish, chipmunk soul samples, stomp-clap beats, southern takeover, auto-tune beginnings.",
+        2010: "Trap triplet hi-hats, 808 slides, mumble rap flows, cloud rap atmospheres, drill aggression, lo-fi study beats.",
+        2020: "Drill evolution, rage beats, jersey club influence, hyperpop crossovers, melodic trap, experimental textures."
+    },
+    "Jazz": {
+        1950: "Cool jazz restraint, hard bop evolution, modal experiments, west coast smooth, miles davis innovation.",
+        1960: "Free jazz chaos, avant-garde exploration, bossa nova craze, spiritual jazz intensity, post-bop complexity.",
+        1970: "Fusion energy, electric instruments, funk rhythms, rhodes piano, weather report virtuosity, smooth jazz birth.",
+        1980: "Digital production, smooth jazz radio sound, neoclassical revival, EWI synths, pop-jazz crossovers.",
+        1990: "Acid jazz grooves, hip-hop fusion, nu-jazz electronics, retro-swing revival, ECM atmospheric sound.",
+        2000: "Modern creative, nordic tone, electronic integration, beat-oriented jazz, neo-soul influence.",
+        2010: "Genre-fluid jazz, kamasi washington epic, lo-fi jazz beats, hip-hop rhythm sections, london scene energy.",
+        2020: "Hyper-fusion, bedroom production jazz, nu-gen virtuosity, electronic hybrid experimentation, spiritual revival."
+    },
+    "Pop": {
+        1950: "Crooner ballads, doo-wop harmonies, orchestral backing, early teen pop, rockabilly influence.",
+        1960: "Wall of Sound, girl groups, brill building songwriting, sunshine pop, baroque pop orchestration.",
+        1970: "Disco beats, singer-songwriter intimacy, abba-esque production, soft rock smooth, glam rock theatrics.",
+        1980: "Synth-pop dominance, drum machines, big gated drums, power ballads, michael jackson-level production polish.",
+        1990: "Teen pop explosion, max martin swedish sound, r&b crossover, boy bands, diva ballads, dance-pop beats.",
+        2000: "Autotune introduction, timbaland beats, futuristic r&b, pop-punk crossover, latin pop explosion.",
+        2010: "EDM drops in pop, trap beats, minimal production, whisper pop, retro 80s revival, streaming-optimized songs.",
+        2020: "Disco revival, hyperpop influence, bedroom pop intimacy, 80s synthwave nostalgia, sad girl pop."
+    },
+    "R&B/Soul": {
+        1950: "Doo-wop, rhythm and blues, raw soul energy, gospel influence, ray charles innovation.",
+        1960: "Motown polish, stax grit, chicago soul, funk beginnings, social consciousness, orchestral arrangements.",
+        1970: "Philly soul lushness, p-funk grooves, quiet storm smooth, disco soul, earth wind & fire precision.",
+        1980: "Electro-funk, new jack swing beats, synth-heavy ballads, prince minneapolis sound, quiet storm evolution.",
+        1990: "Neo-soul organic, new jack swing peak, hip-hop soul fusion, vocal harmony groups, smooth r&b.",
+        2000: "Futuristic production, crunk&b, neo-soul peak, acoustic guitar ballads, polished radio sound.",
+        2010: "Alternative r&b, dark atmospheric production, trap soul, retro-soul revival, electronic fusion.",
+        2020: "Bedroom r&b, genre-less soul, lo-fi aesthetics, afrobeats influence, immersive production."
+    },
+    "Classical/Orchestral": {
+        1950: "Post-war modernism, serialism, electronic experiments, neo-classicism, film noir scores.",
+        1960: "Minimalism birth, experimental notation, textural composition, psychedelic influences, epic film scores.",
+        1970: "Minimalist evolution, spectralism, post-modern eclecticism, synthesizer integration, john williams grandeur.",
+        1980: "Neo-romanticism, holy minimalism, digital recording clarity, sample-based composition, blockbuster scoring.",
+        1990: "Post-minimalism, spectral music refinement, crossover classical, epic trailer music sound, film score experimentation.",
+        2000: "Indie-classical, electronics & orchestra blend, cinematic realism, hans zimmer minimalism, choral revival.",
+        2010: "Neo-classical piano, ambient orchestral, drone music, hybrid orchestral-electronic, post-richter vibes.",
+        2020: "Immersive audio scoring, ancient instrument revival, ai-assisted composition, dark academia aesthetic, textural focus."
+    },
+    "Metal": {
+        1950: "Heavy blues roots, distorted amps, aggressive rock'n'roll (Pre-history).",
+        1960: "Psychedelic heaviness, proto-doom, distorted bass, blue cheer loudness, sabbath birth.",
+        1970: "Heavy metal birth, doom sludge, nwobhm speed, dual guitar harmonies, progressive complexity.",
+        1980: "Thrash speed, glam production, death metal birth, black metal lo-fi, shredding solos.",
+        1990: "Groove metal, nu-metal bounce, industrial crushing, gothic atmosphere, death metal technicality.",
+        2000: "Metalcore breakdowns, djent polyrhythms, symphonic grandeur, post-metal atmosphere, nu-metal peak.",
+        2010: "Djent evolution, blackgaze atmosphere, retro-doom revival, progressive technicality, modern production.",
+        2020: "Thall heaviness, trap-metal crossover, ai-generated riffs, hyper-clean production, genre-fluid heaviness."
+    },
+    "Country/Folk": {
+        1950: "Honky tonk, nashville sound, bluegrass speed, rockabilly fusion, cowboy ballads.",
+        1960: "Folk revival, protest songs, countrypolitan strings, bakersfield sound, psychedelic folk.",
+        1970: "Outlaw country, folk rock, country pop crossover, singer-songwriter introspection, southern rock.",
+        1980: "Neotraditional country, urban cowboy pop, alt-country roots, cowpunk energy, polished production.",
+        1990: "Garth brooks stadium country, alt-country evolution, americana birth, line dance hits, pop crossover.",
+        2000: "Red dirt country, pop-country dominance, bro-country beginnings, indie folk revival, bluegrass crossover.",
+        2010: "Bro-country peak, stomp-clap folk, americana mainstream, country-rap experiments, stripped back authenticity.",
+        2020: "Western gothic, indie-country integrity, trap-country hits, neo-traditional revival, lo-fi folk."
+    },
+    "Reggae/Dub": {
+        1950: "Mento roots, calypso influence, r&b sound systems, jamaican boogie.",
+        1960: "Ska energy, rocksteady soul, early reggae steps, one drop rhythm, lee perry experiments.",
+        1970: "Roots reggae golden age, dub space echo, rasta vibrations, rockers style, lovers rock smooth.",
+        1980: "Dancehall digital, rub-a-dub, slackness lyrics, casio sk-1 sounds, uk dub evolution.",
+        1990: "Ragga jungle, modern dancehall, dub poetry, conscious revival, reggaeton roots.",
+        2000: "Dancehall pop crossover, dubstep origins, roots revival, acoustic reggae, one drop evolution.",
+        2010: "Reggae revival movement, dubstep fusion, tropical house influence, digital dub production.",
+        2020: "Afrobeats fusion, lo-fi dub, modern roots, genre-fluid island vibes, spatial dub mixing."
+    },
+    "General": {
+        1950: "Vintage warmth, mono recording, tube saturation, room acoustics, analog feel.",
+        1960: "Psychedelic experimentation, plate reverb, tape saturation, stereo widening, raw energy.",
+        1970: "Dry and punchy, analog Hi-Fi, warm equalization, studio perfectionism, dead rooms.",
+        1980: "Digital sheen, gated reverb, heavy chorus, drum machines, bright and loud.",
+        1990: "Sample-heavy, grungey textures, digital clipping, heavy bass, raw attitude.",
+        2000: "Loudness war compression, autotune polish, digital clarity, punchy drums, slick mixing.",
+        2010: "Heavy sidechain, massive sub-bass, crispy high-end, retro-nostalgia, polished and wide.",
+        2020: "Immersive 3D audio, hyper-clean, AI-assisted mastering, genre-blending textures, glitchy details."
+    }
+};
+
+// === STYLE SYNC STUDIO V2 PROMPTS ===
+
+const STYLE_SYNC_ENCODER_PROMPT = `You translate music into visuals. Your goal is precision and evocative detail.
+
+PROCESS:
+
+1. EXTRACT the unique sonic DNA from the music prompt:
+   - Core emotion: What is the dominant feeling? Go beyond basic words—find the specific shade of that emotion.
+   - Sonic texture: How does the sound feel? Rough edges, silky smoothness, crystalline clarity, warm analog fuzz, cold digital precision?
+   - Energy signature: What is the kinetic quality? Explosive bursts, steady pulse, floating weightlessness, relentless drive, restless tension?
+   - Era and aesthetic: What time period, subculture, or artistic movement does this evoke? Be specific about the reference.
+   - Spatial quality: Is the sound intimate and close, vast and expansive, claustrophobic, or open and airy?
+
+2. SYNTHESIZE a richly detailed visual scene that embodies those extracted qualities:
+   - Describe a specific, tangible scene—a place, a moment, an environment
+   - Include concrete details: materials, surfaces, weather, time of day, specific objects
+   - Describe the lighting with precision: quality, direction, color temperature, shadows
+   - Convey atmosphere through environmental details: air quality, weather effects, ambient sounds implied visually
+   - Add texture descriptions: how surfaces would feel, their age and wear
+   - Include a sense of scale and perspective
+   - Specify camera and lens when it enhances the image:
+     * Camera type: professional (Sony A7R V, Canon EOS R5, Hasselblad) vs vintage film (Leica M6, Contax T2) vs lo-fi (disposable, Polaroid)
+     * Lens choice: wide-angle for epic scale, 50mm for natural perspective, 85mm for portraits, macro for detail
+     * Aperture: f/1.4 for dreamy bokeh, f/8-11 for sharp landscapes, f/16 for maximum depth
+     * Focal length effects: compression, distortion, field of view
+   - Suggest post-processing or film stock when it matches the mood
+   - Append high-quality technical keywords to ensure maximum visual fidelity: "4K resolution", "ultra crisp details", "highly detailed", "sharp focus"
+
+OUTPUT: One detailed image prompt, 500-2000 characters. English only.
+
+FORMAT: "[Main scene/environment], [specific objects and details], [materials and textures], [lighting description], [atmospheric conditions], [camera/lens technical details], [mood and style cues], 4K resolution, ultra crisp details"
+
+DO NOT:
+- Use the word "abstract" or describe formless patterns
+- Show musicians, instruments, recording studios, or music equipment
+- Use generic art buzzwords without context ("surreal", "ethereal", "vibes")
+- Write vague descriptions that could apply to any image
+
+EXAMPLES:
+
+Input: "Melodic techno, 128 BPM, deep rolling bassline, shimmering high-frequency arpeggios, hypnotic groove, subtle acid squelch, Berlin club atmosphere, 3am energy, warm analog synthesizers layered with crystalline digital textures, driving yet introspective"
+
+Output: "Underground concrete bunker club at 3am, sweat condensing on brutalist walls, a single beam of amber light cutting through thick fog from an unseen source, silhouettes barely visible in the haze, metal grating floors reflecting wet surfaces, exposed industrial pipes running along low ceilings, the air thick and humid, emergency exit sign glowing deep red in the distance, intimate scale yet cavernous feeling, shot on Sony A7S III for low-light performance, 24mm f/1.4 wide-angle lens capturing spatial depth, long exposure at 1/15s creating motion trails of dancing figures, pushed ISO grain adding texture, monochromatic warm tones with cold steel accents, a feeling of ritualistic communion in darkness, 4K resolution, ultra crisp details, highly detailed, sharp focus"
+
+Input: "Nostalgic dream pop, soft female vocals with heavy reverb, jangly chorus-drenched guitars, 80s inspired production, bittersweet lyrics about lost summer love, lo-fi warmth, tape hiss, sunset vibes, slow tempo around 85 BPM, lush synthesizer pads in the background"
+
+Output: "Late August golden hour on a weathered wooden pier extending into a still lake, a lone vintage beach chair with faded striped fabric facing the water, sun low on the horizon casting long honey-colored shadows, visible dust motes suspended in warm light, old polaroid photographs scattered on sun-bleached planks curling at the edges, a forgotten transistor radio from the 1980s, wildflowers growing through cracks in the wood, distant treeline silhouetted in purple haze, shot on vintage Contax T2 with Zeiss 38mm f/2.8 lens, Kodak Portra 400 film stock with characteristic warm skin tones and soft grain, f/2.8 creating dreamlike bokeh on the background, gentle lens flare from shooting into the sun, the specific melancholy of endings and beautiful decay, 4K resolution, ultra crisp details, highly detailed, sharp focus"
+
+Input: "Dark orchestral hybrid trailer music, massive percussion hits, braaam horns, tension-building strings, apocalyptic scale, 90 BPM half-time feel, choir elements, modern cinematic sound design layered with traditional orchestra, builds from sparse to overwhelming, heroic undertones beneath the darkness"
+
+Output: "Colossal ancient temple ruins at the moment before a storm breaks, towering stone columns cracked and overgrown with dark vines, sky roiling with charcoal and purple thunderclouds lit from within by distant lightning, a single shaft of divine golden light piercing through the clouds to illuminate a central altar covered in mysterious inscriptions, wind whipping debris and leaves across worn marble floors, shot on Hasselblad H6D-100c medium format for maximum detail and dynamic range, 35mm wide-angle lens at f/11 for front-to-back sharpness, graduated ND filter balancing bright sky with shadowed foreground, cinematic 2.39:1 aspect ratio, baroque dramatic lighting with extreme chiaroscuro, dust and particles suspended in the light beam, atmosphere charged with impending transformation, 4K resolution, ultra crisp details, highly detailed, sharp focus"`
+
+
+const STYLE_SYNC_DECODER_PROMPT = `You can "hear" images. Translate visual essence into a detailed Suno music prompt.
+
+PROCESS:
+
+1. EXTRACT the unique visual DNA from the image—be specific to THIS image, not generic categories:
+   - Emotional core: What specific feeling does this image evoke in you? Name it precisely.
+   - Dominant sensory quality: Describe the tactile impression—would this feel rough, smooth, cold, warm, heavy, light, sharp, soft?
+   - Movement and rhythm: Is there implied motion? What kind—flowing, stuttering, static, explosive, undulating, mechanical?
+   - Cultural or era associations: Does this reference a specific time period, place, artistic movement, or subculture?
+   - Color story: Beyond naming colors, what is their emotional weight? Muted resignation, vibrant optimism, toxic intensity?
+   - Spatial depth: Intimate and close, vast and open, claustrophobic, layered, flat, or dimensionally complex?
+   - Textural complexity: Simple and clean, richly detailed, chaotic, minimal, weathered, pristine?
+
+2. SYNTHESIZE a complete music prompt covering ALL these aspects:
+   - Genre and subgenre with specific stylistic references
+   - Precise tempo in BPM that matches the image's energy
+   - Detailed instrumentation: specific instruments, how they're played, their sonic character
+   - Production style: mixing approach, spatial qualities, vintage vs modern processing
+   - Vocal style: type of voice, delivery, effects, or specify if instrumental
+   - Harmonic and melodic character: major/minor, dissonant/consonant, melodic contour
+   - Dynamic arc: how the song evolves, builds, or maintains energy
+   - Textural details: layers, density, space between elements
+   - Mood keywords that capture the specific emotional target
+   - Reference touchstones: artists, eras, or songs that share this aesthetic (use "in the style of" sparingly)
+
+OUTPUT: One comprehensive Suno-compatible prompt, max 800 characters. Output only the prompt, no other text. English only. 
+
+FORMAT: "[Genre/subgenre], [BPM], [instrumentation with playing style], [production approach], [vocal description], [harmonic character], [dynamic arc], [mood and atmosphere], [textural details]"
+
+DO NOT:
+- Give generic one-word emotions without context
+- Describe what the image shows instead of what it sounds like
+- List disconnected keywords without flow
+- Forget any major synthesis category
+
+EXAMPLES:
+
+Image of neon-lit rainy Tokyo street at night with glowing signs reflected in puddles:
+"Neo-noir synthwave, 88 BPM, pulsing Juno-106 bass with slow filter movement, detuned saw-wave arpeggios panned wide, gated reverb snare hitting on 2 and 4, no vocals—purely instrumental, minor key with suspended 4th chords creating unresolved tension, steady hypnotic groove that never drops, wide stereo field with elements placed precisely left and right, reverb tails extending into darkness, intermittent rain and traffic foley woven into the mix, melancholic yet propulsive forward motion, the loneliness of urban anonymity at 2am, reference: Blade Runner soundtrack meets Com Truise"
+
+Image of misty ancient forest at dawn with light filtering through massive old-growth trees:
+"Organic ambient folk, 65 BPM with rubato feel, fingerpicked nylon guitar with room reverb capturing natural decay, distant bowed cello playing sustained drones in the low register, layered field recordings of morning birds and subtle wind through leaves, breathy female vocals humming wordless melodies with natural room sound, major key with modal interchange borrowing from Dorian, very slow build from solo guitar to full arrangement over four minutes, sparse arrangement with generous silence between phrases, intimate close-miked instruments creating ASMR-like presence, dew-covered contemplative stillness, the sacred hush of being first awake in an ancient place, reference: early Bon Iver production meets Sigur Rós patience"
+
+Image of aggressive abstract expressionist painting with violent red and black slashes:
+"Experimental breakcore with noise elements, 174 BPM with intentional tempo drift, chopped and timestretched amen breaks layered with distorted 808 kick, shrieking granular synthesis textures from mangled vocal samples, no melodic vocals—only processed screams used as texture, atonal clusters and dissonant intervals, no traditional structure—constant evolution and self-destruction, dense maximalist layering that approaches white noise then suddenly cuts to silence, harsh but precisely controlled chaos, cathartic rage channeled through technical precision, the sound of tearing something apart to see what's inside, reference: Venetian Snares aggression meets Merzbow texture"`;
