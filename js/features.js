@@ -2131,85 +2131,199 @@ function setupKlangStudio() {
         return parts.join(', ');
     }
 
-    function generateOrchestraToken() {
-        // Get preset from new button-based presets
+    // === PRODUCER-QUALITY DESCRIPTOR LIBRARY ===
+    const PRODUCER_DESCRIPTORS = {
+        strings: [
+            { max: 15, text: 'barely there, like distant memories of strings, subliminal warmth beneath the mix' },
+            { max: 30, text: 'gossamer string textures weaving through silence, intimate and exposed' },
+            { max: 50, text: 'warm string bed providing harmonic foundation, supportive yet unobtrusive' },
+            { max: 70, text: 'lush string section with full body, legato phrases breathing naturally' },
+            { max: 85, text: 'sweeping orchestral strings with cinematic depth, emotionally charged swells' },
+            { max: 100, text: 'wall-of-sound string orchestra, dramatic and overwhelming, Zimmer-esque intensity' }
+        ],
+        woodwinds: [
+            { max: 15, text: 'spectral woodwind whispers, atmospheric color barely perceptible' },
+            { max: 30, text: 'soft flute motifs and oboe sighs, pastoral and dreamlike' },
+            { max: 50, text: 'clarinet warmth and bassoon depth adding orchestral color' },
+            { max: 70, text: 'expressive woodwind choir with distinct character, dance of reeds and air' },
+            { max: 85, text: 'virtuosic woodwind passages cutting through the texture, melodically assertive' },
+            { max: 100, text: 'blazing woodwind ensemble commanding attention, brilliant and urgent' }
+        ],
+        brass: [
+            { max: 15, text: 'distant muted brass, like city sounds through fog' },
+            { max: 30, text: 'warm french horn pads, golden and noble but restrained' },
+            { max: 50, text: 'dignified brass chorale, rich low-end foundation with controlled power' },
+            { max: 70, text: 'triumphant brass fanfares, majestic without overwhelming' },
+            { max: 85, text: 'powerful brass section punching through the mix, bold and fearless' },
+            { max: 100, text: 'thundering brass wall, apocalyptic power, unstoppable force of sound' }
+        ],
+        percussion: [
+            { max: 15, text: 'barely audible percussion dust, felt more than heard' },
+            { max: 30, text: 'soft timpani rolls and suspended cymbal shimmers, atmospheric bed' },
+            { max: 50, text: 'steady rhythmic heartbeat, grounding the orchestral movement' },
+            { max: 70, text: 'propulsive percussion patterns with impact, forward momentum' },
+            { max: 85, text: 'explosive percussion hits and rhythmic fury, adrenaline-inducing' },
+            { max: 100, text: 'earth-shaking percussion assault, primal and devastating' }
+        ],
+        hall: [
+            { max: 15, text: 'completely dry, clinical clarity, every note surgically exposed' },
+            { max: 35, text: 'controlled early reflections, professional studio ambience' },
+            { max: 55, text: 'natural room sound, musicians breathing together in shared space' },
+            { max: 75, text: 'spacious concert hall decay, orchestral warmth enveloping the listener' },
+            { max: 90, text: 'vast reverberant space, notes dissolving into ethereal echoes' },
+            { max: 100, text: 'endless reverb tail, sounds floating in cosmic space' }
+        ],
+        echo: [
+            { max: 10, text: 'no delay, pure direct signal' },
+            { max: 30, text: 'micro-delay adding thickness and dimension without obvious repeats' },
+            { max: 50, text: 'musical delay patterns dancing with the arrangement' },
+            { max: 70, text: 'layered echoes building atmospheric complexity' },
+            { max: 90, text: 'deep trailing echoes, sounds ricocheting through vast spaces' },
+            { max: 100, text: 'self-oscillating delay creating walls of repeated sound' }
+        ],
+        air: [
+            { max: 20, text: 'dense and compact, instruments fighting for space' },
+            { max: 40, text: 'controlled stereo field, intimate and direct' },
+            { max: 60, text: 'natural spatial separation, each section with its place' },
+            { max: 80, text: 'expansive stereo image, cinematic width and depth' },
+            { max: 95, text: 'immersive soundscape stretching beyond the speakers' },
+            { max: 100, text: 'overwhelming spatial experience, sounds arriving from everywhere' }
+        ],
+        warmth: [
+            { max: 15, text: 'pristine and cold, digital clarity without color' },
+            { max: 35, text: 'balanced tonal character, transparent and honest' },
+            { max: 55, text: 'subtle analog coloration, slightly rounded transients' },
+            { max: 75, text: 'tape-saturated warmth, rich harmonic overtones' },
+            { max: 90, text: 'creamy analog saturation, musical compression' },
+            { max: 100, text: 'heavily colored, thick and syrupy, dripping with character' }
+        ],
+        dynamics: [
+            { max: 20, text: 'pianissimo whispers, fragile and delicate, on the edge of silence' },
+            { max: 40, text: 'piano, gentle and introspective, restrained emotional weight' },
+            { max: 60, text: 'mezzo-forte, balanced and natural, conversational dynamics' },
+            { max: 80, text: 'forte, bold and assertive, confident musical statements' },
+            { max: 100, text: 'fortissimo, powerful and intense, overwhelming emotional climax' }
+        ]
+    };
+
+    const ARTICULATION_DESCRIPTORS = {
+        'legato': 'seamlessly connected phrases, bow never leaving the string, breath never breaking',
+        'staccato': 'precise rhythmic punctuation, notes like controlled bursts of energy',
+        'pizzicato': 'plucked textures adding percussive sparkle and playful character',
+        'weich': 'soft-focused tone, edges smoothed, intimate and vulnerable',
+        'brilliant': 'crystalline clarity cutting through, present and articulate',
+        'muted': 'veiled and mysterious, brass speaking in hushed tones',
+        'open': 'full resonant brass speaking with authority and projection',
+        'dezent': 'restrained percussion, subtle textural support',
+        'dramatisch': 'dramatic percussion hits, impactful and theatrical'
+    };
+
+    const SOLO_DESCRIPTORS = {
+        'violin': 'expressive solo violin singing above the orchestra, emotionally exposed',
+        'flute': 'ethereal flute solo passages floating through the texture',
+        'trumpet': 'heroic trumpet solo cutting through with brilliant clarity',
+        'cello': 'rich cello solo weaving through the orchestral fabric, deeply resonant'
+    };
+
+    const PRESET_DESCRIPTORS = {
+        'symphony': 'full symphony orchestra in traditional concert formation',
+        'chamber': 'intimate chamber orchestra with crystalline transparency',
+        'quartet': 'string quartet with intimate conversation between voices',
+        'brass': 'brass ensemble with noble power and ceremonial grandeur',
+        'woodwind': 'woodwind ensemble with pastoral charm and expressive color'
+    };
+
+    // Helper to get descriptor from value
+    function getDescriptor(descriptorArray, value) {
+        for (const desc of descriptorArray) {
+            if (value <= desc.max) return desc.text;
+        }
+        return descriptorArray[descriptorArray.length - 1].text;
+    }
+
+    // Build rich orchestra context for AI refinement
+    function getOrchestraContext() {
+        const stringsVal = parseInt(document.getElementById('ks-strings-slider')?.value || 50);
+        const woodwindsVal = parseInt(document.getElementById('ks-woodwinds-slider')?.value || 50);
+        const brassVal = parseInt(document.getElementById('ks-brass-slider')?.value || 50);
+        const percussionVal = parseInt(document.getElementById('ks-percussion-slider')?.value || 50);
+        const hallVal = parseInt(document.getElementById('ks-hall-slider')?.value || 60);
+        const echoVal = parseInt(document.getElementById('ks-echo-slider')?.value || 35);
+        const airVal = parseInt(document.getElementById('ks-air-slider')?.value || 65);
+        const warmthVal = parseInt(document.getElementById('ks-warmth-slider')?.value || 55);
+        const dynamicsVal = parseInt(document.getElementById('ks-dynamics-slider')?.value || 60);
+
         const activePreset = modal.querySelector('.ks-orch-preset-btn.active');
         const preset = activePreset?.dataset.preset || 'symphony';
 
-        // Get room acoustics from new room buttons
         const activeRoom = modal.querySelector('.ks-orch-room-btn.active');
-        const acoustics = activeRoom?.dataset.room || 'concert';
+        const roomName = activeRoom?.querySelector('.room-name')?.textContent || 'Konzert';
 
-        const presetMap = {
-            'symphony': 'full symphony orchestra',
-            'chamber': 'intimate chamber orchestra',
-            'quartet': 'string quartet',
-            'brass': 'brass ensemble',
-            'woodwind': 'woodwind section'
-        };
-
-        const acousticsMap = {
-            'intimate': 'intimate chamber room acoustics',
-            'concert': 'lush concert hall reverberation',
-            'cathedral': 'massive cathedral reverb',
-            'studio': 'dry studio recording'
-        };
-
-        const parts = [presetMap[preset] || preset];
-
-        // Check section sliders (new IDs)
-        const sectionSliders = {
-            'strings': document.getElementById('ks-strings-slider'),
-            'woodwinds': document.getElementById('ks-woodwinds-slider'),
-            'brass': document.getElementById('ks-brass-slider'),
-            'percussion': document.getElementById('ks-percussion-slider')
-        };
-
-        const sectionNames = {
-            'strings': 'prominent strings',
-            'woodwinds': 'emphasized woodwinds',
-            'brass': 'powerful brass',
-            'percussion': 'driving percussion'
-        };
-
-        for (const [section, slider] of Object.entries(sectionSliders)) {
-            if (slider && parseInt(slider.value) > 70) {
-                parts.push(sectionNames[section]);
+        // Gather articulations
+        const articulations = [];
+        modal.querySelectorAll('.ks-orch-tags .ks-orch-tag.active').forEach(tag => {
+            const key = tag.dataset.tag?.toLowerCase();
+            if (ARTICULATION_DESCRIPTORS[key]) {
+                articulations.push(ARTICULATION_DESCRIPTORS[key]);
             }
-        }
+        });
 
-        // Get active articulation tags
-        const activeTags = modal.querySelectorAll('.ks-orch-tags .ks-orch-tag.active');
-        if (activeTags.length > 0) {
-            const tagNames = Array.from(activeTags).map(t => t.dataset.tag);
-            parts.push(`with ${tagNames.join(' and ')} articulation`);
-        }
-
-        // Get solo instrument
+        // Solo instrument
         const soloInstrument = document.getElementById('ks-solo-instrument')?.value;
-        if (soloInstrument && soloInstrument !== 'none') {
-            parts.push(`featuring solo ${soloInstrument}`);
+        const soloDesc = (soloInstrument && soloInstrument !== 'none') ? SOLO_DESCRIPTORS[soloInstrument] : null;
+
+        return {
+            setup: {
+                preset: PRESET_DESCRIPTORS[preset] || preset,
+                room: roomName
+            },
+            sections: {
+                strings: getDescriptor(PRODUCER_DESCRIPTORS.strings, stringsVal),
+                woodwinds: getDescriptor(PRODUCER_DESCRIPTORS.woodwinds, woodwindsVal),
+                brass: getDescriptor(PRODUCER_DESCRIPTORS.brass, brassVal),
+                percussion: getDescriptor(PRODUCER_DESCRIPTORS.percussion, percussionVal)
+            },
+            articulations: articulations,
+            effects: {
+                space: getDescriptor(PRODUCER_DESCRIPTORS.hall, hallVal),
+                delay: getDescriptor(PRODUCER_DESCRIPTORS.echo, echoVal),
+                width: getDescriptor(PRODUCER_DESCRIPTORS.air, airVal),
+                character: getDescriptor(PRODUCER_DESCRIPTORS.warmth, warmthVal)
+            },
+            dynamics: getDescriptor(PRODUCER_DESCRIPTORS.dynamics, dynamicsVal),
+            solo: soloDesc
+        };
+    }
+
+    function generateOrchestraToken() {
+        const context = getOrchestraContext();
+        const parts = [];
+
+        // Preset base
+        parts.push(context.setup.preset);
+
+        // Section descriptors
+        parts.push(context.sections.strings);
+        parts.push(context.sections.woodwinds);
+        parts.push(context.sections.brass);
+        parts.push(context.sections.percussion);
+
+        // Articulations
+        context.articulations.forEach(art => parts.push(art));
+
+        // Solo
+        if (context.solo) parts.push(context.solo);
+
+        // Dynamics
+        parts.push(context.dynamics);
+
+        // Effects (only add distinctive ones)
+        if (context.effects.space.includes('vast') || context.effects.space.includes('endless')) {
+            parts.push(context.effects.space);
         }
-
-        // Get articulation style
-        const articulation = document.getElementById('ks-articulation')?.value;
-        if (articulation && articulation !== 'standard') {
-            parts.push(`${articulation} expression`);
+        if (context.effects.character.includes('tape') || context.effects.character.includes('creamy')) {
+            parts.push(context.effects.character);
         }
-
-        // Add acoustics
-        parts.push(acousticsMap[acoustics] || acoustics);
-
-        // Get effect values and add descriptors
-        const hallValue = parseInt(document.getElementById('ks-hall-slider')?.value || 60);
-        const echoValue = parseInt(document.getElementById('ks-echo-slider')?.value || 35);
-        const airValue = parseInt(document.getElementById('ks-air-slider')?.value || 65);
-        const warmthValue = parseInt(document.getElementById('ks-warmth-slider')?.value || 55);
-
-        if (hallValue > 70) parts.push('deep reverberant space');
-        if (echoValue > 50) parts.push('with trailing echoes');
-        if (airValue > 75) parts.push('airy and open');
-        if (warmthValue > 70) parts.push('warm analog character');
 
         return parts.join(', ');
     }
@@ -2571,24 +2685,91 @@ function setupKlangStudio() {
     const declineBtn = document.getElementById('ks-decline-btn');
     declineBtn?.addEventListener('click', closeModal);
 
-    // Accept Button - apply token and close
+    // Accept Button - generate orchestral prompt and replace Meisterstück content
     const acceptBtn = document.getElementById('ks-accept-btn');
-    acceptBtn?.addEventListener('click', () => {
-        const token = tokenPreview?.textContent || '';
+    acceptBtn?.addEventListener('click', async () => {
         const resultText = document.getElementById('result-text');
 
-        if (resultText && token && token !== 'Module kommt in Phase 2...') {
-            const currentPrompt = resultText.textContent.trim();
-            const updatedPrompt = currentPrompt
-                ? `${currentPrompt}, ${token}`
-                : token;
-            resultText.textContent = updatedPrompt;
+        // Show loading state
+        const originalBtnText = acceptBtn.textContent;
+        acceptBtn.textContent = '⏳ Generating...';
+        acceptBtn.disabled = true;
 
-            if (window.QW) {
-                window.QW.onPromptUpdated({ source: 'klang-studio' });
+        try {
+            // Get rich orchestra context
+            const context = getOrchestraContext();
+
+            // Build structured input for AI refinement
+            const orchestraInput = `Preset: ${context.setup.preset}
+Room: ${context.setup.room}
+Strings: ${context.sections.strings}
+Woodwinds: ${context.sections.woodwinds}
+Brass: ${context.sections.brass}
+Percussion: ${context.sections.percussion}
+Articulations: ${context.articulations.join(', ') || 'none specified'}
+Solo: ${context.solo || 'none'}
+Dynamics: ${context.dynamics}
+Space: ${context.effects.space}
+Delay: ${context.effects.delay}
+Width: ${context.effects.width}
+Character: ${context.effects.character}`;
+
+            // Generate AI-refined orchestral prompt
+            let finalPrompt;
+            if (typeof callOpenRouterAPI === 'function' && typeof ORCHESTRA_REFINER_PROMPT !== 'undefined') {
+                finalPrompt = await callOpenRouterAPI(orchestraInput, ORCHESTRA_REFINER_PROMPT);
+            } else {
+                // Fallback to live preview token if AI not available
+                finalPrompt = generateOrchestraToken();
             }
-        }
 
-        closeModal();
+            // ALWAYS replace Meisterstück content entirely
+            if (resultText && finalPrompt) {
+                resultText.textContent = finalPrompt;
+
+                // Show the result container properly (same as generatePrompt)
+                const initialState = document.getElementById('initial-state');
+                const resultContainer = document.getElementById('result-container');
+                const refinementControls = document.getElementById('refinement-controls');
+
+                if (initialState) initialState.classList.add('hidden');
+                if (resultContainer) {
+                    resultContainer.classList.remove('hidden');
+                    resultContainer.classList.add('fade-in');
+                }
+                if (refinementControls) refinementControls.classList.remove('hidden');
+                if (typeof setKlugToolsState === 'function') setKlugToolsState(true);
+
+                if (window.QW) {
+                    window.QW.onPromptUpdated({ source: 'klang-studio-orchestra' });
+                }
+            }
+
+            closeModal();
+        } catch (error) {
+            console.error('Orchestra AI processing failed:', error);
+            // Fallback to non-AI token
+            const fallbackToken = generateOrchestraToken();
+            if (resultText && fallbackToken) {
+                resultText.textContent = fallbackToken;
+
+                // Show the result container properly
+                const initialState = document.getElementById('initial-state');
+                const resultContainer = document.getElementById('result-container');
+                const refinementControls = document.getElementById('refinement-controls');
+
+                if (initialState) initialState.classList.add('hidden');
+                if (resultContainer) {
+                    resultContainer.classList.remove('hidden');
+                    resultContainer.classList.add('fade-in');
+                }
+                if (refinementControls) refinementControls.classList.remove('hidden');
+                if (typeof setKlugToolsState === 'function') setKlugToolsState(true);
+            }
+            closeModal();
+        } finally {
+            acceptBtn.textContent = originalBtnText;
+            acceptBtn.disabled = false;
+        }
     });
 }

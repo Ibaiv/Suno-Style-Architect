@@ -2198,10 +2198,13 @@ input:checked+.ks-preset-card,
 /* Token Preview Panel */
 .ks-orch-token-panel {
     flex: 1;
-    min-height: 150px;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
 }
 
 .ks-orch-token-display {
+    flex: 1;
     background: rgba(0, 0, 0, 0.4);
     border-radius: 8px;
     padding: 12px;
@@ -2209,7 +2212,6 @@ input:checked+.ks-preset-card,
     font-size: 0.75rem;
     line-height: 1.5;
     color: #4ade80;
-    max-height: 180px;
     overflow-y: auto;
 }
 
