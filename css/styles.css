@@ -2218,73 +2218,93 @@ input:checked+.ks-preset-card,
     word-break: break-word;
 }
 
-/* ---- CENTER: STAGE ---- */
+/* ---- CENTER: STAGE (Bird's-Eye View) ---- */
 .ks-orch-center {
     display: flex;
     align-items: stretch;
     justify-content: center;
     padding: 0;
+    overflow: hidden;
 }
 
-.ks-orch-stage-wrapper {
-    background: linear-gradient(180deg, rgba(6, 182, 212, 0.06) 0%, rgba(0, 0, 0, 0.3) 40%, rgba(0, 0, 0, 0.4) 100%);
+/* Bird's-Eye View Container */
+.ks-orch-stage-birdsview {
+    background: linear-gradient(180deg,
+            rgba(0, 0, 0, 0.5) 0%,
+            rgba(6, 182, 212, 0.04) 30%,
+            rgba(6, 182, 212, 0.08) 70%,
+            rgba(20, 30, 40, 0.6) 100%);
     border-left: 1px solid rgba(6, 182, 212, 0.12);
     border-right: 1px solid rgba(6, 182, 212, 0.12);
-    border-top: none;
-    border-bottom: none;
-    padding: 24px 32px;
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    gap: 20px;
+    justify-content: space-between;
+    padding: 20px 16px;
+    position: relative;
 }
 
-/* Conductor */
-.ks-orch-conductor {
-    font-size: 1.5rem;
-    opacity: 0.8;
-    margin-bottom: 8px;
-}
-
-/* Stage Rows */
-.ks-orch-stage-rows {
+/* Stage Floor - Concert Hall Effect */
+.ks-orch-stage-floor {
+    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 12px;
+    justify-content: space-evenly;
     width: 100%;
+    gap: 0;
+    padding: 20px 0;
 }
 
-.ks-orch-row {
+/* Arc Row Base Style */
+.ks-orch-arc-row {
     display: flex;
     justify-content: center;
-    gap: 8px;
+    gap: 10px;
     flex-wrap: wrap;
+    transition: all 0.3s ease;
+    position: relative;
+    width: 100%;
+    padding: 0 20px;
 }
 
-/* Curved rows effect */
-.ks-orch-row-curved {
-    gap: 6px;
+/* Arc Curvature via Perspective Transform */
+.ks-orch-arc-5 {
+    /* Back row - Percussion (outermost arc) */
+    transform: perspective(800px) rotateX(8deg) scale(0.92);
 }
 
-.ks-orch-row-curved[data-row="1"] {
-    transform: perspective(400px) rotateX(5deg);
+.ks-orch-arc-4 {
+    /* Brass */
+    transform: perspective(800px) rotateX(5deg) scale(0.95);
 }
 
-.ks-orch-row-curved[data-row="2"] {
-    transform: perspective(400px) rotateX(3deg);
+.ks-orch-arc-3 {
+    /* Woodwinds */
+    transform: perspective(800px) rotateX(3deg) scale(0.97);
 }
 
-/* Individual Seats */
-.ks-orch-seat {
-    width: 54px;
-    height: 44px;
-    background: rgba(255, 255, 255, 0.05);
+.ks-orch-arc-2 {
+    /* Strings back row */
+    transform: perspective(800px) rotateX(1deg) scale(0.99);
+}
+
+.ks-orch-arc-1 {
+    /* Strings front row - closest to conductor (innermost) */
+    transform: perspective(800px) rotateX(0deg) scale(1);
+}
+
+/* Wide Seats for Full German Names */
+.ks-orch-seat-wide {
+    min-width: 105px;
+    max-width: 140px;
+    height: 46px;
+    padding: 0 14px;
+    background: rgba(255, 255, 255, 0.04);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 6px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2293,23 +2313,58 @@ input:checked+.ks-preset-card,
     color: #525252;
     cursor: pointer;
     transition: all 0.2s ease;
+    white-space: nowrap;
+    text-align: center;
 }
 
-.ks-orch-seat:hover {
-    background: rgba(255, 255, 255, 0.1);
-    transform: translateY(-2px);
+.ks-orch-seat-wide:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-2px) scale(1.02);
+    border-color: rgba(255, 255, 255, 0.2);
 }
 
-.ks-orch-seat.active {
-    background: rgba(6, 182, 212, 0.2);
+.ks-orch-seat-wide.active {
+    background: rgba(6, 182, 212, 0.18);
     border-color: rgba(6, 182, 212, 0.5);
     color: #06b6d4;
-    box-shadow: 0 0 12px rgba(6, 182, 212, 0.3);
+    box-shadow: 0 0 14px rgba(6, 182, 212, 0.25),
+        0 2px 8px rgba(6, 182, 212, 0.15);
+}
+
+.ks-orch-seat-wide.active:hover {
+    background: rgba(6, 182, 212, 0.25);
+    box-shadow: 0 0 20px rgba(6, 182, 212, 0.35),
+        0 4px 12px rgba(6, 182, 212, 0.2);
+}
+
+/* Conductor at Bottom */
+.ks-orch-conductor-bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 12px 24px;
+    background: rgba(6, 182, 212, 0.08);
+    border: 1px solid rgba(6, 182, 212, 0.25);
+    border-radius: 12px;
+    margin-top: 12px;
+}
+
+.ks-orch-conductor-bottom .conductor-icon {
+    font-size: 1.8rem;
+}
+
+.ks-orch-conductor-bottom .conductor-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #06b6d4;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
 }
 
 /* Hint Text */
 .ks-orch-hint {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     color: #525252;
     text-align: center;
     margin-top: 8px;
@@ -2600,5 +2655,50 @@ input:checked+.ks-preset-card,
 
     .ks-orch-effect-sliders {
         grid-template-columns: 1fr;
+    }
+
+    /* Responsive Bird's-Eye View */
+    .ks-orch-seat-wide {
+        min-width: 85px;
+        max-width: 110px;
+        height: 38px;
+        font-size: 0.72rem;
+        padding: 0 8px;
+    }
+
+    .ks-orch-arc-row {
+        gap: 6px;
+        padding: 0 10px;
+    }
+
+    .ks-orch-conductor-bottom {
+        padding: 8px 16px;
+    }
+
+    .ks-orch-conductor-bottom .conductor-icon {
+        font-size: 1.4rem;
+    }
+}
+
+/* Extra small screens */
+@media (max-width: 600px) {
+    .ks-orch-seat-wide {
+        min-width: 60px;
+        max-width: 80px;
+        height: 28px;
+        font-size: 0.6rem;
+        padding: 0 4px;
+    }
+
+    .ks-orch-arc-5,
+    .ks-orch-arc-4,
+    .ks-orch-arc-3,
+    .ks-orch-arc-2,
+    .ks-orch-arc-1 {
+        transform: none;
+    }
+
+    .ks-orch-stage-floor {
+        gap: 6px;
     }
 }

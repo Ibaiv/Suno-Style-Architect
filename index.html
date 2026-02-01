@@ -1114,93 +1114,102 @@
                                     </div>
                                 </div>
 
-                                <!-- CENTER: Stage Visualization -->
+                                <!-- CENTER: Stage Visualization (Bird's-Eye View) -->
                                 <div class="ks-orch-center">
-                                    <div class="ks-orch-stage-wrapper">
-                                        <!-- Conductor -->
-                                        <div class="ks-orch-conductor">
-                                            <span class="conductor-icon">🎼</span>
-                                        </div>
+                                    <div class="ks-orch-stage-birdsview">
+                                        <!-- Stage Floor with Gradient -->
+                                        <div class="ks-orch-stage-floor">
 
-                                        <!-- Stage with curved rows -->
-                                        <div class="ks-orch-stage-rows">
-                                            <!-- Row 1: First Violins -->
-                                            <div class="ks-orch-row ks-orch-row-curved" data-row="1">
-                                                <div class="ks-orch-seat active" data-instrument="1v"
-                                                    data-section="strings" title="1. Violine">1.V</div>
-                                                <div class="ks-orch-seat active" data-instrument="1v"
-                                                    data-section="strings" title="1. Violine">1.V</div>
-                                                <div class="ks-orch-seat active" data-instrument="1v"
-                                                    data-section="strings" title="1. Violine">1.V</div>
-                                                <div class="ks-orch-seat active" data-instrument="1v"
-                                                    data-section="strings" title="1. Violine">1.V</div>
-                                                <div class="ks-orch-seat active" data-instrument="2v"
-                                                    data-section="strings" title="2. Violine">2.V</div>
-                                                <div class="ks-orch-seat active" data-instrument="2v"
-                                                    data-section="strings" title="2. Violine">2.V</div>
-                                                <div class="ks-orch-seat active" data-instrument="2v"
-                                                    data-section="strings" title="2. Violine">2.V</div>
-                                                <div class="ks-orch-seat active" data-instrument="2v"
-                                                    data-section="strings" title="2. Violine">2.V</div>
-                                            </div>
-
-                                            <!-- Row 2: Violas, Cellos, Bass -->
-                                            <div class="ks-orch-row ks-orch-row-curved" data-row="2">
-                                                <div class="ks-orch-seat active" data-instrument="vla"
-                                                    data-section="strings" title="Viola">Vla</div>
-                                                <div class="ks-orch-seat active" data-instrument="vla"
-                                                    data-section="strings" title="Viola">Vla</div>
-                                                <div class="ks-orch-seat active" data-instrument="vla"
-                                                    data-section="strings" title="Viola">Vla</div>
-                                                <div class="ks-orch-seat active" data-instrument="vc"
-                                                    data-section="strings" title="Cello">Vc</div>
-                                                <div class="ks-orch-seat active" data-instrument="vc"
-                                                    data-section="strings" title="Cello">Vc</div>
-                                                <div class="ks-orch-seat active" data-instrument="vc"
-                                                    data-section="strings" title="Cello">Vc</div>
-                                                <div class="ks-orch-seat active" data-instrument="kb"
-                                                    data-section="strings" title="Kontrabass">Kb</div>
-                                                <div class="ks-orch-seat active" data-instrument="kb"
-                                                    data-section="strings" title="Kontrabass">Kb</div>
-                                            </div>
-
-                                            <!-- Row 3: Woodwinds -->
-                                            <div class="ks-orch-row" data-row="3">
-                                                <div class="ks-orch-seat active" data-instrument="fl"
-                                                    data-section="woodwinds" title="Flöte">Fl</div>
-                                                <div class="ks-orch-seat active" data-instrument="ob"
-                                                    data-section="woodwinds" title="Oboe">Ob</div>
-                                                <div class="ks-orch-seat active" data-instrument="kl"
-                                                    data-section="woodwinds" title="Klarinette">Kl</div>
-                                                <div class="ks-orch-seat active" data-instrument="fg"
-                                                    data-section="woodwinds" title="Fagott">Fg</div>
+                                            <!-- Row 5 (Back/Top): Percussion -->
+                                            <div class="ks-orch-arc-row ks-orch-arc-5" data-section="percussion">
+                                                <div class="ks-orch-seat-wide active" data-instrument="pauke"
+                                                    data-section="percussion">Pauke</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="pauke"
+                                                    data-section="percussion">Pauke</div>
+                                                <div class="ks-orch-seat-wide" data-instrument="becken"
+                                                    data-section="percussion">Becken</div>
                                             </div>
 
                                             <!-- Row 4: Brass -->
-                                            <div class="ks-orch-row" data-row="4">
-                                                <div class="ks-orch-seat active" data-instrument="hr"
-                                                    data-section="brass" title="Horn">Hr</div>
-                                                <div class="ks-orch-seat active" data-instrument="hr"
-                                                    data-section="brass" title="Horn">Hr</div>
-                                                <div class="ks-orch-seat active" data-instrument="tr"
-                                                    data-section="brass" title="Trompete">Tr</div>
-                                                <div class="ks-orch-seat active" data-instrument="tr"
-                                                    data-section="brass" title="Trompete">Tr</div>
-                                                <div class="ks-orch-seat active" data-instrument="pos"
-                                                    data-section="brass" title="Posaune">Pos</div>
+                                            <div class="ks-orch-arc-row ks-orch-arc-4" data-section="brass">
+                                                <div class="ks-orch-seat-wide active" data-instrument="tuba"
+                                                    data-section="brass">Tuba</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="posaune"
+                                                    data-section="brass">Posaune</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="trompete"
+                                                    data-section="brass">Trompete</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="trompete"
+                                                    data-section="brass">Trompete</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="horn"
+                                                    data-section="brass">Horn</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="horn"
+                                                    data-section="brass">Horn</div>
                                             </div>
 
-                                            <!-- Row 5: Percussion -->
-                                            <div class="ks-orch-row" data-row="5">
-                                                <div class="ks-orch-seat active" data-instrument="pk"
-                                                    data-section="percussion" title="Pauke">Pk</div>
-                                                <div class="ks-orch-seat active" data-instrument="pk"
-                                                    data-section="percussion" title="Pauke">Pk</div>
-                                                <div class="ks-orch-seat" data-instrument="tri"
-                                                    data-section="percussion" title="Triangel">Tri</div>
-                                                <div class="ks-orch-seat" data-instrument="bck"
-                                                    data-section="percussion" title="Becken">Bck</div>
+                                            <!-- Row 3: Woodwinds -->
+                                            <div class="ks-orch-arc-row ks-orch-arc-3" data-section="woodwinds">
+                                                <div class="ks-orch-seat-wide active" data-instrument="fagott"
+                                                    data-section="woodwinds">Fagott</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="fagott"
+                                                    data-section="woodwinds">Fagott</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="klarinette"
+                                                    data-section="woodwinds">Klarinette</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="klarinette"
+                                                    data-section="woodwinds">Klarinette</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="oboe"
+                                                    data-section="woodwinds">Oboe</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="oboe"
+                                                    data-section="woodwinds">Oboe</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="floete"
+                                                    data-section="woodwinds">Flöte</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="floete"
+                                                    data-section="woodwinds">Flöte</div>
                                             </div>
+
+                                            <!-- Row 2: Strings (Back - Kontrabass, Cello, Viola) -->
+                                            <div class="ks-orch-arc-row ks-orch-arc-2" data-section="strings">
+                                                <div class="ks-orch-seat-wide active" data-instrument="kontrabass"
+                                                    data-section="strings">Kontrabass</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="kontrabass"
+                                                    data-section="strings">Kontrabass</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="violoncello"
+                                                    data-section="strings">Violoncello</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="violoncello"
+                                                    data-section="strings">Violoncello</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="violoncello"
+                                                    data-section="strings">Violoncello</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="viola"
+                                                    data-section="strings">Viola</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="viola"
+                                                    data-section="strings">Viola</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="viola"
+                                                    data-section="strings">Viola</div>
+                                            </div>
+
+                                            <!-- Row 1 (Front/Bottom): Strings - Violins -->
+                                            <div class="ks-orch-arc-row ks-orch-arc-1" data-section="strings">
+                                                <div class="ks-orch-seat-wide active" data-instrument="zweite-violine"
+                                                    data-section="strings">Zweite Violine</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="zweite-violine"
+                                                    data-section="strings">Zweite Violine</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="zweite-violine"
+                                                    data-section="strings">Zweite Violine</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="erste-violine"
+                                                    data-section="strings">Erste Violine</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="erste-violine"
+                                                    data-section="strings">Erste Violine</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="erste-violine"
+                                                    data-section="strings">Erste Violine</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="erste-violine"
+                                                    data-section="strings">Erste Violine</div>
+                                            </div>
+
+                                        </div>
+
+                                        <!-- Conductor at Bottom -->
+                                        <div class="ks-orch-conductor-bottom">
+                                            <span class="conductor-icon">🎼</span>
+                                            <span class="conductor-label">Dirigent</span>
                                         </div>
 
                                         <!-- Hint -->

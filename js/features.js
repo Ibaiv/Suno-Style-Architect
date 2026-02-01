@@ -2135,7 +2135,7 @@ function setupKlangStudio() {
         // Get preset from new button-based presets
         const activePreset = modal.querySelector('.ks-orch-preset-btn.active');
         const preset = activePreset?.dataset.preset || 'symphony';
-        
+
         // Get room acoustics from new room buttons
         const activeRoom = modal.querySelector('.ks-orch-room-btn.active');
         const acoustics = activeRoom?.dataset.room || 'concert';
@@ -2222,7 +2222,7 @@ function setupKlangStudio() {
         btn.addEventListener('click', () => {
             orchPresetBtns.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            
+
             // Update seats based on preset
             updateOrchestraSeatsFromPreset(btn.dataset.preset);
             updateOrchestraTokenPreview();
@@ -2231,7 +2231,7 @@ function setupKlangStudio() {
     });
 
     // Orchestra Seat Toggle
-    const orchSeats = modal.querySelectorAll('.ks-orch-seat');
+    const orchSeats = modal.querySelectorAll('.ks-orch-seat-wide');
     orchSeats.forEach(seat => {
         seat.addEventListener('click', () => {
             seat.classList.toggle('active');
@@ -2318,7 +2318,7 @@ function setupKlangStudio() {
         const slider = document.getElementById(sliderId);
         const valueEl = document.getElementById(sliderId.replace('slider', 'value'));
         const labelEl = document.getElementById(sliderId.replace('slider', 'label'));
-        
+
         if (!slider) return;
 
         const currentValue = parseInt(slider.value);
@@ -2332,7 +2332,7 @@ function setupKlangStudio() {
             const newValue = Math.round(currentValue + (stepValue * step));
             slider.value = newValue;
             if (valueEl) valueEl.textContent = `${newValue}%`;
-            
+
             // Update semantic label
             const effect = sliderId.replace('ks-', '').replace('-slider', '');
             if (labelEl) labelEl.textContent = getEffectLabel(effect, newValue);
@@ -2367,7 +2367,7 @@ function setupKlangStudio() {
 
         const activePreset = modal.querySelector('.ks-orch-preset-btn.active');
         const preset = activePreset?.querySelector('.preset-name')?.textContent || 'Sinfonieorchester';
-        
+
         const stringsVal = document.getElementById('ks-strings-slider')?.value || 80;
         const woodwindsVal = document.getElementById('ks-woodwinds-slider')?.value || 55;
         const brassVal = document.getElementById('ks-brass-slider')?.value || 40;
@@ -2379,8 +2379,8 @@ function setupKlangStudio() {
         const activeTags = [];
         modal.querySelectorAll('.ks-orch-tags .ks-orch-tag.active').forEach(t => activeTags.push(t.textContent));
 
-        const activeSeats = modal.querySelectorAll('.ks-orch-seat.active').length;
-        const totalSeats = modal.querySelectorAll('.ks-orch-seat').length;
+        const activeSeats = modal.querySelectorAll('.ks-orch-seat-wide.active').length;
+        const totalSeats = modal.querySelectorAll('.ks-orch-seat-wide').length;
 
         tokenOutput.textContent = `> initializing_orchestration_engine...
 > loading_preset: ${preset}
@@ -2396,24 +2396,24 @@ function setupKlangStudio() {
 
     // Preset to Seat Mapping
     function updateOrchestraSeatsFromPreset(preset) {
-        const allSeats = modal.querySelectorAll('.ks-orch-seat');
-        
+        const allSeats = modal.querySelectorAll('.ks-orch-seat-wide');
+
         const presetConfigs = {
             'symphony': () => allSeats.forEach(s => s.classList.add('active')),
             'chamber': () => {
                 allSeats.forEach(s => s.classList.remove('active'));
-                // Activate: 1v, 2v, vla, vc, fl, ob, hr
-                const chamberId = ['1v', '2v', 'vla', 'vc', 'fl', 'ob', 'hr'];
+                // Activate chamber orchestra instruments (full German names)
+                const chamberIds = ['erste-violine', 'zweite-violine', 'viola', 'violoncello', 'floete', 'oboe', 'horn'];
                 allSeats.forEach(s => {
-                    if (chamberId.includes(s.dataset.instrument)) s.classList.add('active');
+                    if (chamberIds.includes(s.dataset.instrument)) s.classList.add('active');
                 });
             },
             'quartet': () => {
                 allSeats.forEach(s => s.classList.remove('active'));
-                // Activate: 1v, 2v, vla, vc
-                const quartetId = ['1v', '2v', 'vla', 'vc'];
+                // Activate string quartet (full German names)
+                const quartetIds = ['erste-violine', 'zweite-violine', 'viola', 'violoncello'];
                 allSeats.forEach(s => {
-                    if (quartetId.includes(s.dataset.instrument)) s.classList.add('active');
+                    if (quartetIds.includes(s.dataset.instrument)) s.classList.add('active');
                 });
             },
             'brass': () => {
