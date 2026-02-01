@@ -2132,46 +2132,315 @@ function setupKlangStudio() {
     }
 
     function generateOrchestraToken() {
-        const preset = modal.querySelector('input[name="ks-orch-preset"]:checked')?.value || 'symphony';
-        const acoustics = modal.querySelector('input[name="ks-acoustics"]:checked')?.value || 'concert';
+        // Get preset from new button-based presets
+        const activePreset = modal.querySelector('.ks-orch-preset-btn.active');
+        const preset = activePreset?.dataset.preset || 'symphony';
+        
+        // Get room acoustics from new room buttons
+        const activeRoom = modal.querySelector('.ks-orch-room-btn.active');
+        const acoustics = activeRoom?.dataset.room || 'concert';
 
         const presetMap = {
             'symphony': 'full symphony orchestra',
             'chamber': 'intimate chamber orchestra',
             'quartet': 'string quartet',
             'brass': 'brass ensemble',
-            'woodwind': 'woodwind section',
-            'solo': 'solo instrument'
+            'woodwind': 'woodwind section'
         };
 
         const acousticsMap = {
             'intimate': 'intimate chamber room acoustics',
             'concert': 'lush concert hall reverberation',
             'cathedral': 'massive cathedral reverb',
-            'dry': 'dry studio recording'
+            'studio': 'dry studio recording'
         };
 
-        const parts = [presetMap[preset]];
+        const parts = [presetMap[preset] || preset];
 
-        // Check dominance
-        dominanceSliders.forEach(slider => {
-            const section = slider.dataset.section;
-            const value = parseInt(slider.value);
-            if (value > 70) {
-                const sectionNames = {
-                    'strings': 'prominent strings',
-                    'woodwinds': 'emphasized woodwinds',
-                    'brass': 'powerful brass',
-                    'percussion': 'driving percussion'
-                };
+        // Check section sliders (new IDs)
+        const sectionSliders = {
+            'strings': document.getElementById('ks-strings-slider'),
+            'woodwinds': document.getElementById('ks-woodwinds-slider'),
+            'brass': document.getElementById('ks-brass-slider'),
+            'percussion': document.getElementById('ks-percussion-slider')
+        };
+
+        const sectionNames = {
+            'strings': 'prominent strings',
+            'woodwinds': 'emphasized woodwinds',
+            'brass': 'powerful brass',
+            'percussion': 'driving percussion'
+        };
+
+        for (const [section, slider] of Object.entries(sectionSliders)) {
+            if (slider && parseInt(slider.value) > 70) {
                 parts.push(sectionNames[section]);
             }
-        });
+        }
 
-        parts.push(acousticsMap[acoustics]);
+        // Get active articulation tags
+        const activeTags = modal.querySelectorAll('.ks-orch-tags .ks-orch-tag.active');
+        if (activeTags.length > 0) {
+            const tagNames = Array.from(activeTags).map(t => t.dataset.tag);
+            parts.push(`with ${tagNames.join(' and ')} articulation`);
+        }
+
+        // Get solo instrument
+        const soloInstrument = document.getElementById('ks-solo-instrument')?.value;
+        if (soloInstrument && soloInstrument !== 'none') {
+            parts.push(`featuring solo ${soloInstrument}`);
+        }
+
+        // Get articulation style
+        const articulation = document.getElementById('ks-articulation')?.value;
+        if (articulation && articulation !== 'standard') {
+            parts.push(`${articulation} expression`);
+        }
+
+        // Add acoustics
+        parts.push(acousticsMap[acoustics] || acoustics);
+
+        // Get effect values and add descriptors
+        const hallValue = parseInt(document.getElementById('ks-hall-slider')?.value || 60);
+        const echoValue = parseInt(document.getElementById('ks-echo-slider')?.value || 35);
+        const airValue = parseInt(document.getElementById('ks-air-slider')?.value || 65);
+        const warmthValue = parseInt(document.getElementById('ks-warmth-slider')?.value || 55);
+
+        if (hallValue > 70) parts.push('deep reverberant space');
+        if (echoValue > 50) parts.push('with trailing echoes');
+        if (airValue > 75) parts.push('airy and open');
+        if (warmthValue > 70) parts.push('warm analog character');
 
         return parts.join(', ');
     }
+
+    // === NEW ORCHESTRA UI HANDLERS ===
+
+    // Orchestra Preset Buttons
+    const orchPresetBtns = modal.querySelectorAll('.ks-orch-preset-btn');
+    orchPresetBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            orchPresetBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // Update seats based on preset
+            updateOrchestraSeatsFromPreset(btn.dataset.preset);
+            updateOrchestraTokenPreview();
+            updateTokenPreview();
+        });
+    });
+
+    // Orchestra Seat Toggle
+    const orchSeats = modal.querySelectorAll('.ks-orch-seat');
+    orchSeats.forEach(seat => {
+        seat.addEventListener('click', () => {
+            seat.classList.toggle('active');
+            updateOrchestraTokenPreview();
+            updateTokenPreview();
+        });
+    });
+
+    // Orchestra Section Sliders
+    const orchSectionSliders = modal.querySelectorAll('.ks-orch-slider[data-section]');
+    orchSectionSliders.forEach(slider => {
+        slider.addEventListener('input', () => {
+            const section = slider.dataset.section;
+            const valueDisplay = document.getElementById(`ks-${section}-value`);
+            if (valueDisplay) {
+                valueDisplay.textContent = `${slider.value}%`;
+            }
+            updateOrchestraTokenPreview();
+            updateTokenPreview();
+        });
+    });
+
+    // Orchestra Tags Toggle
+    const orchTags = modal.querySelectorAll('.ks-orch-tag');
+    orchTags.forEach(tag => {
+        tag.addEventListener('click', () => {
+            // Toggle within same group (find parent .ks-orch-tags)
+            const tagGroup = tag.closest('.ks-orch-tags');
+            if (tagGroup) {
+                tagGroup.querySelectorAll('.ks-orch-tag').forEach(t => t.classList.remove('active'));
+            }
+            tag.classList.add('active');
+            updateOrchestraTokenPreview();
+            updateTokenPreview();
+        });
+    });
+
+    // Room Acoustics Preset Buttons (with effect slider auto-update)
+    const roomPresets = {
+        'intimate': { hall: 20, echo: 10, air: 30, warmth: 70 },
+        'concert': { hall: 60, echo: 35, air: 65, warmth: 55 },
+        'cathedral': { hall: 90, echo: 70, air: 85, warmth: 40 },
+        'studio': { hall: 10, echo: 5, air: 50, warmth: 50 }
+    };
+
+    const effectLabels = {
+        hall: { 0: 'Trocken', 30: 'Dezent', 50: 'Warmer Saal', 70: 'Großer Raum', 90: 'Kathedrale' },
+        echo: { 0: 'Kein Echo', 20: 'Subtiles Echo', 50: 'Moderates Echo', 70: 'Tiefes Echo' },
+        air: { 0: 'Dicht', 30: 'Kompakt', 50: 'Neutral', 70: 'Offen-Transparent', 90: 'Luftig-Weit' },
+        warmth: { 0: 'Kalt-Klar', 30: 'Neutral', 50: 'Warm-Mittig', 70: 'Warm-Analog', 90: 'Sehr Warm' }
+    };
+
+    function getEffectLabel(effect, value) {
+        const labels = effectLabels[effect];
+        const thresholds = Object.keys(labels).map(Number).sort((a, b) => a - b);
+        let label = labels[0];
+        for (const threshold of thresholds) {
+            if (value >= threshold) label = labels[threshold];
+        }
+        return label;
+    }
+
+    const roomBtns = modal.querySelectorAll('.ks-orch-room-btn');
+    roomBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            roomBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const room = btn.dataset.room;
+            const preset = roomPresets[room];
+            if (preset) {
+                // Animate sliders to preset values
+                animateSlider('ks-hall-slider', preset.hall);
+                animateSlider('ks-echo-slider', preset.echo);
+                animateSlider('ks-air-slider', preset.air);
+                animateSlider('ks-warmth-slider', preset.warmth);
+            }
+            updateOrchestraTokenPreview();
+            updateTokenPreview();
+        });
+    });
+
+    function animateSlider(sliderId, targetValue) {
+        const slider = document.getElementById(sliderId);
+        const valueEl = document.getElementById(sliderId.replace('slider', 'value'));
+        const labelEl = document.getElementById(sliderId.replace('slider', 'label'));
+        
+        if (!slider) return;
+
+        const currentValue = parseInt(slider.value);
+        const diff = targetValue - currentValue;
+        const steps = 10;
+        const stepValue = diff / steps;
+        let step = 0;
+
+        const animate = () => {
+            step++;
+            const newValue = Math.round(currentValue + (stepValue * step));
+            slider.value = newValue;
+            if (valueEl) valueEl.textContent = `${newValue}%`;
+            
+            // Update semantic label
+            const effect = sliderId.replace('ks-', '').replace('-slider', '');
+            if (labelEl) labelEl.textContent = getEffectLabel(effect, newValue);
+
+            if (step < steps) {
+                requestAnimationFrame(animate);
+            }
+        };
+        requestAnimationFrame(animate);
+    }
+
+    // Effect Sliders Manual Update
+    const effectSliders = modal.querySelectorAll('.ks-orch-slider.effect-slider');
+    effectSliders.forEach(slider => {
+        slider.addEventListener('input', () => {
+            const effect = slider.dataset.effect;
+            const valueEl = document.getElementById(`ks-${effect}-value`);
+            const labelEl = document.getElementById(`ks-${effect}-label`);
+
+            if (valueEl) valueEl.textContent = `${slider.value}%`;
+            if (labelEl) labelEl.textContent = getEffectLabel(effect, parseInt(slider.value));
+
+            updateOrchestraTokenPreview();
+            updateTokenPreview();
+        });
+    });
+
+    // Update Orchestra Token Preview (terminal style)
+    function updateOrchestraTokenPreview() {
+        const tokenOutput = document.getElementById('ks-orch-token-output');
+        if (!tokenOutput) return;
+
+        const activePreset = modal.querySelector('.ks-orch-preset-btn.active');
+        const preset = activePreset?.querySelector('.preset-name')?.textContent || 'Sinfonieorchester';
+        
+        const stringsVal = document.getElementById('ks-strings-slider')?.value || 80;
+        const woodwindsVal = document.getElementById('ks-woodwinds-slider')?.value || 55;
+        const brassVal = document.getElementById('ks-brass-slider')?.value || 40;
+        const percussionVal = document.getElementById('ks-percussion-slider')?.value || 25;
+
+        const activeRoom = modal.querySelector('.ks-orch-room-btn.active');
+        const room = activeRoom?.querySelector('.room-name')?.textContent || 'Konzert';
+
+        const activeTags = [];
+        modal.querySelectorAll('.ks-orch-tags .ks-orch-tag.active').forEach(t => activeTags.push(t.textContent));
+
+        const activeSeats = modal.querySelectorAll('.ks-orch-seat.active').length;
+        const totalSeats = modal.querySelectorAll('.ks-orch-seat').length;
+
+        tokenOutput.textContent = `> initializing_orchestration_engine...
+> loading_preset: ${preset}
+> adjusting_section_dynamics:
+  strings(${stringsVal}%), woodwinds(${woodwindsVal}%)
+  brass(${brassVal}%), percussion(${percussionVal}%)
+> applying_articulations: ${activeTags.join(', ') || 'Standard'}
+> room_acoustics: ${room}
+> active_instruments: ${activeSeats}/${totalSeats}
+> ready_for_prompt_generation...
+> token_count: ${generateOrchestraToken().length}`;
+    }
+
+    // Preset to Seat Mapping
+    function updateOrchestraSeatsFromPreset(preset) {
+        const allSeats = modal.querySelectorAll('.ks-orch-seat');
+        
+        const presetConfigs = {
+            'symphony': () => allSeats.forEach(s => s.classList.add('active')),
+            'chamber': () => {
+                allSeats.forEach(s => s.classList.remove('active'));
+                // Activate: 1v, 2v, vla, vc, fl, ob, hr
+                const chamberId = ['1v', '2v', 'vla', 'vc', 'fl', 'ob', 'hr'];
+                allSeats.forEach(s => {
+                    if (chamberId.includes(s.dataset.instrument)) s.classList.add('active');
+                });
+            },
+            'quartet': () => {
+                allSeats.forEach(s => s.classList.remove('active'));
+                // Activate: 1v, 2v, vla, vc
+                const quartetId = ['1v', '2v', 'vla', 'vc'];
+                allSeats.forEach(s => {
+                    if (quartetId.includes(s.dataset.instrument)) s.classList.add('active');
+                });
+            },
+            'brass': () => {
+                allSeats.forEach(s => s.classList.remove('active'));
+                // Activate brass section
+                allSeats.forEach(s => {
+                    if (s.dataset.section === 'brass') s.classList.add('active');
+                });
+            },
+            'woodwind': () => {
+                allSeats.forEach(s => s.classList.remove('active'));
+                // Activate woodwind section
+                allSeats.forEach(s => {
+                    if (s.dataset.section === 'woodwinds') s.classList.add('active');
+                });
+            }
+        };
+
+        if (presetConfigs[preset]) {
+            presetConfigs[preset]();
+        }
+    }
+
+    // Initialize orchestra token preview on load
+    setTimeout(() => {
+        updateOrchestraTokenPreview();
+    }, 100);
 
     function generateBlenderToken() {
         const primary = document.getElementById('ks-primary-sound')?.value || 'synth_lead';

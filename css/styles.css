@@ -1764,6 +1764,15 @@ input:checked+.ks-preset-card,
     min-height: 0;
 }
 
+/* Orchestra fullscreen mode - take all available space */
+.ks-main-grid:has(#ks-module-orchestra.active) {
+    grid-template-rows: 1fr;
+}
+
+.ks-main-grid:has(#ks-module-orchestra.active) .ks-top-section {
+    overflow: hidden;
+}
+
 .ks-top-section::-webkit-scrollbar {
     width: 4px;
 }
@@ -2073,12 +2082,523 @@ input:checked+.ks-preset-card,
     border-radius: 0 !important;
     box-shadow: none !important;
     padding: 0 !important;
-    color: #a5b4fc !important; /* text-indigo-300 */
+    color: #a5b4fc !important;
+    /* text-indigo-300 */
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
-    font-size: 1rem !important; /* Larger text for better readability */
+    font-size: 1rem !important;
+    /* Larger text for better readability */
 }
 
 /* Larger text for master prompt display */
 #studio-master-prompt-display {
     font-size: 1rem !important;
+}
+
+/* =============================================
+   ORCHESTRA DESIGNER - NEW FULLSCREEN LAYOUT
+   ============================================= */
+
+/* Fullscreen Container */
+.ks-orch-fullscreen {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 12px;
+    padding: 0 !important;
+    max-width: 100% !important;
+    overflow: hidden;
+}
+
+/* Override top-section for orchestra fullscreen */
+#ks-module-orchestra.active {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Main 3-Column Grid - Unified container */
+.ks-orch-grid {
+    display: grid;
+    grid-template-columns: 320px 1fr 380px;
+    gap: 0;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+}
+
+/* Section Titles */
+.ks-orch-section-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #a3a3a3;
+    margin-bottom: 12px;
+}
+
+/* ---- LEFT COLUMN ---- */
+.ks-orch-left {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+}
+
+.ks-orch-presets-panel,
+.ks-orch-token-panel {
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 10px;
+    padding: 14px;
+}
+
+.ks-orch-preset-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.ks-orch-preset-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+    color: #a3a3a3;
+}
+
+.ks-orch-preset-btn:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(6, 182, 212, 0.3);
+}
+
+.ks-orch-preset-btn.active {
+    background: rgba(6, 182, 212, 0.15);
+    border-color: rgba(6, 182, 212, 0.5);
+    color: #06b6d4;
+}
+
+.ks-orch-preset-btn .preset-icon {
+    font-size: 1.1rem;
+}
+
+.ks-orch-preset-btn .preset-name {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Token Preview Panel */
+.ks-orch-token-panel {
+    flex: 1;
+    min-height: 150px;
+}
+
+.ks-orch-token-display {
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 8px;
+    padding: 12px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    color: #4ade80;
+    max-height: 180px;
+    overflow-y: auto;
+}
+
+.ks-orch-token-display code {
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+/* ---- CENTER: STAGE ---- */
+.ks-orch-center {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    padding: 0;
+}
+
+.ks-orch-stage-wrapper {
+    background: linear-gradient(180deg, rgba(6, 182, 212, 0.06) 0%, rgba(0, 0, 0, 0.3) 40%, rgba(0, 0, 0, 0.4) 100%);
+    border-left: 1px solid rgba(6, 182, 212, 0.12);
+    border-right: 1px solid rgba(6, 182, 212, 0.12);
+    border-top: none;
+    border-bottom: none;
+    padding: 24px 32px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+/* Conductor */
+.ks-orch-conductor {
+    font-size: 1.5rem;
+    opacity: 0.8;
+    margin-bottom: 8px;
+}
+
+/* Stage Rows */
+.ks-orch-stage-rows {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+}
+
+.ks-orch-row {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+/* Curved rows effect */
+.ks-orch-row-curved {
+    gap: 6px;
+}
+
+.ks-orch-row-curved[data-row="1"] {
+    transform: perspective(400px) rotateX(5deg);
+}
+
+.ks-orch-row-curved[data-row="2"] {
+    transform: perspective(400px) rotateX(3deg);
+}
+
+/* Individual Seats */
+.ks-orch-seat {
+    width: 54px;
+    height: 44px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #525252;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.ks-orch-seat:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.ks-orch-seat.active {
+    background: rgba(6, 182, 212, 0.2);
+    border-color: rgba(6, 182, 212, 0.5);
+    color: #06b6d4;
+    box-shadow: 0 0 12px rgba(6, 182, 212, 0.3);
+}
+
+/* Hint Text */
+.ks-orch-hint {
+    font-size: 0.8rem;
+    color: #525252;
+    text-align: center;
+    margin-top: 8px;
+}
+
+/* ---- RIGHT COLUMN ---- */
+.ks-orch-right {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow-y: auto;
+    padding: 16px;
+}
+
+.ks-orch-controls-panel,
+.ks-orch-features-panel {
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 10px;
+    padding: 14px;
+}
+
+/* Control Groups */
+.ks-orch-control-group {
+    margin-bottom: 16px;
+}
+
+.ks-orch-control-group:last-child {
+    margin-bottom: 0;
+}
+
+.ks-orch-control-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.ks-orch-control-header .control-name {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #e5e5e5;
+}
+
+.ks-orch-control-header .control-value {
+    font-size: 0.85rem;
+    color: #06b6d4;
+    font-weight: 600;
+}
+
+/* Sliders */
+.ks-orch-slider {
+    width: 100%;
+    height: 6px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    outline: none;
+    cursor: pointer;
+}
+
+.ks-orch-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    background: #06b6d4;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 8px rgba(6, 182, 212, 0.5);
+}
+
+.ks-orch-slider::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    background: #06b6d4;
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 0 8px rgba(6, 182, 212, 0.5);
+}
+
+/* Tags / Pills */
+.ks-orch-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
+
+.ks-orch-tag {
+    padding: 5px 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: #737373;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.ks-orch-tag:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.ks-orch-tag.active {
+    background: rgba(6, 182, 212, 0.15);
+    border-color: rgba(6, 182, 212, 0.4);
+    color: #06b6d4;
+}
+
+/* Features Panel */
+.ks-orch-feature-row {
+    margin-bottom: 12px;
+}
+
+.ks-orch-feature-row:last-child {
+    margin-bottom: 0;
+}
+
+.ks-orch-feature-row .feature-label {
+    display: block;
+    font-size: 0.85rem;
+    color: #a3a3a3;
+    margin-bottom: 6px;
+}
+
+.ks-orch-select {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 0.85rem;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    color: #e5e5e5;
+    cursor: pointer;
+    outline: none;
+}
+
+.ks-orch-select:focus {
+    border-color: rgba(6, 182, 212, 0.5);
+}
+
+/* Dynamics Slider */
+.ks-orch-dynamics {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ks-orch-dynamics .dynamics-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #737373;
+    font-style: italic;
+}
+
+.ks-orch-dynamics .dynamics-slider {
+    flex: 1;
+}
+
+/* ---- BOTTOM: Room Acoustics & Effects ---- */
+.ks-orch-bottom {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 16px 20px;
+}
+
+.ks-orch-bottom-grid {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 24px;
+    align-items: start;
+}
+
+/* Room Presets */
+.ks-orch-room-presets {
+    display: flex;
+    gap: 12px;
+}
+
+.ks-orch-room-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 12px 20px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 80px;
+}
+
+.ks-orch-room-btn:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(6, 182, 212, 0.3);
+}
+
+.ks-orch-room-btn.active {
+    background: rgba(6, 182, 212, 0.15);
+    border-color: rgba(6, 182, 212, 0.5);
+}
+
+.ks-orch-room-btn .room-icon {
+    font-size: 1.4rem;
+}
+
+.ks-orch-room-btn .room-name {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #a3a3a3;
+}
+
+.ks-orch-room-btn.active .room-name {
+    color: #06b6d4;
+}
+
+/* Effect Sliders Grid */
+.ks-orch-effect-sliders {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px 24px;
+}
+
+.ks-orch-effect-row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.ks-orch-effect-row .effect-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ks-orch-effect-row .effect-name {
+    font-size: 0.85rem;
+    color: #a3a3a3;
+}
+
+.ks-orch-effect-row .effect-value {
+    font-size: 0.8rem;
+    color: #06b6d4;
+    font-weight: 600;
+}
+
+.ks-orch-effect-row .effect-label {
+    font-size: 0.75rem;
+    color: #525252;
+    font-style: italic;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1200px) {
+    .ks-orch-grid {
+        grid-template-columns: 180px 1fr 240px;
+    }
+}
+
+@media (max-width: 900px) {
+    .ks-orch-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr auto;
+    }
+
+    .ks-orch-left {
+        flex-direction: row;
+        overflow-x: auto;
+    }
+
+    .ks-orch-presets-panel {
+        min-width: 200px;
+    }
+
+    .ks-orch-bottom-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .ks-orch-room-presets {
+        justify-content: center;
+    }
+
+    .ks-orch-effect-sliders {
+        grid-template-columns: 1fr;
+    }
 }
