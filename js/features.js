@@ -2233,6 +2233,192 @@ function setupKlangStudio() {
         'woodwind': 'woodwind ensemble with pastoral charm and expressive color'
     };
 
+    // === INSTRUMENTATION ANALYSIS SYSTEM ===
+    const INSTRUMENT_CONFIG = {
+        strings: {
+            instruments: {
+                'erste-violine': { name: 'first violins', role: 'melodic lead', register: 'high' },
+                'zweite-violine': { name: 'second violins', role: 'harmonic support', register: 'high' },
+                'viola': { name: 'violas', role: 'inner voice', register: 'mid' },
+                'violoncello': { name: 'cellos', role: 'tenor line and bass', register: 'mid-low' },
+                'kontrabass': { name: 'double basses', role: 'foundation', register: 'low' }
+            },
+            patterns: {
+                full: 'complete string section from soaring first violins through rumbling double basses',
+                upper: 'crystalline upper strings with shimmering high register focus',
+                lower: 'rich lower strings providing warm, grounded foundation',
+                violinsOnly: 'violin section in dual-voice harmony without lower strings',
+                chamberCore: 'violin-viola-cello trio with chamber intimacy'
+            }
+        },
+        woodwinds: {
+            instruments: {
+                'floete': { name: 'flutes', role: 'aerial melody', register: 'high' },
+                'oboe': { name: 'oboes', role: 'expressive color', register: 'mid-high' },
+                'klarinette': { name: 'clarinets', role: 'warm body', register: 'mid' },
+                'fagott': { name: 'bassoons', role: 'bass foundation', register: 'low' }
+            },
+            patterns: {
+                full: 'complete woodwind choir in classic double-wind formation',
+                upper: 'airy high woodwinds with flute and oboe color',
+                lower: 'dark woodwind voices with clarinet depth and bassoon foundation',
+                solo: 'single woodwind voice with exposed, intimate character'
+            }
+        },
+        brass: {
+            instruments: {
+                'horn': { name: 'french horns', role: 'noble warmth', register: 'mid' },
+                'trompete': { name: 'trumpets', role: 'brilliant fanfare', register: 'high' },
+                'posaune': { name: 'trombones', role: 'power and weight', register: 'mid-low' },
+                'tuba': { name: 'tuba', role: 'bass anchor', register: 'low' }
+            },
+            patterns: {
+                full: 'complete brass section with noble power from horn warmth to tuba depth',
+                fanfare: 'brilliant brass fanfare with trumpets and horns',
+                lowBrass: 'dark brass voices with trombone weight and tuba foundation',
+                hornsOnly: 'warm french horn choir, golden and pastoral'
+            }
+        },
+        percussion: {
+            instruments: {
+                'pauke': { name: 'timpani', role: 'rhythmic foundation', register: 'low' },
+                'becken': { name: 'cymbals', role: 'dramatic color', register: 'high' }
+            },
+            patterns: {
+                full: 'full percussion battery with timpani thunder and cymbal shimmer',
+                timpaniOnly: 'timpani rolls providing rhythmic heartbeat and dramatic punctuation',
+                sparse: 'minimal percussion adding subtle textural emphasis'
+            }
+        }
+    };
+
+    // Analyze which instruments are active in each section
+    function getInstrumentationContext() {
+        const sections = {};
+
+        for (const [sectionName, sectionConfig] of Object.entries(INSTRUMENT_CONFIG)) {
+            const activeInstruments = [];
+            const totalInstruments = Object.keys(sectionConfig.instruments).length;
+            let totalSeats = 0;
+            let activeSeats = 0;
+
+            for (const [instId, instInfo] of Object.entries(sectionConfig.instruments)) {
+                // Count all seats for this instrument (there can be multiple)
+                const seats = modal.querySelectorAll(`[data-instrument="${instId}"]`);
+                const activeSeatsForInst = modal.querySelectorAll(`[data-instrument="${instId}"].active`);
+
+                totalSeats += seats.length;
+                activeSeats += activeSeatsForInst.length;
+
+                if (activeSeatsForInst.length > 0) {
+                    activeInstruments.push({
+                        id: instId,
+                        ...instInfo,
+                        count: activeSeatsForInst.length,
+                        total: seats.length
+                    });
+                }
+            }
+
+            sections[sectionName] = {
+                active: activeInstruments,
+                totalInstruments: totalInstruments,
+                activeInstrumentTypes: activeInstruments.length,
+                density: totalSeats > 0 ? activeSeats / totalSeats : 0,
+                seatCount: { active: activeSeats, total: totalSeats }
+            };
+        }
+
+        return sections;
+    }
+
+    // Generate intelligent descriptor based on instrumentation
+    function getInstrumentationDescriptor(sectionName, sectionData) {
+        const config = INSTRUMENT_CONFIG[sectionName];
+        const active = sectionData.active;
+        const density = sectionData.density;
+
+        // No instruments active
+        if (active.length === 0) {
+            return null;
+        }
+
+        // All instruments active with high density
+        if (sectionData.activeInstrumentTypes === sectionData.totalInstruments && density > 0.7) {
+            return config.patterns.full;
+        }
+
+        // Section-specific pattern detection
+        if (sectionName === 'strings') {
+            const hasViolins = active.some(i => i.id.includes('violine'));
+            const hasViolas = active.some(i => i.id === 'viola');
+            const hasCellos = active.some(i => i.id === 'violoncello');
+            const hasBasses = active.some(i => i.id === 'kontrabass');
+
+            if (hasViolins && !hasCellos && !hasBasses) return config.patterns.upper;
+            if ((hasCellos || hasBasses) && !hasViolins) return config.patterns.lower;
+            if (hasViolins && !hasBasses && active.length <= 3) return config.patterns.chamberCore;
+        }
+
+        if (sectionName === 'woodwinds') {
+            const hasFlutes = active.some(i => i.id === 'floete');
+            const hasOboes = active.some(i => i.id === 'oboe');
+            const hasClarinets = active.some(i => i.id === 'klarinette');
+            const hasBassoons = active.some(i => i.id === 'fagott');
+
+            if ((hasFlutes || hasOboes) && !hasClarinets && !hasBassoons) return config.patterns.upper;
+            if ((hasClarinets || hasBassoons) && !hasFlutes && !hasOboes) return config.patterns.lower;
+            if (active.length === 1) return `solo ${active[0].name} with exposed, intimate character`;
+        }
+
+        if (sectionName === 'brass') {
+            const hasHorns = active.some(i => i.id === 'horn');
+            const hasTrumpets = active.some(i => i.id === 'trompete');
+            const hasTrombones = active.some(i => i.id === 'posaune');
+            const hasTuba = active.some(i => i.id === 'tuba');
+
+            if (hasHorns && hasTrumpets && !hasTrombones && !hasTuba) return config.patterns.fanfare;
+            if ((hasTrombones || hasTuba) && !hasTrumpets) return config.patterns.lowBrass;
+            if (hasHorns && active.length === 1) return config.patterns.hornsOnly;
+        }
+
+        if (sectionName === 'percussion') {
+            const hasTimpani = active.some(i => i.id === 'pauke');
+            const hasCymbals = active.some(i => i.id === 'becken');
+
+            if (hasTimpani && !hasCymbals) return config.patterns.timpaniOnly;
+            if (density < 0.5) return config.patterns.sparse;
+        }
+
+        // Fallback: generate from active instruments
+        const names = active.map(i => i.name).join(', ');
+        return `${names} providing ${density > 0.6 ? 'substantial' : 'selective'} ${sectionName} presence`;
+    }
+
+    // Get orchestra balance profile
+    function getOrchestraBalanceProfile(instrumentation) {
+        const sections = Object.entries(instrumentation);
+        const activeSections = sections.filter(([_, data]) => data.active.length > 0);
+        const densities = sections.map(([name, data]) => ({ name, density: data.density }));
+
+        // Sort by density
+        densities.sort((a, b) => b.density - a.density);
+
+        if (activeSections.length === 0) return 'silent, no instruments active';
+        if (activeSections.length === 4 && densities[0].density > 0.7) return 'grand full orchestral forces';
+
+        const dominant = densities[0];
+        if (dominant.density > 0.7 && densities[1].density < 0.4) {
+            return `${dominant.name}-dominated texture`;
+        }
+
+        if (activeSections.length <= 2) {
+            return `chamber texture with ${activeSections.map(([n]) => n).join(' and ')}`;
+        }
+
+        return 'balanced orchestral blend';
+    }
+
     // Helper to get descriptor from value
     function getDescriptor(descriptorArray, value) {
         for (const desc of descriptorArray) {
@@ -2272,16 +2458,42 @@ function setupKlangStudio() {
         const soloInstrument = document.getElementById('ks-solo-instrument')?.value;
         const soloDesc = (soloInstrument && soloInstrument !== 'none') ? SOLO_DESCRIPTORS[soloInstrument] : null;
 
+        // Get instrumentation analysis
+        const instrumentation = getInstrumentationContext();
+        const balanceProfile = getOrchestraBalanceProfile(instrumentation);
+
+        // Generate intelligent section descriptors based on actual instrument seats
+        const stringsInst = getInstrumentationDescriptor('strings', instrumentation.strings);
+        const woodwindsInst = getInstrumentationDescriptor('woodwinds', instrumentation.woodwinds);
+        const brassInst = getInstrumentationDescriptor('brass', instrumentation.brass);
+        const percussionInst = getInstrumentationDescriptor('percussion', instrumentation.percussion);
+
         return {
             setup: {
                 preset: PRESET_DESCRIPTORS[preset] || preset,
-                room: roomName
+                room: roomName,
+                balanceProfile: balanceProfile
             },
             sections: {
-                strings: getDescriptor(PRODUCER_DESCRIPTORS.strings, stringsVal),
-                woodwinds: getDescriptor(PRODUCER_DESCRIPTORS.woodwinds, woodwindsVal),
-                brass: getDescriptor(PRODUCER_DESCRIPTORS.brass, brassVal),
-                percussion: getDescriptor(PRODUCER_DESCRIPTORS.percussion, percussionVal)
+                // Use instrumentation descriptors if section has active instruments, otherwise use slider intensity
+                strings: stringsInst || getDescriptor(PRODUCER_DESCRIPTORS.strings, stringsVal),
+                woodwinds: woodwindsInst || getDescriptor(PRODUCER_DESCRIPTORS.woodwinds, woodwindsVal),
+                brass: brassInst || getDescriptor(PRODUCER_DESCRIPTORS.brass, brassVal),
+                percussion: percussionInst || getDescriptor(PRODUCER_DESCRIPTORS.percussion, percussionVal)
+            },
+            intensity: {
+                // Keep slider values for intensity context
+                strings: stringsVal,
+                woodwinds: woodwindsVal,
+                brass: brassVal,
+                percussion: percussionVal
+            },
+            instrumentation: {
+                // Raw instrumentation data for AI
+                strings: instrumentation.strings,
+                woodwinds: instrumentation.woodwinds,
+                brass: instrumentation.brass,
+                percussion: instrumentation.percussion
             },
             articulations: articulations,
             effects: {
@@ -2702,6 +2914,7 @@ function setupKlangStudio() {
             // Build structured input for AI refinement
             const orchestraInput = `Preset: ${context.setup.preset}
 Room: ${context.setup.room}
+Orchestra Balance: ${context.setup.balanceProfile}
 Strings: ${context.sections.strings}
 Woodwinds: ${context.sections.woodwinds}
 Brass: ${context.sections.brass}
