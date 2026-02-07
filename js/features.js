@@ -495,6 +495,7 @@ function setupFutureLabTools() {
     setupAdaptiveFlow();
     setupAiCollaboration();
     setupStoryArcDesigner();
+    setupNarrativeChapters();
     setupImmersiveSpace();
     setupHumanTouch();
     setupReleaseForecast();
@@ -752,6 +753,306 @@ function setupStoryArcDesigner() {
 
     openButton.addEventListener('click', generateArc);
     regenerateButton.addEventListener('click', generateArc);
+}
+
+function setupNarrativeChapters() {
+    const modal = document.getElementById('narrative-chapters-modal');
+    const openButton = document.getElementById('narrative-chapters-button');
+    const chapterCountSelect = modal?.querySelector('#narrative-chapter-count');
+    const runButton = modal?.querySelector('#run-narrative-chapters-button');
+    const buttonText = modal?.querySelector('#run-narrative-chapters-text');
+    const loader = modal?.querySelector('#narrative-chapters-loader');
+    const output = modal?.querySelector('#narrative-chapters-output');
+
+    if (!modal || !openButton || !chapterCountSelect || !runButton || !output) return;
+
+    const modalLogic = setupModal(modal, openButton);
+    let lastNarrativeResult = null;
+    let lastRequestedCount = '4';
+
+    const escapeHtml = (value = '') => String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+
+    const toInt = (value, fallback) => {
+        const parsed = Number.parseInt(value, 10);
+        return Number.isFinite(parsed) ? parsed : fallback;
+    };
+
+    const unwrapJsonCandidate = (raw) => {
+        let text = (raw || '').trim();
+        if (!text) {
+            return '';
+        }
+
+        // Best case: complete fenced block
+        const fenced = text.match(/```(?:json)?\s*([\s\S]*?)```/i);
+        if (fenced && fenced[1]) {
+            text = fenced[1].trim();
+        } else {
+            // Fallback: strip opening/closing fences even if incomplete
+            text = text
+                .replace(/^```[a-zA-Z]*\s*/i, '')
+                .replace(/```[\s]*$/i, '')
+                .trim();
+        }
+
+        // Some models emit "json { ... }" instead of raw JSON
+        text = text.replace(/^json\s*(?=[{[])/i, '').trim();
+        return text;
+    };
+
+    const normalizeJsonText = (text) => {
+        return String(text || '')
+            .replace(/\u201c|\u201d/g, '"')
+            .replace(/\u2018|\u2019/g, "'")
+            .replace(/\u00a0/g, ' ')
+            .replace(/,\s*([}\]])/g, '$1')
+            .replace(/^\uFEFF/, '')
+            .trim();
+    };
+
+    const extractBalancedRoot = (text) => {
+        const source = String(text || '');
+        const firstBrace = source.indexOf('{');
+        const firstBracket = source.indexOf('[');
+
+        let start = -1;
+        let openChar = '';
+        let closeChar = '';
+
+        if (firstBrace === -1 && firstBracket === -1) {
+            return '';
+        }
+        if (firstBracket === -1 || (firstBrace !== -1 && firstBrace < firstBracket)) {
+            start = firstBrace;
+            openChar = '{';
+            closeChar = '}';
+        } else {
+            start = firstBracket;
+            openChar = '[';
+            closeChar = ']';
+        }
+
+        let depth = 0;
+        let inString = false;
+        let escaped = false;
+
+        for (let i = start; i < source.length; i++) {
+            const ch = source[i];
+
+            if (escaped) {
+                escaped = false;
+                continue;
+            }
+            if (ch === '\\') {
+                escaped = true;
+                continue;
+            }
+            if (ch === '"') {
+                inString = !inString;
+                continue;
+            }
+            if (inString) continue;
+
+            if (ch === openChar) {
+                depth++;
+            } else if (ch === closeChar) {
+                depth--;
+                if (depth === 0) {
+                    return source.slice(start, i + 1);
+                }
+            }
+        }
+
+        // Fallback for truncated/unbalanced text: first opening to last closing
+        if (start !== -1) {
+            const lastClose = source.lastIndexOf(closeChar);
+            if (lastClose > start) {
+                return source.slice(start, lastClose + 1);
+            }
+        }
+
+        return '';
+    };
+
+    const parseJsonLoose = (raw) => {
+        const candidate = unwrapJsonCandidate(raw);
+        if (!candidate) {
+            throw new Error('Leere Antwort erhalten.');
+        }
+
+        const attempts = [];
+        attempts.push(candidate);
+        attempts.push(extractBalancedRoot(candidate));
+        attempts.push(normalizeJsonText(candidate));
+        attempts.push(normalizeJsonText(extractBalancedRoot(candidate)));
+
+        let lastError = null;
+        for (const attempt of attempts) {
+            if (!attempt) continue;
+            try {
+                return JSON.parse(attempt);
+            } catch (error) {
+                lastError = error;
+            }
+        }
+
+        throw lastError || new Error('Antwort war kein gültiges JSON.');
+    };
+
+    const extractJsonPayload = async (raw) => {
+        try {
+            return parseJsonLoose(raw);
+        } catch (primaryError) {
+            const repairQuery = `Fix this malformed JSON and return ONLY valid JSON:\n\n${String(raw || '')}`;
+            try {
+                const repaired = await callOpenRouterAPI(repairQuery, JSON_REPAIR_PROMPT);
+                return parseJsonLoose(repaired);
+            } catch (repairError) {
+                throw new Error(`${primaryError.message} (Auto-Repair fehlgeschlagen: ${repairError.message})`);
+            }
+        }
+    };
+
+    const normalizePayload = (payload, requestedCount) => {
+        const safeCount = Math.max(3, Math.min(5, toInt(requestedCount, 4)));
+        const rawChapters = Array.isArray(payload?.chapters) ? payload.chapters : [];
+
+        if (rawChapters.length !== safeCount) {
+            throw new Error(`Erwartet ${safeCount} Kapitel, erhalten: ${rawChapters.length}.`);
+        }
+
+        const chapters = rawChapters.map((chapter, idx) => {
+            const chapterIndex = idx + 1;
+            const matrix = (chapter && typeof chapter.music_matrix === 'object' && chapter.music_matrix) ? chapter.music_matrix : {};
+            const promptText = String(chapter?.prompt || '').trim();
+            const bpmFromPrompt = promptText.match(/\b(\d{2,3})\s?BPM\b/i)?.[1];
+            const tempoBpm = Math.max(40, Math.min(240, toInt(matrix.tempo_bpm, toInt(bpmFromPrompt, 90))));
+
+            if (!promptText) {
+                throw new Error(`Kapitel ${chapterIndex} enthält keinen Prompt.`);
+            }
+
+            return {
+                index: chapterIndex,
+                title: String(chapter?.title || `Chapter ${chapterIndex}`).trim(),
+                prompt: promptText,
+                music_matrix: {
+                    mood: String(matrix.mood || 'unspecified').trim(),
+                    key: String(matrix.key || 'unspecified').trim(),
+                    rhythm: String(matrix.rhythm || 'unspecified').trim(),
+                    tempo_bpm: tempoBpm,
+                    energy: String(matrix.energy || 'unspecified').trim(),
+                    instrumentation_anchor: String(matrix.instrumentation_anchor || 'unspecified').trim(),
+                    transition_from_previous: chapterIndex === 1
+                        ? 'N/A'
+                        : String(matrix.transition_from_previous || 'evolution from prior chapter').trim()
+                }
+            };
+        });
+
+        return {
+            global_style_anchor: String(payload?.global_style_anchor || 'No explicit anchor provided.').trim(),
+            continuity_strategy: String(payload?.continuity_strategy || 'Balanced evolution across chapters.').trim(),
+            chapters
+        };
+    };
+
+    const renderResult = (data) => {
+        lastNarrativeResult = data;
+        const chapterCards = data.chapters.map((chapter, idx) => `
+            <div class="bg-neutral-900/70 border border-blue-500/30 rounded-xl p-4">
+                <h3 class="text-sm font-semibold text-neutral-100 mb-2">Kapitel ${chapter.index}: ${escapeHtml(chapter.title)}</h3>
+                <pre class="whitespace-pre-wrap text-xs md:text-sm text-neutral-200 bg-neutral-950/70 border border-neutral-700 rounded-lg p-3">${escapeHtml(chapter.prompt)}</pre>
+                <div class="mt-3 grid gap-2 sm:grid-cols-2 text-xs text-neutral-400">
+                    <div><span class="text-neutral-300 font-semibold">Mood:</span> ${escapeHtml(chapter.music_matrix.mood)}</div>
+                    <div><span class="text-neutral-300 font-semibold">Key:</span> ${escapeHtml(chapter.music_matrix.key)}</div>
+                    <div><span class="text-neutral-300 font-semibold">Rhythm:</span> ${escapeHtml(chapter.music_matrix.rhythm)}</div>
+                    <div><span class="text-neutral-300 font-semibold">Tempo:</span> ${chapter.music_matrix.tempo_bpm} BPM</div>
+                    <div><span class="text-neutral-300 font-semibold">Energy:</span> ${escapeHtml(chapter.music_matrix.energy)}</div>
+                    <div><span class="text-neutral-300 font-semibold">Anchor:</span> ${escapeHtml(chapter.music_matrix.instrumentation_anchor)}</div>
+                    <div class="sm:col-span-2"><span class="text-neutral-300 font-semibold">Transition:</span> ${escapeHtml(chapter.music_matrix.transition_from_previous)}</div>
+                </div>
+                <button class="apply-narrative-chapter-button mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg btn-transition btn-press" data-array-index="${idx}">
+                    Kapitel übernehmen
+                </button>
+            </div>
+        `).join('');
+
+        output.innerHTML = `
+            <div class="bg-neutral-900/60 border border-neutral-700 rounded-xl p-4">
+                <p class="text-xs uppercase tracking-wide text-neutral-400 mb-1">Global Style Anchor</p>
+                <p class="text-sm text-neutral-200">${escapeHtml(data.global_style_anchor)}</p>
+                <p class="text-xs uppercase tracking-wide text-neutral-400 mt-3 mb-1">Continuity Strategy</p>
+                <p class="text-sm text-neutral-300">${escapeHtml(data.continuity_strategy)}</p>
+            </div>
+            <div class="grid gap-4 lg:grid-cols-2">${chapterCards}</div>
+        `;
+
+        Array.from(output.querySelectorAll('.apply-narrative-chapter-button')).forEach((button) => {
+            button.addEventListener('click', () => {
+                const index = toInt(button.dataset.arrayIndex, -1);
+                const selected = data.chapters[index];
+                if (!selected) return;
+
+                document.getElementById('result-text').textContent = selected.prompt;
+                if (window.QW) {
+                    window.QW.onPromptUpdated({ source: `future-lab:narrative-chapters:chapter-${selected.index}` });
+                }
+                modalLogic.close();
+            });
+        });
+    };
+
+    openButton.addEventListener('click', () => {
+        if (lastNarrativeResult && Array.isArray(lastNarrativeResult.chapters) && lastNarrativeResult.chapters.length) {
+            const rememberedCount = String(lastNarrativeResult.chapters.length || lastRequestedCount || '4');
+            chapterCountSelect.value = rememberedCount;
+            renderResult(lastNarrativeResult);
+            return;
+        }
+
+        chapterCountSelect.value = lastRequestedCount || '4';
+        output.innerHTML = `<p class="text-neutral-500 text-sm">Wähle 3-5 Kapitel und generiere eine zusammenhängende Prompt-Reise.</p>`;
+    });
+
+    runButton.addEventListener('click', async () => {
+        const currentPrompt = document.getElementById('result-text').textContent.trim();
+        if (!currentPrompt) {
+            output.innerHTML = `<p class="text-red-400">Bitte generiere zuerst einen Prompt.</p>`;
+            return;
+        }
+
+        const requestedCount = toInt(chapterCountSelect.value, 4);
+        lastRequestedCount = String(requestedCount);
+
+        runButton.disabled = true;
+        buttonText?.classList.add('hidden');
+        loader?.classList.remove('hidden');
+        output.innerHTML = `<div class="animate-spin h-6 w-6 text-blue-400 mx-auto"></div>`;
+
+        const userQuery = `Base prompt: "${currentPrompt}"
+Requested chapter count: ${requestedCount}
+Continuity mode: Balanced evolution`;
+
+        try {
+            const response = await callOpenRouterAPI(userQuery, NARRATIVE_CHAPTERS_PROMPT);
+            const parsed = await extractJsonPayload(response);
+            const normalized = normalizePayload(parsed, requestedCount);
+            renderResult(normalized);
+        } catch (error) {
+            console.error('Narrative Chapters failed', error);
+            output.innerHTML = `<p class="text-red-400">Fehler beim Generieren der Kapitel: ${error.message}</p>`;
+        } finally {
+            runButton.disabled = false;
+            buttonText?.classList.remove('hidden');
+            loader?.classList.add('hidden');
+        }
+    });
 }
 
 function setupImmersiveSpace() {
