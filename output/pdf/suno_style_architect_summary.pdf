@@ -1,0 +1,75 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Count 1 /Kids [3 0 R] >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R /F2 6 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 3452 >>
+stream
+q 1 1 1 rg 0 0 612 792 re f Q
+0 0 0 rg
+BT /F2 19 Tf 44 740.00 Td (Suno Style Architect - One Page App Summary) Tj ET
+BT /F1 9 Tf 44 720.00 Td (Evidence source: repository files in this workspace. Date: 2026-02-07.) Tj ET
+BT /F2 12 Tf 44 704.00 Td (What it is) Tj ET
+BT /F1 10 Tf 44 691.00 Td (Suno Style Architect is a browser-based app for building Suno-ready music prompts from ideas) Tj ET
+BT /F1 10 Tf 44 680.00 Td (and optional lyrics.) Tj ET
+BT /F1 10 Tf 44 669.00 Td (It combines LLM prompt generation and refinement \(OpenRouter\) with optional visual concept) Tj ET
+BT /F1 10 Tf 44 658.00 Td (generation via Fal.ai.) Tj ET
+BT /F2 12 Tf 44 641.00 Td (Who it's for) Tj ET
+BT /F1 10 Tf 44 628.00 Td (Primary persona: music creators \(producers, songwriters, prompt-focused artists\) who want) Tj ET
+BT /F1 10 Tf 44 617.00 Td (faster, higher-quality Suno prompt workflows.) Tj ET
+BT /F2 12 Tf 44 600.00 Td (What it does) Tj ET
+BT /F1 10 Tf 44 587.00 Td (- Generates a base prompt from user input in the main idea and lyrics fields.) Tj ET
+BT /F1 10 Tf 44 576.00 Td (- Applies expert refinements \(for example producer, musician, film composer, DJ, sound) Tj ET
+BT /F1 10 Tf 44 565.00 Td (  engineer\).) Tj ET
+BT /F1 10 Tf 44 554.00 Td (- Provides KLUG tools such as genre mixing, hook generation, song structure, vibe, artist, and) Tj ET
+BT /F1 10 Tf 44 543.00 Td (  tempo helpers.) Tj ET
+BT /F1 10 Tf 44 532.00 Td (- Supports Pro-style and custom-instruction refinements on the current prompt text.) Tj ET
+BT /F1 10 Tf 44 521.00 Td (- Includes visual ideation flows that call Fal.ai models for image generation from prompt) Tj ET
+BT /F1 10 Tf 44 510.00 Td (  concepts.) Tj ET
+BT /F1 10 Tf 44 499.00 Td (- Stores settings and productivity data in browser localStorage \(API/model config, history,) Tj ET
+BT /F1 10 Tf 44 488.00 Td (  keybindings\).) Tj ET
+BT /F2 12 Tf 44 471.00 Td (How it works \(repo evidence\)) Tj ET
+BT /F1 10 Tf 44 458.00 Td (- UI layer: static frontend in index.html with Tailwind CDN, custom CSS, and modular JS files) Tj ET
+BT /F1 10 Tf 44 447.00 Td (  loaded in sequence.) Tj ET
+BT /F1 10 Tf 44 436.00 Td (- Core orchestration: js/app.js manages settings, generation flow, and primary event handlers.) Tj ET
+BT /F1 10 Tf 44 425.00 Td (- Prompt logic: js/prompts.js provides system prompts; js/features.js wires advanced tool) Tj ET
+BT /F1 10 Tf 44 414.00 Td (  modules and modal actions.) Tj ET
+BT /F1 10 Tf 44 403.00 Td (- Service layer: js/api.js sends fetch requests to OpenRouter chat completions and Fal.ai) Tj ET
+BT /F1 10 Tf 44 392.00 Td (  endpoints.) Tj ET
+BT /F1 10 Tf 44 381.00 Td (- Data flow: user input -> prompt assembly -> API call -> result rendered in #result-text ->) Tj ET
+BT /F1 10 Tf 44 370.00 Td (  optional iterative refinement.) Tj ET
+BT /F1 10 Tf 44 359.00 Td (- Server-side persistence or internal app database: Not found in repo.) Tj ET
+BT /F2 12 Tf 44 342.00 Td (How to run \(minimal\)) Tj ET
+BT /F1 10 Tf 44 329.00 Td (- From the project root, start the local server: python3 server.py \(or ./start.sh\).) Tj ET
+BT /F1 10 Tf 44 318.00 Td (- Open http://localhost:8000 in a browser.) Tj ET
+BT /F1 10 Tf 44 307.00 Td (- Enter an OpenRouter key in setup \(expects sk-or-v1- prefix\) and select a model.) Tj ET
+BT /F1 10 Tf 44 296.00 Td (- Optional: enter Fal.ai key/model to enable visual features.) Tj ET
+BT /F1 10 Tf 44 285.00 Td (- Enter idea or lyrics and click Prompt Architektieren.) Tj ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+6 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+xref
+0 7
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000251 00000 n 
+0000003755 00000 n 
+0000003825 00000 n 
+trailer
+<< /Size 7 /Root 1 0 R >>
+startxref
+3900
+%%EOF
