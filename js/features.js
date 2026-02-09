@@ -9,16 +9,22 @@ document.addEventListener('modals:ready', () => {
 });
 
 function initializeAdvancedFeatures() {
+    const hasBottomToolSystems = !!document.querySelector('.tool-system-panel');
+
     // Setup all modals
     setupIdeaSpark();
+    setupCustomInstruction();
+    setupStyleSync();
+    setupKlangStudio();
+
+    // Bottom systems are intentionally disabled during rework
+    if (!hasBottomToolSystems) return;
+
     setupExpertRefinements();
     setupKlugTools();
     setupVisualEngine();
     setupFutureLabTools();
-    setupCustomInstruction();
     setupGenreEvolution();
-    setupStyleSync();
-    setupKlangStudio();
 }
 
 // === IDEA SPARK LOGIC ===

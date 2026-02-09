@@ -45,6 +45,9 @@
   function cancelChord(){ chord = null; hideKeycaps(); }
 
   function buttonsFor(mode){ return mode==='expert' ? expertButtons : klugButtons; }
+  function hasChordTargets(){
+    return [...expertButtons, ...klugButtons].some(sel => !!document.querySelector(sel));
+  }
 
   function showKeycaps(mode){
     hideKeycaps();
@@ -118,6 +121,8 @@
     }
 
     if(isTyping() || hasMod) return;
+
+    if(!hasChordTargets()) return;
 
     // start chord with e or k
     if(e.code === 'KeyE'){ e.preventDefault(); startChord('expert'); }

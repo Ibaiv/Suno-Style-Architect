@@ -9,6 +9,7 @@ const saveSettingsButton = document.getElementById('save-settings-button');
 const settingsButton = document.getElementById('settings-button');
 const changeSettingsButton = document.getElementById('change-settings-button');
 const currentModelSpan = document.getElementById('current-model');
+const currentImageModelSpan = document.getElementById('current-image-model');
 const mainApp = document.getElementById('main-app');
 
 // Main app elements
@@ -35,6 +36,15 @@ const sunoProLoader = document.getElementById('suno-pro-loader');
 const customInstructionButton = document.getElementById('custom-instruction-button');
 
 // === API SETUP LOGIC ===
+function updateHeaderModelChips(textModelKey, imageModelKey) {
+    if (currentModelSpan) {
+        currentModelSpan.textContent = MODEL_NAMES[textModelKey] || textModelKey;
+    }
+    if (currentImageModelSpan) {
+        currentImageModelSpan.textContent = FAL_MODEL_NAMES[imageModelKey] || imageModelKey;
+    }
+}
+
 function loadSettings() {
     // Try multiple keys for compatibility
     const candidates = [
@@ -52,7 +62,7 @@ function loadSettings() {
         localStorage.getItem('FAL_API_KEY'),
     ];
     const savedFalKey = falCandidates.find(Boolean) || '';
-    const savedFalModel = localStorage.getItem('fal_model') || 'fal-ai/fast-sdxl';
+    const savedFalModel = localStorage.getItem('fal_model') || 'fal-ai/nano-banana-pro';
     FAL_API_KEY = savedFalKey;
     FAL_MODEL = savedFalModel;
     if (falApiKeyInput) falApiKeyInput.value = savedFalKey;
@@ -66,7 +76,7 @@ function loadSettings() {
         localStorage.setItem('ssa_api_key', savedKey);
         apiKeyInput.value = savedKey;
         modelSelect.value = savedModel;
-        currentModelSpan.textContent = MODEL_NAMES[savedModel] || savedModel;
+        updateHeaderModelChips(savedModel, savedFalModel);
         showMainApp();
     } else {
         // Show setup modal explicitly if not configured
@@ -103,13 +113,14 @@ function saveSettings() {
     localStorage.setItem('fal_api_key', falKey);
     localStorage.setItem('fal_model', falModel);
     
-    currentModelSpan.textContent = MODEL_NAMES[model] || model;
+    updateHeaderModelChips(model, falModel);
     showMainApp();
 }
 
 function showMainApp() {
     apiSetupModal.style.display = 'none';
-    mainApp.style.display = 'block';
+    mainApp.style.display = 'flex';
+    document.body.classList.add('app-no-scroll');
     // settingsButton may not exist in the DOM; guard access to avoid runtime errors
     if (settingsButton) settingsButton.classList.remove('hidden');
 }
@@ -117,6 +128,7 @@ function showMainApp() {
 function showSettings() {
     apiSetupModal.style.display = 'flex';
     mainApp.style.display = 'none';
+    document.body.classList.remove('app-no-scroll');
 }
 
 // === MAIN APP LOGIC ===
@@ -230,4 +242,3 @@ document.addEventListener('DOMContentLoaded', () => {
     setKlugToolsState(false);
     setupCopyButton(copyButton, copyIcon, checkIcon, resultText);
 });
-

@@ -120,25 +120,26 @@
                 </div>
 
                 <div class="app-menu-controls">
+                    <span id="current-image-model" class="app-menu-chip">Nano Banana Pro</span>
                     <span id="current-model" class="app-menu-chip">GPT-5 mini</span>
-                    <button id="change-settings-button"
-                        class="app-menu-chip">⚙️ Ändern</button>
-                    <button id="history-toggle-button"
-                        class="app-menu-chip">🕘 Verlauf</button>
                     <button id="help-shortcuts-button"
                         class="app-menu-chip" title="Tastenkürzel anzeigen">⌘K</button>
                     <button id="shortcuts-settings-button"
                         class="app-menu-chip" title="Tastenkürzel anpassen">⚡ Shortcuts</button>
+                    <button id="history-toggle-button"
+                        class="app-menu-chip">🕘 Verlauf</button>
+                    <button id="change-settings-button"
+                        class="app-menu-chip">⚙️ Ändern</button>
                 </div>
             </div>
         </header>
 
         <!-- ### MAIN INTERFACE LAYOUT ### -->
-        <div class="flex flex-col gap-6 lg:gap-8">
-            <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8">
+        <div class="app-main-layout">
+            <div class="app-top-row grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-5">
                 <!-- ## ROW 1, COL 1: IDEA INPUT ## -->
                 <div
-                    class="bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20 flex flex-col">
+                    class="app-top-card app-idea-card bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20 flex flex-col">
                     <div class="flex justify-between items-center mb-3">
                         <label for="idea-input" class="text-xl font-semibold text-white">Deine Vision</label>
                         <button id="spark-idea-button"
@@ -156,14 +157,14 @@
                             Ideen-Funke
                         </button>
                     </div>
-                    <textarea id="idea-input" rows="6"
+                    <textarea id="idea-input" rows="4"
                         class="w-full bg-neutral-900/70 border border-neutral-700 rounded-xl p-4 text-neutral-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow duration-300 placeholder-neutral-500 text-base flex-grow"
                         placeholder="Beschreibe deine Musik-Vision..."></textarea>
-                    <textarea id="lyric-input" rows="4"
+                    <textarea id="lyric-input" rows="3"
                         class="w-full bg-neutral-900/70 border border-neutral-700 rounded-xl p-4 text-neutral-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow duration-300 placeholder-neutral-500 text-base flex-grow mt-3"
                         placeholder="Lyrics (Optional)..."></textarea>
                     <button id="generate-button"
-                        class="mt-4 w-full flex justify-center items-center gap-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3.5 px-4 rounded-xl shadow-lg shadow-blue-900/30 hover:shadow-blue-600/40 btn-transition btn-press">
+                        class="mt-3 w-full flex justify-center items-center gap-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-4 rounded-xl shadow-lg shadow-blue-900/30 hover:shadow-blue-600/40 btn-transition btn-press">
                         <svg id="generate-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-wand-2">
@@ -185,7 +186,7 @@
 
                 <!-- ## ROW 1, COL 2: RESULT ## -->
                 <div
-                    class="bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20 flex flex-col">
+                    class="app-top-card app-result-card bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20 flex flex-col">
                     <h2 class="text-xl font-semibold text-white mb-4">Dein Meisterstück</h2>
                     <div id="result-wrapper" class="flex-grow flex flex-col">
                         <!-- Initial State -->
@@ -280,7 +281,7 @@
                 </div>
 
                 <!-- ## ROW 1, COL 3: KREATIV KOSMOS (Vertical Tiles) ## -->
-                <div class="flex flex-col gap-4 h-full">
+                <div class="app-top-card app-kreativ-stack flex flex-col gap-3 h-full">
                     <!-- Tile 1: Idea Starter (Active) -->
                     <button id="idea-starter-tile"
                         class="kreativ-panel active group relative flex-1 bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl overflow-hidden text-left transition-all duration-300 hover:scale-[1.02] hover:shadow-blue-900/20 hover:border-blue-500/30">
@@ -409,192 +410,16 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 lg:gap-8">
-                <!-- ## ROW 2, COL 1: EXPERT REFINEMENT ## -->
-                <div id="expert-container"
-                    class="bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20 inactive-box">
-                    <h2 class="text-xl font-semibold text-white mb-2">Experten-Veredelung</h2>
-                    <p class="text-neutral-400 mb-4 text-sm">Lass deinen Prompt von KI-Personas mit Fachwissen
-                        überarbeiten.</p>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-                        <button id="producer-refine-button"
-                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
-                            <h3 class="font-semibold text-neutral-200">Weltklasse Produzent</h3>
-                            <p class="text-xs text-neutral-400">Fokus auf Sound-Design & Mix.</p>
-                        </button>
-                        <button id="musician-refine-button"
-                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
-                            <h3 class="font-semibold text-neutral-200">Weltklasse Musiker</h3>
-                            <p class="text-xs text-neutral-400">Fokus auf Musikalität & Emotion.</p>
-                        </button>
-                        <button id="composer-refine-button"
-                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
-                            <h3 class="font-semibold text-neutral-200">Filmkomponist</h3>
-                            <p class="text-xs text-neutral-400">Fokus auf Story & Atmosphäre.</p>
-                        </button>
-                        <button id="dj-refine-button"
-                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
-                            <h3 class="font-semibold text-neutral-200">DJ / Remixer</h3>
-                            <p class="text-xs text-neutral-400">Fokus auf Groove & Energie.</p>
-                        </button>
-                        <button id="avantgarde-refine-button"
-                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
-                            <h3 class="font-semibold text-neutral-200">Avantgarde-Klangkünstler</h3>
-                            <p class="text-xs text-neutral-400">Bricht Konventionen, experimentell.</p>
-                        </button>
-                        <button id="minimalist-refine-button"
-                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
-                            <h3 class="font-semibold text-neutral-200">Minimalist-Komponist</h3>
-                            <p class="text-xs text-neutral-400">Reduziert auf die Essenz.</p>
-                        </button>
-                        <button id="vocal-harmony-refine-button"
-                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
-                            <h3 class="font-semibold text-neutral-200">Vocal-Harmony Arrangeur</h3>
-                            <p class="text-xs text-neutral-400">Fokus auf komplexe Gesangs-Sätze.</p>
-                        </button>
-                        <button id="ethno-refine-button"
-                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
-                            <h3 class="font-semibold text-neutral-200">Ethno-Musiker</h3>
-                            <p class="text-xs text-neutral-400">Integriert authentische Weltmusik.</p>
-                        </button>
-                        <button id="sound-engineer-button"
-                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
-                            <h3 class="font-semibold text-neutral-200">Sound-Ingenieur</h3>
-                            <p class="text-xs text-neutral-400">Füge spezifische Anweisungen hinzu.</p>
-                        </button>
+            <div class="app-bottom-row">
+                <section
+                    class="systems-rework-banner bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl shadow-2xl shadow-black/20">
+                    <div class="systems-rework-inner">
+                        <p class="systems-rework-kicker">REWORK STATUS</p>
+                        <h2>Die drei Kachel-Systeme werden aktuell neu aufgebaut.</h2>
+                        <p>Dieser Bereich ist in Re-Implementierung. Die App fokussiert jetzt auf die drei oberen
+                            Systeme, damit Performance und Stabilität sauber bleiben.</p>
                     </div>
-                </div>
-
-                <!-- ## ROW 2, COL 2: KLUG ## -->
-                <div id="klug-container"
-                    class="bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20 inactive-box">
-                    <h2 class="text-xl font-semibold text-white mb-2">KLUG</h2>
-                    <p class="text-neutral-400 mb-4 text-sm">Intelligente Werkzeuge zur Verfeinerung deines Prompts.</p>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-4 gap-3 lg:gap-4">
-                        <button id="visual-engine-button"
-                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
-                            <h3 class="font-semibold text-neutral-200">🖼️ Visueller Funke</h3>
-                            <p class="text-xs text-neutral-400">Generiere Bild & analysiere Vibe.</p>
-                        </button>
-                        <button id="synth-designer-button"
-                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
-                            <h3 class="font-semibold text-neutral-200">🎛️ Synth-Designer</h3>
-                            <p class="text-xs text-neutral-400">Baue gezielte Synth-Sounds.</p>
-                        </button>
-                        <button id="genre-mixer-button"
-                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
-                            <h3 class="font-semibold text-neutral-200">Genre-Mixer</h3>
-                            <p class="text-xs text-neutral-400">Kombiniere Stile für Klänge.</p>
-                        </button>
-                        <button id="mood-analyzer-button"
-                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
-                            <h3 class="font-semibold text-neutral-200">Stimmungs-Analysator</h3>
-                            <p class="text-xs text-neutral-400">Finde passende Instrumente.</p>
-                        </button>
-                        <button id="hook-generator-button"
-                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
-                            <h3 class="font-semibold text-neutral-200">Titel- & Hook-Generator</h3>
-                            <p class="text-xs text-neutral-400">Erhalte Ideen für Titel & Refrain.</p>
-                        </button>
-                        <button id="song-structure-button"
-                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
-                            <h3 class="font-semibold text-neutral-200">Song-Struktur-Assistent</h3>
-                            <p class="text-xs text-neutral-400">Entwerfe den Songaufbau.</p>
-                        </button>
-                        <button id="vibe-enhancer-button"
-                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
-                            <h3 class="font-semibold text-neutral-200">Vibe-Veredler</h3>
-                            <p class="text-xs text-neutral-400">Verstärke die Atmosphäre.</p>
-                        </button>
-                        <button id="artist-suggester-button"
-                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
-                            <h3 class="font-semibold text-neutral-200">Künstler-Kompass</h3>
-                            <p class="text-xs text-neutral-400">Finde ähnliche Künstler.</p>
-                        </button>
-                        <button id="tempo-finder-button"
-                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
-                            <h3 class="font-semibold text-neutral-200">Tempo & BPM-Finder</h3>
-                            <p class="text-xs text-neutral-400">Finde das richtige Tempo.</p>
-                        </button>
-                        <button id="production-finish-button"
-                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
-                            <h3 class="font-semibold text-neutral-200">Produktions-Finish</h3>
-                            <p class="text-xs text-neutral-400">Verleihe den letzten Schliff.</p>
-                        </button>
-                        <button id="vocal-stylist-button"
-                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
-                            <h3 class="font-semibold text-neutral-200">Gesangs-Stilist</h3>
-                            <p class="text-xs text-neutral-400">Definiere den Gesangsstil.</p>
-                        </button>
-                        <button id="groove-meister-button"
-                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
-                            <h3 class="font-semibold text-neutral-200">Groove-Meister</h3>
-                            <p class="text-xs text-neutral-400">Definiere den Rhythmus.</p>
-                        </button>
-                        <button id="performance-coach-button"
-                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
-                            <h3 class="font-semibold text-neutral-200">Performance-Coach</h3>
-                            <p class="text-xs text-neutral-400">Verfeinere die Spielweise.</p>
-                        </button>
-                        <button id="effect-chain-button"
-                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
-                            <h3 class="font-semibold text-neutral-200">Effektketten-Designer</h3>
-                            <p class="text-xs text-neutral-400">Gestalte den Sound mit Effekten.</p>
-                        </button>
-                        <button id="get-button"
-                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
-                            <h3 class="font-semibold text-neutral-200">⏳ Genre-Evolution</h3>
-                            <p class="text-xs text-neutral-400">Zeitreise für deinen Sound.</p>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- ## ROW 2, COL 3: FUTURE LAB ## -->
-                <div id="lab-container"
-                    class="bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20 inactive-box">
-                    <h2 class="text-xl font-semibold text-white mb-2">Zukunfts-Labor</h2>
-                    <p class="text-neutral-400 mb-4 text-sm">Experimentiere mit kommenden Ideen, die deinen Workflow
-                        revolutionieren könnten.</p>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-2 gap-4">
-                        <button id="adaptive-flow-button"
-                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
-                            <h3 class="font-semibold text-neutral-200">Adaptiver Flow</h3>
-                            <p class="text-xs text-neutral-400">Passe Dynamik und Energie an jede Stimmung an.</p>
-                        </button>
-                        <button id="ai-collab-button"
-                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
-                            <h3 class="font-semibold text-neutral-200">KI-Kollaboration</h3>
-                            <p class="text-xs text-neutral-400">Skizziere Interaktionen zwischen verschiedenen
-                                KI-Personas.</p>
-                        </button>
-                        <button id="story-arc-button"
-                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
-                            <h3 class="font-semibold text-neutral-200">Story-Arc Designer</h3>
-                            <p class="text-xs text-neutral-400">Baue dramaturgische Bögen für deine Musikreise.</p>
-                        </button>
-                        <button id="narrative-chapters-button"
-                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
-                            <h3 class="font-semibold text-neutral-200">Narrative Chapters</h3>
-                            <p class="text-xs text-neutral-400">Erzeuge 3-5 kohärente Kapitel mit musikalischer Entwicklung.</p>
-                        </button>
-                        <button id="immersive-space-button"
-                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
-                            <h3 class="font-semibold text-neutral-200">Immersive Space</h3>
-                            <p class="text-xs text-neutral-400">Simuliere 3D-Soundräume für besondere Momente.</p>
-                        </button>
-                        <button id="human-touch-button"
-                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
-                            <h3 class="font-semibold text-neutral-200">Human Touch</h3>
-                            <p class="text-xs text-neutral-400">Füge subtile Imperfektionen und Feeling hinzu.</p>
-                        </button>
-                        <button id="release-forecast-button"
-                            class="klug-btn text-left bg-neutral-900/50 border border-neutral-700/80 rounded-xl p-4 btn-transition btn-press">
-                            <h3 class="font-semibold text-neutral-200">Release Forecast</h3>
-                            <p class="text-xs text-neutral-400">Plane Veröffentlichungen mit datengetriebenen Impulsen.
-                            </p>
-                        </button>
-                    </div>
-                </div>
+                </section>
             </div>
         </div>
 
@@ -610,22 +435,22 @@
     <!-- History Sidebar -->
     <div id="history-overlay" class="fixed inset-0 bg-black/60 hidden z-[90]"></div>
     <aside id="history-panel"
-        class="fixed top-0 right-0 h-full w-[360px] max-w-[80vw] bg-neutral-900/95 border-l border-neutral-700 z-[95] translate-x-full transition-transform">
+        class="fixed top-0 right-0 h-full w-[720px] max-w-[92vw] bg-neutral-900/95 border-l border-neutral-700 z-[95] translate-x-full transition-transform">
         <div class="h-full flex flex-col">
-            <div class="p-4 border-b border-neutral-700 flex items-center justify-between">
-                <h3 class="text-lg font-semibold text-white">Verlauf</h3>
+            <div class="p-5 border-b border-neutral-700 flex items-center justify-between">
+                <h3 class="text-2xl font-semibold text-white">Verlauf</h3>
                 <div class="flex items-center gap-2">
                     <button id="history-export-all"
-                        class="text-xs px-2 py-1 rounded bg-neutral-800/70 border border-neutral-700 hover:bg-neutral-700">Export</button>
+                        class="text-sm px-3 py-1.5 rounded bg-neutral-800/70 border border-neutral-700 hover:bg-neutral-700">Export</button>
                     <button id="history-import"
-                        class="text-xs px-2 py-1 rounded bg-neutral-800/70 border border-neutral-700 hover:bg-neutral-700">Import</button>
+                        class="text-sm px-3 py-1.5 rounded bg-neutral-800/70 border border-neutral-700 hover:bg-neutral-700">Import</button>
                     <input id="history-import-file" type="file" accept="application/json" class="hidden" />
                     <button id="history-clear"
-                        class="text-xs px-2 py-1 rounded bg-red-900/40 border border-red-700 hover:bg-red-800/60">Leeren</button>
-                    <button id="history-close" class="text-xl text-neutral-400 hover:text-white">&times;</button>
+                        class="text-sm px-3 py-1.5 rounded bg-red-900/40 border border-red-700 hover:bg-red-800/60">Leeren</button>
+                    <button id="history-close" class="text-2xl text-neutral-400 hover:text-white">&times;</button>
                 </div>
             </div>
-            <div id="history-list" class="flex-1 overflow-auto p-3 space-y-2"></div>
+            <div id="history-list" class="flex-1 overflow-auto p-4 space-y-3"></div>
         </div>
     </aside>
 

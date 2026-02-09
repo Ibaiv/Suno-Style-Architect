@@ -294,19 +294,19 @@
     listEl.innerHTML = '';
     items.forEach(item=>{
       const div = document.createElement('div');
-      div.className = 'history-item p-3';
+      div.className = 'history-item p-4';
       div.innerHTML = `
         <div class="flex items-start justify-between gap-2">
           <div class="min-w-0">
-            <div class="history-title text-sm text-neutral-200">${escapeHtml(item.content)}</div>
+            <div class="history-title text-base text-neutral-200">${escapeHtml(item.content)}</div>
             <div class="history-meta">${fmtDate(item.createdAt)} ${item.idea? '· '+escapeHtml(item.idea): ''}</div>
           </div>
           <button class="favorite-btn ${item.favorite? 'text-yellow-400':'text-neutral-400'}" title="Favorit">★</button>
         </div>
         <div class="history-actions mt-2 flex gap-2">
-          <button class="px-2 py-1 rounded bg-neutral-800/70 border border-neutral-700 hover:bg-neutral-700" data-act="restore">Wiederherstellen</button>
-          <button class="px-2 py-1 rounded bg-neutral-800/70 border border-neutral-700 hover:bg-neutral-700" data-act="duplicate">Duplizieren</button>
-          <button class="px-2 py-1 rounded bg-red-900/40 border border-red-700 hover:bg-red-800/60" data-act="delete">Löschen</button>
+          <button class="text-sm px-3 py-1.5 rounded bg-neutral-800/70 border border-neutral-700 hover:bg-neutral-700" data-act="restore">Wiederherstellen</button>
+          <button class="text-sm px-3 py-1.5 rounded bg-neutral-800/70 border border-neutral-700 hover:bg-neutral-700" data-act="duplicate">Duplizieren</button>
+          <button class="text-sm px-3 py-1.5 rounded bg-red-900/40 border border-red-700 hover:bg-red-800/60" data-act="delete">Löschen</button>
         </div>`;
       // wire
       div.querySelector('.favorite-btn').addEventListener('click', ()=> setFavorite(item.id, !item.favorite));
