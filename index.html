@@ -101,50 +101,41 @@
         </div>
     </div>
 
-    <main class="w-full max-w-[1900px] 2xl:max-w-[2100px] mx-auto p-4 md:p-8 lg:p-12" id="main-app"
+    <main class="w-full max-w-[1900px] 2xl:max-w-[2100px] mx-auto p-3 md:p-5 lg:p-6" id="main-app"
         style="display: none;">
         <!-- ### HEADER ### -->
-        <header class="text-center mb-10 md:mb-16">
-            <div class="inline-flex justify-center items-center gap-4 mb-3">
-                <div
-                    class="w-12 h-12 bg-blue-600/20 border border-blue-500/30 rounded-2xl flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                        class="text-blue-400">
-                        <path d="M9 18V5l12-2v13" />
-                        <circle cx="6" cy="18" r="3" />
-                        <circle cx="18" cy="16" r="3" />
-                    </svg>
+        <header class="app-menu-bar mb-4 md:mb-6">
+            <div class="app-menu-main">
+                <div class="app-menu-brand">
+                    <div class="app-menu-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                            class="text-blue-400">
+                            <path d="M9 18V5l12-2v13" />
+                            <circle cx="6" cy="18" r="3" />
+                            <circle cx="18" cy="16" r="3" />
+                        </svg>
+                    </div>
+                    <h1 class="app-menu-title">Suno Style Architect</h1>
                 </div>
-                <h1
-                    class="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-white to-neutral-300 tracking-tight">
-                    Suno Style Architect</h1>
-            </div>
-            <p class="text-neutral-400 max-w-2xl mx-auto text-lg">Erschaffe meisterhafte Prompts für die Suno Musik-KI.
-                Von der ersten Idee zum perfekten Stil.</p>
 
-            <!-- Settings indicator + toolbar -->
-            <div class="mt-4 flex items-center justify-center gap-2 text-xs text-neutral-500">
-                <span id="current-model" class="bg-neutral-800/50 px-2 py-1 rounded-full">GPT-5 mini</span>
-                <button id="change-settings-button"
-                    class="bg-neutral-800/50 hover:bg-neutral-700/50 px-2 py-1 rounded-full transition-colors">⚙️
-                    Ändern</button>
-                <span class="mx-2">·</span>
-                <button id="history-toggle-button"
-                    class="bg-neutral-800/50 hover:bg-neutral-700/50 px-2 py-1 rounded-full transition-colors">🕘
-                    Verlauf</button>
-                <button id="help-shortcuts-button"
-                    class="bg-neutral-800/50 hover:bg-neutral-700/50 px-2 py-1 rounded-full transition-colors"
-                    title="Tastenkürzel anzeigen">⌘K</button>
-                <button id="shortcuts-settings-button"
-                    class="bg-neutral-800/50 hover:bg-neutral-700/50 px-2 py-1 rounded-full transition-colors"
-                    title="Tastenkürzel anpassen">⚡ Shortcuts</button>
+                <div class="app-menu-controls">
+                    <span id="current-model" class="app-menu-chip">GPT-5 mini</span>
+                    <button id="change-settings-button"
+                        class="app-menu-chip">⚙️ Ändern</button>
+                    <button id="history-toggle-button"
+                        class="app-menu-chip">🕘 Verlauf</button>
+                    <button id="help-shortcuts-button"
+                        class="app-menu-chip" title="Tastenkürzel anzeigen">⌘K</button>
+                    <button id="shortcuts-settings-button"
+                        class="app-menu-chip" title="Tastenkürzel anpassen">⚡ Shortcuts</button>
+                </div>
             </div>
         </header>
 
         <!-- ### MAIN INTERFACE LAYOUT ### -->
-        <div class="flex flex-col gap-8 lg:gap-12">
-            <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8 lg:gap-12">
+        <div class="flex flex-col gap-6 lg:gap-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8">
                 <!-- ## ROW 1, COL 1: IDEA INPUT ## -->
                 <div
                     class="bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20 flex flex-col">
@@ -418,7 +409,7 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 xl:grid-cols-3 gap-8 lg:gap-12">
+            <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 lg:gap-8">
                 <!-- ## ROW 2, COL 1: EXPERT REFINEMENT ## -->
                 <div id="expert-container"
                     class="bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl p-6 shadow-2xl shadow-black/20 inactive-box">

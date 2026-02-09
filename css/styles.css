@@ -13,6 +13,130 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
+/* App Menu Bar (Compact Top Header) */
+.app-menu-bar {
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.32);
+    padding: 10px 14px;
+}
+
+.app-menu-main {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+}
+
+.app-menu-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+.app-menu-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 14px;
+    border: 1px solid rgba(59, 130, 246, 0.35);
+    background: rgba(37, 99, 235, 0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+}
+
+.app-menu-title {
+    margin: 0;
+    font-size: 1.2rem;
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    font-weight: 700;
+    color: #f8fafc;
+    white-space: nowrap;
+}
+
+.app-menu-controls {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.app-menu-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 9999px;
+    background: rgba(15, 23, 42, 0.48);
+    color: #cbd5e1;
+    font-size: 0.74rem;
+    line-height: 1;
+    padding: 7px 11px;
+    white-space: nowrap;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+button.app-menu-chip {
+    cursor: pointer;
+}
+
+button.app-menu-chip:hover {
+    background: rgba(30, 41, 59, 0.72);
+    border-color: rgba(148, 163, 184, 0.35);
+    color: #f1f5f9;
+}
+
+@media (min-width: 1024px) {
+    .app-menu-title {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 1100px) {
+    .app-menu-main {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .app-menu-controls {
+        width: 100%;
+        justify-content: flex-start;
+    }
+}
+
+@media (max-width: 600px) {
+    .app-menu-bar {
+        padding: 9px 11px;
+        border-radius: 16px;
+    }
+
+    .app-menu-icon {
+        width: 34px;
+        height: 34px;
+        border-radius: 11px;
+    }
+
+    .app-menu-title {
+        font-size: 1.05rem;
+    }
+
+    .app-menu-controls {
+        gap: 6px;
+    }
+
+    .app-menu-chip {
+        font-size: 0.7rem;
+        padding: 6px 10px;
+    }
+}
+
 /* Glassmorphism Containers */
 .bg-neutral-800\/20,
 .bg-neutral-900\/70,
