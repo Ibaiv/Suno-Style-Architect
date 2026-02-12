@@ -1,0 +1,7 @@
+{
+  "id": "field_recording_ambient",
+  "name": "Field Recording Ambient",
+  "icon": "🎙️",
+  "group": "ambient_group",
+  "content": "<h1>Field Recording Ambient (Platzhalter)</h1><p>Dies ist ein Platzhaltertext fuer die kommende Field-Recording-Ambient-Welt in der Kreativ-Bibliothek.</p><p>Beispielbegriffe: <span class=\"interactive-term\" data-term=\"Field Recording\">Field Recording</span>, <span class=\"interactive-term\" data-term=\"Spatial Depth\">Spatial Depth</span>, <span class=\"interactive-term\" data-term=\"Nature Soundscape\">Nature Soundscape</span>.</p>"
+}

@@ -1702,454 +1702,9 @@ const CREATIVE_WORLDS = {
             <p>Das moderne Orchester ist somit kein Bruch mit der Renaissance, sondern die technologische und soziologische Hochskalierung des Consort-Gedankens: Eine Versammlung von Familien, die gelernt haben, trotz ihrer Unterschiede in einer gemeinsamen Stimmung zu sprechen.</p>
         `
     },
-    garage: {
-        id: 'garage',
-        name: 'Garage Rock',
-        icon: '🎸',
-        wikiContent: `
-            <h1>Die Anatomie des Garage Rock: Eine tiefgreifende Analyse von Stil, Technik und soziokultureller Dimension</h1>
-
-            <h2>1. Einleitung: Die Garage als musikalisches und kulturelles Epizentrum</h2>
-            <p>Der Stil „<span class="interactive-term" data-term="Garage Band">Garage Band</span>“ oder <span class="interactive-term" data-term="Garage Rock">Garage Rock</span> repräsentiert eine der authentischsten und einflussreichsten Strömungen in der Geschichte der <span class="interactive-term" data-term="Populäre Musik">populären Musik</span>. Es handelt sich dabei nicht lediglich um ein <span class="interactive-term" data-term="Genre">Genre</span>, sondern um einen umfassenden ästhetischen Entwurf, der auf den Prinzipien der <span class="interactive-term" data-term="Unmittelbarkeit">Unmittelbarkeit</span>, der <span class="interactive-term" data-term="Technische Unvollkommenheit">technischen Unvollkommenheit</span> und einer kompromisslosen <span class="interactive-term" data-term="Energetische Entladung">energetischen Entladung</span> basiert. Ursprünglich in den frühen bis mittleren 1960er Jahren in Nordamerika entstanden, markiert der Garage Rock den Moment, in dem die <span class="interactive-term" data-term="Musikproduktion">Musikproduktion</span> aus den Händen professioneller Studios in die privaten Sphären von <span class="interactive-term" data-term="Amateure">Amateuren</span> und Jugendlichen überging.</p>
-            <p>Die <span class="interactive-term" data-term="Garage">Garage</span> fungiert hierbei als Metapher und physische Realität zugleich. Sie ist der Ort, an dem soziale Zwänge pausieren und eine neue Form der <span class="interactive-term" data-term="Klangliche Freiheit">klanglichen Freiheit</span> artikuliert wird. Diese Analyse untersucht das gesamte Spektrum dieses Stils – von den physikalischen Gegebenheiten der <span class="interactive-term" data-term="Betonwände">Betonwände</span> über die spezifische Schaltung früher <span class="interactive-term" data-term="Fuzz-Pedale">Fuzz-Pedale</span> bis hin zu den soziologischen Spannungsfeldern der amerikanischen Suburbs. Ziel ist es, ein tiefgreifendes Verständnis dafür zu vermitteln, warum ein technisch oft „unzulänglicher“ Stil die DNA von <span class="interactive-term" data-term="Punk">Punk</span>, <span class="interactive-term" data-term="Grunge">Grunge</span> und modernem <span class="interactive-term" data-term="Indie-Rock">Indie-Rock</span> so nachhaltig prägen konnte.</p>
-
-            <h2>2. Historische Genese: Von der British Invasion zur Geburtsstunde des DIY</h2>
-
-            <h3>Der katalytische Einfluss der British Invasion</h3>
-            <p>Die Entstehung des Garage Rock ist untrennbar mit dem massiven kulturellen Einschlag der „<span class="interactive-term" data-term="British Invasion">British Invasion</span>“ ab 1964 verknüpft. Bands wie <span class="interactive-term" data-term="The Beatles">The Beatles</span>, <span class="interactive-term" data-term="The Rolling Stones">The Rolling Stones</span>, <span class="interactive-term" data-term="The Kinks">The Kinks</span> und <span class="interactive-term" data-term="The Yardbirds">The Yardbirds</span> fungierten als primäre Katalysatoren, die tausende US-amerikanische Jugendliche dazu motivierten, selbst <span class="interactive-term" data-term="Instrumente">Instrumente</span> zu ergreifen. Während die britischen Vorbilder oft tiefe Wurzeln im <span class="interactive-term" data-term="Blues">Blues</span> und <span class="interactive-term" data-term="R&B">R&B</span> hatten und teilweise über eine fundierte musikalische Ausbildung verfügten, war die amerikanische Reaktion darauf durch eine radikale <span class="interactive-term" data-term="Autodidaktik">Autodidaktik</span> gekennzeichnet.</p>
-            <p>Zwischen 1963 und 1968 bildeten sich schätzungsweise über 180.000 Bands in den Vereinigten Staaten. Diese jungen Musiker, oft High-School- oder College-Studenten, versuchten den <span class="interactive-term" data-term="Sound">Sound</span> ihrer Idole zu replizieren, was aufgrund mangelnder technischer Fähigkeiten und begrenzter finanzieller Mittel zu einer drastischen Vereinfachung und einer gleichzeitigen Steigerung der <span class="interactive-term" data-term="Aggressivität">Aggressivität</span> führte.</p>
-
-            <h3>Die Ära der „Nuggets“ und die Definition durch Lenny Kaye</h3>
-            <p>Interessanterweise war „Garage Rock“ in den 1960er Jahren kein anerkannter Begriff. Die Bands betrachteten sich selbst schlicht als <span class="interactive-term" data-term="Rock-'n'-Roll-Gruppen">Rock-'n'-Roll-Gruppen</span>. Erst retrospektiv wurde der Stil durch Kritiker wie <span class="interactive-term" data-term="Dave Marsh">Dave Marsh</span>, <span class="interactive-term" data-term="Lester Bangs">Lester Bangs</span> und insbesondere <span class="interactive-term" data-term="Lenny Kaye">Lenny Kaye</span> als eigenständiges Genre identifiziert.</p>
-
-            <table class="w-full text-left text-sm border-collapse my-4">
-                <thead>
-                    <tr class="border-b border-white/20">
-                        <th class="p-2">Schlüsselmoment</th>
-                        <th class="p-2">Jahr</th>
-                        <th class="p-2">Bedeutung</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="border-b border-white/10">
-                        <td class="p-2">Erfolg von „<span class="interactive-term" data-term="Louie Louie">Louie Louie</span>“</td>
-                        <td class="p-2">1963</td>
-                        <td class="p-2">Die Band <span class="interactive-term" data-term="The Kingsmen">The Kingsmen</span> liefert die Blaupause für den <span class="interactive-term" data-term="Garage-Sound">Garage-Sound</span>: <span class="interactive-term" data-term="Rau">Rau</span>, <span class="interactive-term" data-term="Simpel">simpel</span>, <span class="interactive-term" data-term="Energetisch">energetisch</span>.</td>
-                    </tr>
-                    <tr class="border-b border-white/10">
-                        <td class="p-2"><span class="interactive-term" data-term="British Invasion">British Invasion</span></td>
-                        <td class="p-2">1964</td>
-                        <td class="p-2">Massive Motivationswelle für US-Jugendliche, Bands zu gründen.</td>
-                    </tr>
-                    <tr class="border-b border-white/10">
-                        <td class="p-2"><span class="interactive-term" data-term="Nuggets Compilation">Nuggets Compilation</span></td>
-                        <td class="p-2">1972</td>
-                        <td class="p-2"><span class="interactive-term" data-term="Lenny Kaye">Lenny Kaye</span> kuratiert die erste umfassende Werkschau und definiert den „<span class="interactive-term" data-term="Punk Rock Charakter">Punk Rock“-Charakter</span>.</td>
-                    </tr>
-                    <tr class="border-b border-white/10">
-                        <td class="p-2"><span class="interactive-term" data-term="Punk-Explosion">Punk-Explosion</span></td>
-                        <td class="p-2">1976</td>
-                        <td class="p-2">Bands wie die <span class="interactive-term" data-term="Ramones">Ramones</span> greifen den <span class="interactive-term" data-term="Garage-DIY-Ethos">Garage-DIY-Ethos</span> auf und radikalisieren ihn.</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <p>Die Veröffentlichung der Doppel-LP <em><span class="interactive-term" data-term="Nuggets: Original Artyfacts">Nuggets: Original Artyfacts from the First Psychedelic Era, 1965-1968</span></em> im Jahr 1972 war instrumental für die Kanonisierung des Genres. Kaye beschrieb die darauf enthaltenen Gruppen als „unprofessionell“ und „berserkerhaft“ – Attribute, die er positiv besetzte, um die <span class="interactive-term" data-term="Vitalität">Vitalität</span> der Musik gegenüber dem zunehmend komplexeren <span class="interactive-term" data-term="Progressive Rock">Progressive Rock</span> der frühen 70er Jahre abzugrenzen.</p>
-
-            <h3>Regionale Szenen und die US-amerikanische Antwort auf den Beat</h3>
-            <p>Garage Rock war ein tief regionales Phänomen. Da nationale Radiosender schwer zu erreichen waren, florierten lokale Szenen, die durch eigene Radiostationen und „<span class="interactive-term" data-term="Battles of the Bands">Battles of the Bands</span>“ gestützt wurden.</p>
-            <ul>
-                <li><strong>Pazifischer Nordwesten (Tacoma/Seattle/Portland):</strong> Bekannt für einen besonders harten <span class="interactive-term" data-term="R&B-beeinflussten Sound">R&B-beeinflussten Sound</span>. Wegweisend waren hier <span class="interactive-term" data-term="The Sonics">The Sonics</span> und <span class="interactive-term" data-term="The Kingsmen">The Kingsmen</span>.</li>
-                <li><strong>Detroit:</strong> Ein Zentrum für <span class="interactive-term" data-term="Proto-Punkige Aggressivität">proto-punkige Aggressivität</span> mit Bands wie <span class="interactive-term" data-term="? and the Mysterians">? and the Mysterians</span> und später <span class="interactive-term" data-term="The Stooges">The Stooges</span>.</li>
-                <li><strong>Texas:</strong> Hier mischten sich oft <span class="interactive-term" data-term="Psychedelische Elemente">psychedelische Elemente</span> unter den Garage-Sound, prominent vertreten durch die <span class="interactive-term" data-term="13th Floor Elevators">13th Floor Elevators</span>.</li>
-            </ul>
-
-            <h2>3. Die Akustik der Garage: Raumakustische Determinanten des Sounds</h2>
-
-            <h3>Physische Raumcharakteristika und klangliche Konsequenzen</h3>
-            <p>Die Garage als <span class="interactive-term" data-term="Akustische Umgebung">akustische Umgebung</span> unterscheidet sich fundamental von einem professionellen Aufnahmestudio. Die physikalischen Eigenschaften dieser Räume diktieren den klanglichen Charakter der darin entstehenden Musik.</p>
-            <ol>
-                <li><strong><span class="interactive-term" data-term="Harte Reflexionsoberflächen">Harte Reflexionsoberflächen</span>:</strong> Die meisten Garagen verfügen über <span class="interactive-term" data-term="Betonböden">Betonböden</span> und unverputzte Wände. Diese Oberflächen sind hochgradig <span class="interactive-term" data-term="Schallreflektierend">schallreflektierend</span>. Dies führt zu einer massiven Anreicherung des Signals mit <span class="interactive-term" data-term="Kurze harte Reflexionen">kurzen, harten Reflexionen</span>, die den typischen „<span class="interactive-term" data-term="Boxiger Klang">boxigen</span>“ und <span class="interactive-term" data-term="Blecherner Klang">blechernen Klang</span> erzeugen.</li>
-                <li><strong><span class="interactive-term" data-term="Flatterecho">Flatterecho</span>:</strong> Aufgrund der oft parallel verlaufenden Wände in Standardgaragen entstehen Flatterechos, bei denen der Schall zwischen den Flächen hin- und hergeworfen wird, was insbesondere bei <span class="interactive-term" data-term="Perkussive Klänge">perkussiven Klängen</span> (<span class="interactive-term" data-term="Snare">Snare</span>, <span class="interactive-term" data-term="Gitarrenanschläge">Gitarrenanschläge</span>) störend wirken kann.</li>
-                <li><strong><span class="interactive-term" data-term="Mangelnde Basskontrolle">Mangelnde Basskontrolle</span>:</strong> Garagen sind oft nicht massiv genug gebaut, um <span class="interactive-term" data-term="Tiefe Frequenzen">tiefe Frequenzen</span> zu isolieren. Gleichzeitig fehlen <span class="interactive-term" data-term="Diffusoren">Diffusoren</span>, was zu unkontrollierten <span class="interactive-term" data-term="Bassansammlungen">Bassansammlungen</span> in den Ecken führt, dem sogenannten „<span class="interactive-term" data-term="Low-End Rumble">Low-End Rumble</span>“.</li>
-            </ol>
-
-            <h3>DIY-Akustikbehandlung: Strategien zur Klangkontrolle</h3>
-            <p>Musiker im Garage-Kontext entwickelten pragmatische, kostengünstige Lösungen, um diese akustischen Widrigkeiten zu bändigen.</p>
-
-            <table class="w-full text-left text-sm border-collapse my-4">
-                <thead>
-                    <tr class="border-b border-white/20">
-                        <th class="p-2">Akustische Herausforderung</th>
-                        <th class="p-2">DIY-Maßnahme</th>
-                        <th class="p-2">Effekt</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="border-b border-white/10">
-                        <td class="p-2"><span class="interactive-term" data-term="Übermäßiger Hall">Übermäßiger Hall</span></td>
-                        <td class="p-2">Aufhängen von schweren Decken, Vorhängen oder Teppichen an den Wänden.</td>
-                        <td class="p-2"><span class="interactive-term" data-term="Absorption von Hochfrequenzenergie">Absorption von Hochfrequenzenergie</span>, Beruhigung des <span class="interactive-term" data-term="Raumbild">Raumbildes</span>.</td>
-                    </tr>
-                    <tr class="border-b border-white/10">
-                        <td class="p-2"><span class="interactive-term" data-term="Betonboden-Reflexion">Betonboden-Reflexion</span> / <span class="interactive-term" data-term="Bassdröhnen">Bassdröhnen</span></td>
-                        <td class="p-2">Auslegen von alten Teppichresten oder Gummimatten. Platzieren von alten Matratzen oder Sofas in den Raumecken.</td>
-                        <td class="p-2">Reduktion von <span class="interactive-term" data-term="Bodenreflexionen">Bodenreflexionen</span>, <span class="interactive-term" data-term="Dämpfung von Vibrationen">Dämpfung von Vibrationen</span>. Improvisierte <span class="interactive-term" data-term="Bassfallen">Bassfallen (Bass Traps)</span> zur Kontrolle tiefer Frequenzen.</td>
-                    </tr>
-                    <tr class="border-b border-white/10">
-                        <td class="p-2"><span class="interactive-term" data-term="Übersprechen">Übersprechen (Bleed)</span></td>
-                        <td class="p-2">Räumliche Trennung der <span class="interactive-term" data-term="Verstärker">Verstärker</span> durch improvisierte Stellwände (<span class="interactive-term" data-term="Gobos">Gobos</span>).</td>
-                        <td class="p-2">Bessere Trennung der Instrumente auf den <span class="interactive-term" data-term="Mikrofonspuren">Mikrofonspuren</span>.</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h3>Die Garage als „Liminaler Raum“ der Produktion</h3>
-            <p>Soziologisch betrachtet ist die Garage ein „<span class="interactive-term" data-term="Liminaler Raum">liminaler</span>“ (schwellenartiger) Ort – er ist weder ganz innen (Wohnraum) noch ganz außen (öffentlicher Raum). Diese Zwischenposition spiegelt sich in der Produktion wider: Die Erwartungen an die Perfektion sind niedrig, was <span class="interactive-term" data-term="Experimentierfreude">Experimentierfreude</span> und <span class="interactive-term" data-term="Lautstärke">Lautstärke</span> begünstigt. Die Garage erlaubt „Flexibilität“ und hat „niedrige Kosten“, was den Druck nimmt, sofort ein massentaugliches Produkt abliefern zu müssen. Dies ist die Geburtsstunde der „<span class="interactive-term" data-term="Lo-Fi-Ästhetik">Lo-Fi“-Ästhetik</span>: Der <span class="interactive-term" data-term="Raumklang">Raumklang</span> wird nicht kaschiert, sondern zum integralen Bestandteil der musikalischen Identität.</p>
-
-            <h2>4. Instrumentierung und Klangästhetik: Das Arsenal der Garage-Bands</h2>
-
-            <h3>Die elektrische Gitarre: Zwischen Billigmarken und Ikonen</h3>
-            <p>Die <span class="interactive-term" data-term="Gitarre">Gitarre</span> ist das Herzstück des Garage-Sounds. Während Profibands der Ära oft auf <span class="interactive-term" data-term="Gibson Les Pauls">Gibson Les Pauls</span> oder <span class="interactive-term" data-term="High-End Fenders">High-End Fenders</span> setzten, griffen Garage-Bands häufig zu dem, was verfügbar und erschwinglich war.</p>
-            <ul>
-                <li><strong><span class="interactive-term" data-term="Fender Student Models">Fender Student Models</span>:</strong> Gitarren wie die <span class="interactive-term" data-term="Fender Mustang">Fender Mustang</span>, <span class="interactive-term" data-term="Duo-Sonic">Duo-Sonic</span> oder <span class="interactive-term" data-term="Musicmaster">Musicmaster</span> waren aufgrund ihrer kürzeren <span class="interactive-term" data-term="Mensur">Mensur</span> und des günstigeren Preises sehr beliebt. Ihr <span class="interactive-term" data-term="Dünner drahtiger Sound">dünnerer, drahtiger Sound</span> passte perfekt zur aggressiven Spielweise.</li>
-                <li><strong><span class="interactive-term" data-term="Mail-Order Gitarren">Mail-Order Gitarren</span>:</strong> Marken wie <span class="interactive-term" data-term="Silvertone">Silvertone</span> (verkauft über Sears) oder <span class="interactive-term" data-term="Airline">Airline</span> (Montgomery Ward) waren weit verbreitet. Diese Instrumente hatten oft einzigartige <span class="interactive-term" data-term="Tonabnehmer">Tonabnehmer</span> (z. B. „<span class="interactive-term" data-term="Lipstick-Pickups">Lipstick“-Pickups</span>), die einen <span class="interactive-term" data-term="Hohler twangiger Sound">hohlen, twangigen Sound</span> erzeugten.</li>
-                <li><strong>Europäische und Japanische Importe:</strong> Marken wie <span class="interactive-term" data-term="Vox">Vox</span> (England), <span class="interactive-term" data-term="Eko">Eko</span> (Italien) oder <span class="interactive-term" data-term="Teisco">Teisco</span> (Japan) brachten exotische Designs und oft eigenwillige Elektronik in die Garagen, was zu experimentellen Klangfarben führte.</li>
-            </ul>
-
-            <h3>Die Revolution des Fuzz: Verzerrung als klangliches Leitmotiv</h3>
-            <p>Der Einsatz von <span class="interactive-term" data-term="Distortion">Distortion</span> ist das definierende Merkmal des Garage Rock. Bevor Verstärker über integrierte Master-Volume-Regler verfügten, war der <span class="interactive-term" data-term="Fuzzbox-Effekt">Fuzzbox-Effekt</span> die einzige Möglichkeit, bei moderater Lautstärke massive <span class="interactive-term" data-term="Verzerrung">Verzerrung</span> zu erzielen. Ein Schlüsselmoment war die Veröffentlichung von „<span class="interactive-term" data-term="Satisfaction">Satisfaction</span>“ der Rolling Stones (1965), das den <span class="interactive-term" data-term="Maestro FZ-1 Fuzz-Tone">Maestro FZ-1 Fuzz-Tone</span> bekannt machte. Garage-Gitarristen nutzten den Fuzz jedoch nicht nur für Soli, sondern oft für das gesamte Rhythmusspiel, was zu einer massiven, <span class="interactive-term" data-term="Harmonisch gesättigte Klangwand">harmonisch gesättigten Klangwand</span> führte.</p>
-
-            <table class="w-full text-left text-sm border-collapse my-4">
-                <thead>
-                    <tr class="border-b border-white/20">
-                        <th class="p-2">Effektgerät</th>
-                        <th class="p-2">Sound-Charakteristik</th>
-                        <th class="p-2">Berühmtes Beispiel</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="border-b border-white/10">
-                        <td class="p-2"><span class="interactive-term" data-term="Gibson Maestro FZ-1">Gibson Maestro FZ-1</span></td>
-                        <td class="p-2"><span class="interactive-term" data-term="Sägend">Sägend</span>, <span class="interactive-term" data-term="Dünn">dünn</span>, <span class="interactive-term" data-term="Nasaler Fuzz">nasaler Fuzz</span>.</td>
-                        <td class="p-2"><span class="interactive-term" data-term="The Standells">The Standells</span> – „Dirty Water“</td>
-                    </tr>
-                    <tr class="border-b border-white/10">
-                        <td class="p-2"><span class="interactive-term" data-term="Arbiter Fuzz Face">Arbiter Fuzz Face</span></td>
-                        <td class="p-2"><span class="interactive-term" data-term="Cremig">Cremiger</span>, <span class="interactive-term" data-term="Dick">dicker</span>, <span class="interactive-term" data-term="Sustain-reich">sustain-reicher</span>.</td>
-                        <td class="p-2"><span class="interactive-term" data-term="Blue Cheer">Blue Cheer</span> (späterer Garage/Hard Rock)</td>
-                    </tr>
-                    <tr class="border-b border-white/10">
-                        <td class="p-2"><span class="interactive-term" data-term="Vox Tone Bender">Vox Tone Bender</span></td>
-                        <td class="p-2"><span class="interactive-term" data-term="Scharf">Scharf</span>, <span class="interactive-term" data-term="Aggressiv">aggressiv</span>, <span class="interactive-term" data-term="Obertonreich">obertonreich</span>.</td>
-                        <td class="p-2">Viele britisch beeinflusste Garage-Acts.</td>
-                    </tr>
-                    <tr class="border-b border-white/10">
-                        <td class="p-2"><span class="interactive-term" data-term="EHX Big Muff">EHX Big Muff</span></td>
-                        <td class="p-2"><span class="interactive-term" data-term="Massiv">Massiv</span>, <span class="interactive-term" data-term="Basslastig">basslastig</span>, „<span class="interactive-term" data-term="Wall of Sound">Wall of Sound</span>“.</td>
-                        <td class="p-2"><span class="interactive-term" data-term="The White Stripes">The White Stripes</span> (Modern Garage)</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h3>Combo-Orgeln: Der Farfisa- und Vox-Sound</h3>
-            <p>In vielen Garage-Bands ersetzte eine <span class="interactive-term" data-term="Combo-Orgel">Combo-Orgel</span> die zweite Gitarre oder ergänzte sie. Im Gegensatz zu der warmen, rotierenden <span class="interactive-term" data-term="Hammond-Orgel">Hammond-Orgel</span> zeichnen sich Combo-Orgeln durch einen <span class="interactive-term" data-term="Schneidender Transistor-Klang">schneidenden, fast schon „billigen“ Transistor-Klang</span> aus.</p>
-            <ul>
-                <li><strong><span class="interactive-term" data-term="Vox Continental">Vox Continental</span>:</strong> Bekannt für ihren <span class="interactive-term" data-term="Klarer flötenartiger Ton">klaren, flötenartigen Ton</span>. Sie wurde oft von Bands wie den <span class="interactive-term" data-term="Animals">Animals</span> oder <span class="interactive-term" data-term="Paul Revere & The Raiders">Paul Revere & The Raiders</span> eingesetzt.</li>
-                <li><strong><span class="interactive-term" data-term="Farfisa Compact">Farfisa (Compact Serie)</span>:</strong> Diese italienischen Orgeln klingen deutlich „<span class="interactive-term" data-term="Reedy">reedy</span>“ (rohrblattartig) und <span class="interactive-term" data-term="Perkussiv">perkussiver</span>. Ihr durchdringender Sound ist ein Markenzeichen von Acts wie <span class="interactive-term" data-term="Sam the Sham & the Pharaohs">Sam the Sham & the Pharaohs</span> („Wooly Bully“) oder <span class="interactive-term" data-term="? and the Mysterians">? and the Mysterians</span> („96 Tears“).</li>
-            </ul>
-
-            <h3>Rhythmusgruppe: Physische Schlagzeugästhetik und Perkussion</h3>
-            <p>Das <span class="interactive-term" data-term="Schlagzeugspiel">Schlagzeugspiel</span> im Garage Rock ist geprägt von einer „<span class="interactive-term" data-term="Kick-Snare-Hi-Hat-Einfachheit">Kick-Snare-Hi-Hat“-Einfachheit</span>, die jedoch mit maximaler physischer Kraft ausgeführt wird.</p>
-            <ul>
-                <li><strong><span class="interactive-term" data-term="Direkter Backbeat">Direkter Backbeat</span>:</strong> Fokus auf die Zählzeiten 2 und 4. Komplexität wird zugunsten von Energie geopfert.</li>
-                <li><strong><span class="interactive-term" data-term="Bleche">Bleche</span>:</strong> Oft wurden große, laute <span class="interactive-term" data-term="Becken">Becken</span> verwendet, die den Mix mit <span class="interactive-term" data-term="Rauschen">Rauschen</span> füllen – ein Effekt, der durch die akustischen Reflexionen der Garage noch verstärkt wurde.</li>
-                <li><strong><span class="interactive-term" data-term="Tamburine">Tamburine</span> und <span class="interactive-term" data-term="Maracas">Maracas</span>:</strong> Diese Instrumente sind im Garage Rock allgegenwärtig. Sie fügen dem Sound eine zusätzliche Ebene von rhythmischem „Dreck“ und Hektik hinzu, die das Gefühl eines wilden Live-Auftritts verstärkt.</li>
-            </ul>
-
-            <h2>5. Musikologische Analyse: Tonalität, Harmonik und Struktur</h2>
-
-            <h3>Harmonische Einfachheit und die Macht der Drei-Akkord-Struktur</h3>
-            <p>Garage Rock entzieht sich oft der Komplexität des Jazz oder Progressive Rock. Die Grundlage bilden meist einfache <span class="interactive-term" data-term="Diatonische Progressionen">diatonische Progressionen</span> in <span class="interactive-term" data-term="Dur-Tonarten">Dur-Tonarten</span>, die stark auf den Stufen <span class="interactive-term" data-term="I-IV-V">I, IV und V</span> basieren. Diese Einfachheit war sowohl eine technische Notwendigkeit als auch eine ästhetische Entscheidung. Der Verzicht auf komplexe Harmonien erlaubte es den Musikern, sich voll und ganz auf die <span class="interactive-term" data-term="Rhythmische Energie">rhythmische Energie</span> und die vordringliche Lautstärke zu konzentrieren.</p>
-
-            <h3>Die Rolle des bVII-Akkords und modale Einflüsse</h3>
-            <p>Ein charakteristisches Merkmal, das den Garage Rock vom reinen Blues oder Standard-Pop unterscheidet, ist die häufige Verwendung des <span class="interactive-term" data-term="bVII-Akkord">bVII-Akkords</span> (die erniedrigte siebte Stufe).</p>
-            <ul>
-                <li><strong>Mechanismus:</strong> In der Tonart G-Dur wäre der bVII-Akkord ein F-Dur-Akkord. Dieser stammt eigentlich aus der <span class="interactive-term" data-term="Parallel-Moll-Tonart">parallel-moll-Tonart</span> oder dem <span class="interactive-term" data-term="Mixolydischer Modus">Mixolydischen Modus</span>.</li>
-                <li><strong>Wirkung:</strong> Der Einsatz des bVII-Akkords erzeugt einen „härteren“ Klang, der die klassische <span class="interactive-term" data-term="Dominant-Auflösung">Dominant-Auflösung (V → I)</span> umgeht. Er verleiht der Musik einen rebellischen, weniger „braven“ Charakter. Beispiele finden sich in fast jedem Garage-Klassiker, von „Louie Louie“ bis zu modernen Stücken der <span class="interactive-term" data-term="The Black Keys">Black Keys</span>.</li>
-            </ul>
-
-            <h3>Songstrukturen: AABA, Verse-Chorus und der „Rave-up“</h3>
-            <p>Während frühe Garage-Bands noch oft die klassische <span class="interactive-term" data-term="AABA-Struktur">AABA-Struktur</span> (<span class="interactive-term" data-term="Strophe-Strophe-Bridge-Strophe">Strophe-Strophe-Bridge-Strophe</span>) des Pop-Songwritings der 1950er Jahre nutzten, entwickelten sie diese weiter.</p>
-            <ol>
-                <li><strong><span class="interactive-term" data-term="AABA">AABA</span>:</strong> Diese Form ist harmonisch oft in der A-Sektion verankert (<span class="interactive-term" data-term="Heimattonart">Heimattonart</span>). Die B-Sektion (<span class="interactive-term" data-term="Middle Eight">Middle Eight</span>) dient als emotionaler Kontrast, bevor die Rückkehr zum vertrauten <span class="interactive-term" data-term="Hook">Hook</span> erfolgt.</li>
-                <li><strong><span class="interactive-term" data-term="Verse-Chorus">Verse-Chorus</span>:</strong> Mit der Zunahme des Einflusses der British Invasion setzten sich Strukturen durch, die einen klaren, <span class="interactive-term" data-term="Repetitiver Refrain">repetitiven Refrain</span> als energetischen Höhepunkt in den Fokus rückten.</li>
-                <li><strong>Der „<span class="interactive-term" data-term="Rave-up">Rave-up</span>“:</strong> Ein spezifisches Garage-Stilelement, das besonders von den <span class="interactive-term" data-term="The Yardbirds">Yardbirds</span> popularisiert wurde. Es handelt sich um eine <span class="interactive-term" data-term="Instrumentale Passage">instrumentale Passage</span>, in der das <span class="interactive-term" data-term="Tempo">Tempo</span> und die <span class="interactive-term" data-term="Lautstärke">Lautstärke</span> bis zu einem chaotischen <span class="interactive-term" data-term="Crescendo">Crescendo</span> gesteigert werden, oft begleitet von <span class="interactive-term" data-term="Rückkopplungen">Rückkopplungen</span> und wildem Schlagzeugspiel.</li>
-            </ol>
-
-            <h2>6. Vokalästhetik: Grit, Schreie und die rohe Lieferung</h2>
-
-            <h3>Physiologie des Garage-Gesangs: Distortion und Power</h3>
-            <p>Der <span class="interactive-term" data-term="Gesang">Gesang</span> im Garage Rock ist weit entfernt von klassischer <span class="interactive-term" data-term="Belcanto-Technik">Belcanto-Technik</span>. Er ist <span class="interactive-term" data-term="Nasal">nasal</span>, oft <span class="interactive-term" data-term="Gerufen">gerufen</span>, <span class="interactive-term" data-term="Geschrien">geschrien</span> oder <span class="interactive-term" data-term="Geknurrt">geknurrt</span>. Die Priorität liegt auf dem emotionalen Ausdruck, nicht auf der tonalen Präzision. Vokalisten wie <span class="interactive-term" data-term="Gerry Roslie">Gerry Roslie</span> (<span class="interactive-term" data-term="The Sonics">The Sonics</span>) setzten Maßstäbe durch ihre Fähigkeit, mit einer Intensität zu schreien, die nach den Aufnahmen oft medizinische Betreuung erforderte. Dieser „<span class="interactive-term" data-term="Grit">Grit</span>“ (Rauhigkeit) wird durch eine bewusste <span class="interactive-term" data-term="Überlastung der Stimmbänder">Überlastung der Stimmbänder</span> erzielt, wobei moderne Gesangstechnik hier vor Risiken warnt und den Einsatz des <span class="interactive-term" data-term="Zwerchfell">Zwerchfells</span> betont, um die Stimme zu schützen.</p>
-
-            <h3>Vokaltechniken: False Chord vs. Fry Screaming</h3>
-            <p>In der professionellen Analyse der Rockstimme lassen sich zwei Hauptmethoden identifizieren, die im Garage-Kontext (oft intuitiv) angewendet werden.</p>
-            <ul>
-                <li><strong><span class="interactive-term" data-term="False Chord Screaming">False Chord Screaming</span>:</strong> Hierbei werden die <span class="interactive-term" data-term="Taschenfalten">Taschenfalten</span> (oberhalb der eigentlichen Stimmbänder) in Vibration versetzt. Dies erzeugt einen <span class="interactive-term" data-term="Tiefer kehlig-rauer Klang">tiefen, kehlig-rauen Klang</span>, wie man ihn oft im <span class="interactive-term" data-term="Proto-Punk">Proto-Punk</span> und harten Garage findet.</li>
-                <li><strong><span class="interactive-term" data-term="Fry Screaming">Fry Screaming</span>:</strong> Ein <span class="interactive-term" data-term="Höherer knisternder Sound">höherer, knisternder Sound</span>, der durch kontrollierte Luftzufuhr bei fast geschlossenen Stimmbändern entsteht (<span class="interactive-term" data-term="Vocal Fry">Vocal Fry</span>). Er ist weniger belastend für die Stimme und erlaubt <span class="interactive-term" data-term="Aggressiv-gepresste Vokallinien">aggressiv-gepresste Vokallinien</span>, ohne die Fähigkeit zum melodischen Singen zu verlieren.</li>
-            </ul>
-
-            <h2>7. Aufnahmepraxis und Produktion: Die Ästhetik des Unvollkommenen</h2>
-
-            <h3>Analoge Bandmaschinen und die Magie der Sättigung</h3>
-            <p>Ein wesentlicher Faktor für den Garage-Sound ist die Verwendung von <span class="interactive-term" data-term="Magnetband">Magnetband (Analog Tape)</span>. Bevor digitale DAWs (Digital Audio Workstations) zum Standard wurden, war Tape das einzige Speichermedium. Magnetband hat eine physikalische Eigenschaft namens „<span class="interactive-term" data-term="Tape Saturation">Tape Saturation</span>“: Wenn man ein Signal sehr laut aufnimmt, beginnt das Band auf eine Weise zu komprimieren und zu verzerren, die vom menschlichen Ohr als „<span class="interactive-term" data-term="Warm">warm</span>“ und „<span class="interactive-term" data-term="Druckvoll">druckvoll</span>“ wahrgenommen wird. Garage-Produzenten nutzten diesen Effekt oft exzessiv, indem sie die Pegel in den roten Bereich trieben, um eine <span class="interactive-term" data-term="Natürliche Kompression">natürliche Kompression</span> zu erreichen, die den Sound noch dichter und aggressiver machte.</p>
-
-            <h3>Mikrofonierung im Kontext von Übersprechen und Enge</h3>
-            <p>In einer Garage ist es unmöglich, Instrumente völlig voneinander zu isolieren. Wenn die ganze Band gleichzeitig aufnimmt, fängt das <span class="interactive-term" data-term="Schlagzeugmikrofon">Schlagzeugmikrofon</span> zwangsläufig auch die <span class="interactive-term" data-term="Gitarrenverstärker">Gitarrenverstärker</span> ein und umgekehrt – dies nennt man <span class="interactive-term" data-term="Bleed">Bleed</span>.</p>
-
-            <table class="w-full text-left text-sm border-collapse my-4">
-                <thead>
-                    <tr class="border-b border-white/20">
-                        <th class="p-2">Aufnahmestrategie</th>
-                        <th class="p-2">Vorteil</th>
-                        <th class="p-2">Garage-Effekt</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="border-b border-white/10">
-                        <td class="p-2"><span class="interactive-term" data-term="Minimalistisches Setup">Minimalistisches Setup</span></td>
-                        <td class="p-2">Klarheit, keine <span class="interactive-term" data-term="Phasenprobleme">Phasenprobleme</span>.</td>
-                        <td class="p-2">Nur 1-2 <span class="interactive-term" data-term="Mikrofone">Mikrofone</span> fangen die gesamte Energie des Raumes ein.</td>
-                    </tr>
-                    <tr class="border-b border-white/10">
-                        <td class="p-2"><span class="interactive-term" data-term="Zulassen von Bleed">Zulassen von Bleed</span> / <span class="interactive-term" data-term="Raummikrofone">Raummikrofone</span></td>
-                        <td class="p-2"><span class="interactive-term" data-term="Natürlicher Zusammenhalt">Natürlicher Zusammenhalt</span> der Instrumente. <span class="interactive-term" data-term="Räumliche Tiefe">Räumliche Tiefe</span>.</td>
-                        <td class="p-2">Erzeugt eine „<span class="interactive-term" data-term="Wall of Sound">Wall of Sound</span>“, bei der die Instrumente miteinander verschmelzen. Verstärkt den <span class="interactive-term" data-term="Boxiger Garage-Klang">boxigen, authentischen Garage-Klang</span>.</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h3>Fallstudie: The White Stripes und das Toe Rag Paradigma</h3>
-            <p>Ein modernes Meisterstück der Garage-Produktion ist das Album <em><span class="interactive-term" data-term="Elephant">Elephant</span></em> (2003). <span class="interactive-term" data-term="Jack White">Jack White</span> wählte die <span class="interactive-term" data-term="Toe Rag Studios">Toe Rag Studios</span> in London, weil dort ausschließlich Equipment von vor 1963 verwendet wurde. Technik: Aufnahme auf eine <span class="interactive-term" data-term="8-Spur Studer A80 Bandmaschine">8-Spur Studer A80 Bandmaschine</span>. Einschränkung: Keine Computer, kein digitales Editing. Dies zwang die Band dazu, Songs in maximal 10 Tagen einzuspielen und Fehler als Teil der Textur zu akzeptieren. Resultat: Ein Sound, der trotz seiner minimalistischen Besetzung (Gitarre/Gesang und Schlagzeug) massiv und zeitlos wirkt. Der Verzicht auf moderne Technik wurde zum größten Verkaufsargument für die Authentizität der Band.</p>
-
-            <h2>8. Soziologie und Psychologie der Garage</h2>
-
-            <h3>Vorstädtische Entfremdung und jugendlicher Widerstand</h3>
-            <p>Der Garage Rock der 1960er Jahre war eine Reaktion auf die <span class="interactive-term" data-term="Sterile Ordnung">sterile Ordnung</span> der <span class="interactive-term" data-term="Nachkriegs-Suburbs">Nachkriegs-Suburbs</span>. In einer Welt von gepflegten Vorgärten und strikten sozialen Hierarchien bot die Garage einen Raum der „Unordnung“. Die Musik artikulierte die <span class="interactive-term" data-term="Desillusionierung">Desillusionierung</span> einer Generation, die zwischen den traditionellen Werten ihrer Eltern (Normal Rockwell-Ästhetik) und den aufkommenden Spannungen durch den Vietnamkrieg und die Bürgerrechtsbewegung gefangen war. Garage Rock war keine politische Musik im Sinne von <span class="interactive-term" data-term="Protestsongs">Protestsongs</span>, aber er war politisch durch seine schiere Existenz als unkontrollierte, laute Ausdrucksform.</p>
-
-            <h3>Die Demokratisierung der Musik durch den DIY-Ethos</h3>
-            <p>Garage Rock etablierte die Idee, dass jeder eine Band gründen kann. Man musste kein <span class="interactive-term" data-term="Virtuose">Virtuose</span> sein; es reichte, „es so zu meinen, wie man es spielt“. Dieser <span class="interactive-term" data-term="DIY-Gedanke">DIY-Gedanke (Do-It-Yourself)</span> untergrub die Monopolstellung der professionellen Musikindustrie. Er besagte: Wenn das System dir keinen Platz gibt, schaffe dir deinen eigenen Platz – in der Garage.</p>
-
-            <h3>Moralische Panik und die Rebellion gegen die „Square Society“</h3>
-            <p>Die Lautstärke und die <span class="interactive-term" data-term="Sexuelle Untertönung">sexuelle Untertönung</span> des Garage Rock führten oft zu „<span class="interactive-term" data-term="Moral Panics">Moral Panics</span>“ bei Eltern und Behörden. Berühmt ist die FBI-Untersuchung des Songs „<span class="interactive-term" data-term="Louie Louie">Louie Louie</span>“ wegen angeblich obszöner Texte, die jedoch aufgrund der schlechten <span class="interactive-term" data-term="Aufnahmequalität">Aufnahmequalität</span> und des <span class="interactive-term" data-term="Vernuschelter Gesang">vernuschelten Gesangs</span> nie eindeutig nachgewiesen werden konnten – ein absurder Höhepunkt des Generationenkonflikts jener Zeit.</p>
-
-            <h2>9. Evolution und Legacy: Von Proto-Punk zu modernen Revivals</h2>
-
-            <h3>Der Übergang zum Punk und Grunge</h3>
-            <p>Als die 1960er Jahre endeten, verschwand der Garage Rock aus den Charts, aber sein Geist lebte weiter. Bands wie die <span class="interactive-term" data-term="The Stooges">Stooges</span> oder <span class="interactive-term" data-term="MC5">MC5</span> radikalisierten den Sound und wurden zu dem, was wir heute als <span class="interactive-term" data-term="Proto-Punk">Proto-Punk</span> bezeichnen. In den späten 1970er Jahren griffen die <span class="interactive-term" data-term="Ramones">Ramones</span> und die <span class="interactive-term" data-term="Sex Pistols">Sex Pistols</span> die Einfachheit und Aggressivität der 60er-Garage-Bands direkt auf. In den 1990er Jahren war der <span class="interactive-term" data-term="Grunge">Grunge</span> (<span class="interactive-term" data-term="Nirvana">Nirvana</span>, <span class="interactive-term" data-term="Soundgarden">Soundgarden</span>) im Grunde eine Rückkehr zur Garage-Ästhetik: <span class="interactive-term" data-term="Dunkler">dunkler</span>, <span class="interactive-term" data-term="Schwerer">schwerer</span>, aber mit der gleichen Ablehnung gegenüber glatten <span class="interactive-term" data-term="Mainstream-Produktionen">Mainstream-Produktionen</span> und einer starken Wurzel im <span class="interactive-term" data-term="DIY-Ethos">DIY-Ethos</span>.</p>
-
-            <h3>Zeitgenössische Vertreter: The Black Keys und Osees</h3>
-            <p>Auch im 21. Jahrhundert bleibt der Garage-Stil vital.</p>
-            <ul>
-                <li><strong><span class="interactive-term" data-term="The Black Keys">The Black Keys</span>:</strong> <span class="interactive-term" data-term="Dan Auerbach">Dan Auerbach</span> und <span class="interactive-term" data-term="Patrick Carney">Patrick Carney</span> begannen als reine <span class="interactive-term" data-term="Garage-Blues-Zweier-Besetzung">Garage-Blues-Zweier-Besetzung</span>. Ihr Sound zeichnet sich durch extrem <span class="interactive-term" data-term="Trockene Schlagzeugsounds">trockene, „dead“ klingende Schlagzeugsounds</span> und <span class="interactive-term" data-term="Fette muffige Gitarrenklänge">fette, muffige Gitarrenklänge</span> aus, die bewusst <span class="interactive-term" data-term="Lo-Fi">Lo-Fi</span> gehalten sind.</li>
-                <li><strong><span class="interactive-term" data-term="Osees">Osees</span> (<span class="interactive-term" data-term="John Dwyer">John Dwyer</span>):</strong> John Dwyer nutzt extreme <span class="interactive-term" data-term="Verzerrung">Verzerrung</span>, ungewöhnliche <span class="interactive-term" data-term="Stimmungen">Stimmungen</span> und eine hyperaktive Veröffentlichungsfrequenz, um den Geist des <span class="interactive-term" data-term="Garage-Psych-Rock">Garage-Psych-Rock</span> am Leben zu erhalten. Seine Aufnahmen zeichnen sich oft durch eine völlige Abkehr von <span class="interactive-term" data-term="Overdubs">Overdubs</span> aus – alles wird <span class="interactive-term" data-term="Live">live</span> und im Moment eingefangen.</li>
-            </ul>
-
-            <h2>10. Schlussbetrachtung: Die zeitlose Essenz der Garage</h2>
-            <p>Der Garage-Stil ist weit mehr als eine historische Fußnote der 1960er Jahre. Er ist die Manifestation eines grundlegenden menschlichen Bedürfnisses nach <span class="interactive-term" data-term="Ungefilterter Ausdruck">ungefiltertem Ausdruck</span>. Durch die Analyse seiner akustischen Umgebung, seiner spezifischen Instrumentierung und seiner soziologischen Wurzeln wird deutlich, dass Garage Rock immer dann aufblüht, wenn die Musikindustrie zu „top-heavy“ oder überproduziert wird.</p>
-            <p>Die Garage bleibt das ultimative Laboratorium der Rockmusik. Sie ist ein Ort der Unvollkommenheit, der gerade dadurch seine größte Stärke bezieht: <span class="interactive-term" data-term="Authentizität">Authentizität</span>. Solange es Jugendliche mit Instrumenten, alten Verstärkern und dem Wunsch gibt, lauter als ihre Umgebung zu sein, wird der Garage-Stil als das „skelettale“ Rückgrat des <span class="interactive-term" data-term="Rock 'n' Roll">Rock 'n' Roll</span> fortbestehen. Es ist die <span class="interactive-term" data-term="Radikale Einfachheit">radikale Einfachheit</span>, die sicherstellt, dass die Verbindung zwischen dem Gedanken des Musikers und dem Ohr des Hörers auf dem kürzesten und ehrlichsten Weg erfolgt.</p>
-        `
-    },
-    synthwave: {
-        id: 'synthwave',
-        name: 'Synthwave',
-        icon: 'Neon',
-        wikiContent: `
-            <h1>Die Ontologie des Synthesizers: Eine tiefenanalytische Untersuchung der Synthwave-Kultur, Soundästhetik und technologischen Genese</h1>
-
-            <p>Die Entstehung und Etablierung des <span class="interactive-term" data-term="Synthwave">Synthwave</span> als <span class="interactive-term" data-term="Transmediales Phänomen">transmediales Phänomen</span> markiert eine signifikante Zäsur in der <span class="interactive-term" data-term="Elektronische Musikgeschichte">elektronischen Musikgeschichte</span> des 21. Jahrhunderts. Es handelt sich hierbei nicht lediglich um ein musikalisches Genre, sondern um eine umfassende ästhetische Richtung, eine „<span class="interactive-term" data-term="Hyperrealität">Hyperrealität</span>“, die eine idealisierte Version der <span class="interactive-term" data-term="1980er Jahre">1980er Jahre</span> rekonstruiert und transformiert. Dieser Forschungsbericht widmet sich der systematischen Dekonstruktion des Synthwave, von seinen philosophischen Wurzeln in der <span class="interactive-term" data-term="Hauntology">Hauntology</span> bis hin zu den mikroskopischen Details der <span class="interactive-term" data-term="Analoge Synthese">analogen</span> und <span class="interactive-term" data-term="Digitale Synthese">digitalen Synthese</span>, des <span class="interactive-term" data-term="Mixing">Mixings</span> und der soziokulturellen Dynamiken.</p>
-
-            <h2>Die Genese der retro-futuristischen Bewegung</h2>
-            <p>Der Synthwave, auch bekannt unter den Bezeichnungen <span class="interactive-term" data-term="Retrowave">Retrowave</span>, <span class="interactive-term" data-term="Outrun">Outrun</span> oder <span class="interactive-term" data-term="Futuresynth">Futuresynth</span>, manifestierte sich Mitte bis Ende der 2000er Jahre als ein Produkt digitaler Nischen-Communities. Entgegen der landläufigen Meinung, es handele sich um eine bloße Kopie der 1980er Jahre, muss Synthwave als ein <span class="interactive-term" data-term="Originäres Genre">originäres Genre</span> verstanden werden, das alte Klänge und Techniken mit <span class="interactive-term" data-term="Moderne Produktionsstandards">modernen Produktionsstandards</span> verschmilzt.</p>
-
-            <h3>Historische Wurzeln und französische Einflüsse</h3>
-            <p>Die Wurzeln des Genres liegen paradoxerweise nicht in den 80ern selbst, sondern in der <span class="interactive-term" data-term="Französische House-Szene">französischen House-Szene</span> der 2000er Jahre. Künstler wie <span class="interactive-term" data-term="David Grellier">David Grellier</span> (<span class="interactive-term" data-term="College">College</span>) und <span class="interactive-term" data-term="Vincent Belorgey">Vincent Belorgey</span> (<span class="interactive-term" data-term="Kavinsky">Kavinsky</span>) begannen, die damals verpönten <span class="interactive-term" data-term="Synthesizer-Sounds">Synthesizer-Sounds</span> der 1980er Jahre zu rekultivieren. Während die 1990er Jahre von einer Abkehr von den „kitschigen“ Klängen der Vorjahre geprägt waren, elektrifizierten diese französischen Produzenten die Synthesizer neu und kombinierten sie mit Elementen aus <span class="interactive-term" data-term="Euro-Disco">Euro-Disco</span>, <span class="interactive-term" data-term="House">House</span> und <span class="interactive-term" data-term="Nu-Disco">Nu-Disco</span>.</p>
-            <p>Ein entscheidender Moment für die Breitenwirkung war das Erscheinen des Videospiels <em><span class="interactive-term" data-term="Grand Theft Auto: Vice City">Grand Theft Auto: Vice City</span></em> im Jahr 2002, das mit seinem Soundtrack und seiner Ästhetik die <span class="interactive-term" data-term="Miami-Vibes">Miami-Vibes</span> der 80er Jahre für eine neue Generation attraktiv machte. Diese Bewegung wurde später durch den Film <em><span class="interactive-term" data-term="Drive">Drive</span></em> (2011) und dessen Soundtrack, insbesondere den Titel „<span class="interactive-term" data-term="Nightcall">Nightcall</span>“, in den globalen Mainstream katapultiert.</p>
-
-            <table class="w-full text-left text-sm border-collapse my-4">
-                <thead>
-                    <tr class="border-b border-white/20">
-                        <th class="p-2">Ära</th>
-                        <th class="p-2">Schlüsselereignisse</th>
-                        <th class="p-2">Einfluss auf Synthwave</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="border-b border-white/10">
-                        <td class="p-2">Prä-2000er</td>
-                        <td class="p-2">Soundtracks von <span class="interactive-term" data-term="John Carpenter">John Carpenter</span>, <span class="interactive-term" data-term="Vangelis">Vangelis</span></td>
-                        <td class="p-2">Schaffung der klanglichen DNA (<span class="interactive-term" data-term="Proto-Synthwave">Proto-Synthwave</span>)</td>
-                    </tr>
-                    <tr class="border-b border-white/10">
-                        <td class="p-2">Mitte 2000er</td>
-                        <td class="p-2">Gründung des <span class="interactive-term" data-term="Valerie Collective">Valerie Collectives</span>, Kavinskys frühe EPs</td>
-                        <td class="p-2">Etablierung des „<span class="interactive-term" data-term="French Touch">French Touch</span>“ im Genre</td>
-                    </tr>
-                    <tr class="border-b border-white/10">
-                        <td class="p-2">2011-2012</td>
-                        <td class="p-2">Release von <em><span class="interactive-term" data-term="Drive">Drive</span></em> und <em><span class="interactive-term" data-term="Hotline Miami">Hotline Miami</span></em></td>
-                        <td class="p-2">Kommerzieller Durchbruch und <span class="interactive-term" data-term="Visuelle Definition">visuelle Definition</span></td>
-                    </tr>
-                    <tr class="border-b border-white/10">
-                        <td class="p-2">2016–Heute</td>
-                        <td class="p-2"><em><span class="interactive-term" data-term="Stranger Things">Stranger Things</span></em>, <em><span class="interactive-term" data-term="Thor: Ragnarok">Thor: Ragnarok</span></em></td>
-                        <td class="p-2">Vollständige kulturelle Integration</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h2>Philosophische Grundlagen: Hauntology und die verlorene Zukunft</h2>
-            <p>Um Synthwave in seiner Tiefe zu verstehen, muss der Begriff der „<span class="interactive-term" data-term="Hauntology">Hauntology</span>“ (Hantologie) herangezogen werden. Ursprünglich von <span class="interactive-term" data-term="Jacques Derrida">Jacques Derrida</span> geprägt und später von <span class="interactive-term" data-term="Mark Fisher">Mark Fisher</span> auf die Musik angewandt, beschreibt Hauntology den Zustand, in dem die Gegenwart von den „Geistern“ nicht realisierter Zukünfte heimgesucht wird.</p>
-
-            <h3>Die Melancholie der „Lost Futures“</h3>
-            <p>Synthwave-Musiker drücken oft eine <span class="interactive-term" data-term="Nostalgie">Nostalgie</span> für eine Kultur der 1980er Jahre aus, die sie teilweise selbst gar nicht miterlebt haben. Dieses Phänomen wird als „<span class="interactive-term" data-term="Anemoia">Anemoia</span>“ bezeichnet – die Sehnsucht nach einer Zeit, die man nie kannte. Fisher argumentiert, dass die elektronische Musik der 50er bis 90er Jahre als klanglicher Signifikant für die Zukunft fungierte. Da diese erwartete Zukunft jedoch niemals eintrat, verbleiben diese Klänge als spektrale Überreste einer „<span class="interactive-term" data-term="Verlorene Zukunft">verlorenen Zukunft</span>“.</p>
-            <p>Diese philosophische Dimension unterscheidet Synthwave vom reinen <span class="interactive-term" data-term="Postmodernismus">Postmodernismus</span>. Während der Postmodernismus die Vergangenheit als „glänzendes Trugbild“ nutzt, arbeitet die Hauntology im Synthwave mit den zeitlichen Disjunktionen. Die bewusste Verwendung von <span class="interactive-term" data-term="VHS-Artefakte">VHS-Artefakten</span>, <span class="interactive-term" data-term="Tape-Hiss">Tape-Hiss</span> und instabilen <span class="interactive-term" data-term="Analoge Klänge">analogen Klängen</span> dient dazu, die „Materialität der Erinnerung“ hervorzuheben. Es entsteht eine hyperreale Version des Jahrzehnts, die „80er-mäßiger als die 80er“ ist.</p>
-
-            <h2>Die technologische Architektur der Klangerzeugung</h2>
-            <p>Das Herzstück des Synthwave ist die akribische <span class="interactive-term" data-term="Sound-Programmierung">Sound-Programmierung</span>. Es geht nicht nur darum, Synthesizer zu verwenden, sondern spezifische <span class="interactive-term" data-term="Schaltungscharakteristika">Schaltungscharakteristika</span> zu emulieren.</p>
-
-            <h3>Analoge Polysynthese: Der Roland Juno-106</h3>
-                        <p>Der <span class="interactive-term" data-term="Roland Juno-106">Roland Juno-106</span> gilt als der „Heilige Gral“ des Synthwave-Sounddesigns. Sein besonderer Charakter resultiert aus den <span class="interactive-term" data-term="DCOs">digital gesteuerten analogen Oszillatoren (DCOs)</span>. Im Gegensatz zu <span class="interactive-term" data-term="VCOs">spannungsgesteuerten Oszillatoren (VCOs)</span>, die zu <span class="interactive-term" data-term="Stimmungsdrift">Stimmungsdrift</span> neigen, werden DCOs durch einen <span class="interactive-term" data-term="Mikrocontroller">Mikrocontroller</span> stabilisiert.</p>
-            <p>Technisch gesehen basiert das Design des Juno-106 auf einem Mikrocontroller-gesteuerten Taktsignal, das einen <span class="interactive-term" data-term="Rampengenerator">Rampengenerator (Integrator)</span> triggert. Die <span class="interactive-term" data-term="Entladungszeit">Entladungszeit</span> des <span class="interactive-term" data-term="Kondensator">Kondensators</span> im Integrator-Schaltkreis ist dabei entscheidend. Die <span class="interactive-term" data-term="RC-Zeitkonstante">RC-Zeitkonstante</span> des Integrators beträgt im Juno-106 R x C = 200kΩ x 1nF = 0.2ms, was einer <span class="interactive-term" data-term="Grenzfrequenz">Grenzfrequenz</span> von ca. 5 kHz entspricht und somit den gesamten musikalisch relevanten Bereich abdeckt. Die <span class="interactive-term" data-term="Sägezahnwelle">Sägezahnwelle</span> wird direkt aus dem DCO-Kern gewonnen, während die <span class="interactive-term" data-term="Pulswelle">Pulswelle</span> durch eine <span class="interactive-term" data-term="Wellenformerschaltung">Wellenformerschaltung</span> erzeugt wird.</p>
-            <p>Ein weiteres prägendes Element ist der integrierte <span class="interactive-term" data-term="Analoger Chorus">analoge Chorus</span>. Da der Juno pro Stimme nur über einen <span class="interactive-term" data-term="Oszillator">Oszillator</span> verfügt, wurde der Chorus entwickelt, um den Klang zu verbreitern und die fehlende <span class="interactive-term" data-term="Schwebung">Schwebung</span> eines zweiten Oszillators zu kompensieren.</p>
-
-            <h3>FM-Synthese: Die digitale Kälte des Yamaha DX7</h3>
-                        <p>Neben der analogen Wärme spielt die digitale <span class="interactive-term" data-term="Frequenzmodulations-Synthese">Frequenzmodulations-Synthese (FM)</span> des <span class="interactive-term" data-term="Yamaha DX7">Yamaha DX7</span> eine zentrale Rolle für <span class="interactive-term" data-term="Gläserne Pads">gläserne Pads</span> und <span class="interactive-term" data-term="Metallische Bässe">metallische Bässe</span>. Die FM-Synthese basiert auf der Modulation der Frequenz eines <span class="interactive-term" data-term="Trägeroszillator">Trägeroszillators</span> durch einen <span class="interactive-term" data-term="Modulatoroszillator">Modulatoroszillator</span>. Die mathematische Grundformel lautet:</p>
-            <p>$$y(t)=A \cdot \sin(2\pi f_c t + I \cdot \sin(2\pi f_m t))$$</p>
-            <p>Dabei bestimmt der <span class="interactive-term" data-term="Modulationsindex">Modulationsindex (I)</span> die Anzahl und Stärke der <span class="interactive-term" data-term="Seitenbänder">Seitenbänder</span> und damit die Komplexität des <span class="interactive-term" data-term="Klangspektrum">Klangspektrums</span>. Im Synthwave wird diese Technik oft für die typischen „Digital <span class="interactive-term" data-term="E-Pianos">E-Pianos</span>“ oder aggressive, <span class="interactive-term" data-term="Perkussive Bässe">perkussive Bässe</span> eingesetzt.</p>
-             
-            <h2>Spezifische Sounddesign-Parameter und Patch-Rezepte</h2>
-            <p>Die musikalische Identität wird durch definierte Einstellungen an den Synthesizern erreicht. Ein Fokus liegt auf <span class="interactive-term" data-term="Sägezahnwelle">Sägezahn-</span> und <span class="interactive-term" data-term="Rechteckwelle">Rechteckwellen</span>.</p>
-
-            <h3>Bass-Sound-Architektur</h3>
-            <p>Ein typischer Synthwave-Bass (oft als „<span class="interactive-term" data-term="Chorus Bass">Chorus Bass</span>“ oder „<span class="interactive-term" data-term="Driving Bass">Driving Bass</span>“ bezeichnet) erfordert folgende Einstellungen an einem <span class="interactive-term" data-term="Subtraktiver Synthesizer">subtraktiven Synthesizer</span> wie dem Juno-106:</p>
-
-            <table class="w-full text-left text-sm border-collapse my-4">
-                <thead>
-                    <tr class="border-b border-white/20">
-                        <th class="p-2">Parameter</th>
-                        <th class="p-2">Einstellung</th>
-                        <th class="p-2">Zweck</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="border-b border-white/10">
-                        <td class="p-2"><span class="interactive-term" data-term="Oszillator">Oszillator</span></td>
-                        <td class="p-2"><span class="interactive-term" data-term="Pulse wave">Pulse wave</span> (<span class="interactive-term" data-term="Sub-Osc">Sub-Osc</span> max)</td>
-                        <td class="p-2">Erzeugt ein <span class="interactive-term" data-term="Solides Fundament">solides Fundament</span></td>
-                    </tr>
-                    <tr class="border-b border-white/10">
-                        <td class="p-2"><span class="interactive-term" data-term="PWM">PWM</span></td>
-                        <td class="p-2">30% (<span class="interactive-term" data-term="LFO">LFO</span> oder <span class="interactive-term" data-term="Env mod">Env mod</span>)</td>
-                        <td class="p-2">Fügt eine <span class="interactive-term" data-term="Subtile Bewegung">subtile Bewegung</span> hinzu</td>
-                    </tr>
-                    <tr class="border-b border-white/10">
-                        <td class="p-2"><span class="interactive-term" data-term="Filter Cutoff">Filter Cutoff</span></td>
-                        <td class="p-2">40%</td>
-                        <td class="p-2">Dämpft die <span class="interactive-term" data-term="Oberschwingungen">Oberschwingungen</span> für einen „dumpfen“ Druck</td>
-                    </tr>
-                    <tr class="border-b border-white/10">
-                        <td class="p-2"><span class="interactive-term" data-term="Resonanz">Resonanz</span></td>
-                        <td class="p-2">50%</td>
-                        <td class="p-2">Erzeugt den typischen „<span class="interactive-term" data-term="Squeltch">Squeltch</span>“-Charakter</td>
-                    </tr>
-                    <tr class="border-b border-white/10">
-                        <td class="p-2"><span class="interactive-term" data-term="Filter Env Amount">Filter Env Amount</span></td>
-                        <td class="p-2">60-70%</td>
-                        <td class="p-2">Definiert die Dynamik des <span class="interactive-term" data-term="Anschlag">Anschlags</span></td>
-                    </tr>
-                    <tr class="border-b border-white/10">
-                        <td class="p-2"><span class="interactive-term" data-term="VCA Envelope">VCA Envelope</span></td>
-                        <td class="p-2"><span class="interactive-term" data-term="Fast Attack">Fast Attack</span>, <span class="interactive-term" data-term="Sustain Full">Sustain Full</span>, <span class="interactive-term" data-term="Fast Release">Fast Release</span></td>
-                        <td class="p-2">Sorgt für ein rhythmisches, präzises Signal</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <p>Für den rhythmischen Effekt wird dieser Bass oft in <span class="interactive-term" data-term="16tel-Noten">16tel-Noten</span> programmiert und durch <span class="interactive-term" data-term="Sidechain-Kompression">Sidechain-Kompression</span> (getriggert durch die Kick-Drum) zum „Pumpen“ gebracht.</p>
-
-            <h3>Pad- und String-Texturen</h3>
-            <p>Für die atmosphärische Tiefe werden „<span class="interactive-term" data-term="Slow Attack Strings">Slow Attack Strings</span>“ oder „<span class="interactive-term" data-term="Lush Pads">Lush Pads</span>“ verwendet. Hierbei ist die Einstellung des <span class="interactive-term" data-term="24dB-Tiefpassfilter">24dB-Tiefpassfilters</span> entscheidend. Die <span class="interactive-term" data-term="Resonanz">Resonanz</span> wird niedrig gehalten (10-15%), während der <span class="interactive-term" data-term="Attack-Wert">Attack-Wert</span> der Hüllkurve auf ca. 60-70% erhöht wird, um den Klang sanft einblenden zu lassen. Der Einsatz von <span class="interactive-term" data-term="Chorus">Chorus</span> (Stufe II beim Juno) ist hier obligatorisch, um die für das Genre typische Breite zu erzielen.</p>
-
-            <h2>Rhythmik und die Physik der Drum-Synthese</h2>
-            <p>Die perkussive Basis des Synthwave ist untrennbar mit den <span class="interactive-term" data-term="Drum-Maschinen">Drum-Maschinen</span> der 1980er Jahre verbunden: <span class="interactive-term" data-term="Roland TR-808">Roland TR-808</span>, <span class="interactive-term" data-term="Roland TR-909">TR-909</span> und die <span class="interactive-term" data-term="LinnDrum">LinnDrum</span>.</p>
-
-            <h3>Die mechanische Präzision der LinnDrum</h3>
-            <p>Die <span class="interactive-term" data-term="LinnDrum">LinnDrum</span> wird besonders für ihre druckvollen <span class="interactive-term" data-term="Kicks">Kicks</span> und <span class="interactive-term" data-term="Snares">Snares</span> geschätzt, da sie echte <span class="interactive-term" data-term="Akustische Samples">akustische Samples</span> in einem analogen Kontext verwendete. Im Synthwave wird jedoch oft die absolute Starrheit der Maschine betont; <span class="interactive-term" data-term="Velocity-Abweichungen">Velocity-Abweichungen</span> werden minimiert, um einen Sound zwischen Live-Schlagzeug und elektronischer Kälte zu erzeugen.</p>
-
-            <h3>Synthetische Drums und nichtlineare Schaltkreise</h3>
-            <p>Moderne Produzenten nutzen oft <span class="interactive-term" data-term="Drum-Synthese">Drum-Synthese</span> anstelle von Samples, um jeden Schlag einzigartig zu machen. Dies wird durch die Instabilität <span class="interactive-term" data-term="Analoge Schaltkreise">analoger Schaltkreise</span> erreicht, die <span class="interactive-term" data-term="Harmonische Verzerrungen">harmonische Verzerrungen</span> hinzufügen, wenn sie übersteuert werden. Ein synthetisierter Kick-Drum-Sound entsteht oft durch einen kurzen <span class="interactive-term" data-term="Impuls">Impuls</span> oder <span class="interactive-term" data-term="Rauschen">Rauschen</span>, der einen <span class="interactive-term" data-term="Resonanter Filter">resonanten Filter</span> an der Grenze zur <span class="interactive-term" data-term="Selbstoszillation">Selbstoszillation</span> anregt. Die Abstimmung dieses Filters sowie das Hinzufügen von <span class="interactive-term" data-term="Feedback">Feedback</span> und <span class="interactive-term" data-term="Dämpfung">Dämpfung</span> ermöglicht die Erzeugung massiver Kicks.</p>
-            <p>Ein Standard-Pattern im Synthwave umfasst:</p>
-            <ul>
-                <li><span class="interactive-term" data-term="Kick">Kick</span>: Auf 1 und 3 (<span class="interactive-term" data-term="BPM 80-118">BPM 80-118</span>) oder <span class="interactive-term" data-term="4-on-the-floor">4-on-the-floor</span> (<span class="interactive-term" data-term="BPM 128-140">BPM 128-140</span>).</li>
-                <li><span class="interactive-term" data-term="Snare">Snare</span>: Auf 2 und 4, oft massiv mit <span class="interactive-term" data-term="Gated Reverb">Gated Reverb</span> bearbeitet.</li>
-                <li><span class="interactive-term" data-term="Hi-Hats">Hi-Hats</span>: Geschlossen auf jeder <span class="interactive-term" data-term="16tel-Note">16tel-Note</span>.</li>
-            </ul>
-
-            <h2>Die Kunst des Mixings und Masterings im Retro-Kontext</h2>
-            <p>Der spezifische „Synthwave-Vibe“ wird erst durch die Signalverarbeitung im Mix erreicht.</p>
-
-            <h3>Gated Reverb: Der Sound der Giganten</h3>
-                        <p>Der <span class="interactive-term" data-term="Gated Reverb">Gated Reverb</span> ist das signifikanteste Merkmal der Synthwave-Drums. Die technische Kette sieht wie folgt aus:</p>
-            <ol>
-                <li>Das <span class="interactive-term" data-term="Snare-Signal">Snare-Signal</span> wird an einen <span class="interactive-term" data-term="Aux-Weg">Aux-Weg</span> mit einem großen <span class="interactive-term" data-term="Hall">Hall-</span> oder <span class="interactive-term" data-term="Plattenreverb">Plattenreverb</span> (100% Wet) gesendet.</li>
-                <li>Nach dem Reverb wird ein <span class="interactive-term" data-term="Noise-Gate">Noise-Gate</span> platziert, das über <span class="interactive-term" data-term="Sidechain">Sidechain</span> vom originalen Snare-Signal getriggert wird.</li>
-                <li>Einstellungen: Ein <span class="interactive-term" data-term="Threshold">Threshold</span> von ca. -30dB, ein <span class="interactive-term" data-term="Hold">Hold</span> von 250-400ms und ein extrem schneller <span class="interactive-term" data-term="Release">Release</span> (60-90ms) schneiden die <span class="interactive-term" data-term="Hallfahne">Hallfahne</span> abrupt ab.</li>
-            </ol>
-            <p>Dies erzeugt eine Snare, die „atmet“ – sie bläst den Hall aus und saugt ihn sofort wieder ein.</p>
-
-            <h3>Sidechain-Kompression und Dynamic Control</h3>
-            <p>Um die <span class="interactive-term" data-term="Basslines">Basslines</span> und <span class="interactive-term" data-term="Pads">Pads</span> rhythmisch mit der Kick-Drum zu verzahnen, ist <span class="interactive-term" data-term="Sidechain-Kompression">Sidechain-Kompression</span> unverzichtbar. Ein typisches Setting für den <span class="interactive-term" data-term="Bus-Kompressor">Bus-Kompressor</span> auf den Synth-Tracks sieht einen Threshold von -22dB vor, getriggert durch die Kick-Drum. Dies erzeugt den charakteristischen „<span class="interactive-term" data-term="Pumping-Effekt">Pumping“-Effekt</span>, der Platz für das <span class="interactive-term" data-term="Low-End">Low-End</span> schafft.</p>
-
-            <h3>Mastering-Prozesse</h3>
-            <p>Im <span class="interactive-term" data-term="Mastering">Mastering</span> werden oft Werkzeuge wie der <span class="interactive-term" data-term="iZotope Ozone Maximizer">iZotope Ozone Maximizer</span> eingesetzt, um eine zeitgemäße <span class="interactive-term" data-term="Lautheit">Lautheit</span> bei gleichzeitiger Bewahrung der <span class="interactive-term" data-term="Dynamik">Dynamik</span> zu erzielen (<span class="interactive-term" data-term="Target Crest Factor">Target Crest Factor</span>: 8-12 dB).</p>
-            <ul>
-                <li><strong><span class="interactive-term" data-term="Stereo Imaging">Stereo Imaging</span>:</strong> Frequenzen unter 150 Hz werden konsequent <span class="interactive-term" data-term="Mono">mono</span> gehalten, um die <span class="interactive-term" data-term="Phasenstabilität">Phasenstabilität</span> zu gewährleisten.</li>
-                <li><strong><span class="interactive-term" data-term="Exciter">Exciter</span>:</strong> <span class="interactive-term" data-term="Harmonische Sättigung">Harmonische Sättigung</span> wird hinzugefügt, um die Oberschwingungen analoger Hardware nachzubilden.</li>
-            </ul>
-
-            <h2>Subgenres und stilistische Erweiterungen</h2>
-            <p>Synthwave ist kein monolithisches Genre, sondern hat sich in spezialisierte Richtungen verzweigt.</p>
-
-            <h3>Outrun: Die Ästhetik der Geschwindigkeit</h3>
-            <p>Benannt nach dem Sega-Klassiker von 1986, fokussiert sich <span class="interactive-term" data-term="Outrun">Outrun</span> auf schnelle <span class="interactive-term" data-term="Arpeggios">Arpeggios</span>, treibende Beats und visuelle Motive wie <span class="interactive-term" data-term="Ferrari Testarossa">Ferrari Testarossas</span> und <span class="interactive-term" data-term="Neon-Sonnenuntergänge">Neon-Sonnenuntergänge</span>. Das Tempo liegt hier oft höher, zwischen <span class="interactive-term" data-term="128 und 140 BPM">128 und 140 BPM</span>.</p>
-
-            <h3>Darksynth: Die industrielle Finsternis</h3>
-            <p>Künstler wie <span class="interactive-term" data-term="Perturbator">Perturbator</span> oder <span class="interactive-term" data-term="Carpenter Brut">Carpenter Brut</span> haben Synthwave mit Elementen aus <span class="interactive-term" data-term="Industrial">Industrial</span>, <span class="interactive-term" data-term="Black Metal">Black Metal</span> und <span class="interactive-term" data-term="Cyberpunk">Cyberpunk</span> fusioniert.</p>
-            <ul>
-                <li><strong>Musikalität:</strong> Verwendung von <span class="interactive-term" data-term="Moll-Skalen">Moll-Skalen</span>, <span class="interactive-term" data-term="Chromatische Bewegungen">chromatischen Bewegungen</span> und <span class="interactive-term" data-term="Verminderte Arpeggios">verminderten Arpeggios</span>.</li>
-                <li><strong>Technik:</strong> Massive Verzerrung (<span class="interactive-term" data-term="Distortion">Distortion</span>/<span class="interactive-term" data-term="Bitcrushing">Bitcrushing</span>) auf den Synthesizern, die oft wie <span class="interactive-term" data-term="Metal-Gitarren">Metal-Gitarren</span> behandelt werden (Einsatz von <span class="interactive-term" data-term="Amp-Simulationen">Amp-Simulationen</span>).</li>
-            </ul>
-
-            <h3>Dreamwave und Chillwave</h3>
-            <p>Diese Richtungen betonen die atmosphärische, melancholische Seite. <span class="interactive-term" data-term="Dreamwave">Dreamwave</span> nutzt exzessive <span class="interactive-term" data-term="Reverb-Räume">Reverb-Räume</span> und langsame Tempi (<span class="interactive-term" data-term="80-110 BPM">80-110 BPM</span>), während <span class="interactive-term" data-term="Chillwave">Chillwave</span> oft <span class="interactive-term" data-term="Lo-Fi-Techniken">Lo-Fi-Techniken</span> und <span class="interactive-term" data-term="Verwaschene Vocals">verwaschene Vocals</span> integriert.</p>
-
-            <h2>Prägnante Figuren und Kollektive</h2>
-            <p>Die Synthwave-Bewegung ist stark durch Schlüsselpersonen geprägt, die oft eine narrative Identität um ihre Musik aufbauen.</p>
-
-            <h3>Kavinsky und die Mythologisierung</h3>
-            <p><span class="interactive-term" data-term="Kavinsky">Kavinsky</span> (Vincent Belorgey) ist nicht nur Produzent, sondern eine Kunstfigur: Ein Mann, der 1986 seinen <span class="interactive-term" data-term="Testarossa">Testarossa</span> crashte und als „<span class="interactive-term" data-term="Synthwave-Zombie">Synthwave-Zombie</span>“ auferstand. Sein Erfolg mit „<span class="interactive-term" data-term="Nightcall">Nightcall</span>“ definierte den Einsatz von <span class="interactive-term" data-term="Vocodern">Vocodern</span> und die <span class="interactive-term" data-term="Cineastische Ausrichtung">cineastische Ausrichtung</span> des Genres.</p>
-
-            <h3>Das Valerie Collective</h3>
-            <p>Gegründet 2007 in Nantes von <span class="interactive-term" data-term="David Grellier">David Grellier</span> (<span class="interactive-term" data-term="College">College</span>), war dieses Kollektiv (mit Künstlern wie <span class="interactive-term" data-term="Anoraak">Anoraak</span> und <span class="interactive-term" data-term="Maethelvin">Maethelvin</span>) federführend bei der Entwicklung des „<span class="interactive-term" data-term="Dreamwave-Sound">Dreamwave“-Sounds</span>. Sie feierten die US-Kultur der 80er mit einer bewussten Prise Kitsch und einer „<span class="interactive-term" data-term="French Touch">French Touch</span>“-Eleganz.</p>
-
-            <h2>Fazit: Die Zukunft der Vergangenheit</h2>
-            <p>Synthwave hat bewiesen, dass er mehr ist als ein kurzlebiger Internet-Hype. Durch die Verbindung von hochgradig technischer Sound-Finesse mit tiefgreifenden philosophischen Konzepten wie der <span class="interactive-term" data-term="Hauntology">Hauntology</span> hat das Genre eine zeitlose Qualität erreicht. Die Fähigkeit, <span class="interactive-term" data-term="Nostalgie">Nostalgie</span> nicht als rückwärtsgewandten <span class="interactive-term" data-term="Eskapismus">Eskapismus</span>, sondern als kreatives Werkzeug zur Gestaltung neuer Klangwelten zu nutzen, sichert dem Synthwave seinen Platz in der Musikgeschichte des 21. Jahrhunderts.</p>
-            <p>In der technischen Meisterschaft – von der Mikro-Programmierung der <span class="interactive-term" data-term="DCOs">DCOs</span> bis hin zum komplexen Routing des <span class="interactive-term" data-term="Gated Reverb">Gated Reverbs</span> – zeigt sich ein Genre, das die Grenzen zwischen <span class="interactive-term" data-term="Analoges Erbe">analogem Erbe</span> und <span class="interactive-term" data-term="Digitale Präzision">digitaler Präzision</span> ständig neu auslotet. Synthwave bleibt damit die ultimative Antwort auf die Sehnsucht nach einer Zukunft, die wir uns in der Vergangenheit erträumt haben.</p>
-        `
-    },
     ambient: {
         id: 'ambient',
+        group: 'ambient_group',
         name: 'Ambient Musik',
         icon: '🌌',
         wikiContent: `
@@ -2472,6 +2027,193 @@ const CREATIVE_WORLDS = {
             <p>Die Ambient-Musik lehrt uns, dass Hören nicht immer ein aktiver Akt des Verstehens sein muss, sondern ein Zustand des Seins sein kann – ein Werkzeug, um in einer lauten Welt bei sich selbst zu bleiben.</p>
         `
     },
+    dark_ambient_ecologies: {
+        id: 'dark_ambient_ecologies',
+        group: 'ambient_group',
+        name: 'Dark Ambient Ecologies',
+        icon: '🌑',
+        wikiContent: `
+            <h1>Dark Ambient Ecologies (Platzhalter)</h1>
+            <p>Dies ist ein Platzhaltertext fuer die kommende Dark-Ambient-Welt in der Kreativ-Bibliothek.</p>
+            <p>Beispielbegriffe: <span class="interactive-term" data-term="Drone">Drone</span>, <span class="interactive-term" data-term="Low Frequency Mass">Low Frequency Mass</span>, <span class="interactive-term" data-term="Ritual Atmosphere">Ritual Atmosphere</span>.</p>
+        `
+    },
+    sleep_ambient_protocols: {
+        id: 'sleep_ambient_protocols',
+        group: 'ambient_group',
+        name: 'Sleep Ambient Protocols',
+        icon: '🌙',
+        wikiContent: `
+            <h1>Sleep Ambient Protocols (Platzhalter)</h1>
+            <p>Dies ist ein Platzhaltertext fuer die kommende Sleep-Ambient-Welt in der Kreativ-Bibliothek.</p>
+            <p>Beispielbegriffe: <span class="interactive-term" data-term="Pink Noise">Pink Noise</span>, <span class="interactive-term" data-term="Brown Noise">Brown Noise</span>, <span class="interactive-term" data-term="Circadian Rhythm">Circadian Rhythm</span>.</p>
+        `
+    },
+    field_recording_ambient: {
+        id: 'field_recording_ambient',
+        group: 'ambient_group',
+        name: 'Field Recording Ambient',
+        icon: '🎙️',
+        wikiContent: `
+            <h1>Field Recording Ambient (Platzhalter)</h1>
+            <p>Dies ist ein Platzhaltertext fuer die kommende Field-Recording-Ambient-Welt in der Kreativ-Bibliothek.</p>
+            <p>Beispielbegriffe: <span class="interactive-term" data-term="Field Recording">Field Recording</span>, <span class="interactive-term" data-term="Spatial Depth">Spatial Depth</span>, <span class="interactive-term" data-term="Nature Soundscape">Nature Soundscape</span>.</p>
+        `
+    },
+    uk_garage_london: {
+        id: 'uk_garage_london',
+        group: 'urban_club_group',
+        name: 'UK Garage London',
+        icon: '🇬🇧',
+        wikiContent: `
+            <h1>UK Garage London (Platzhalter)</h1>
+            <p>Dies ist ein Platzhaltertext fuer die kommende UK-Garage-Welt in der Kreativ-Bibliothek.</p>
+            <p>Beispielbegriffe: <span class="interactive-term" data-term="2-Step Groove">2-Step Groove</span>, <span class="interactive-term" data-term="Chopped Vocals">Chopped Vocals</span>, <span class="interactive-term" data-term="Sub Bass">Sub Bass</span>.</p>
+        `
+    },
+    detroit_techno_foundry: {
+        id: 'detroit_techno_foundry',
+        group: 'urban_club_group',
+        name: 'Detroit Techno Foundry',
+        icon: '🏭',
+        wikiContent: `
+            <h1>Detroit Techno Foundry (Platzhalter)</h1>
+            <p>Dies ist ein Platzhaltertext fuer die kommende Detroit-Techno-Welt in der Kreativ-Bibliothek.</p>
+            <p>Beispielbegriffe: <span class="interactive-term" data-term="Machine Funk">Machine Funk</span>, <span class="interactive-term" data-term="Motoric Pulse">Motoric Pulse</span>, <span class="interactive-term" data-term="Analog Drum Architecture">Analog Drum Architecture</span>.</p>
+        `
+    },
+    chicago_house_classics: {
+        id: 'chicago_house_classics',
+        group: 'urban_club_group',
+        name: 'Chicago House Classics',
+        icon: '🏙️',
+        wikiContent: `
+            <h1>Chicago House Classics (Platzhalter)</h1>
+            <p>Dies ist ein Platzhaltertext fuer die kommende Chicago-House-Welt in der Kreativ-Bibliothek.</p>
+            <p>Beispielbegriffe: <span class="interactive-term" data-term="Piano Stabs">Piano Stabs</span>, <span class="interactive-term" data-term="Soulful Loops">Soulful Loops</span>, <span class="interactive-term" data-term="Four-on-the-Floor">Four-on-the-Floor</span>.</p>
+        `
+    },
+    hip_hop_main: {
+        id: 'hip_hop_main',
+        group: 'hip_hop_group',
+        name: 'Hip Hop',
+        icon: '🎤',
+        wikiContent: `
+            <h1>Hip Hop (Platzhalter)</h1>
+            <p>Dieser Bereich sammelt zentrale Stilwelten der Hip-Hop-Kultur von Boom Bap bis Future Sounds.</p>
+            <p>Bitte wählen Sie eine Unterkategorie, um mehr zu erfahren.</p>
+        `
+    },
+    golden_age_boom_bap: {
+        id: 'golden_age_boom_bap',
+        group: 'hip_hop_group',
+        name: 'Golden Age Boom Bap',
+        icon: '🥁',
+        wikiContent: `
+            <h1>Golden Age Boom Bap (Platzhalter)</h1>
+            <p>Dies ist ein Platzhaltertext fuer die Boom-Bap-Welt mit Fokus auf klassische Drum-Patterns und Sample-Texturen.</p>
+            <p>Beispielbegriffe: <span class="interactive-term" data-term="Boom Bap Kick">Boom Bap Kick</span>, <span class="interactive-term" data-term="Snare Pocket">Snare Pocket</span>, <span class="interactive-term" data-term="Dusty Samples">Dusty Samples</span>.</p>
+        `
+    },
+    jazz_hip_hop_lounge: {
+        id: 'jazz_hip_hop_lounge',
+        group: 'hip_hop_group',
+        name: 'Jazz Hip Hop Lounge',
+        icon: '🎷',
+        wikiContent: `
+            <h1>Jazz Hip Hop Lounge (Platzhalter)</h1>
+            <p>Dies ist ein Platzhaltertext fuer die Jazz-Hip-Hop-Welt mit warmen Akkorden, laid-back Grooves und organischer Harmonik.</p>
+            <p>Beispielbegriffe: <span class="interactive-term" data-term="Jazz Chords">Jazz Chords</span>, <span class="interactive-term" data-term="Upright Bass">Upright Bass</span>, <span class="interactive-term" data-term="Late Night Groove">Late Night Groove</span>.</p>
+        `
+    },
+    lofi_hip_hop_tape: {
+        id: 'lofi_hip_hop_tape',
+        group: 'hip_hop_group',
+        name: 'Lo-Fi Hip Hop Tape',
+        icon: '📼',
+        wikiContent: `
+            <h1>Lo-Fi Hip Hop Tape (Platzhalter)</h1>
+            <p>Dies ist ein Platzhaltertext fuer die Lo-Fi-Hip-Hop-Welt mit Tape-Charakter, softer Dynamik und nostalgischer Stimmung.</p>
+            <p>Beispielbegriffe: <span class="interactive-term" data-term="Tape Saturation">Tape Saturation</span>, <span class="interactive-term" data-term="Vinyl Crackle">Vinyl Crackle</span>, <span class="interactive-term" data-term="Warm Chords">Warm Chords</span>.</p>
+        `
+    },
+    gfunk_west_coast: {
+        id: 'gfunk_west_coast',
+        group: 'hip_hop_group',
+        name: 'G-Funk West Coast',
+        icon: '🌴',
+        wikiContent: `
+            <h1>G-Funk West Coast (Platzhalter)</h1>
+            <p>Dies ist ein Platzhaltertext fuer die G-Funk-Welt mit rollenden Basslines, synthigen Leads und sonniger Coolness.</p>
+            <p>Beispielbegriffe: <span class="interactive-term" data-term="Talkbox Lead">Talkbox Lead</span>, <span class="interactive-term" data-term="Funk Bassline">Funk Bassline</span>, <span class="interactive-term" data-term="West Coast Swing">West Coast Swing</span>.</p>
+        `
+    },
+    southern_trap_lab: {
+        id: 'southern_trap_lab',
+        group: 'hip_hop_group',
+        name: 'Southern Trap Lab',
+        icon: '808',
+        wikiContent: `
+            <h1>Southern Trap Lab (Platzhalter)</h1>
+            <p>Dies ist ein Platzhaltertext fuer die Southern-Trap-Welt mit 808-Fokus, rollenden Hi-Hats und moderner Club-Energie.</p>
+            <p>Beispielbegriffe: <span class="interactive-term" data-term="808 Glide">808 Glide</span>, <span class="interactive-term" data-term="Hi-Hat Rolls">Hi-Hat Rolls</span>, <span class="interactive-term" data-term="Trap Bounce">Trap Bounce</span>.</p>
+        `
+    },
+    drill_dark_energy: {
+        id: 'drill_dark_energy',
+        group: 'hip_hop_group',
+        name: 'Drill Dark Energy',
+        icon: '🖤',
+        wikiContent: `
+            <h1>Drill Dark Energy (Platzhalter)</h1>
+            <p>Dies ist ein Platzhaltertext fuer die Drill-Welt mit kalten Melodien, markanten Slides und harter Rhythmik.</p>
+            <p>Beispielbegriffe: <span class="interactive-term" data-term="Dark Piano">Dark Piano</span>, <span class="interactive-term" data-term="Sliding 808">Sliding 808</span>, <span class="interactive-term" data-term="Snare Triplets">Snare Triplets</span>.</p>
+        `
+    },
+    conscious_hip_hop_poetics: {
+        id: 'conscious_hip_hop_poetics',
+        group: 'hip_hop_group',
+        name: 'Conscious Hip Hop Poetics',
+        icon: '📝',
+        wikiContent: `
+            <h1>Conscious Hip Hop Poetics (Platzhalter)</h1>
+            <p>Dies ist ein Platzhaltertext fuer die Conscious-Hip-Hop-Welt mit Fokus auf Message, Storytelling und sprachlicher Praezision.</p>
+            <p>Beispielbegriffe: <span class="interactive-term" data-term="Storytelling">Storytelling</span>, <span class="interactive-term" data-term="Social Commentary">Social Commentary</span>, <span class="interactive-term" data-term="Multisyllabic Rhyme">Multisyllabic Rhyme</span>.</p>
+        `
+    },
+    party_hip_hop_classics: {
+        id: 'party_hip_hop_classics',
+        group: 'hip_hop_group',
+        name: 'Party Hip Hop Classics',
+        icon: '🎉',
+        wikiContent: `
+            <h1>Party Hip Hop Classics (Platzhalter)</h1>
+            <p>Dies ist ein Platzhaltertext fuer die Party-Hip-Hop-Welt mit hohem Energielevel, klaren Hooks und crowd-ready Patterns.</p>
+            <p>Beispielbegriffe: <span class="interactive-term" data-term="Party Hook">Party Hook</span>, <span class="interactive-term" data-term="Call and Response">Call and Response</span>, <span class="interactive-term" data-term="Club Drums">Club Drums</span>.</p>
+        `
+    },
+    experimental_hip_hop_future: {
+        id: 'experimental_hip_hop_future',
+        group: 'hip_hop_group',
+        name: 'Experimental Hip Hop Future',
+        icon: '🧪',
+        wikiContent: `
+            <h1>Experimental Hip Hop Future (Platzhalter)</h1>
+            <p>Dies ist ein Platzhaltertext fuer die experimentelle Hip-Hop-Welt mit genre-crossing Sounddesign und mutigen Strukturen.</p>
+            <p>Beispielbegriffe: <span class="interactive-term" data-term="Glitch Texture">Glitch Texture</span>, <span class="interactive-term" data-term="Abstract Rhythm">Abstract Rhythm</span>, <span class="interactive-term" data-term="Hybrid Sound Design">Hybrid Sound Design</span>.</p>
+        `
+    },
+    instrumental_beat_scene: {
+        id: 'instrumental_beat_scene',
+        group: 'hip_hop_group',
+        name: 'Instrumental Beat Scene',
+        icon: '🎛️',
+        wikiContent: `
+            <h1>Instrumental Beat Scene (Platzhalter)</h1>
+            <p>Dies ist ein Platzhaltertext fuer die Instrumental-Beat-Welt mit Fokus auf Groove, Textur und Producing-Handschrift.</p>
+            <p>Beispielbegriffe: <span class="interactive-term" data-term="Beat Tape">Beat Tape</span>, <span class="interactive-term" data-term="Sample Chop">Sample Chop</span>, <span class="interactive-term" data-term="Head Nod Groove">Head Nod Groove</span>.</p>
+        `
+    },
     world_orchestra_treatise: {
         id: 'world_orchestra_treatise',
         group: 'world_orchestra_group',
@@ -2481,6 +2223,72 @@ const CREATIVE_WORLDS = {
             <h1>Welt-Orchester: Globale Klangkörper</h1>
             <p>Dieser Bereich widmet sich den großen Ensemble-Traditionen der Welt. Vom indonesischen Gamelan bis zum mexikanischen Mariachi – hier entdecken Sie die Vielfalt orchestraler Formen jenseits des westlichen Konzertsaals.</p>
             <p>Bitte wählen Sie eine der Unterkategorien, um mehr zu erfahren.</p>
+        `
+    },
+    arabic_takht: {
+        id: 'arabic_takht',
+        group: 'world_orchestra_group',
+        name: 'Arabischer Takht',
+        icon: '🪕',
+        wikiContent: `
+            <h1>Arabischer Takht (Platzhalter)</h1>
+            <p>Dies ist ein Platzhaltertext fuer die kommende Takht-Welt in der Kreativ-Bibliothek.</p>
+            <p>Beispielbegriffe: <span class="interactive-term" data-term="Maqam">Maqam</span>, <span class="interactive-term" data-term="Iqa">Iqa</span>, <span class="interactive-term" data-term="Oud">Oud</span>.</p>
+        `
+    },
+    hindustani_raga_ensemble: {
+        id: 'hindustani_raga_ensemble',
+        group: 'world_orchestra_group',
+        name: 'Hindustani Raga-Ensemble',
+        icon: '🪘',
+        wikiContent: `
+            <h1>Hindustani Raga-Ensemble (Platzhalter)</h1>
+            <p>Dies ist ein Platzhaltertext fuer die kommende Hindustani-Welt in der Kreativ-Bibliothek.</p>
+            <p>Beispielbegriffe: <span class="interactive-term" data-term="Raga">Raga</span>, <span class="interactive-term" data-term="Tala">Tala</span>, <span class="interactive-term" data-term="Alap">Alap</span>.</p>
+        `
+    },
+    west_african_polyrhythm_ensemble: {
+        id: 'west_african_polyrhythm_ensemble',
+        group: 'world_orchestra_group',
+        name: 'Westafrikanisches Polyrhythmus-Ensemble',
+        icon: '🥁',
+        wikiContent: `
+            <h1>Westafrikanisches Polyrhythmus-Ensemble (Platzhalter)</h1>
+            <p>Dies ist ein Platzhaltertext fuer die kommende westafrikanische Ensemble-Welt in der Kreativ-Bibliothek.</p>
+            <p>Beispielbegriffe: <span class="interactive-term" data-term="Polyrhythmus">Polyrhythmus</span>, <span class="interactive-term" data-term="Call and Response">Call and Response</span>, <span class="interactive-term" data-term="Djembe">Djembe</span>.</p>
+        `
+    },
+    balkan_brass_orchestra: {
+        id: 'balkan_brass_orchestra',
+        group: 'world_orchestra_group',
+        name: 'Balkan Brass-Orchester',
+        icon: '🎺',
+        wikiContent: `
+            <h1>Balkan Brass-Orchester (Platzhalter)</h1>
+            <p>Dies ist ein Platzhaltertext fuer die kommende Balkan-Brass-Welt in der Kreativ-Bibliothek.</p>
+            <p>Beispielbegriffe: <span class="interactive-term" data-term="Odd Meter">Odd Meter</span>, <span class="interactive-term" data-term="Trompete">Trompete</span>, <span class="interactive-term" data-term="Festival Groove">Festival Groove</span>.</p>
+        `
+    },
+    andean_ensemble: {
+        id: 'andean_ensemble',
+        group: 'world_orchestra_group',
+        name: 'Andines Ensemble',
+        icon: '🏔️',
+        wikiContent: `
+            <h1>Andines Ensemble (Platzhalter)</h1>
+            <p>Dies ist ein Platzhaltertext fuer die kommende Anden-Welt in der Kreativ-Bibliothek.</p>
+            <p>Beispielbegriffe: <span class="interactive-term" data-term="Zampoña">Zampoña</span>, <span class="interactive-term" data-term="Charango">Charango</span>, <span class="interactive-term" data-term="Bombo">Bombo</span>.</p>
+        `
+    },
+    taiko_kumi_daiko: {
+        id: 'taiko_kumi_daiko',
+        group: 'world_orchestra_group',
+        name: 'Taiko Kumi-Daiko',
+        icon: '🥁',
+        wikiContent: `
+            <h1>Taiko Kumi-Daiko (Platzhalter)</h1>
+            <p>Dies ist ein Platzhaltertext fuer die kommende Taiko-Welt in der Kreativ-Bibliothek.</p>
+            <p>Beispielbegriffe: <span class="interactive-term" data-term="Kumi-Daiko">Kumi-Daiko</span>, <span class="interactive-term" data-term="Ensemble-Choreografie">Ensemble-Choreografie</span>, <span class="interactive-term" data-term="Dynamik">Dynamik</span>.</p>
         `
     },
     gamelan: {
