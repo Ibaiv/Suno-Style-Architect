@@ -2033,10 +2033,320 @@ const CREATIVE_WORLDS = {
         name: 'Dark Ambient Ecologies',
         icon: '🌑',
         wikiContent: `
-            <h1>Dark Ambient Ecologies (Platzhalter)</h1>
-            <p>Dies ist ein Platzhaltertext fuer die kommende Dark-Ambient-Welt in der Kreativ-Bibliothek.</p>
-            <p>Beispielbegriffe: <span class="interactive-term" data-term="Drone">Drone</span>, <span class="interactive-term" data-term="Low Frequency Mass">Low Frequency Mass</span>, <span class="interactive-term" data-term="Ritual Atmosphere">Ritual Atmosphere</span>.</p>
-        `
+        <header>
+            <h1>Dark Ambient Ecologies: Eine techno-ästhetische Untersuchung von Drone-Architektur, spektraler Negativität und psychoakustischem Terror</h1>
+        </header>
+
+        <section>
+            <h2>1. Einleitung: Die dunkle Ökologie des Klangs</h2>
+            <p>
+                Die zeitgenössische Klangkunst und elektronische Musikproduktion haben in den letzten drei Jahrzehnten eine signifikante Verschiebung erfahren: weg von der melodischen Narration hin zu einer texturellen Immersion, die sich nicht mehr als bloße "Hintergrundmusik" im Sinne Brian Enos versteht, sondern als Konfrontation mit der Materialität des Anthropozäns.
+                Dieses Phänomen, subsumiert unter dem Begriff „<span class="interactive-term" data-term="Dark Ambient">Dark Ambient</span>“, stellt weit mehr dar als ein Subgenre post-industrieller Musik.
+                Es ist eine akustische Manifestation dessen, was der Philosoph Timothy Morton als „<span class="interactive-term" data-term="Dark Ecology">Dark Ecology</span>“ bezeichnet: ein ökologisches Bewusstsein, das „dunkel-deprimierend“, aber auch „dunkel-süß“ und zutiefst unheimlich ist.
+                Im Gegensatz zum klassischen Ambient, der oft eine pastorale Idylle oder eine harmonische Koexistenz mit der Umwelt simuliert – eine ästhetische Strategie, die darauf abzielt, ignoriert zu werden oder Beruhigung zu verschaffen –, fordert Dark Ambient eine radikale Unterwerfung unter das Klangobjekt.
+                Er operiert mit dem Konzept der Viskosität: Der Klang „haftet“ am Hörer, er ist klebrig, schwer und durchdrungen von den Abfallprodukten der Moderne – nuklearem Rauschen, industriellem Zerfall und dem tieffrequenten Brummen globaler Infrastrukturen.
+                Diese Studie analysiert die „Dark Ambient Ecologies“ als ein komplexes technisches und ästhetisches System. Sie untersucht, wie durch <span class="interactive-term" data-term="Drone">Drone</span>-Architektur, Spektralmanagement und Texturökologie akustische Räume geschaffen werden, die physiologische Furchtreaktionen auslösen (Psychoakustik) und gleichzeitig ethische Fragen hinsichtlich der Aneignung von Klangquellen („Dark Nature Recording“) aufwerfen.
+                Der Übergang von einer romantischen Naturbetrachtung hin zu einer „dunklen Natur“, in der das Unbelebte (Steine, Plastik, Strahlung) eine eigene, bedrohliche Lebendigkeit erhält, spiegelt sich in den Produktionsmethoden wider.
+                Durch die Synthese von ästhetischer Theorie und harter Signalverarbeitungstechnik wird aufgezeigt, wie Dark Ambient als akustisches Gegenstück zu den „<span class="interactive-term" data-term="Hyperobjekt">Hyperobjekten</span>“ fungiert – Phänomene, die so massiv und zeitlich ausgedehnt sind (wie der Klimawandel oder Styropor), dass sie unsere kognitive Erfassungskapazität sprengen und nur als atmosphärischer Druck wahrnehmbar werden.
+            </p>
+        </section>
+
+        <section>
+            <h2>2. Drone-Architektur: Statik, Überwachung und die Zeitlichkeit des Tons</h2>
+            <p>
+                Der Begriff „Drone“ besetzt im modernen Diskurs eine ambivalente Doppelposition: Er bezeichnet einerseits den musikalischen Bordun – einen stehenden, sich nur minimal verändernden Ton – und andererseits das unbemannte Luftfahrzeug (UAV), das Instrument der asymmetrischen Kriegsführung und Überwachung.
+                In den „Dark Ambient Ecologies“ konvergieren diese beiden Bedeutungen zu einer Drone-Architektur, die Raum durch dauerhafte akustische Präsenz definiert und kontrolliert.
+            </p>
+
+            <h3>2.1 Das akustische Panoptikum: Der Drone als Überwachungstechnologie</h3>
+            <p>
+                Die strukturelle Verwandtschaft zwischen dem musikalischen Drone und dem militärischen Überwachungsgerät liegt in der Loitering-Fähigkeit – dem Verweilen über einem Gebiet oder in einem Frequenzbereich.
+                Forschungen zur „Monitoring Drone Architecture“ zeigen, dass UAVs dazu konzipiert sind, Amateur-Drohnen zu detektieren, zu verfolgen und gegebenenfalls zu stören.
+                Diese Logik der permanenten Abtastung und latenten Bedrohung wird in der Dark Ambient-Produktion ästhetisiert.
+                Der Zuhörer befindet sich in der Position des überwachten Subjekts; der Klang „kreist“ um ihn, oft realisiert durch binaurale Panning-Effekte oder langsame <span class="interactive-term" data-term="LFO">LFO-Modulationen</span> (Low Frequency Oscillator), die den Doppler-Effekt eines sich nähernden, aber nie ankommenden Objekts simulieren.
+                In dieser Architektur fungiert der Sound als Machinic Sensing – als maschinelles Fühlen. Produzenten integrieren Störgeräusche, elektromagnetische Interferenzen (EMF) und digitale Glitches, um die Anwesenheit einer nicht-menschlichen Intelligenz zu suggerieren.
+                Das Rauschen wird nicht als Fehler, sondern als Signatur der Technologie verstanden, die den Raum scannt. Dies korrespondiert mit der Theorie, dass Drohnen durch ihre Sensorik eine eigene „Umweltlichkeit“ konstruieren, in der Realität mathematisch aus Echos und Reflexionen zusammengesetzt wird.
+                Der Dark Ambient Drone ist somit der Soundtrack einer technologisch vermittelten Paranoia, in der die Stille nicht leer, sondern voller Daten und Signale ist.
+            </p>
+
+            <h3>2.2 Die Triune-Struktur und harmonische Interferenz</h3>
+            <p>
+                Auf der musiktheoretischen Ebene unterscheidet sich die „Drone-Architektur“ des Dark Ambient fundamental von der harmonischen Stasis der Minimal Music (z.B. La Monte Youngs „Dream House“).
+                Während Youngs Drones oft auf reiner Stimmung basieren, um spirituelle Klarheit zu erzeugen, nutzt Dark Ambient Dissonanz und <span class="interactive-term" data-term="Schwebung">Schwebung</span> (Beating).
+                Ein instruktives Beispiel für physische Drone-Instrumente ist die „Copper Flute Triune“, die durch eine dreifache Kammerarchitektur „Triple Drone Architecture“ erzeugt.
+                Wenn drei Klangquellen (Oszillatoren oder Flötenkammern) minimal gegeneinander verstimmt werden, entstehen Interferenzmuster – eine rhythmische Pulsation innerhalb des stehenden Tons.
+                In der digitalen Produktion wird dieses Prinzip durch <span class="interactive-term" data-term="Layering">Layering</span> (Schichtung) extremisiert. Ein einzelner Drone besteht selten aus einem Oszillator; er ist ein „spektraler Stapel“ (Spectral Piling):
+            </p>
+            <ol>
+                <li>Der Fundament-Layer (Sub-Bass): Oft unter 60 Hz, fungiert als physischer Anker.</li>
+                <li>Der Textur-Layer (Mid-Range): Enthält granulare Details, Rost, Metallkratzen.</li>
+                <li>Der Air-Layer (High-End): Diffuses Rauschen oder „Shimmer“, das Weite suggeriert.</li>
+            </ol>
+            <p>
+                Diese Schichtung erzeugt eine massive Statik, die paradoxerweise voller interner Bewegung ist. Es ist die akustische Entsprechung zu geologischen Schichten – eine „Deep Time“-Ästhetik, in der sich Veränderungen nur über lange Zeiträume vollziehen, was dem Hörer das Gefühl gibt, mit einer zeitlosen, unbarmherzigen Entität konfrontiert zu sein.
+            </p>
+
+            <h3>2.3 Spektrale Dichte als narratives Element</h3>
+            <p>
+                Die Dichte des Drones wird in komplexen Kompositionen, wie denen des Projekts Ajna, nicht zufällig erzeugt, sondern narrativ gesteuert.
+                Ajna beschreibt eine Evolution von minimalistischen, linearen Drones hin zu einer „aktiven, obskuren Dunkelheit“ mit signifikant mehr Schichten.
+                Diese Zunahme an spektraler Dichte korreliert oft mit dem narrativen Bogen der „Isolations-Musik“ (Isolationism): Je dichter der Klang, desto größer das Gefühl der Klaustrophobie und der Unausweichlichkeit.
+                Der Drone wird hier zur Architektur des Gefängnisses oder des Bunkers, dessen Wände aus Frequenzen bestehen.
+            </p>
+        </section>
+
+        <section>
+            <h2>3. Psychoakustik der Angst: Infraschall und physiologische Resonanz</h2>
+            <p>
+                Die Wirkmacht von Dark Ambient basiert primär auf der Manipulation des menschlichen Nervensystems durch psychoakustische Phänomene, insbesondere im Bereich der tiefen Frequenzen (Low Frequency Noise, LFN) und des Infraschalls.
+            </p>
+
+            <h3>3.1 Die Geisterfrequenz: 19 Hz und das Unbehagen</h3>
+            <p>
+                Wissenschaftliche Untersuchungen, wie Vic Tandys Arbeit „The Ghost in the Machine“, haben gezeigt, dass <span class="interactive-term" data-term="Infraschall">Infraschall</span> (Schallwellen unterhalb der menschlichen Hörschwelle von ca. 20 Hz) physische und psychische Symptome auslösen kann.
+                Tandy identifizierte eine stehende Welle von ca. 19 Hz als Ursache für „Geistersichtungen“ in einem Labor; die Frequenz brachte den menschlichen Augapfel in Resonanz, was zu visuellen Halluzinationen (graue Schatten in der Peripherie) führte.
+                Dark Ambient Produzenten nutzen diesen Bereich strategisch, oft als „Fear Frequency“. Selbst wenn Wiedergabesysteme 19 Hz nicht sauber reproduzieren können, erzeugen Obertöne und Intermodulationsverzerrungen ein diffuses Unbehagen.
+                Evolutionär lässt sich dies erklären: In der Natur kündigen extrem tiefe Frequenzen Gefahr an – Erdbeben, Vulkanausbrüche, das Grollen großer Raubtiere. Das Gehirn schaltet in einen „Pre-Encounter Defense“-Modus (Vorsicht), der Hypervigilanz und Angst auslöst, noch bevor eine konkrete Bedrohung sichtbar ist.
+            </p>
+
+            <h3>3.2 Stehende Wellen und räumliche Desorientierung</h3>
+            <p>
+                In geschlossenen Räumen führen tiefe Frequenzen zur Bildung von <span class="interactive-term" data-term="Stehende Welle">stehenden Wellen</span> (Raummoden).
+                An bestimmten Punkten im Raum (Antinoten) summieren sich die Wellen zu enormer Lautstärke, an anderen (Knoten) löschen sie sich aus.
+                In Klanginstallationen und beim intensiven Kopfhörerhören führt dies zu einer Desorientierung. Der Hörer kann die Quelle des Schalls nicht lokalisieren; der Bass scheint „von überall“ oder „von innen“ zu kommen.
+                Dieser Verlust der Lokalisierbarkeit ist zentral für das Gefühl der Isolation. Wenn der Raum selbst vibriert, gibt es keinen sicheren Ort mehr außerhalb des Klangs. Dies verstärkt den Effekt der Immersion – nicht als angenehmes Eintauchen, sondern als Ertrinken in der Materie des Klangs.
+            </p>
+
+            <h3>3.3 Neuropsychologische Effekte von LFN</h3>
+            <p>
+                Studien zeigen, dass LFN (Low Frequency Noise) auch bei moderaten Pegeln die Konzentration, die visuelle Wahrnehmung und die psychomotorische Leistung beeinträchtigt.
+                Probanden, die empfindlich auf LFN reagieren, zeigen eine signifikant höhere Fehlerquote und Ermüdung. In der Dramaturgie eines Dark Ambient Stücks wird dies genutzt, um den Hörer zu „zermürben“.
+                Anstatt durch plötzliche Schocks (Jump Scares) zu arbeiten, setzt das Genre auf eine langsame Erosion der kognitiven Widerstandskraft durch anhaltende, tieffrequente Belastung.
+                Der Zustand des Ecognosis – das Gewöhnen an das Seltsame – ist also auch ein physiologischer Erschöpfungszustand.
+            </p>
+        </section>
+
+        <section>
+            <h2>4. Spektralmanagement und die technische Produktion von Dunkelheit</h2>
+            <p>
+                Die Produktion von Dark Ambient erfordert ein hochspezialisiertes Spectral Management. Im Gegensatz zur Popmusik, die auf Klarheit und Separation abzielt, strebt Dark Ambient oft nach Verschmelzung und Verschleierung, muss aber gleichzeitig verhindern, dass der Mix in undifferenziertem „Matsch“ (Mud) versinkt.
+            </p>
+
+            <h3>4.1 Spectral Carving: Die Skulptur des Negativraums</h3>
+            <p>
+                „<span class="interactive-term" data-term="Spectral Carving">Spectral Carving</span>“ bezeichnet eine Technik, bei der Frequenzbereiche in einem Klang subtraktiv bearbeitet werden, um Platz für einen anderen zu schaffen.
+                Da Dark Ambient Tracks oft extrem dicht mit Hall und Rauschen belegt sind, ist dies essenziell. Die Metapher und Technik entstammt teilweise der Photonik, wo „Spectral Carving“ zur Formung von Lichtimpulsen genutzt wird.
+                In der Audio-Domäne bedeutet dies: Anstatt den „Charakter“ eines Sounds zu betonen, entfernt der Produzent chirurgisch die Maskierungsfrequenzen.
+                Wenn ein metallisches Kratzen bei 2 kHz liegt und der Drone ebenfalls dort Energie hat, wird beim Drone ein „Loch“ in diesen Bereich geschnitten. Dies erzeugt eine transparente Dunkelheit – der Hörer kann tief in die Schichten hineinhören, ohne dass sie verschwimmen. Es ist eine „Akusmatik des Negativraums“.
+            </p>
+
+            <h3>4.2 Dynamisches EQing und die lebendige Dunkelheit</h3>
+            <p>
+                Der Einsatz von <span class="interactive-term" data-term="Dynamischer EQ">Dynamic EQs</span> (z.B. FabFilter Pro-Q 3, TDR Nova) ist entscheidend für das Management der massiven Low-End-Energie.
+                Statische EQs würden den Bass dauerhaft beschneiden und ihm die Kraft nehmen. Ein dynamischer EQ hingegen senkt bestimmte Frequenzen (z.B. die „dröhnenden“ 150 Hz) nur dann ab, wenn sie einen Schwellenwert überschreiten.
+                Dies lässt den Mix „atmen“. Wenn ein massiver Impact-Sound ertönt, duckt sich der Drone kurz weg (Sidechaining), um danach wieder wie eine Flutwelle zurückzurollen.
+                Dieses „Pumpen“ oder Atmen verleiht der Dunkelheit eine organische Qualität; der Raum selbst scheint zu reagieren. Es verhindert zudem, dass das Ohr des Hörers durch statische Frequenzen ermüdet (Ear Fatigue) und erhält die Spannung über lange Zeiträume (Long-form listening).
+            </p>
+
+            <h3>4.3 Psychoakustische Bass-Anreicherung</h3>
+            <p>
+                Da viele Wiedergabesysteme echten Infraschall (< 30 Hz) nicht wiedergeben können, nutzen Produzenten psychoakustische Prozessoren (wie MaxxBass oder RBass).
+                Diese generieren künstliche Obertöne (Harmonics) des Grundtons. Das menschliche Gehirn rekonstruiert aus diesen Obertönen den fehlenden Grundton (Missing Fundamental Effect).
+                So wird die Illusion tiefer, körperlicher Schwere erzeugt, selbst auf kleineren Lautsprechern. Dies ist ein technischer Trick, der perfekt zur Ästhetik der Täuschung und des Unheimlichen passt – das Gehirn hört etwas, das physikalisch gar nicht da ist.
+            </p>
+
+            <h3>Frequenzbereiche und ihre psychoakustische Nutzung</h3>
+            <table class="w-full text-left text-sm border-collapse my-4">
+                <thead>
+                    <tr>
+                        <th class="border-b p-2">Frequenzbereich</th>
+                        <th class="border-b p-2">Bezeichnung</th>
+                        <th class="border-b p-2">Psychoakustischer Effekt</th>
+                        <th class="border-b p-2">Technische Strategie</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border-b p-2 font-medium">< 20 Hz</td>
+                        <td class="border-b p-2">Infraschall ("Fear Frequency")</td>
+                        <td class="border-b p-2">Übelkeit, Paranoia, "Präsenz"</td>
+                        <td class="border-b p-2">Sub-Harmonic Synthesis, Intermodulationsverzerrung</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">20-60 Hz</td>
+                        <td class="border-b p-2">Sub-Bass</td>
+                        <td class="border-b p-2">Physischer Druck auf Brustkorb</td>
+                        <td class="border-b p-2">Mono-Kompatibilität, striktes Low-Cut anderer Elemente</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">60-250 Hz</td>
+                        <td class="border-b p-2">Körper / "Mud"</td>
+                        <td class="border-b p-2">Wärme vs. Trübung</td>
+                        <td class="border-b p-2">Dynamisches EQing (Absenkung bei Überschneidung)</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">250-2000 Hz</td>
+                        <td class="border-b p-2">Textur / Atmosphäre</td>
+                        <td class="border-b p-2">Materialität, Räumlichkeit</td>
+                        <td class="border-b p-2">Spectral Carving zur Trennung von Layern</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">2-5 kHz</td>
+                        <td class="border-b p-2">Präsenz / "Harschheit"</td>
+                        <td class="border-b p-2">Unbehagen, Alarmbereitschaft</td>
+                        <td class="border-b p-2">Gezielte Anhebung für "schneidende" Sounds, Tape Saturation</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">> 10 kHz</td>
+                        <td class="border-b p-2">"Air" / Hiss</td>
+                        <td class="border-b p-2">Kälte, Weite, Isolation</td>
+                        <td class="border-b p-2">High-Shelf Boost, Convolution Reverb</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>5. Texturökologie: Granularsynthese und das mikroskopische Hören</h2>
+            <p>
+                Der Begriff „Texturökologie“ beschreibt im Kontext dieser Studie die Behandlung von Klang als biologisches oder geologisches Gewebe. Dark Ambient interessiert sich weniger für die Note als für das Korn des Klangs.
+            </p>
+
+            <h3>5.1 Granularsynthese als Dekonstruktion der Natur</h3>
+            <p>
+                Die <span class="interactive-term" data-term="Granularsynthese">Granularsynthese</span> ist die primäre Methode zur Erzeugung dieser Texturen. Dabei wird ein Audio-Sample in winzige Fragmente (Grains, 1-100 ms) zerlegt, die neu angeordnet, geschichtet und manipuliert werden.
+                Dies korrespondiert mit der „Object-Oriented Ontology“ (OOO) der Dark Ecology: Das glatte Bild der „Natur“ wird zerbrochen, um die körnige, oft verstörende Realität der Materie freizulegen.
+                Eine Aufnahme von schmelzendem Eis wird nicht als romantisches Plätschern wiedergegeben, sondern in Tausende von Mikro-Events zermahlen, die wie zerbrechendes Glas oder statisches Rauschen klingen.
+                Durch Time-Stretching ohne Tonhöhenänderung (ein Merkmal der Granularsynthese) können flüchtige Momente – das Krächzen einer Krähe, das Bersten eines Astes – in minutenlange Drones gedehnt werden.
+                Dies offenbart die „verborgenen“ spektralen Informationen im Klang, ähnlich wie ein Mikroskop unsichtbare Strukturen sichtbar macht. Der Hörer taucht in das Innere des Klangs ein.
+            </p>
+
+            <h3>5.2 Rauschen und Layering als narrative Werkzeuge</h3>
+            <p>
+                Rauschen (Noise) ist im Dark Ambient kein Nebenprodukt, sondern ein strukturelles Element. Produzenten nutzen „destruktive Prozessierung“ (Bitcrushing, Distortion), um Klänge zu „altern“ oder zu beschädigen.
+                Das Layering folgt dabei oft einer Logik der spektralen Morphologie: Ein organischer Klang (z.B. Atem) wird langsam in einen synthetischen Klang (z.B. weißes Rauschen) überblendet.
+                Diese Ununterscheidbarkeit zwischen Mensch und Maschine, zwischen Biologie und Technik, erzeugt das Gefühl des Unheimlichen (The Uncanny). Es ist die akustische Darstellung des „Mesh“ – der unentwirrbaren Verflechtung aller Dinge.
+            </p>
+        </section>
+
+        <section>
+            <h2>6. Unmögliche Räume: Faltungshall, Mimetic Hacking und Non-Places</h2>
+            <p>
+                Der Raum ist im Dark Ambient kein passiver Behälter, sondern ein aktiver Akteur. Durch moderne Halltechnologien werden Räume konstruiert, die in der physischen Realität nicht existieren können („Impossible Spaces“).
+            </p>
+
+            <h3>6.1 Faltungshall (Convolution Reverb) als akustischer Diebstahl</h3>
+            <p>
+                <span class="interactive-term" data-term="Faltungshall">Convolution Reverb</span> nutzt Impulsantworten (Impulse Responses, IRs) realer Räume, um deren akustischen Fingerabdruck auf beliebige Audiosignale zu übertragen.
+                Künstler wie Jasmine Guffond und Sam Kidel haben diese Technik politisiert und zum Konzept des Mimetic Hacking erweitert.
+                Guffond nutzte für ihr Werk „Muzak for the Encouragement of Unproductivity“ die Impulsantwort eines Amazon-Logistikzentrums (Fulfillment Center DBE2 in Berlin).
+                Indem sie ihre Ambient-Musik durch die Akustik dieses hochgesicherten, für die Öffentlichkeit unzugänglichen Raumes „schickte“, beging sie einen symbolischen Hausfriedensbruch.
+                Dark Ambient nutzt Convolution Reverb oft, um den Hörer in verbotene Architekturen zu versetzen: Gefängnisse, verlassene Fabriken, Kernkraftwerke oder riesige Zisternen. Es ist eine Form der akustischen „Urban Exploration“, die den Hörer mit der Aura dieser Orte konfrontiert, ohne dass er physisch anwesend ist.
+            </p>
+
+            <h3>6.2 Die Simulation von „Non-Places“</h3>
+            <p>
+                Der Anthropologe Marc Augé definierte „<span class="interactive-term" data-term="Nicht-Ort">Non-Places</span>“ (Nicht-Orte) als Räume der Transitzone, die keine Identität oder Geschichte stiften: Flughäfen, Autobahnen, Supermärkte.
+                Dark Ambient vertont oft genau diese Leere. Die Akustik dieser Orte – das Surren von Klimaanlagen, das Flackern von Leuchtstoffröhren, der hallige Schritt auf Linoleum – wird ästhetisiert.
+                Der Hall ist hier oft kalt, metallisch und extrem lang, was die soziale Entfremdung und Isolation des Subjekts in der „Supermoderne“ widerspiegelt.
+                Der „unmögliche Raum“ entsteht, wenn dieser Hall ins Unendliche gedehnt wird (Black Hole Reverb), wodurch die Zeitlichkeit aufgehoben wird und der Raum zur Ewigkeit gefriert.
+            </p>
+        </section>
+
+        <section>
+            <h2>7. Genealogie des Schattens: Von der Musique Concrète zum Industrial</h2>
+            <p>
+                Um die Spezifik der „Dark Ambient Ecologies“ zu verstehen, muss man ihre historische Abstammung nachzeichnen, die sie deutlich vom klassischen Ambient abhebt.
+            </p>
+
+            <h3>7.1 Abgrenzung zum klassischen Ambient</h3>
+            <p>
+                Brian Enos Definition von Ambient als Musik, die „so ignorierbar wie interessant“ sein muss, zielt auf eine angenehme Tönung der Umgebung ab (Muzak, Fahrstuhlmusik als Kunstform). Dark Ambient bricht mit diesem Pakt der Harmlosigkeit.
+                <strong>Klassischer Ambient:</strong> Generativ, konsonant, hell, statisch, pastoral. Ziel: Entspannung, Alpha-Wellen.
+                <strong>Dark Ambient:</strong> Skulptural, dissonant, dunkel, evolutionär, subterran. Ziel: Spannung, Immersion, Infraschall-Wirkung.
+                Während klassischer Ambient „Möbelmusik“ (Satie) ist, die im Raum steht, ist Dark Ambient „Architekturmusik“ – sie verändert die Wahrnehmung der Raumgrenzen.
+            </p>
+
+            <h3>7.2 Industrial-Affinitäten und die Geburt des „Isolationism“</h3>
+            <p>
+                Die Wurzeln des Dark Ambient liegen tief im <span class="interactive-term" data-term="Industrial">Industrial</span> der späten 1970er Jahre (Throbbing Gristle, Cabaret Voltaire).
+                Diese Bewegung nutzte Lärm, Schocktaktiken und Themen wie industrielle Verwesung und gesellschaftlichen Zerfall. Eine Schlüsselfigur ist Brian Williams (<span class="interactive-term" data-term="Lustmord">Lustmord</span>).
+                Mit Alben wie Heresy (1990), aufgenommen in Krypten, Schlachthöfen und Höhlen, verlagerte er den Fokus vom aggressiven Lärm des Industrial hin zu einer atmosphärischen Schwere. Er verlangsamte den Lärm, bis er zu einem geologischen Grollen wurde.
+                Labels wie Cold Meat Industry (Schweden) etablierten in den 90ern eine spezifische Ästhetik, die Industrial mit sakralen, mittelalterlichen Elementen und bombastischen Drones verband („Death Industrial“).
+                Diese Genealogie erklärt die Vorliebe des Genres für Themen wie Ruinen, Tod und technologische Dystopien – es ist die Weiterführung des Industrial mit den Mitteln der Stille.
+            </p>
+        </section>
+
+        <section>
+            <h2>8. Cineastische und Ludische Immersion</h2>
+            <p>
+                Dark Ambient hat seine effektivste Anwendung in Film und Videospielen gefunden, wo er weniger als „Musik“ denn als psychologisches Konditionierungsinstrument fungiert.
+            </p>
+
+            <h3>8.1 Denis Villeneuve und die visuelle Bass-Frequenz</h3>
+            <p>
+                Regisseur Denis Villeneuve nutzt Sounddesign als „visuelles Äquivalent einer tiefen Frequenz, die man nicht hören, aber als beunruhigende Sensation spüren kann“.
+                <strong>Arrival (2016):</strong> Der Sound der außerirdischen Raumschiffe ist ein hornartiger Drone, der organische Vokalisierungen mit synthetischem Sub-Bass verschmilzt. Dieser Klang ist die fremde Sprache – nichtlinear und zeitlich verschmiert. Er löst sich nicht auf, sondern hängt im Raum („Endless Present“).
+                <strong>Blade Runner 2049 (2017):</strong> Die Szenen in der Wallace Corporation nutzen einen „hohlen“ Hall, um die emotionale Leere des Antagonisten zu spiegeln. Der Score (Zimmer/Wallfisch) nutzt Synthesizer-Swells, die durch Bit-Crushing und Noise verzerrt sind, um den Zerfall der Welt akustisch darzustellen.
+            </p>
+
+            <h3>8.2 Silent Hill: Das Radio als Diegetischer Indikator</h3>
+            <p>
+                Die Videospielreihe <span class="interactive-term" data-term="Silent Hill">Silent Hill</span> revolutionierte den Einsatz von Dark Ambient durch das „Radio“-Mechanik.
+                Das Radio des Protagonisten sendet statisches Rauschen (White Noise), wenn Monster in der Nähe sind. Die Intensität (spektrale Dichte) des Rauschens korreliert mit der Distanz zur Gefahr.
+                Dies ist ein brillantes Beispiel für adaptive Texturökologie: Das Rauschen ist kein Soundtrack, sondern ein Überlebenswerkzeug innerhalb der Spielwelt (diegetisch). Es konditioniert den Spieler darauf, Angst vor statischem Rauschen zu haben (Pavlovscher Reflex).
+                Moderne Spiele nutzen Vertical Layering:
+                Layer A (Basis): Wind, fernes Brummen (immer aktiv).
+                Layer B (Spannung): Sub-Bass-Pulse, metallisches Schaben (blendet ein bei Gefahr).
+                Layer C (Terror): Dissonante Streicher, industrielles Mahlen (Kampf).
+                Dieses System erlaubt es der Klanglandschaft, in Echtzeit auf den „Fear State“ des Spielers zu reagieren.
+            </p>
+        </section>
+
+        <section>
+            <h2>9. Ethik der Aufnahme: Das Feld, das Trauma und der voyeuristische Mikrofon</h2>
+            <p>
+                Die „Ökologie“ im Dark Ambient ist nicht nur ästhetisches Material, sondern wirft ethische Fragen auf. Die Praxis des Dark Nature Recording – das Aufnehmen von Orten des Verfalls, der Katastrophe oder des Todes – bewegt sich auf einem schmalen Grat.
+            </p>
+
+            <h3>9.1 Voyeurismus und „Ruin Porn“</h3>
+            <p>
+                Das Aufnehmen an Orten wie Tschernobyl, verlassenen Fabriken in Detroit oder ehemaligen Konzentrationslagern kann als akustischer Voyeurismus verstanden werden.
+                Das Mikrofon fungiert als „vampirisches Ohr“, das den „Klang des Traumas“ extrahiert, um ihn in ein ästhetisches Produkt (einen Track) zu verwandeln.
+                Kritiker argumentieren, dass dies das Leiden der Subjekte objektiviert und in „Textur“ verwandelt. Es entsteht eine Form von „<span class="interactive-term" data-term="Ruin Porn">Ruin Porn</span>“, bei der der ästhetische Genuss des Verfalls die politische oder menschliche Tragödie überlagert.
+            </p>
+
+            <h3>9.2 Die Reanimation des Ausgestorbenen</h3>
+            <p>
+                Ein prägnantes Beispiel für die ethische Komplexität ist die Verwendung von Aufnahmen ausgestorbener Tiere.
+                Das Werk Kaua'i 'ō'ō (basierend auf dem Paarungsruf des letzten männlichen Vogels dieser Art, der nach einem nicht mehr existierenden Weibchen ruft) nutzt Sound, um das Ausgestorbene gespenstisch präsent zu machen.
+                Das Werk schafft ein „akustisches Nachbild“ (Aural Afterimage), das den Verlust zwar bezeugt, ihn aber auch in einen melancholischen Loop verwandelt, der immer wieder konsumiert werden kann.
+                Ist dies ein Akt des Gedenkens („Witnessing Extinction“) oder eine nekrophile Ästhetisierung?
+                Dark Ambient bewegt sich bewusst in dieser Ambivalenz. Er will nicht versöhnen, sondern den Hörer mit dem „Gespenst“ (Spectre) konfrontieren – ein zentraler Aspekt der Derrida'schen <span class="interactive-term" data-term="Hauntology">Hauntology</span>, die oft mit dem Genre assoziiert wird.
+            </p>
+
+            <h3>9.3 Industrielle Affinitäten und Anti-Natur</h3>
+            <p>
+                Ethisch positioniert sich Dark Ambient oft als Anti-Natur-Bewegung. Anstatt unberührte Natur zu simulieren (was im Anthropozän als Lüge gilt), nutzt er die Klänge der Zerstörung:
+                <span class="interactive-term" data-term="Geophon">Geophone</span>: Zur Aufnahme von Bodenerschütterungen und industriellem Verkehr.
+                Elektromagnetische Spulen: Zur Aufnahme des „Schreis“ von Festplatten, Serverfarmen und Hochspannungsleitungen.
+                Indem diese Klänge als „Natur“ (Texturökologie) präsentiert werden, zwingt das Genre den Hörer zur Akzeptanz der Hybridität: Es gibt keine Trennung mehr zwischen Biosphäre und Technosphäre.
+                Das ethische Potential liegt hier in der Desillusionierung – dem Aufzeigen der Welt, wie sie materiell tatsächlich ist, jenseits der grünen Idylle.
+            </p>
+        </section>
+
+        <section>
+            <h2>10. Fazit: Die Resonanz der Katastrophe</h2>
+            <p>
+                „Dark Ambient Ecologies“ sind der Soundtrack einer Welt, die sich ihrer eigenen Fragilität und Toxizität bewusst wird.
+                Durch die Verbindung von Drone-Architektur, die uns in einem Zustand permanenter Überwachung und Spannung hält, und Spektralmanagement, das die Frequenzen der Angst technisch präzise moduliert, schafft das Genre eine Ästhetik des Ecognosis.
+                Wir hören nicht mehr nur Musik; wir hören die Vibrationen von Infrastrukturen, das Zerfallen von Materialien und das Echo von Räumen, die wir nicht betreten dürfen.
+                Die Produktionstechniken – von der Granularsynthese bis zum Convolution Reverb – dienen nicht der Verschönerung, sondern der forensischen Analyse einer beschädigten Realität.
+                In einer Zeit, in der die ökologische Krise oft abstrakt bleibt, macht Dark Ambient sie physisch spürbar: als Druck auf der Brust (Sub-Bass), als Desorientierung im Raum (Phasing) und als unheimliche Präsenz des Nicht-Menschlichen.
+                Es ist eine Kunstform, die nicht tröstet, sondern bezeugt – dunkel, präzise und unausweichlich.
+            </p>
+        </section>
+    `
     },
     sleep_ambient_protocols: {
         id: 'sleep_ambient_protocols',
@@ -2055,10 +2365,409 @@ const CREATIVE_WORLDS = {
         name: 'Field Recording Ambient',
         icon: '🎙️',
         wikiContent: `
-            <h1>Field Recording Ambient (Platzhalter)</h1>
-            <p>Dies ist ein Platzhaltertext fuer die kommende Field-Recording-Ambient-Welt in der Kreativ-Bibliothek.</p>
-            <p>Beispielbegriffe: <span class="interactive-term" data-term="Field Recording">Field Recording</span>, <span class="interactive-term" data-term="Spatial Depth">Spatial Depth</span>, <span class="interactive-term" data-term="Nature Soundscape">Nature Soundscape</span>.</p>
-        `
+        <header>
+            <h1>Phänomenologie des Klangs: Eine umfassende Abhandlung über Field Recording im Kontext der Ambient-Musikproduktion</h1>
+        </header>
+
+        <section>
+            <h2>1. Einleitung: Die Transformation der Welt in Klang</h2>
+            <h3>1.1 Historische Genese und philosophische Verortung</h3>
+            <p>
+                Die Praxis des <span class="interactive-term" data-term="Field Recording">Field Recordings</span>, ursprünglich ein rein dokumentarisches Werkzeug der Ethnomusikologie und Bioakustik, hat sich im 21. Jahrhundert zu einer zentralen Säule der elektronischen Musikproduktion, insbesondere des Ambient-Genres, entwickelt.
+                Diese Evolution ist nicht lediglich technologischer Natur, sondern markiert einen fundamentalen Wandel in der ästhetischen Wahrnehmung unserer Umwelt.
+                Historisch betrachtet lässt sich dieser Wandel bis zu den Futuristen zurückverfolgen. Luigi Russolo proklamierte bereits 1913 in seinem Manifest <em>L'arte dei Rumori</em> (Die Kunst der Geräusche) die Emanzipation des Geräuschs vom reinen Lärm hin zum musikalischen Material.
+                Doch während Russolo die mechanische Gewalt der Industrialisierung ästhetisieren wollte, sucht das zeitgenössische Ambient Field Recording oft das Gegenteil: die akustische Introspektion, die Konservierung bedrohter Klanglandschaften oder die hyperreale Stilisierung der Natur.
+            </p>
+            <p>
+                In den späten 1960er Jahren begründete R. Murray Schafer an der Simon Fraser University mit dem World Soundscape Project (WSP) die Disziplin der <span class="interactive-term" data-term="Akustische Ökologie">Akustischen Ökologie</span>.
+                Schafers Begriff des „<span class="interactive-term" data-term="Soundscape">Soundscape</span>“ (Klanglandschaft) implizierte erstmals, dass die akustische Umwelt nicht passiv hingenommen, sondern aktiv gestaltet und analysiert werden muss.
+                Für den Ambient-Komponisten ist Schafers Theorie essenziell: Sie lehrt das „Clairaudience“ (Klarhören).
+                <span class="interactive-term" data-term="Ambient">Ambient</span>-Musik, wie sie Brian Eno in den 1970ern definierte – als Musik, die „so ignorierbar wie interessant“ sein muss –, greift diese Haltung auf. Sie nutzt Feldaufnahmen nicht als bloßen Effekt, sondern als narratives Fundament.
+                Die Transformation von Field Recording zu Ambient ist dabei ein alchemistischer Prozess. Das rohe Material – der Wind in einer Kiefernschonung, das elektromagnetische Surren eines Servers, das Knacken von Gletschereis – wird durch digitale Signalverarbeitung (DSP) von seiner rein physikalischen Ursache gelöst (Akusmatik) und in eine emotionale Textur verwandelt.
+                Dieser Artikel analysiert diesen Prozess in seiner Gesamtheit: von der physikalischen Erfassung der Wellenfront über die rechtlichen Implikationen der Aufnahme im öffentlichen Raum bis hin zur psychoakustischen Platzierung im Mix.
+            </p>
+        </section>
+
+        <section>
+            <h2>2. Theoretische Fundierung: Akustische Ökologie und Ambient-Ästhetik</h2>
+            <h3>2.1 Hi-Fi vs. Lo-Fi Soundscapes</h3>
+            <p>
+                Eine zentrale Unterscheidung in der akustischen Ökologie, die für die Qualität von Ambient-Aufnahmen entscheidend ist, ist die Dichotomie zwischen Hi-Fi- und Lo-Fi-Klanglandschaften.
+            </p>
+            <ul>
+                <li><strong>Hi-Fi (High Fidelity):</strong> In einer Hi-Fi-Umgebung ist das <span class="interactive-term" data-term="Signal-Rausch-Verhältnis">Signal-Rausch-Verhältnis</span> (SNR) günstig. Diskrete Klänge – der Ruf eines einzelnen Vogels, das Brechen eines Zweiges – sind über große Distanzen klar hörbar. Vorindustrielle oder abgelegene Naturräume sind typische Hi-Fi-Umgebungen. Sie bieten dem Ambient-Musiker Raum, Tiefe und Dynamik.</li>
+                <li><strong>Lo-Fi (Low Fidelity):</strong> In urbanen Räumen überlagern sich unzählige Klänge zu einem undifferenzierten Breitbandrauschen (Verkehr, Lüftungen). Die akustische Horizontlinie schrumpft; man hört nur noch das Nahe. Für Ambient-Musik stellt Lo-Fi eine Herausforderung dar, kann aber durch spektrale Bearbeitung in dichte „Drone“-Texturen verwandelt werden.</li>
+            </ul>
+
+            <h3>2.2 Schizophonie und die Ethik der Entcontextualisierung</h3>
+            <p>
+                R. Murray Schafer prägte den Begriff der „<span class="interactive-term" data-term="Schizophonie">Schizophonie</span>“ für die Trennung eines Klanges von seiner Quelle durch elektroakustische Reproduktion.
+                In der Ambient-Musik ist Schizophonie kein negativer Effekt, sondern das primäre künstlerische Mittel. Wenn das Geräusch eines vorbeifahrenden Zuges mittels Time-Stretching in einen stehenden Klangteppich verwandelt wird, verliert es seinen referenziellen Charakter (den Zug) und wird zum abstrakten Affekt (Melancholie, Weite).
+                Die ethische Frage, die sich hier stellt, betrifft die Authentizität. Bioakustiker fordern unverfälschte Dokumentation. Ambient-Künstler hingegen betreiben oft „Hyperrealismus“: Sie konstruieren eine Natur, die „natürlicher“ klingt als die Realität, indem sie Störgeräusche (Flugzeuge, Autos) entfernen und die ästhetisch angenehmen Frequenzen (Wasserplätschern, Vogelgesang) isolieren und verstärken.
+                Dies erzeugt eine romantisierte Simulation der Umwelt, die den Hörer emotional stärker binden kann als eine rohe Dokumentation.
+            </p>
+        </section>
+
+        <section>
+            <h2>3. Technische Akquisition: Die Physik der Aufnahme</h2>
+            <p>
+                Die Qualität der Ambient-Produktion wird an der Quelle entschieden. Da Ambient oft mit Stille, subtilen Transienten und extremen Dynamiksprüngen arbeitet, sind die technischen Anforderungen an die Signalkette deutlich höher als in der Pop- oder Rockmusikproduktion.
+            </p>
+
+            <h3>3.1 Mikrofontechnologie: Wandlerprinzipien und Rauschverhalten</h3>
+            <h4>3.1.1 Das Eigenrauschen (Equivalent Input Noise - EIN)</h4>
+            <p>
+                Für die Aufnahme von „Quiet American Landscapes“ oder subtilen Texturen (z.B. fallender Schnee) ist das thermische <span class="interactive-term" data-term="Eigenrauschen">Eigenrauschen</span> des Mikrofons der limitierende Faktor. Jedes Bauteil erzeugt Rauschen. Bei Kondensatormikrofonen entsteht dies primär im Impedanzwandler der Kapsel.
+            </p>
+            <ul>
+                <li><strong>Großmembran vs. Kleinmembran:</strong> Physikalisch bedingt fängt eine größere Membran mehr akustische Energie ein, was zu einer höheren Signalspannung im Verhältnis zum Rauschen der Elektronik führt. <span class="interactive-term" data-term="Großmembranmikrofone">Großmembranmikrofone</span> (LDCs) wie das Neumann TLM 103 erreichen extrem niedrige Rauschwerte von ca. 7 dB-A.</li>
+                <li><strong>Die Präferenz für Kleinmembranen (SDCs):</strong> Trotz des theoretischen Nachteils beim Rauschen bevorzugen Field Recordists <span class="interactive-term" data-term="Kleinmembranmikrofone">Kleinmembranen</span> (z.B. Sennheiser MKH 8020, Schoeps CMC6). Der Grund liegt in der Off-Axis-Response (Verhalten außerhalb der Einsprechrichtung). SDCs bilden Schall, der von der Seite kommt, linearer ab. Da Ambient-Aufnahmen oft diffuse Schallfelder (Wind in Bäumen) einfangen, ist eine natürliche Färbung des Diffusschalls wichtiger als das letzte Dezibel Rauschfreiheit. Moderne SDCs wie das Sennheiser MKH 8020 erreichen dennoch exzellente Werte um 10-12 dB-A.</li>
+                <li><strong>Grenzwerte:</strong> Für Ambient-Aufnahmen gilt ein Eigenrauschen von > 16 dB-A als problematisch, da dieses Rauschen bei der späteren Kompression oder beim Hochziehen leiser Passagen als störendes „Hiss“ hörbar wird.</li>
+            </ul>
+
+            <h4>3.1.2 Hochfrequenz-Kondensatortechnik (RF-Bias)</h4>
+            <p>
+                Ein technisches Detail, das für Außenaufnahmen essenziell ist, ist die <span class="interactive-term" data-term="RF-Bias">RF-Bias</span>-Technologie (verwendet u.a. von Sennheiser in der MKH-Serie).
+                Herkömmliche Kondensatormikrofone (AF-Technik) nutzen eine hochohmige Kapsel, die bei hoher Luftfeuchtigkeit anfällig für Kriechströme ist, was zu Knistern und Rauschen führt.
+            </p>
+            <ul>
+                <li><strong>Funktionsweise:</strong> RF-Bias-Mikrofone nutzen die Kapselkapazität als Teil eines Schwingkreises mit hoher Frequenz (Radio Frequency). Die Änderung der Kapazität durch Schall moduliert diese Frequenz.</li>
+                <li><strong>Vorteil:</strong> Da die Impedanz der Kapsel in diesem Design niedriger ist, sind diese Mikrofone extrem robust gegen Feuchtigkeit, Nebel und Temperaturschwankungen – Bedingungen, die bei der Aufnahme von Natur-Atmosphären die Regel sind.</li>
+            </ul>
+
+            <h4>3.1.3 Richtcharakteristiken und ihre räumliche Wirkung</h4>
+            <p>Die Wahl der Richtcharakteristik ist die erste Stufe des „Mixings“ noch vor der Aufnahme.</p>
+            <table class="w-full text-left text-sm border-collapse my-4">
+                <thead>
+                    <tr>
+                        <th class="border-b p-2">Richtcharakteristik</th>
+                        <th class="border-b p-2">Physikalisches Prinzip</th>
+                        <th class="border-b p-2">Anwendung im Ambient Field Recording</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border-b p-2 font-medium"><span class="interactive-term" data-term="Kugelcharakteristik">Kugel (Omni)</span></td>
+                        <td class="border-b p-2">Druckempfänger. Membran ist rückseitig geschlossen.</td>
+                        <td class="border-b p-2">Der Standard für offene Landschaften. Da Kugeln Druckempfänger sind, kennen sie keinen <span class="interactive-term" data-term="Nahbesprechungseffekt">Nahbesprechungseffekt</span>. Sie liefern tiefste Bässe (z.B. fernes Donnergrollen) linear bis in den Infraschallbereich. Sie sind zudem weniger windanfällig als gerichtete Mikrofone.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium"><span class="interactive-term" data-term="Niere">Niere (Cardioid)</span></td>
+                        <td class="border-b p-2">Druckgradientenempfänger. Laufzeitglied verzögert Rückschall.</td>
+                        <td class="border-b p-2">Dient zur Fokussierung. Wenn ein einzelner Bachlauf vor einem lauten Hintergrund (Straße) isoliert werden soll. Nieren leiden unter dem Nahbesprechungseffekt (Bassbetonung bei Nähe) und sind sehr windanfällig. Basis für ORTF- und XY-Stereo.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium"><span class="interactive-term" data-term="Acht">Acht (Figure-8)</span></td>
+                        <td class="border-b p-2">Druckgradientenempfänger. Membran beidseitig offen.</td>
+                        <td class="border-b p-2">Nimmt Schall von vorne und hinten auf, löscht Seiten aus (90°). Essenziell für Mid-Side (MS) Stereofonie. Ermöglicht maximale Kanaltrennung, aber extrem empfindlich gegen Wind und Handhabungsgeräusche.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Richtrohr (Shotgun)</td>
+                        <td class="border-b p-2">Interferenzrohr vor einer Nieren/Supernierenkapsel.</td>
+                        <td class="border-b p-2">Isolation. Um spezifische Klänge (z.B. einen einzelnen Vogel) aus großer Distanz zu „sampeln“. Für Ambient-Atmosphären oft ungeeignet, da das Off-Axis-Verhalten unnatürlich gefärbt ist („Tunnelblick“).</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>3.2 Recorder-Spezifikationen und Preamps</h3>
+            <h4>3.2.1 Das Ein-Rausch-Verhalten von Vorverstärkern</h4>
+            <p>
+                Der Recorder ist das zweite Glied der Rauschkette. Das <span class="interactive-term" data-term="EIN">Equivalent Input Noise</span> (EIN) des Preamps entscheidet, ob das Rauschen des Mikrofons oder des Recorders dominiert.
+            </p>
+            <ul>
+                <li><strong>Gute Werte:</strong> Professionelle Recorder (Sound Devices MixPre, Zoom F-Serie) bieten EIN-Werte von -128 dBu oder niedriger (bei 150 Ohm Abschlusswiderstand).</li>
+                <li><strong>Das Zusammenspiel:</strong> Wenn ein hochempfindliches Mikrofon (z.B. 40 mV/Pa) genutzt wird, ist das Recorder-Rauschen fast irrelevant, da das Mikrofon-Signal weit über dem Rauschteppich des Preamps liegt. Bei dynamischen Mikrofonen oder leisen Quellen ist ein niedriger EIN-Wert des Recorders jedoch kritisch.</li>
+            </ul>
+
+            <h4>3.2.2 Die 32-Bit Float Revolution: Ein Paradigmenwechsel</h4>
+            <p>
+                Die Einführung von <span class="interactive-term" data-term="32-Bit Float">32-Bit Float</span> Recording (z.B. Zoom F3/F6, Tascam Portacapture, Sound Devices MixPre II) hat den Workflow im Feld radikal vereinfacht.
+            </p>
+            <ul>
+                <li><strong>Technologie:</strong> Herkömmliche 24-Bit Wandler haben einen festen Dynamikbereich von 144 dB. Ein Signal über 0 dBFS wird hart abgeschnitten (Clipping). 32-Bit Float speichert Audiodaten als Gleitkommazahlen (Mantisse + Exponent). Dies ermöglicht einen theoretischen Dynamikbereich von über 1500 dB.</li>
+                <li><strong>Dual-ADC:</strong> In der Praxis nutzen diese Recorder oft zwei Analog-Digital-Wandler parallel (Dual-Stage ADC) – einen für leise Signale (hohe Verstärkung) und einen für laute (niedrige Verstärkung). Der Recorder verrechnet diese Ströme nahtlos zu einer 32-Bit Float Datei.</li>
+                <li><strong>Konsequenz:</strong> Es ist faktisch unmöglich, die digitale Datei zu übersteuern. Ein plötzlicher Donnerschlag, der bei 24-Bit die Aufnahme ruiniert hätte, kann in der DAW einfach leiser geregelt („normalisiert“) werden, ohne dass die Wellenform abgeschnitten ist. Ebenso können extrem leise Signale ohne signifikantes Quantisierungsrauschen angehoben werden.</li>
+                <li><strong>Grenzen:</strong> 32-Bit Float schützt nicht vor der Übersteuerung des Mikrofons selbst (Kapsel-Verzerrung) oder der analogen Eingangsstufe vor dem Wandler.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>4. Aufnahmestrategien im Feld: Stereofonie und Spezialtechniken</h2>
+            <p>Ambient-Musik lebt von der Räumlichkeit. Die Wahl des Stereoverfahrens bestimmt die Breite, Tiefe und Ortbarkeit der Klangbühne.</p>
+
+            <h3>4.1 Laufzeit- vs. Intensitätsstereofonie</h3>
+            <h4>4.1.1 AB-Stereofonie (Laufzeit)</h4>
+            <p>
+                Zwei Kugelmikrofone werden parallel in einem Abstand (Basisbreite) von z.B. 40-100 cm aufgestellt.
+            </p>
+            <ul>
+                <li><strong>Wirkung:</strong> Die Ortung erfolgt primär über Laufzeitunterschiede der Schallwellen. Das Klangbild ist oft sehr breit, offen und hat ein mächtiges Bassfundament (da Kugeln Druckempfänger sind).</li>
+                <li><strong>Einsatz:</strong> Ideal für weite, diffuse Atmosphären (Wald, Meer), bei denen eine präzise Lokalisation einzelner Quellen weniger wichtig ist als das Gefühl der „Einhüllung“ (Envelopment).</li>
+            </ul>
+
+            <h4>4.1.2 ORTF und XY (Intensität/Mischform)</h4>
+            <p>
+                <strong><span class="interactive-term" data-term="ORTF">ORTF</span>:</strong> Zwei Nieren im Abstand von 17 cm (Ohrenabstand) und einem Winkel von 110°. Kombiniert Laufzeit- und Pegelunterschiede. Bietet eine sehr natürliche Abbildung und gute Lokalisation. Guter Kompromiss für dokumentarische Atmosphären.
+                <strong><span class="interactive-term" data-term="XY-Stereofonie">XY</span>:</strong> Zwei Nieren im Winkel von 90° direkt übereinander (Koinzidenz). Nur Pegelunterschiede. Sehr stabiles Stereobild, aber oft „enger“ und weniger räumlich als AB oder ORTF. Gut für Nahaufnahmen von Klangobjekten.
+            </p>
+
+            <h4>4.1.3 MS-Stereofonie (Mitte-Seite)</h4>
+            <p>
+                Eine Niere (oder Kugel) zeigt nach vorne (Mitte), eine Acht zeigt seitlich (Seite).
+            </p>
+            <ul>
+                <li><strong>Matrixierung:</strong> Das Signal wird mathematisch dekodiert: Links = M + S, Rechts = M - S.</li>
+                <li><strong>Vorteil:</strong> Die Stereobreite kann in der Postproduktion stufenlos geregelt werden. Perfekte <span class="interactive-term" data-term="Monokompatibilität">Monokompatibilität</span> (M bleibt erhalten). Dies ist extrem wertvoll, wenn Aufnahmen später für Vinyl (Phasenprobleme im Bass) gemastert werden sollen.</li>
+            </ul>
+
+            <h3>4.2 Binaurale Aufnahme und Psychoakustik</h3>
+            <p>
+                <span class="interactive-term" data-term="Binaurale Aufnahme">Binaurale Aufnahmen</span> nutzen Kunstköpfe oder Mikrofone, die direkt in den Ohren des Recordisten getragen werden (In-Ear-Mics wie Roland CS-10EM oder Sound Professionals MS-MINI).
+            </p>
+            <ul>
+                <li><strong>HRTF (Head-Related Transfer Function):</strong> Die Ohrmuschel, der Kopfschatten und der Torso filtern den Schall spektral abhängig von der Einfallsrichtung.</li>
+                <li><strong>Effekt:</strong> Bei Wiedergabe über Kopfhörer entsteht ein verblüffender 3D-Effekt (Außen-Kopf-Lokalisation). Man hört oben, unten, hinten.</li>
+                <li><strong>Ambient-Relevanz:</strong> Da Ambient-Musik oft intensiv über Kopfhörer konsumiert wird, ist binaurales Audio ein mächtiges Werkzeug für Intimität und Immersion.</li>
+            </ul>
+
+            <h3>4.3 Jenseits des Luftschalls: Kontaktmikrofone und Hydrophone</h3>
+            <p>Um einzigartige Texturen zu generieren, muss der Ambient-Musiker die Luft verlassen.</p>
+            <h4>4.3.1 Kontaktmikrofone (Piezo-Technik)</h4>
+            <p>
+                Diese Wandler nehmen Körperschall in festen Medien auf.
+            </p>
+            <ul>
+                <li><strong>Impedanz-Problem:</strong> Piezo-Scheiben haben eine extrem hohe Ausgangsimpedanz. Werden sie an normale Line-Eingänge (ca. 10 kOhm) angeschlossen, bildet sich ein Hochpassfilter, der alle Bässe abschneidet. Das Resultat ist dünn und „blechern“.</li>
+                <li><strong>Lösung:</strong> Nutzung eines High-Z Preamps (Impedanzwandler) mit mindestens 1 MOhm (besser 5-10 MOhm) Eingangswiderstand. Dies stellt den vollen Frequenzgang wieder her.</li>
+                <li><strong>Kreative Anwendung:</strong> Anbringen an Weidezäunen (die wie riesige Saiten im Wind schwingen), an Brückenpfeilern oder an schmelzendem Eis. Das Ergebnis sind oft tiefe, grollende Drones, die keinerlei Bearbeitung benötigen.</li>
+            </ul>
+
+            <h4>4.3.2 Hydrophone</h4>
+            <p>
+                Unterwasseraufnahmen eröffnen eine Welt voller Clicks, Pops und Drones.
+            </p>
+            <ul>
+                <li><strong>Physik:</strong> Wasser hat eine höhere akustische Impedanz als Luft. <span class="interactive-term" data-term="Hydrophon">Hydrophone</span> sind akustisch an Wasser angepasst (Rho-c-Anpassung).</li>
+                <li><strong>Praxis:</strong> Um Kabelgeräusche (Strömungsvibrationen) zu vermeiden, muss das Kabel entkoppelt oder beschwert werden.</li>
+                <li><strong>Sounds:</strong> Aquatische Insekten, knackende Krebse oder die mechanischen Geräusche entfernter Schiffe, die durch das Wasser wie durch einen natürlichen Tiefpassfilter klingen.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>5. Geräuschmanagement und Umgebungskontrolle</h2>
+            <p>Eine saubere Aufnahme ist das Fundament. Was nicht aufgenommen wird, muss später nicht mühsam entfernt werden.</p>
+            <h3>5.1 Windschutz: Die erste Verteidigungslinie</h3>
+            <p>
+                Wind erzeugt Turbulenzen an der Mikrofonmembran, die zu extremen tieffrequenten Auslenkungen führen. Dies kann den Preamp übersteuern und moduliert das Nutzsignal (Intermodulation).
+            </p>
+            <ul>
+                <li><strong>Schaumstoff:</strong> Nur für Innenräume effektiv. Im Feld nutzlos.</li>
+                <li><strong>Fell (Deadcat/Windjammer):</strong> Bricht die Windenergie durch feine Härchen, bevor sie das Mikrofon erreicht.</li>
+                <li><strong>Korb (Blimp/Zeppelin):</strong> Erzeugt einen Raum ruhender Luft um das Mikrofon. Die Kombination aus Korb und Fell („Full Windshield Kit“) ist der professionelle Standard. Sie dämpft Windgeräusche um bis zu 50 dB im tiefen Frequenzbereich.</li>
+            </ul>
+
+            <h3>5.2 Trittschall und Körperschall</h3>
+            <p>
+                Hochempfindliche Mikrofone nehmen Vibrationen des Stativs (Schritte in der Nähe) auf. Eine elastische Aufhängung (Spinne/Shockmount) ist obligatorisch. Bei Handheld-Recordern sollte man Griffgeräusche vermeiden, indem man einen Handgriff („Pistol Grip“) und eine externe Aufhängung nutzt, statt das Gerät direkt zu halten.
+            </p>
+        </section>
+
+        <section>
+            <h2>6. Rechts- und Ethikfragen: Der Recordist im öffentlichen Raum</h2>
+            <p>In Deutschland und Europa kollidiert die Praxis des Field Recordings oft mit strengen Persönlichkeits- und Datenschutzrechten. Ein professioneller Umgang ist zwingend.</p>
+
+            <h3>6.1 Die Rechtslage in Deutschland: § 201 StGB</h3>
+            <p>Deutschland besitzt mit <span class="interactive-term" data-term="§ 201 StGB">§ 201 StGB</span> (Verletzung der Vertraulichkeit des Wortes) eines der schärfsten Gesetze weltweit in diesem Bereich.</p>
+            <ul>
+                <li><strong>Der Tatbestand:</strong> Wer unbefugt das nichtöffentlich gesprochene Wort eines anderen auf Tonträger aufnimmt, macht sich strafbar (Freiheitsstrafe bis zu drei Jahren oder Geldstrafe).</li>
+                <li><strong>Öffentlich vs. Nichtöffentlich:</strong> Entscheidend ist die faktische Vertraulichkeit. Ein Gespräch zwischen zwei Personen auf einer Parkbank, die sich leise unterhalten, ist nichtöffentlich, auch wenn sie im öffentlichen Raum (Park) sitzen. Eine Aufnahme wäre strafbar. Ein Marktschreier, der laut in die Menge ruft, spricht öffentlich. Eine Aufnahme ist hier in der Regel zulässig.</li>
+                <li><strong>Das Problem der Zufallsaufnahme:</strong> Wenn Sie eine Atmo am Bahnhof aufnehmen und eine Person geht nah am Mikrofon vorbei und führt ein verständliches Telefonat, befinden Sie sich in einer Grauzone. Die Rechtsprechung tendiert dazu, kurze, unverständliche Fetzen als „Beiwerk“ zu tolerieren, aber die Grenze ist fließend.</li>
+                <li><strong>Abgrenzung zur Panoramafreiheit:</strong> Im visuellen Bereich erlaubt § 59 UrhG (Panoramafreiheit) Fotos von Gebäuden im öffentlichen Raum. Eine analoge „akustische Panoramafreiheit“ für Gespräche gibt es nicht.</li>
+            </ul>
+
+            <h3>6.2 Datenschutz (DSGVO)</h3>
+            <p>
+                Seit der DSGVO gilt die menschliche Stimme als biometrisches, personenbezogenes Datum, wenn sie die Identifizierung einer Person ermöglicht. Die Verarbeitung (Aufnahme, Speicherung, Veröffentlichung) bedarf einer Rechtsgrundlage (z.B. Einwilligung oder berechtigtes Interesse Art. 6 Abs. 1 lit. f DSGVO). Die künstlerische Freiheit (Art. 85 DSGVO) bietet zwar Ausnahmen, aber diese müssen im Einzelfall abgewogen werden.
+            </p>
+
+            <h3>6.3 Ethische Richtlinien in der Natur</h3>
+            <p>Die Nature Recording Society und Bioakustiker folgen einem ethischen Kodex:</p>
+            <ul>
+                <li><strong>Kein Playback:</strong> Das Abspielen von Vogelstimmen, um Antworten zu provozieren, ist tabu, da es Tiere stresst und Brutverhalten stört.</li>
+                <li><strong>Habitat-Schutz:</strong> Das Betreten sensibler Bereiche (z.B. Moore) für die perfekte Aufnahme darf das Ökosystem nicht schädigen.</li>
+                <li><strong>Wahrhaftigkeit:</strong> In der Dokumentation sollte angegeben werden, wenn Aufnahmen bearbeitet oder gemischt wurden. Im Ambient-Bereich (Kunst) ist dies weniger strikt, aber Ehrlichkeit über die Quellen (z.B. „Zoosounds“ als „Dschungel“ zu verkaufen) wird empfohlen.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>7. Datenmanagement und Organisation</h2>
+            <p>Bevor die kreative Arbeit beginnt, muss das Material gesichert und organisiert werden. Chaos in der Library tötet die Kreativität.</p>
+            <h3>7.1 Ingest und Metadaten</h3>
+            <ul>
+                <li><strong>UCS (Universal Category System):</strong> Ein Industriestandard zur Benennung von Audiodateien.
+                    <br>Struktur: CatID_FXName_Creator_SourceID_UserData
+                    <br>Beispiel: AMBForst_Pine TreesWindy_JSmith_ZoomF6_Winter.wav
+                    <br>Vorteil: Software wie SoundMiner oder BaseHead erkennt automatisch die Kategorie (AMB = Ambience, Forst = Forest) und sortiert die Files.
+                </li>
+                <li><strong>Metadaten:</strong> Einbetten von Informationen (Ort, Mikrofonierung, Wetterbedingungen) in den BWF-Header (Broadcast Wave Format) der Datei. Dies ist essenziell für die spätere Suche („Suche: Regen auf Blechdach“).</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>8. Postproduktion: Restaurierung und Vorbereitung</h2>
+            <p>Das rohe Audiofile ist selten perfekt. Die Phase der „Audio-Chirurgie“ bereitet das Material vor.</p>
+            <h3>8.1 Spektrale Reparatur (Spectral Repair)</h3>
+            <p>
+                Tools wie iZotope RX erlauben den Zugriff auf das <span class="interactive-term" data-term="Spektrogramm">Spektrogramm</span> – die visuelle Darstellung von Audio (Zeit x Frequenz x Amplitude).
+            </p>
+            <ul>
+                <li><strong>Visuelle Diagnose:</strong> Ein Vogelruf erscheint als helles, geschwungenes Muster. Ein Flugzeug als lange, horizontale Linie im Bassbereich. Windstoß als vertikale, breitbandige Wolke.</li>
+                <li><strong>Interpolation:</strong> Störende Ereignisse (z. B. ein Husten in einer Waldaufnahme) können im Spektrogramm markiert und durch Algorithmen entfernt werden, die die Lücke basierend auf den umliegenden Daten (Textur des Waldes) füllen („Spectral Repair“). Dies ist weitaus präziser als einfaches Schneiden.</li>
+            </ul>
+
+            <h3>8.2 Denoising: Weniger ist mehr</h3>
+            <ul>
+                <li><strong>Die Gefahr von Artefakten:</strong> Aggressive Rauschunterdrückung führt zu „Musical Noise“ (zwitschernde, metallische Artefakte/Aliasing).</li>
+                <li><strong>Ambient-Strategie:</strong> Rauschen (Noise Floor) ist oft ästhetisch erwünscht. Es wirkt als „akustischer Leim“, der verschiedene Elemente verbindet. Statt Rauschen komplett zu entfernen, nutzt man oft nur einen sanften Low-Shelf-Filter oder reduziert das Rauschen nur um 3-6 dB, um die Natürlichkeit zu bewahren. Ein „toter“ Hintergrund wirkt künstlich und steril.</li>
+            </ul>
+
+            <h3>8.3 Equalization (EQ)</h3>
+            <ul>
+                <li><strong>Low-Cut (High-Pass):</strong> In fast jeder Aufnahme gibt es subsonischen Müll (< 30-40 Hz) durch Wind oder Verkehr, der keine musikalische Information trägt, aber Headroom frisst. Ein steilflankiger Low-Cut bei 30 Hz ist Standard.</li>
+                <li><strong>Resonanz-Suche:</strong> Enge Räume oder Metallobjekte haben oft unangenehme Resonanzfrequenzen. Mit einem schmalbandigen EQ (hoher Q-Faktor) und Anhebung („Sweeping“) sucht man diese Frequenzen und senkt sie dann ab (subtraktiver EQ).</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>9. Kreative Transformation: Vom Dokument zum Kunstwerk</h2>
+            <p>Hier verlässt der Prozess die Dokumentation und tritt in die Komposition ein. Wie wird das Geräusch zur Musik?</p>
+            <h3>9.1 Granularsynthese: Die Atomisierung des Klangs</h3>
+            <p>
+                <span class="interactive-term" data-term="Granularsynthese">Granularsynthese</span> zerlegt das Audiofile in winzige Fragmente (Grains, typisch 10-100 ms) und setzt sie neu zusammen.
+            </p>
+            <ul>
+                <li><strong>Workflow:</strong> Man lädt eine Textur (z.B. Kiesgeräusche) in einen Granular-Sampler (z.B. Ableton Granulator II, Robert Henke).</li>
+                <li><strong>Parameter:</strong>
+                    <br>Grain Size: Kurze Grains (< 20ms) erzeugen metallische, synthetische Klänge. Lange Grains (> 100ms) bewahren Fragmente des Originals.
+                    <br>Jitter/Random: Zufällige Variation von Startpunkt und Pan-Position erzeugt eine organische, sich nie wiederholende Wolke.
+                </li>
+                <li><strong>Anwendung:</strong> Ein kurzes Sample eines Wasserfalls kann in eine unendlich lange, schwebende Fläche verwandelt werden, die tonal spielbar ist.</li>
+            </ul>
+
+            <h3>9.2 Spektrales Time-Stretching (Paulstretch)</h3>
+            <p>
+                Das extreme Dehnen von Audio ist ein Markenzeichen von Dark Ambient.
+            </p>
+            <ul>
+                <li><strong>Paulstretch Algorithmus:</strong> Im Gegensatz zu normalen Time-Stretchern, die Transienten erhalten wollen, „verschmiert“ <span class="interactive-term" data-term="Paulstretch">Paulstretch</span> das Signal im Spektralbereich (Spectral Smearing).</li>
+                <li><strong>Effekt:</strong> Eine 3-minütige Aufnahme von Stadtverkehr wird auf 60 Minuten gedehnt (2000%). Hupen werden zu langen, harmonischen Drohnen, Motorgeräusche zu tiefen Bässen. Alle rhythmischen Bezüge lösen sich auf; zurück bleibt reine Textur. Dies ist ideal, um komplexe, atonale Quellen in meditative Klangteppiche zu verwandeln.</li>
+            </ul>
+
+            <h3>9.3 Convolution Reverb (Faltungshall) als Sound-Design-Tool</h3>
+            <p>
+                <span class="interactive-term" data-term="Faltungshall">Faltungshall</span> (Convolution Reverb) nutzt Impulsantworten (IRs) realer Räume, um deren Hallcharakteristik auf ein Signal zu übertragen.
+            </p>
+            <ul>
+                <li><strong>Kreative Faltung:</strong> Man muss nicht Hallräume falten. Man kann einen Synthesizer-Sound mit der Impulsantwort von „Kies auf Metall“ oder einer „Gitarrensaite“ falten. Der Synthesizer übernimmt den spektralen Charakter (Frequenzgang über Zeit) des Kieses. Dies verschmilzt synthetische und organische Welten auf molekularer Ebene.</li>
+                <li><strong>Field-IRs:</strong> Recordists erstellen eigene IRs, indem sie an interessanten Orten (Silos, Höhlen) einen „Clap“ oder Sinus-Sweep aufnehmen und diesen in Software (z.B. AudioEase Altiverb) dekompilieren.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>10. Räumliche Dramaturgie und Psychoakustik</h2>
+            <p>Ambient ist Raumkunst. Die Platzierung von Klängen erzeugt Narrative.</p>
+            <h3>10.1 Die Z-Achse (Tiefenstaffelung)</h3>
+            <p>
+                In einem Stereo-Mix (X-Achse: Links/Rechts) fehlt oft die Tiefe. Psychoakustisch wird Distanz durch drei Faktoren simuliert:
+            </p>
+            <ol>
+                <li><strong>Lautstärke:</strong> Leiser = weiter weg.</li>
+                <li><strong>Frequenz (Luftabsorption):</strong> Hohe Frequenzen werden durch Luft stärker gedämpft als Bässe. Ein Low-Pass-Filter (Höhenabsenkung) simuliert Distanz. Ein Sound, der näher kommt, wird heller.</li>
+                <li><strong>Direktschall vs. Diffusschall:</strong> Je weiter eine Quelle entfernt ist, desto geringer ist der Anteil des Direktschalls im Verhältnis zum Raumhall. Durch Erhöhung des „Wet“-Anteils im Reverb rückt der Sound nach hinten.</li>
+            </ol>
+
+            <h3>10.2 Immersive Audio: Ambisonics und Binauralisierung</h3>
+            <ul>
+                <li><strong>Ambisonics Workflow:</strong>
+                    <br>1. Aufnahme im A-Format (4 Kapseln roh).
+                    <br>2. Konvertierung in B-Format (W, X, Y, Z – sphärische Repräsentation).
+                    <br>3. In der DAW kann das Schallfeld gedreht werden („Virtual Mic“). Man kann im Nachhinein entscheiden, wo „Vorne“ ist.
+                </li>
+                <li><strong>Binauralisierung:</strong> Für den Konsumenten (Kopfhörer) wird Ambisonics mittels HRTF-Filtern in binaurales Stereo gerendert. Plugins wie Sennheiser AMBEO Orbit erlauben es, Mono-Quellen präzise im 3D-Raum (auch oben/unten) zu platzieren.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>11. Mastering für Ambient</h2>
+            <p>Das Mastering von Ambient folgt anderen Regeln als Pop-Musik.</p>
+            <h3>11.1 Dynamik und LUFS-Standards</h3>
+            <ul>
+                <li><strong>Zielwerte:</strong> Ambient benötigt Dynamik (Makrodynamik). Der „Loudness War“ ist hier kontraproduktiv. Während Pop oft auf -8 LUFS gemastert wird, peilen Ambient-Produktionen oft -14 bis -16 <span class="interactive-term" data-term="LUFS">LUFS</span> (Integrated) an. Dies bewahrt die Transienten von Naturgeräuschen (Regentropfen, Knacken), die bei starkem Limiting „plattgedrückt“ würden.</li>
+                <li><strong>True Peak:</strong> Um Verzerrungen bei der Wandlung in verlustbehaftete Formate (Spotify Ogg Vorbis, MP3) zu vermeiden, sollte der True Peak bei -1.0 dBTP liegen (nicht -0.1).</li>
+                <li><strong>Streaming:</strong> Plattformen normalisieren ohnehin auf ca. -14 LUFS. Ein extrem dynamischer Ambient-Track (z.B. -20 LUFS) wird von Spotify angehoben. Dabei wird aber auch das Grundrauschen (Noise Floor) angehoben! Daher ist ein sauberes Denoising in der Pre-Production essenziell.</li>
+            </ul>
+
+            <h3>11.2 Format-Auslieferung</h3>
+            <p>
+                Neben dem klassischen Stereo-Master (WAV 24-Bit/48kHz oder 96kHz) gewinnt <span class="interactive-term" data-term="Dolby Atmos">Dolby Atmos</span> für Ambient an Bedeutung. Streaming-Dienste wie Apple Music und Tidal unterstützen Spatial Audio. Ein Ambient-Master sollte daher idealerweise in Stems (Gruppenspuren) archiviert werden, um einen späteren Upmix auf immersive Formate zu ermöglichen.
+            </p>
+        </section>
+
+        <section>
+            <h2>12. Fazit und Ausblick</h2>
+            <p>
+                Field Recording im Kontext von Ambient-Musik ist ein dialektischer Prozess zwischen wissenschaftlicher Präzision und poetischer Abstraktion. Der moderne Field Recordist ist Techniker, der Impedanzen anpasst und 32-Bit Float versteht; er ist Jurist, der Persönlichkeitsrechte im öffentlichen Raum navigiert; und er ist Komponist, der mittels Granularsynthese und spektraler Bearbeitung neue Welten erschafft.
+                Die Zukunft liegt in der weiteren Verschmelzung von Realität und Virtualität (VR/AR) und der Nutzung von KI-gestützten Tools zur Separation von Klangquellen (Source Separation), die es erlauben werden, selbst aus mono-Lo-Fi-Aufnahmen einzelne Elemente zu extrahieren und neu zu arrangieren.
+                Doch am Ende bleibt das Ohr – das „Clairaudience“ – das wichtigste Werkzeug.
+            </p>
+        </section>
+
+        <section>
+            <h2>Zusammenfassung der Workflow-Empfehlungen</h2>
+            <table class="w-full text-left text-sm border-collapse my-4">
+                <thead>
+                    <tr>
+                        <th class="border-b p-2">Phase</th>
+                        <th class="border-b p-2">Aktion</th>
+                        <th class="border-b p-2">Tools & Parameter</th>
+                        <th class="border-b p-2">Ziel</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Capture</td>
+                        <td class="border-b p-2">Aufnahme in 32-Bit Float, Nutzung von Windschutz (Blimp).</td>
+                        <td class="border-b p-2">Zoom F3/F6, MixPre, Rycote. Pre-Roll aktivieren.</td>
+                        <td class="border-b p-2">Maximale Dynamik, kein digitales Clipping, minimierte Windartefakte.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Ingest / Restoration</td>
+                        <td class="border-b p-2">Datensicherung und Benennung nach UCS-Standard. Spektrale Reparatur transienter Störungen, sanftes Denoising.</td>
+                        <td class="border-b p-2">SoundMiner, BaseHead. Metadaten (Ort, Zeit) einbetten. iZotope RX (Spectral Repair, Voice De-noise).</td>
+                        <td class="border-b p-2">Wiederauffindbarkeit in großen Libraries. Entfernung von Husten/Autos, Erhalt des natürlichen Noise Floors.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Transformation</td>
+                        <td class="border-b p-2">Time-Stretching, Granularsynthese, Layering.</td>
+                        <td class="border-b p-2">Paulstretch (8x Stretch), Granulator II, Ableton Live.</td>
+                        <td class="border-b p-2">Erzeugung von Texturen und Drones aus realen Klängen.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Mixing</td>
+                        <td class="border-b p-2">Tiefenstaffelung (EQ, Reverb), Binaurales Panning.</td>
+                        <td class="border-b p-2">FabFilter Pro-Q3 (High-Cut für Distanz), Sennheiser AMBEO.</td>
+                        <td class="border-b p-2">Räumliche Immersion, Trennung von Vorder- und Hintergrund.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Mastering</td>
+                        <td class="border-b p-2">Ziel -14 bis -16 LUFS, True Peak -1.0 dB.</td>
+                        <td class="border-b p-2">FabFilter Pro-L2, Insight 2 (Metering).</td>
+                        <td class="border-b p-2">Erhalt der Transienten, Kompatibilität mit Streaming-Diensten.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    `
     },
     uk_garage_london: {
         id: 'uk_garage_london',
@@ -2195,10 +2904,208 @@ const CREATIVE_WORLDS = {
         name: 'Detroit Techno Foundry',
         icon: '🏭',
         wikiContent: `
-            <h1>Detroit Techno Foundry (Platzhalter)</h1>
-            <p>Dies ist ein Platzhaltertext fuer die kommende Detroit-Techno-Welt in der Kreativ-Bibliothek.</p>
-            <p>Beispielbegriffe: <span class="interactive-term" data-term="Machine Funk">Machine Funk</span>, <span class="interactive-term" data-term="Motoric Pulse">Motoric Pulse</span>, <span class="interactive-term" data-term="Analog Drum Architecture">Analog Drum Architecture</span>.</p>
-        `
+        <header>
+            <h1>Detroit Techno: Ästhetische Genealogien, Maschinenlogik und Produktionspraxis</h1>
+        </header>
+
+        <section>
+            <h2>Executive Summary</h2>
+            <p>
+                <span class="interactive-term" data-term="Detroit Techno">Detroit Techno</span> entsteht in der spezifischen Konstellation aus postindustrieller Stadtökonomie, afroamerikanischer Clubkultur, verfügbar werdender Sequencer-/Drum-Machine-Technologie und einer ästhetischen Re-Adressierung der Zukunft: nicht als futuristische Dekoration, sondern als Produktionsmodus.
+                Zentral ist der Umstand, dass frühe Protagonisten wie <span class="interactive-term" data-term="Juan Atkins">Juan Atkins</span>, <span class="interactive-term" data-term="Derrick May">Derrick May</span> und <span class="interactive-term" data-term="Kevin Saunderson">Kevin Saunderson</span> (oft als „Belleville Three“ gefasst) zwischen Detroit und Belleville sozialisiert werden und in ihren Selbstbeschreibungen explizit auf Technologie, Science-Fiction und europäische Elektronik (insbesondere <span class="interactive-term" data-term="Kraftwerk">Kraftwerk</span>) verweisen.
+            </p>
+            <p>
+                Klanglich etabliert Detroit Techno eine Loop-Ästhetik, die aus minimalen Motiven (<span class="interactive-term" data-term="Ostinato">Ostinati</span>), Reduktion und Spannungsaufbau über Textur besteht: Dichte, Spektrum, Mikro-Dynamik (<span class="interactive-term" data-term="Accent">Accent</span>), zeitliche Verschiebung (<span class="interactive-term" data-term="Shuffle">Shuffle</span>/Swing) und performatives Muting werden zu primären Formkräften.
+                Die Maschine ist nicht nur Instrument, sondern Formgenerator: <span class="interactive-term" data-term="Step-Sequencing">Step-Sequencing</span>, Pattern-Chaining und parametrische Modulation ersetzen traditionelle Songentwicklung durch prozessuale Variation.
+                Kulturtheoretisch lässt sich diese Praxis als <span class="interactive-term" data-term="Afrofuturismus">Afrofuturismus</span> im Sinne einer „technokulturellen“ Zukunftsarbeit lesen: Als Begriff wurde „Afrofuturism“ in der Forschung häufig auf Mark Dery (1993/94) zurückgeführt, während spätere Diskurse (u. a. Alondra Nelson) die genealogische Breite (Diaspora, Digitalität, Science-Fiction-Metaphern) betonen.
+            </p>
+        </section>
+
+        <section>
+            <h2>Genealogien und kulturelle Semantiken</h2>
+            <p>
+                Detroit Techno ist historisch weniger „Stil“ als kulturelle Antwortform: auf industrielle Restrukturierung, urbane Segregation und mediale Globalisierung.
+                Ein prägendes Motiv ist der postindustrielle Futurismus: Science-Fiction/Technologie fungierten als symbolische Fluchtlinie – als Optimismuskanal in Situationen von Deindustrialisierung und sozialer Spannung.
+                „Motown-Einfluss“ ist im Detroit-Techno-Diskurs doppeldeutig: Einerseits steht <span class="interactive-term" data-term="Motown">Motown</span> als Symbol für eine industrialisierte Musikproduktion; andererseits tritt Motown in frühen Techno-Statements auch als Gegenfolie auf.
+                Der Konflikt ist weniger Motown vs. Techno als Song-Pop-Industrie vs. postindustrielle Maschinen-Ästhetik.
+                Die ästhetische Wurzel „elektronische Avantgarde“ ist popmodern: Die intensive Identifikation von Atkins/May mit europäischer Elektronik (u. a. Kraftwerk) wird als Schlüssel beschrieben, um Techno als „post-soul“ zu lesen.
+                Der transatlantische Austausch verläuft als Rückkopplung: Der Detroiter Radio-DJ <span class="interactive-term" data-term="The Electrifying Mojo">The Electrifying Mojo</span> rotierte europäische Importe stark, was als Katalysator für technoide Sequencer-Grooves wirkte.
+            </p>
+        </section>
+
+        <section>
+            <h2>Maschinenästhetik und Groove-Mechanik</h2>
+            <h3>Maschinen-Futurismus als Klangstrategie</h3>
+            <p>
+                Der Satz über Techno als „complete mistake“ – „wie wenn George Clinton und Kraftwerk in einem Aufzug feststecken, mit nur einem Sequencer“ – markiert eine programmatische Umstellung: Nicht melodische Entwicklung, sondern sequenzierte Zeitorganisation wird zur Hauptidee.
+                Die Maschine erzeugt präzise Zeit, und diese Zeit wird als emotionales Material behandelt.
+                Detroit Techno ist trotz Maschinenbild groove-orientiert. Das zeigt sich an drei kompositorischen Ebenen:
+            </p>
+            <ul>
+                <li><strong>Accent als Mikro-Dynamik:</strong> Bei Step-Sequencern ist Accent nicht „Lauter machen“ als Mix-Aktion, sondern eine im Pattern gespeicherte dynamische Hierarchie. Die TR-909-Logik unterscheidet zwischen „normal volume“ und „accent“ pro Step.</li>
+                <li><strong>Shuffle/Swing als Zeitkrümmung:</strong> Im TR-909-Handbuch wird „Shuffle“ als „bounce“/Schwingungsintensität beschrieben. Diese Mikroverschiebung ist nicht „Humanisierung“ nachträglich, sondern existiert als Geräteparameter. Kevin Saunderson beschreibt explizit, dass viel seines „Swing“ aus der 909 kam.</li>
+                <li><strong>Dichte statt Harmonie:</strong> Frühformen arbeiten mit überlagerten Hats, Cowbells, Claps und sekundären Kicks, wodurch Rhythmus als Textur entsteht („dense feeling of rhythm“).</li>
+            </ul>
+
+            <h3>Hardware- und Sequencer-Logik als Formgenerator</h3>
+            <p>
+                Detroit Techno ist ohne das Pattern-Paradigma kaum erklärbar:
+                Die <span class="interactive-term" data-term="TR-909">TR-909</span> beschreibt „Rhythms“ explizit als „step sequence process“. Copy/Chain/Delete-Funktionen erlauben Formbildung durch Pattern-Kombination.
+                Die <span class="interactive-term" data-term="TB-303">TB-303</span> speichert Basslines patternweise; musikalische Faktoren (Pitch, Note Length, Accent, Slide) sind als eigene Schreibdimension visualisiert.
+                Auch der <span class="interactive-term" data-term="SH-101">SH-101</span> wird als performancefähiges Sequencer-Instrument beschrieben.
+                Formprinzipien richten sich nicht primär an Strophen, sondern an Prozesslogik: Motiventwicklung wird als Ostinato-Entwicklung betrieben (ein Motiv bleibt gleich, der Kontext moduliert).
+                Reduktion ist Fokussierung: Wenige Elemente, aber maximal artikuliert. Spannung entsteht über Textur: Kanäle werden gemutet/unmuted, neue Percussion-Layer hinzugefügt.
+            </p>
+        </section>
+
+        <section>
+            <h2>Exemplarische Track-Analysen</h2>
+            <h3>No UFO's (Model 500)</h3>
+            <p>
+                Der Track (1985) ist ein Sci-Fi/Elektronik-Funk-Hybrid mit klarer Verse/Chorus-Struktur, aber bereits zentralen Techno-Elementen.
+                Formal entscheidend ist die Dichteproduktion: 909-Kick, 808-Cowbell, 808-Hats sowie Snare/Clap-Kombination.
+                Spannung entsteht nicht über Fills, sondern über Textur (Clap-Pattern-Variation, Muting in Break-Sektionen).
+            </p>
+
+            <h3>Strings of Life (Rhythim Is Rhythim)</h3>
+            <p>
+                Zentral ist die Pianofigur (1987), die zur modulierten Sequenz transformiert wird.
+                Klangarchitektur: Der Track arbeitet ohne Bassline („not a single drop of bass“) und organisiert den Drive über „space-age synth strings“ und TR-909-Drums.
+                Kleine Variationen (z. B. Oktavsprung im Piano) fungieren als „Ear-Catch“.
+            </p>
+
+            <h3>Just Want Another Chance (Reese)</h3>
+            <p>
+                Fokus auf Effekte als Raum-Polyrhythmik: <span class="interactive-term" data-term="Gated Reverb">Gated Reverb</span> auf Kick/Clap, Delay auf Hats erzeugen mehrere virtuelle Räume.
+                Energie entsteht durch Muting/Unmuting und Effektbewegung, nicht durch klassische Drum-Fills.
+            </p>
+
+            <h3>The Final Frontier (Underground Resistance)</h3>
+            <p>
+                Dramaturgische Hauptarbeit läuft über Energie-Gradienten: 303-Linien (Filterbewegung, Accent/Slide), Padflächen und eine harte Drum-Architektur erzeugen einen „Otherworld“-Raum.
+                Dies spiegelt die „militant, mysterious aesthetic“ der Second Wave wider: dunkle Texturen, hohe kinetische Dichte.
+            </p>
+        </section>
+
+        <section>
+            <h2>Produktionskapitel: Klangdesign, Arrangement, Mix</h2>
+            <h3>Klangdesign-Bausteine mit konkreten Start-Settings</h3>
+            <ul>
+                <li><strong>TR-909:</strong> Groove-Engine. Accent-Schreiblogik und Shuffle sind Teil des Pattern-Systems. Multi-Out-Workflow begünstigt Einzelbearbeitung.</li>
+                <li><strong>TR-808:</strong> Dichte/Textur-Layer. Cowbell/Claves als Textur, nicht als Fill.</li>
+                <li><strong>TB-303:</strong> Accent/Slide als melodischer Groove. Waveform Square/Saw, Cutoff performativ öffnen, Accent nur auf ausgewählten Steps, Slide an Motivknoten.</li>
+                <li><strong>SH-101:</strong> Sub-Drive. Sequencer als Performance-Form.</li>
+                <li><strong>Prophet-5:</strong> Pads und Stabs als Harmonie-Aura. Kurze, prägnante Stabs, ggf. detuned.</li>
+            </ul>
+
+            <h3>Sequencer-Pattern-Logiken als Arrangement-Technik</h3>
+            <p>
+                Detroit-Arrangement ist oft Pattern-Arrangement. Form entsteht aus Patternkombinatorik.
+                Praktische Logik: Baue 2-4 Drum-Patterns, die nur in 1-2 Elementen differieren. Kette sie und variiere über Muting.
+                Nutze „Breakdowns“ als Dichte-Reset.
+            </p>
+
+            <h3>Effektketten und Mix-Strategien</h3>
+            <p>
+                <strong>Drum-Bus:</strong> Sättigung → Glue → Lo-Fi-Bandbegrenzung. Lo-Fi ist nicht Defizit, sondern Textur-Waffe.
+                <strong>Gated Reverb:</strong> Kick (Send) sehr kurz, Clap länger + Modulation.
+                <strong>Stereo und Tiefe:</strong> „Front-to-Back“-Architektur. Center: Kick, Bass. Seiten: Hats, Percussion, FX-Returns.
+                <strong>Mastering:</strong> Arbeite mit Headroom, bewahre Transienten. Zu harte Brickwall-Limiting kann die 909-Attack-Mechanik zerstören.
+            </p>
+        </section>
+
+        <section>
+            <h2>Tabellen und Diagramme</h2>
+            <h3>Historische Einflüsse und klangliche Merkmale</h3>
+            <table class="w-full text-left text-sm border-collapse my-4">
+                <thead>
+                    <tr>
+                        <th class="border-b p-2">Einfluss / Kontext</th>
+                        <th class="border-b p-2">Musikhistorische Funktion</th>
+                        <th class="border-b p-2">Typische klangliche Marker</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Afrofuturismus</td>
+                        <td class="border-b p-2">Zukunftsarbeit als kulturelle Selbstbeschreibung.</td>
+                        <td class="border-b p-2">Sci-Fi-Vocoding, kosmische Pads, Prozessform statt Songnarrativ.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Motown</td>
+                        <td class="border-b p-2">Industrialisierte Popproduktion; zugleich Abgrenzung.</td>
+                        <td class="border-b p-2">„Assembly-line“-Looping, Präzisionsrhythmik, Groove als engineered time.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Europäische Elektronik</td>
+                        <td class="border-b p-2">Sequencer-Ästhetik, robotische Tightness.</td>
+                        <td class="border-b p-2">Motorik-Pattern, synthetische Drums, Fokus auf Klangfarbe.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Second-Wave (UR)</td>
+                        <td class="border-b p-2">Anti-corporate / militant aesthetics.</td>
+                        <td class="border-b p-2">Dunkle Texturen, höhere BPM, harte Drums.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Hardware/Software-Tooling</h3>
+            <table class="w-full text-left text-sm border-collapse my-4">
+                <thead>
+                    <tr>
+                        <th class="border-b p-2">Tool</th>
+                        <th class="border-b p-2">Rolle im Detroit-Techno</th>
+                        <th class="border-b p-2">Start-Preset / Parameterlogik</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border-b p-2 font-medium">TR-909</td>
+                        <td class="border-b p-2">Groove-Skelett; Accent/Shuffle als Motor.</td>
+                        <td class="border-b p-2">Kick 4/4; Hats 16th mit Velocity; Shuffle moderat.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">TR-808</td>
+                        <td class="border-b p-2">Textur/Signatur.</td>
+                        <td class="border-b p-2">Cowbell als Offbeat; 32-Step Patterns.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">TB-303</td>
+                        <td class="border-b p-2">Melodischer Groove.</td>
+                        <td class="border-b p-2">Accent sparsam; Slide an Formknoten; Cutoff performativ öffnen.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Mix-Checkliste</h3>
+            <table class="w-full text-left text-sm border-collapse my-4">
+                <thead>
+                    <tr>
+                        <th class="border-b p-2">Check</th>
+                        <th class="border-b p-2">Warum wichtig</th>
+                        <th class="border-b p-2">Quick-Test</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Kick/Bass-Interlock</td>
+                        <td class="border-b p-2">Maschinen-Groove kippt, wenn Fundament matscht.</td>
+                        <td class="border-b p-2">Kick solo + Bass solo, dann zusammen.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Mono-Kompatibilität</td>
+                        <td class="border-b p-2">Club-PAs belohnen stabiles Zentrum.</td>
+                        <td class="border-b p-2">Mono-Downmix prüfen: fällt Bass weg?</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Textur-Variation</td>
+                        <td class="border-b p-2">Form entsteht über Muting/Dichte.</td>
+                        <td class="border-b p-2">Erkennt man Sektionen nur durch Textur?</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    `
     },
     chicago_house_classics: {
         id: 'chicago_house_classics',
@@ -2206,10 +3113,184 @@ const CREATIVE_WORLDS = {
         name: 'Chicago House Classics',
         icon: '🏙️',
         wikiContent: `
-            <h1>Chicago House Classics (Platzhalter)</h1>
-            <p>Dies ist ein Platzhaltertext fuer die kommende Chicago-House-Welt in der Kreativ-Bibliothek.</p>
-            <p>Beispielbegriffe: <span class="interactive-term" data-term="Piano Stabs">Piano Stabs</span>, <span class="interactive-term" data-term="Soulful Loops">Soulful Loops</span>, <span class="interactive-term" data-term="Four-on-the-Floor">Four-on-the-Floor</span>.</p>
-        `
+        <header>
+            <h1>Chicago House Classics</h1>
+        </header>
+
+        <section>
+            <h2>Executive Summary</h2>
+            <p>
+                <span class="interactive-term" data-term="Chicago House">Chicago House</span> entstand nicht primär als „Studio-Genre“, sondern als clubgetriebene Praxis: DJs bauten in Chicago über Marathon-Sets, Tape-Edits und frühe Drum-Machines eine neue, mechanischere Fortsetzung von Disco, Soul und Gospel und kodierten dabei eine Ästhetik, in der <span class="interactive-term" data-term="Loop">Loop</span>, Groove und Klangfarbe wichtiger sind als komplexe Songform.
+                Die beiden entscheidenden Inkubatoren waren The <span class="interactive-term" data-term="Warehouse">Warehouse</span> (als Namens- und Kulturmatrix) und <span class="interactive-term" data-term="Music Box">Music Box</span> (als Testlabor für radikalere Tempi, Lautheit und „rough“ Tapes).
+                Technisch lässt sich die klassische Wirkung in drei Säulen zerlegen: (1) Drum-Machine-Logik (Step, Accent, Shuffle/Flam), (2) harmonische „Stabs“ (piano-/organ-nahe Voicings mit perkussiver Hüllkurve), (3) vokale Hooks (kurz, repetitiv, „call-to-community“).
+                Viele zentrale Klassiker sind dokumentiert als extrem reduzierte Produktionssituationen (z. B. One-Take auf Kassette, vier Spuren insgesamt, <span class="interactive-term" data-term="4-Track-Recorder">4-Track-Recorder</span>): Diese Materialknappheit ist nicht Randnotiz, sondern erklärt die „Arrangementökonomie“ (Variationen über Filter, Mutes, Fills, Raumanteil statt über neue Parts).
+                Die emotionale Signatur – Drive, Wärme, Euphorie – entsteht weniger aus „mehr Layern“, sondern aus gezielter Mikrostruktur: Kick-Hat-Interaktion, Akzentlogik, <span class="interactive-term" data-term="Microtiming">Microtiming</span>, kontrollierte Sättigung und „räumliche Perspektive“ (kurze Räume für Körper, lange Tails für Transzendenz).
+                Moderne DAW-Workflows können die Ästhetik präzise nachbilden, laufen aber Gefahr, das Material „zu sauber“ zu machen; mehrere Chicago-Schlüsselfiguren betonen rückblickend die Bedeutung von Ohren über Raster und von absichtlichem „Mud“.
+            </p>
+        </section>
+
+        <section>
+            <h2>Chicago-Wurzeln: Historischer Kontext und Namensbildung</h2>
+            <p>
+                Die historische Zuschreibung von The Warehouse als Geburtsort von House hängt nicht an einer einzelnen Veröffentlichung, sondern an einer clubkulturellen Praxis: Der Ort fungierte (1977-1982) als Szene-Katalysator, in dem der Resident-DJ <span class="interactive-term" data-term="Frankie Knuckles">Frankie Knuckles</span> über genreoffene Selektion und re-editierte Übergänge einen „house“-spezifischen Sound- und Energiefluss etablierte.
+                Für die Wortgeschichte existieren mehrere Erzählungen. Eine prominente Primärstimme (Knuckles selbst) beschreibt, er habe das Label „house music“ in Chicago über ein Ladenschild wahrgenommen; ihm sei erklärt worden, das sei die Musik, die im „Warehouse“ gespielt werde. Parallel taucht „house music“ in Zeitzeugenberichten als lokaler Szenebegriff um 1983/84 auf.
+            </p>
+        </section>
+
+        <section>
+            <h2>Schlüsselkünstler und Produktions-Ökosystem</h2>
+            <p>
+                Als frühe Produzenten-/DJ-Knoten sind u.a. <span class="interactive-term" data-term="Jesse Saunders">Jesse Saunders</span>, Vince Lawrence, <span class="interactive-term" data-term="Marshall Jefferson">Marshall Jefferson</span> und <span class="interactive-term" data-term="Larry Heard">Larry Heard</span> belegt – nicht nur als „Artists“, sondern als DIY-Techniker, die (mit Kassette, 4-Track, Sequencer, Drum-Machine) clubtaugliche Tools erzeugten.
+                Die frühe Distributionslogik war dabei „kurzgeschlossen“: Statt klassischer Label-Gatekeeping-Prozesse war es oft effektiver, eine Kassette direkt zu den maßgeblichen DJs zu bringen – ein Mechanismus, den Szene-Analysen als strukturell entscheidend beschreiben (DJs als „Powerbrokers“, Tapes als Eintrittskarte).
+                Auf der Label-Seite prägten insbesondere <span class="interactive-term" data-term="Trax Records">Trax Records</span> und D.J. International Records die Standardisierung und Außenwirkung des Sounds, inklusive der typischen 12“-Struktur („DJ-friendly“ Intros/Outros, lange Mixbarkeit).
+            </p>
+        </section>
+
+        <section>
+            <h2>Soziokulturelle Faktoren: Community, „Church“-Semantik, Segregationsgeschichte</h2>
+            <p>
+                Mehrere historische Darstellungen verorten Chicago House in Black-, Latinx- und LGBTQ+-Kontexten als Schutz- und Freiheitsraum – nicht nur sozial, sondern auch klanglich: House wird als Fortführung einer Disco-Ethik (Körper, Kollektiv, Ritual) beschrieben.
+                Aus der musikwissenschaftlichen Perspektive wird ein wiederkehrendes Motiv hervorgehoben: House als quasi-religiöse Erfahrungsform („church“-Metaphern, gospelnahe Klangzeichen wie Orgel/Piano, lyrische Heils-/Erlösungsformeln).
+                Für Produktionspraxis bedeutet das: „Wärme“ und „Euphorie“ sind nicht bloß Mix-Parameter, sondern historisch mit Gospel-Harmonik, Call-and-Response und communal repetition gekoppelt.
+            </p>
+        </section>
+
+        <section>
+            <h2>Club-Kontexte: DJ-Set-Dynamik und Sound-System-Einflüsse</h2>
+            <p>
+                Chicago House ist nur erklärbar über Set-Logik. Für den Music Box-Kontext wird ein Sonntagmorgen-Setting beschrieben, in dem ein DJ über Tape/Drum-Machine-Starts und drastische Übergänge das Publikum über viele Stunden „führt“.
+                Zwei Praktiken sind zentral: Editieren als performative Technik (Tape-Stücke, millisekundengenaue Cuts) und Live-Mix als Instrument (Fader-Performances). Im Music Box-Umfeld wird <span class="interactive-term" data-term="Ron Hardy">Ron Hardy</span> als DJ beschrieben, der unpolierte Tapes sofort spielte.
+                Sound-System-Einflüsse: Bass wurde nicht „gehört“, sondern körperlich erfahren. Für Produzierende folgt daraus: Chicago House ist basslastig, aber nicht „Sub-only“. Entscheidend ist ein übersetzbarer Low-Mid-Körper (ca. 80-200 Hz), damit auf großen Anlagen der Groove „spricht“.
+            </p>
+        </section>
+
+        <section>
+            <h2>Drum-Machine-Ästhetik: Programmierlogik als Stilmittel</h2>
+            <p>
+                <strong><span class="interactive-term" data-term="TR-808">TR-808</span>: Accent als Makro-Dynamik.</strong> Die TR-808 beschreibt Accent als separat programmierbares Ereignis (AC), das anderen Voices auf demselben Step Nachdruck geben kann. In der Praxis übersetzt sich das in „Chicago-Drive“: grobe, aber wirksame Energiespitzen an bestimmten Steps.
+                <strong><span class="interactive-term" data-term="TR-909">TR-909</span>: Shuffle/Flam als Groove-Motor.</strong> Shuffle ist nicht „Humanize“, sondern ein systematischer Zeitversatz bestimmter Subdivisionen. Flam erlaubt, Claps/Snares „breiter“ zu machen, ohne Reverb zu bemühen.
+                <strong>CR-78 und DR-55:</strong> Diese Geräte sind stilistisch relevant, weil sie ein Denken in Pattern-Prioritäten, Variationsschaltern und Accent-Makros erzwingen – ein Denken, das Chicago-typische Arrangementökonomie begünstigt.
+            </p>
+        </section>
+
+        <section>
+            <h2>Belegte Produktionsminimalismen (Referenzpunkte)</h2>
+            <table class="w-full text-left text-sm border-collapse my-4">
+                <thead>
+                    <tr>
+                        <th class="border-b p-2">Referenz (Track)</th>
+                        <th class="border-b p-2">Produktionsfaktum (belegt)</th>
+                        <th class="border-b p-2">Ästhetische Lehre</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border-b p-2 font-medium">On & On (Jesse Saunders)</td>
+                        <td class="border-b p-2">Aufnahme auf 4-Track-Recorder; Einsatz von Poly-61, 808 und TB-303.</td>
+                        <td class="border-b p-2">Rohheit + Repetition statt hoher Spurenzahl; Bass-Pattern und Drum-Loch sind das „Arrangement“.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Can You Feel It / Move Your Body</td>
+                        <td class="border-b p-2">Gear: Juno-60 + TR-909; Recording über zwei Kassettendecks, one take/one pass.</td>
+                        <td class="border-b p-2">Raumwirkung durch wenige Elemente + Balance; „Tiefe“ aus Hüllkurven/Arrangement, nicht aus Layern.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Your Love</td>
+                        <td class="border-b p-2">Knuckles beschreibt eine sehr reduzierte Spurstruktur (Drums/Vocals/2xKeys); 909-Kick als spätere Ergänzung.</td>
+                        <td class="border-b p-2">Editing auf Dancefloor-Tauglichkeit.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Acid Tracks</td>
+                        <td class="border-b p-2">Entstehung aus TB-303-Experimenten; Premiere über wiederholtes Spielen im Music Box-Kontext.</td>
+                        <td class="border-b p-2">Publikum „lernt“ neue Klangsprache durch Wiederholung; Arrangement kann aus einem einzigen „Machine-Riff“ bestehen.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>Piano-Stabs: Klangquelle, Voicing, Rhythmik, Effekte</h2>
+            <p>
+                <strong>Klangquelle:</strong> Chicago-Piano ist weniger „realistisches Konzertpiano“, sondern ein perkussiver Akkordkörper mit kurzer Decay-Phase und deutlicher Low-Mid-Energie.
+                <strong>Voicings:</strong> Rootless Voicings (3/7/9/13 ohne Grundton), Quartal-/Sus-Voicings (z. B. 1-4-b7-9) für „open“/euphorischen Klang, Gospel-Moves mit chromatischen Approach-Notes.
+                <strong>Rhythmik:</strong> Chicago-typisch ist Akkord-Gestik: Stabs als Offbeat-Antwort auf die Hi-Hat (call-and-response im Mikroraster).
+                <strong>Effekte:</strong> Kern ist eine Send-Ästhetik: kurze Räume für Körpernähe + längere Delays/Reverbs als „Luft“.
+            </p>
+        </section>
+
+        <section>
+            <h2>Vocal-Hooks: Sampling vs. Live, Editing, Tuning</h2>
+            <p>
+                Chicago-House-Vocals sind sowohl als Live-Performance (Songwriting) als auch als DJ-basierte Collage (Acapella-Overlays, Tape-Edits) dokumentiert.
+                Der typische Hook-Charakter ist extrem: sloganartige Zeilen („Gotta have house music all night long“) ersetzen konventionelle Formen.
+                Für moderne Produktion gilt: Timing zuerst (Konsonanten auf Grid/Back-of-Grid), Tuning subtil (Stabilität für Wiederholung), Formant nur als Stilmittel.
+            </p>
+        </section>
+
+        <section>
+            <h2>Arrangementökonomie und Groove-Architektur</h2>
+            <p>
+                <strong>Loop-basiertes Arrangement:</strong> Ein Track ist eine sequenzierte Matrix, in der Variation durch Muting, Pattern-Wechsel, Fill-Ins, Raumanteil und Filterfahrten entsteht.
+                <strong>Groove-Architektur:</strong> Kick als metrischer Anker (4-to-the-floor), Hi-Hat als Vorwärtsimpuls (Offbeat), Bass als Syncopation-Träger (antwortet auf Kick-Lücken).
+                Ghost Notes dienen als „Minimal-Maximal“-Werkzeug: sehr leise Drum-Events auf unbetonten Zählzeiten dekorieren Freiräume.
+            </p>
+        </section>
+
+        <section>
+            <h2>Klassisch vs. Modern: Produktionslogik</h2>
+            <table class="w-full text-left text-sm border-collapse my-4">
+                <thead>
+                    <tr>
+                        <th class="border-b p-2">Dimension</th>
+                        <th class="border-b p-2">Klassische Chicago-Praxis</th>
+                        <th class="border-b p-2">Moderne Praxis (DAW)</th>
+                        <th class="border-b p-2">Risiko beim Modernisieren</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Aufnahme/Arrangement</td>
+                        <td class="border-b p-2">Wenige Spuren, teils One-Pass, Bounce/Edits, Fokus auf Mixbarkeit.</td>
+                        <td class="border-b p-2">Unendlich Spuren, Recall-Automationen, Comping.</td>
+                        <td class="border-b p-2">Verlust der „economy“ → zu viel Material, zu wenig Funktion.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Timing/Groove</td>
+                        <td class="border-b p-2">Geräte-Shuffle/Accents, performative Mutes/Mixes.</td>
+                        <td class="border-b p-2">Groove-Tools, Micro-Nudging pro Stimme.</td>
+                        <td class="border-b p-2">„Zu gerade“ oder „zu random“; Groove wird inkonsistent.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Sounddesign</td>
+                        <td class="border-b p-2">Hardware-Parameter, Mischpult-Drive, Tape-Artefakte.</td>
+                        <td class="border-b p-2">Samples/Modeling, Saturation/Clipper, M/S-Tools.</td>
+                        <td class="border-b p-2">Zu sauber/hifi; Transienten verlieren „Kante“.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>Emotion technisch erzeugen: Zielzustände und Ketten</h2>
+            <ul>
+                <li><strong>Drive:</strong> Kick konsistent, Hats „ziehen“, Bass sitzt in Lücken. Kick-Kette: EQ (Low-Shelf, Cut Matsch), Saturation/Clipper, optional Kompressor. Groove-Motor: 909-Shuffle, Offbeat-Hat minimal spät.</li>
+                <li><strong>Wärme:</strong> Kontrollierte Nichtlinearität + reduzierte Hochtonhärte. Drum-Bus: Tape-Sättigung, EQ High-Shelf Cut. Piano-Bus: leichte Sättigung + kurzer Room. Bass: sanfte 2nd-Harmonics.</li>
+                <li><strong>Euphorie:</strong> Harmonische Offenheit + Call/Response. Piano-Stab: Voicings mit 7/9/13, Kürze per Gate. Raum: Delay, Reverb-Tail nur in Breaks. Vocal Hook: kurze Phrase, häufig wiederholt.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Schritt-für-Schritt-Workflows</h2>
+            <p>
+                <strong>Kick:</strong> Wähle Kick mit definierter Tonhöhe (909/808-Style). Tuning passend zur Bassline. Decay kurz-mittel. EQ-Startpunkt: Cut 200-350 Hz. Sättigung/Clip zum Runden von Spitzen.
+                <strong>Clap/Snare:</strong> Strikt auf 2 und 4. Flam selektiv nutzen. EQ Cut 200-400 Hz, Boost 2-5 kHz. Reverb-Send: kurzer Plate/Room.
+                <strong>Hi-Hat:</strong> Offbeat-Open Hat + Closed-Hat-Textur. Shuffle nutzen. Microtiming: Closed Hats minimal nach hinten oder vorne. Accent-Pattern zur Groove-Belebung.
+                <strong>Piano-Stab:</strong> Bright Sound, kurz. Voicing 7/9-Färbung, rootless. Rhythmik: Offbeat-Stabs. Effekt-Send: Delay + Reverb.
+                <strong>Bassline:</strong> Stimme wählen, die im Low-Mid „spricht“. Pattern: wenige Noten, Offbeats. Sidechain-Ducking. Sättigung für Wärme.
+                <strong>Vocal-Hook:</strong> Hook definieren. Performance über Perfektion. Timing-Editing auf Groove. Tuning subtil. Platzierung: Vocal-Bus mit HPF, Delay/Reverb als Sends.
+            </p>
+        </section>
+    `
     },
     hip_hop_main: {
         id: 'hip_hop_main',
@@ -2470,10 +3551,233 @@ const CREATIVE_WORLDS = {
         name: 'Golden Age Boom Bap',
         icon: '🥁',
         wikiContent: `
-            <h1>Golden Age Boom Bap (Platzhalter)</h1>
-            <p>Dies ist ein Platzhaltertext fuer die Boom-Bap-Welt mit Fokus auf klassische Drum-Patterns und Sample-Texturen.</p>
-            <p>Beispielbegriffe: <span class="interactive-term" data-term="Boom Bap Kick">Boom Bap Kick</span>, <span class="interactive-term" data-term="Snare Pocket">Snare Pocket</span>, <span class="interactive-term" data-term="Dusty Samples">Dusty Samples</span>.</p>
-        `
+        <header>
+            <h1>Golden Age Boom Bap - Historische und technische Analyse</h1>
+        </header>
+
+        <section>
+            <h2>Executive Summary</h2>
+            <p>
+                Der „<span class="interactive-term" data-term="Boom Bap">Boom Bap</span>"-Stil der Golden Age Ära (ca. Ende 1980er bis Mitte 1990er) zeichnet sich durch knallende Kick- (,,Boom") und scharfe Snare- (,,Bap")-Sounds, schleppenden Groove und samplebasierte Produktionen aus.
+                Dieser Artikel gibt einen detaillierten Überblick über die Entstehung und Ausprägung des Boom Bap: von den typischen Drum-Pocket-Techniken (leicht hinter dem Beat platzierte Snare), über Sample-Chopping-Methoden und die „<span class="interactive-term" data-term="Crate-Digging">crate-digging</span>"-Ästhetik (Suche nach obskuren Vinyl-Samples), bis hin zum typischen Workflow mit Samplern wie dem <span class="interactive-term" data-term="E-MU SP-1200">E-MU SP-1200</span> oder <span class="interactive-term" data-term="Akai MPC">Akai MPC</span> (Step-Sequencing, Pad-Zuweisung, Swing-Quantize, Resampling, Timestretch/Varispeed).
+                Auch die MC-zentrierte Songstruktur (Verse, Hook/Chorus, gelegentliche Bridges, Punchlines, Call-&-Response-Elemente) sowie der typische Mix-Charakter (Verhältnis Sub-Kick, Snare Body/Top, Raumanteile, Lo-Fi-Filter, <span class="interactive-term" data-term="Tape-Sättigung">Tape-Sättigung</span>, EQ) werden analysiert.
+                Wir beleuchten typische Frequenzverteilungen (z.B. Kick um ~40-80 Hz, Snare-Body ~150-250 Hz, Snare-,,Crack" ~3-6 kHz, Subbass ~30-60 Hz, Vocals ~100-3000 Hz etc.), Zielwerte für Headroom/Gain und übliche Stereo-Panorama-Anordnungen.
+                Insbesondere <span class="interactive-term" data-term="Swing">Swing</span>-Gefühl und Mikro-Timing spielen eine große Rolle: In klassischen Breakbeats liegen Swing-Ratios um ca. 1.17:1 (etwa 54% Swing), und verzögerte Backbeats (z.B. Snare auf 2 und 4 leicht verzögert um 10-20 ms) sorgen für das „laid-back"-Feeling.
+                Arrangement-Logiken (durchschnittlich drei bis vier Verse à 16 Takte mit 8-Takt-Refrains, typische Breaks, Drops sowie variierende Intro/Outro-Längen) werden verglichen.
+                Im soziokulturellen Kontext betrachtet der Artikel Crew- und Cypher-Kultur (Juice Crew, Native Tongues u.a.), die unterschiedlichen Rollen von DJ, MC und Producer, regionale Szenen (NYC, Philadelphia, Los Angeles, Midwest) sowie ökonomisch-technische Rahmenbedingungen: Sampler-Legality (etwa der Musterprozess Grand Upright 1991 mit klarer Urheberrechtsauslegung), Vinyl-Zugänglichkeit (globales Crate-Digging), Studiowirtschaft etc.
+            </p>
+        </section>
+
+        <section>
+            <h2>Historischer Kontext</h2>
+            <p>
+                Die <span class="interactive-term" data-term="Golden Age">Golden-Age-Ära</span> des Hip-Hop wird je nach Quelle etwa zwischen Mitte der 1980er und Mitte der 1990er Jahre datiert.
+                Ein einschneidendes Ereignis war dabei 1991 das Urteil im Grand Upright Music, Ltd. v. Warner Bros. Records Prozess: Danach gilt Sampling ohne Freigabe rechtlich als Copyright-Verletzung.
+                Dies führte dazu, dass Beatproduzenten entweder fortan für Samples zahlen mussten (wenn sie es sich leisten konnten) oder zu obskureren Schallplattengriffen griffen, bei denen die Rechteinhaber weniger auf den Plan riefen.
+                Die Suche nach seltenen Platten (,,crate digging") wurde damit einerseits kulturelle Praxis, andererseits ökonomische Notwendigkeit.
+                Zugleich entwickelten sich regionale Szenen und Sounds: Neben der legendären New Yorker Schule traten etwa Philadelphia, Los Angeles (mit seinen G-Funk-Vorstößen Anfang der 90er) und der amerikanische Midwest (z. B. Chicago, Detroit) als eigenständige Substränge hinzu.
+                Lokal verankerte Künstlerkreise und Crews (Juice Crew, Native Tongues, Wu-Tang Clan u.a.) förderten einen konkurrenzbetonten Austausch, den sich auch Cypher-Runden (Freestyle-Sessionen) und Crew-Battles widerspiegelten.
+            </p>
+            <p>
+                Kulturell blieb der Boom-Bap-Stil konsequent MC-zentriert: Die MCs lieferten den primären künstlerischen Ausdruck und traten in den Fokus, während DJs und Producers das Beat-Fundament und -Arrangement stellten.
+                Schlagzeilenverdächtige „Punchlines" (prägnante Reim-Endeinwürfe) und Call-&-Response-Elemente (DJs antworteten live auf MCs oder MC ruft Refrain, Crowd antwortet) waren typische stilistische Mittel.
+                Als formaler Aufbau zeigte sich im Korpus (analysierter Kanon) konsistent etwa drei bis vier Verse (~16 Takte) mit dazwischengeschalteten Hook-Parts um 8 Takte Länge. (Refrains wurden meist gesampelt oder gesungen; eigene Rap-Refrains kamen erst später häufiger vor.)
+                Die Taktzahlen im Arrangement variierten - man verließ sich aber häufig auf Rundungen (Intro/Outro z.B. 8-16 Takte, Breakdowns einzusetzen zum Beispiel nach einem zweiten Verse-Block - war ebenfalls gebräuchlich).
+            </p>
+            <p>
+                Die Zeit war geprägt von starkem Wettbewerb (East Coast vs. West Coast-Konflikt kulminierte 1995/96), zugleich aber auch von einem kollektiven Drang zur Innovation.
+                Mit dem kommerziellen Aufstieg (erste Rap-Grammys, Rap-spezifische Charts 1989) und größeren Budgets kamen zunehmend aufwändigere Studio-Arrangements auf.
+                Dennoch blieb die Grundidee des DIY-Gefühls erhalten: Beats wurden oft noch auf Hardware-Samplern und analogen Mischpulten gebaut, häufig live mitgeschnitten und nur wenig digital nachbearbeitet.
+                Ein Beispiel: Auch wenn oft MPC- oder SP-60/1200-Sequencer genutzt wurden, fand die Endabmischung üblicherweise auf 2-Zoll-Band statt, was dem Sound charakteristischen Sättigungseffekt und eine gespannte Dynamik verlieh.
+            </p>
+        </section>
+
+        <section>
+            <h2>Technische Analyse: Drum-Pocket und Groove</h2>
+            <p>
+                Der „Pocket"-Faktor (Feinjustierung der Schlagzeug-Grooves) ist zentral im Boom Bap. Klassische Oldschool-Drum-Loops enthielten von Natur aus schon ein Human-Feel, das durch das Sampling übernommen wurde.
+                Producers legten dieses Gefühl oft noch verstärkt mit subtilen Timing-Verschiebungen fest: Insbesondere die Snare auf den <span class="interactive-term" data-term="Backbeat">Backbeats</span> ("2" und "4") wurde häufig leicht hinter dem Grid gespielt (d.h. ein paar Millisekunden nach dem exakten Schlagzeitpunkt), um ein entspanntes Gefühl zu erzeugen.
+                Experimente zeigen: Eine Verzögerung des Snare-Backbeats um etwa 2-3% der Taktlänge (bei 100 BPM entspricht das ca. 15-20 ms) wurde subjektiv als „guter Groove" empfunden.
+                Die Hi-Hats und Kicks wurden meist relativ zum Grid leicht vor- oder zurückgenommen (z.B. Kick minimal vorgezogen, Snare zurückgenommen), so dass die typische Swing-Note-Verteilung entsteht.
+            </p>
+            <p>
+                Der Swing-Charakter der Boom-Bap-Beats ist gut beschrieben: Viele klassische <span class="interactive-term" data-term="Breakbeat">Breakbeats</span> aus Funk/Soul unterliegen einem Swing-Verhältnis von etwa 1.2:1 (das erste Achtel eines 16tel-Paares ist etwas kürzer als das zweite).
+                In quantitativen Begriffen entspricht das etwa einem MPC-Swing-Setting von ~54-60% als Ausgangspunkt. Samples FromMars etwa hat das MPC-60-Feeling in einem „60% Shuffle"-Template festgehalten.
+                In der Praxis experimentierten Produzenten mit Swing-Einstellungen zwischen ca. 60% und 70% (teilweise „<span class="interactive-term" data-term="Double-Time">Double-Time</span>" programmiert, dann 1/8 Schwingung mit ~67-71% Groove).
+                Der Musiktheoretiker Frane stellte für viele 90s-Breaks eine durchschnittliche Swing-Ratio von 1.2:1 fest, was 54-55% Swing entspricht.
+                Dieser subtile Groove verleiht dem Boom Bap sein unaufgeregtes „Nodding"-Gefühl: Nicht völlig statisch wie Raster-Quantisierung, aber auch nicht so extrem versetzt wie etwa Shuffle im Blues.
+            </p>
+        </section>
+
+        <section>
+            <h2>Sample-Chopping und Crate-Digging</h2>
+            <p>
+                Die äußere Ästhetik des Boom Bap gründet auf sorgfältigem Sample-Klangmaterial. <span class="interactive-term" data-term="Crate-Digging">Crate-Digging</span> – das Stöbern in Plattenläden nach obscurem Vinyl – war integraler Teil der Kultur.
+                Wie die Literatur notiert, suchten Produzenten gezielt nach Sounds, die „cool genug und zugleich obskur genug sind, um sie sampeln zu können, ohne dass sie gleich erkannt werden".
+                Dieser Ansatz erklärt die weite Spannbreite an gesampelten Genres (Jazz, Soul, Funk, Reggae, Disco, sogar fremdsprachige Musik), die alle unter das Hip-Hop-Oberthema fallen. Je seltener eine Quelle, desto geringer das Risiko hoher Clearing-Kosten.
+            </p>
+            <p>
+                Im Studio wurden gefundene Schätze oft zerstückelt: Im Gegensatz zu späterem „Long Loop"-Flair wurden viele Beats aus fragmentierten Mikro-Chops (kleine, getimte Ausschnitte eines Loop-Sekundes) montiert.
+                Nick Tha 1da beschreibt, wie er auf seinem E-MU SP-1200 „jegliches Stück... sehr klein" schnitt und mit Filtern sowie Ausblendungen arbeitete, um Abspielzeit zu verlängern.
+                Dieses „Micro-Chopping" erlaubt versetzte Wiederholungen der Kerntöne und zusätzliche kreative Layer (üblich war z.B., das Sample in Halbtönen zu transponieren oder mit Filtern quasi analog zu verfremden).
+                Moderne DAWs kopieren diese Technik mit Slice-Tools; damals jedoch bescherte speziell die begrenzte Sample-Kapazität von SP-1200/AKAI-S950 einen eigenständigen Sound: Unter <span class="interactive-term" data-term="12-Bit">12-Bit</span>-Bedingungen wurden gesampelte Melodie-Loops zunächst digital eingefroren und dann, in Echtzeit „gestreckt" (<span class="interactive-term" data-term="Varispeed">Varispeed</span>), um sie in Tonhöhe oder Takt schneller anpassen zu können.
+                Eine Technik war das „Loop-Rolling" mit zeitlichem Verschieben des Startpunkts (Time-Stretching-frei) – viele Produzenten nutzten Tools wie Cool Edit (heute Audition) oder gar Perkussion gegen Tape zu klopfen, um neue Phrasen zu gewinnen.
+            </p>
+            <p>
+                Einprägsam ist auch die Arbeit mit Drum-Kits: Oft sammelten Produzenten nicht nur einen Break, sondern legten zusätzlich eigene One-Shot-Drum-Samples darüber (<span class="interactive-term" data-term="Layering">Layering</span>).
+                Zum Beispiel wurde ein sampliertes Kick-Loop häufig durch einen separaten, cleanen Kick-Drum-Sound unterfüttert („Subkick") und ein Snare-Loop durch knackige „Top"-Samples verstärkt.
+                Die Pads eines MPC oder SP wurden dabei so zugewiesen, dass z.B. Pad A1 eine Kick-Schlagprobe, A2 Snare-Top, B1 Snare-Body, C1 ein HiHat-Closed usw. belegen kann.
+                Live-Performances wurden direkt im Sampler weiter verflochten: 303/404-Benutzer Nick Tha 1da berichtet, er könne heute (weitgehend ohne Computer) allein mit seinen Samplern drum-Pattern und Slicing-Klangfolgen erzeugen.
+                Diese Arbeitsweise – Vinylfinden, winzige Sample-Stücke zurechtschneiden und über Hardware-Einzelausgänge mischen – ist das Kernstück des klassischen Boom Bap-Workflows.
+            </p>
+        </section>
+
+        <section>
+            <h2>Typischer MPC-/Sampler-Workflow</h2>
+            <p>
+                Im Zentrum der Produktion stand Hardware-Sampler. Zwei Ikonen waren der <span class="interactive-term" data-term="E-MU SP-1200">E-MU SP-1200</span> (Sampler + Sequenzer) und die <span class="interactive-term" data-term="Akai MPC">Akai MPC</span>-Serie (MPC60, MPC3000, etc.). Sie definierten Sound und Arbeitsweise.
+                Kennzeichnend für den Boom Bap-Workflow war das Step-Sequencing im Pattern-Modus: Jeder Beat-Pattern wurde einzeln programmiert (üblicherweise 16 Takte Muster), oft mit quantisierter Rasterung (1/16tel, 1/8tel) und hohem Swing-Anteil (siehe oben).
+                Pads und Fader aufgeräumt eingesetzt, um einzelnen Samples (Drums, Instrumente, Effekte) eigene Kanäle zuzuweisen. Kassetten bzw. Disketten sicherten bisweilen Pattern-Daten.
+            </p>
+            <p>
+                In der Praxis spielten viele Produzenten zum Groove-Feeling auch mit <span class="interactive-term" data-term="Resampling">Resampling</span>: Beispielsweise schnitt man einen Beat zusammen, spielte ihn live über die Maschine noch einmal ab und nahm ihn erneut auf (Bounce auf Taktrate), um weitere Schichten hinzuzufügen – eine typische MPC-Technik, um mehrere Layer (z.B. Drums + Key-Samples) zu mischen, ehe man den nächsten Layer overdubt.
+                Anders als moderne Sampler erlaubten SP-1200 oder MPC nur begrenzte Sample-Time pro Pad (typ. 2-10 Sekunden bei 30-40 kHz). Längere Sequenzen musste man daher clever dividieren oder dem einfachen Pitch-Method (Varispeed) überlassen.
+                MPC-Einstellungen: In der Golden-Age-Praxis lagen Geschwindigkeiten oft um 90-105 BPM. Swing-/Shuffle-Level (MPC „Groove") wurde vielfach zwischen 60% und 70% eingestellt.
+                Samples FromMars dokumentiert gar ein MPC60-Groove-Template mit 61% Shuffle. HiRes-Option (für feinere Swingwerte) nutzten manche Experten, doch viele setzten auf schnelles Double-Time-Programmieren (z.B. 180 BPM mit 1/8 Quantisierung bei ca. 67% Swing) und spielten dann ritardando in Echtzeit, um organischer zu klingen.
+                Eine häufige Methode: 48-taktige Pattern in doppelter Geschwindigkeit programmieren, sodass beim Abarbeiten der überzähligen Takte ein natürlicher Swing entsteht.
+                Tool-technisch kam meist die interne Quantize-Funktion des Samplers zum Einsatz, um Timing-Variationen (Midi-Groove-Quantize) einzufügen. Spätere DAWs imitieren diese MPC- und SP-Swing-Templates.
+            </p>
+        </section>
+
+        <section>
+            <h2>Arrangement und MC-Struktur</h2>
+            <p>
+                Die Songstruktur war im Boom Bap i.d.R. MC-zentriert: der Rap bzw. Gesang stand im Vordergrund, während Samples und Beats eher rumpelnd arrangiert wurden.
+                Typisches Modell: 3-4 Verse (je ca. 16 Takte) im Wechsel mit Refrain/Hook-Teilen (oft 8 Takte Länge). Der Refrain konnte sowohl aus einem mitgesampelten Soul-Chorus bestehen als auch aus einem gesungenen Part (z.B. G-Funk-Choruses am Westcoast-Ende der Ära).
+                Brücken (Bridges) waren selten, häufiger unterteilte man nach einem oder zwei Versen den Beat durch ein DJ-Scratchbreak oder einen reinen Instrumentalteil.
+                Intros/Outros fielen variabel aus (manchmal DJ-Shouts, Vinyl-Knistern, kurze Instrumental-Fills), typischerweise einige Takte lang.
+                In ihren Studien notieren Forscher, dass im Golden-Age-Corpus etwa zwei Drittel aller Songs 8-Takt-Hooks aufweisen, während 4-, 6- oder 12-Takt-Hooks in der Minderzahl bleiben.
+                Viele Hits der Spätphase (ab ca. 1994) verwendeten eingängige, oft sung vocals basierte Hooks, doch in der frühen Ära dominierten instrumentale / gesampelte Refrains.
+            </p>
+            <p>
+                Lyrisch arbeiteten MCs mit <span class="interactive-term" data-term="Punchlines">Punchlines</span> (prägnante Pointen am Ende eines 1- oder 2-taktigen Sets) und oft mit <span class="interactive-term" data-term="Call-and-Response">Call-and-Response</span>-Elementen: Der MC reimte beispielsweise „X, Y, Z?" – der DJ oder die Crowd antwortete mit einem kurzen Sample-Ausruf.
+                Solche Verfahren sorgten für Dynamik zwischen den Textzeilen. Kontrapunkt zum Rap bildeten teilweise die Cuts und Scratches des DJs, die als rhythmische und texturale Effekte (Schnipsel aus anderen Tracks, Vocal- oder Beat-Scatches) fungierten und das Arrangement abrundeten.
+            </p>
+        </section>
+
+        <section>
+            <h2>Mix-Charakter und Frequenzverteilung</h2>
+            <p>
+                Klanglich strebte Boom Bap nach Wärme und Punch bei relativ niedrigem Produktionsbudget. Klassische Abmischungen drehten Drums hervor, ließen Punchy-Kicks und druckvolle Snares dominieren.
+                Die typischen Frequenzzuteilungen (angelehnt an allgemeine Mixing-Guides) lassen sich etwa so zusammenfassen:
+            </p>
+            <ul>
+                <li><strong>Kick (Bass-Drum):</strong> Fundamentiert um etwa 50-80 Hz, dort liegt der Sub-Substanzbereich. Punch wird durch leichte Anhebungen um 100-120 Hz erzielt. Ein Peak etwa bei 60-70 Hz verleiht Tiefton-Fülle, während im Bereich 2-4 kHz etwas „Schlag"-Attack beigemischt wird.</li>
+                <li><strong>Snare-Body:</strong> Grundton im Bereich 150-250 Hz (je nach Sample). Typischerweise verstärkt man 150-180 Hz, um Volumen zu geben, und senkt ggf. etwas 300-400 Hz, um „Muddiness" zu verringern.</li>
+                <li><strong>Snare-Top/Crack:</strong> Höhenanteil um 3-6 kHz für das knackige „Knacken" der Snare. Üblicherweise boostet man diesen Bereich leicht (z.B. +3-6 dB bei ~5 kHz) und/oder legt einen De-Esser bei 7-10 kHz an, um Zischlaute zu zähmen.</li>
+                <li><strong>Bass/Sub:</strong> Tiefe Bässe (Synth-Bässe, E-Bass-Samples) wurden oft neben dem Kick positioniert. Subfrequenzen lagen um 30-50 Hz (etwa 808- oder Sub-Bass-Wellen), mit klaren Mitten bei 60-100 Hz. Hier gilt: Kick und Bass teilen sich die Tiefmitten. Eine übliche Mischung war, den Kick kurz unter 50 Hz zu lassen und Bassspuren ein Peak-Band (70-90 Hz) zu geben, damit sie sich nicht überlagern.</li>
+                <li><strong>Vocals:</strong> Rap-Gesang wurde meist prominent im Mitteltonbereich platziert (etwa 100-3000 Hz). Oft wurde bei ca. 200-300 Hz ein Highpass-Filter gesetzt (um Dröhnen zu entfernen) und in den Mitten (1-3 kHz) moderate Boosts gesetzt, um Verständlichkeit zu erhöhen. Dezente Höhen (4-8 kHz) dienten für Kanten, aber häufig wurden von Puristen in Zweispurtechnik eher wärmere, etwas mattere Stimmen belassen (Um den old-school Charakter zu behalten, nicht immer komplett hochglanzpoliert).</li>
+                <li><strong>Samples (Instrumente, Loops):</strong> Diese umfassen weite Bereiche. Grundtöne von Gitarren/Pianos liegen oft 100-500 Hz, „Air" aus Samples kann bis 8 kHz reichen. Zum Mix gehörte es, an beengten Stellen Samples ggf. anzupassen (filternd oder Frequenzabsenkung um 5-10 kHz für ein grittiges Lo-Fi-Feeling).</li>
+            </ul>
+            <p>
+                Diese Bereiche sind Richtwerte; in der Praxis war jeder Beat einzigartig, und Mixing war stark von Produzent zu Produzent unterschiedlich.
+                Typische Gain/Headroom-Ziele waren jedoch ähnlich: Mixbus-Peaks wurden oft bei etwa -6 dBFS gehalten (um analoges Clipping beim Tape zu vermeiden) und Vocals oft ca. 6-12 dB unter Clip-Pegel gemischt.
+                Gitarren, Streichersamples etc. blieben meist im Stereo-Raum breit, während Kick/Snare zentriert monophon gehalten wurden. Als Faustformel ließen Mastering-Ingenieure etwa 3-6 dB Headroom für das Bandsättigungsgerät oder ein Masteringboard.
+                Wichtige klangliche Effekte im Boom-Bap-Mix waren <span class="interactive-term" data-term="Lo-Fi-Filter">Lo-Fi-Filter</span> und Sättigung: Viele Tracks wurden (durch das Sampler-Downsampling und durch analoge Überspielung) absichtlich etwas „dreckig" produziert.
+                So nutzten Produzenten oft einen sanften <span class="interactive-term" data-term="Low-Pass-Filter">Low-Pass-Filter</span> um 6-8 kHz, um unangenehme digitale Klirrspitzen abzuschneiden und eine wärmere Textur zu erzeugen (das berühmte „Schleier"-Gefühl analoger 12-Bit-Sampler).
+                Zusätzlich kam häufig Band- oder Röhrensättigung zum Einsatz, besonders auf den Schlagzeugspuren: Das Überschreiten der Eingangsstufe (z.B. am Mischpult oder Interface vor dem Tape-Deck) bewirkte harmonische Verzerrungen, die den Mix „fetter" machten.
+                Samples FromMars beschreibt etwa das Übersteuern des MPC60-ADCs als Schlüssel zu dessen Klang (hardening, fattening, crunching).
+            </p>
+        </section>
+
+        <section>
+            <h2>Vergleichstabellen und Diagramme</h2>
+            <table class="w-full text-left text-sm border-collapse my-4">
+                <thead>
+                    <tr>
+                        <th class="border-b p-2">Instrument/Element</th>
+                        <th class="border-b p-2">Typischer Frequenzbereich (ungefähr)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Kick-Drum (Fundament)</td>
+                        <td class="border-b p-2">40-80 Hz (Subbereich), 80-120 Hz (Punch)</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Kick-Drum (Attack/High)</td>
+                        <td class="border-b p-2">2-4 kHz (Knack/Definition)</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Snare-Body</td>
+                        <td class="border-b p-2">150-250 Hz (Tiefe, „Körper" der Snare)</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Snare-Top/Crack</td>
+                        <td class="border-b p-2">3-6 kHz (scharfer Attacksound, „Klick")</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Subbass/Synth-Bass</td>
+                        <td class="border-b p-2">30-50 Hz (tiefer Subbereich), 50-80 Hz (Hauptfundament)</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">E-Bass (Midrange)</td>
+                        <td class="border-b p-2">80-200 Hz</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Rap-Vocals</td>
+                        <td class="border-b p-2">100-3000 Hz (Mittenbereich für Präsenz)</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Gesampelte Instrumente/Klänge</td>
+                        <td class="border-b p-2">variabel, meist 200-5000 Hz (je nach Instrument)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table class="w-full text-left text-sm border-collapse my-4">
+                <thead>
+                    <tr>
+                        <th class="border-b p-2">Songabschnitt</th>
+                        <th class="border-b p-2">Länge (in Takten)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Intro</td>
+                        <td class="border-b p-2">ca. 4-16 (kurz, mit DJ-Shouts, Knistern etc.)</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Vers</td>
+                        <td class="border-b p-2">16 (häufiger Standard), Ausnahmen: 12 oder 24</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Hook/Refrain</td>
+                        <td class="border-b p-2">8 (75% der Fälle), auch 4 oder 12</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Bridge/Break</td>
+                        <td class="border-b p-2">selten, meist 4-8 (z. B. „Scratches" oder Instrumentalpause)</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Outro</td>
+                        <td class="border-b p-2">4-16 (Ausklang, DJ-Showoff oder Fade-Out)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p class="text-sm text-gray-600 italic">Mermaid-Flowchart (Arbeitsfluss):</p>
+            <div class="mermaid">
+                graph TD
+                LP[Plattenspieler / Vinyl] --> Sampler
+                Sampler[Sampler (SP-1200/MPC usw.)] --> Sequencer
+                Sequencer[Pad & Pattern Sequencer] --> Mixer
+                Mixer[Analog-Mixer & Outboard] --> Master
+                Master[2" Tape / Ausgang]
+            </div>
+            <p class="text-sm text-gray-600 italic">Diagramm: Vereinfachter Workflow von der Vinyl-Auswahl zum Mastertape. Die Klänge werden in der Sampler-Hardware bearbeitet (Chopping, Einspielen), in Patterns arrangiert, über ein Mischpult abgenommen und schließlich analog aufgezeichnet.</p>
+        </section>
+    `
     },
     jazz_hip_hop_lounge: {
         id: 'jazz_hip_hop_lounge',
@@ -2481,10 +3785,208 @@ const CREATIVE_WORLDS = {
         name: 'Jazz Hip Hop Lounge',
         icon: '🎷',
         wikiContent: `
-            <h1>Jazz Hip Hop Lounge (Platzhalter)</h1>
-            <p>Dies ist ein Platzhaltertext fuer die Jazz-Hip-Hop-Welt mit warmen Akkorden, laid-back Grooves und organischer Harmonik.</p>
-            <p>Beispielbegriffe: <span class="interactive-term" data-term="Jazz Chords">Jazz Chords</span>, <span class="interactive-term" data-term="Upright Bass">Upright Bass</span>, <span class="interactive-term" data-term="Late Night Groove">Late Night Groove</span>.</p>
-        `
+        <header>
+            <h1>Jazz-HipHop-Lounge: Harmonik, Groove und Mixing</h1>
+        </header>
+
+        <section>
+            <h2>Executive Summary</h2>
+            <p>
+                <span class="interactive-term" data-term="Jazz-HipHop">Jazz-HipHop-Lounge</span> kombiniert erweiterte Jazzharmonik mit entspannter HipHop-Ästhetik.
+                Typisch sind komplexe Akkordfolgen (<span class="interactive-term" data-term="II-V-I">II-V-I</span> und deren Substitutionen) mit neuns-, elft- oder dreizehntönigen Voicings, oft modale Färbungen und raffinierte Voice-Leading-Techniken.
+                Instrumentation und Klanggebung setzen auf warme, natürliche Klänge: <span class="interactive-term" data-term="Rhodes">Rhodes</span>, Fender-Piano, Hammond, vibrierende Streicher und gedämpfte Blechbläser, häufig aufgenommen mit Röhrenmikrofonen oder analogen Wandlern.
+                Groove-Charakter entsteht durch moderates Tempo (ca. 80-100 BPM), subtile <span class="interactive-term" data-term="Swing">Swing</span>- bzw. Push/Pull-Feel, fein ausgeprägte <span class="interactive-term" data-term="Ghost Notes">Ghost-Notes</span> und absichtliche Lose im Timing.
+                Produzenten kombinieren Sampling und Live-Performance: Live-Aufnahmen bieten mehr Harmonie- und Arrangement-Flexibilität, Samplings erlauben Retro-Ästhetik (Beats, Texturen) bei niedrigeren Kosten aber mit rechtlichen Einschränkungen.
+                Mixing und Arrangement setzen gezielt Wärme, räumliche Tiefe und Eleganz ein ohne Groove zu verwässern: sanfte Sättigung und Tape-Emulation erzeugen harmonische Obertöne, glitzernde Hallfahnen (<span class="interactive-term" data-term="Plate Reverb">Plate</span>/<span class="interactive-term" data-term="Spring Reverb">Spring</span>) fügen Raum hinzu, präzise EQs und dynamische Automation bewahren Klarheit.
+                Beispielverläufe (Akkordfolgen, Basslinien, Drums) illustrieren typische Lofi-Jazzhop-Strukturen.
+            </p>
+        </section>
+
+        <section>
+            <h2>Jazzharmonik im HipHop-Kontext</h2>
+            <p>
+                Jazzakkorde basieren auf funktionaler Harmonik (Stufenfunktionen). Die klassische II-V-I-Kette (z.B. Dm7-G7-Cmaj7 in C-Dur) ist das Fundament.
+                Diese Progression wird mit erweiterten Terzen (9, 11, 13) und Chromatik ausgeziert – etwa Dm9-G13-Cmaj9 oder Cm11-F13b9-Bbmaj7#11.
+                Modalität spielt oft eine Rolle: Reizharmonien aus parallelen Tonarten (z.B. <span class="interactive-term" data-term="Dorisch">Dorisch</span>, <span class="interactive-term" data-term="Lydisch">Lydisch</span>) und tritonale Substitution (C7 → Gb7) bereichern die Harmonie.
+                Typische Voicings sind „Shell-Voicings“ (3-Ton-Konstruktionen) oder dichte Cluster (Handabstände, Stack Voicings) mit geringen Intervallen, um Wärme zu schaffen.
+                Beim Voice-Leading bleibt man auf gemeinsame Töne oder bewegt sich über kleine Intervalle, um eine fließende Stimmführung zu erzielen.
+                Die Basslinie stützt oft die Stufenfunktion klar mit Grundtönen und Umkehrungen.
+            </p>
+            <p>
+                Beispiel (Lead-Sheet-Notation): Ein typischer Groove in C-Dur (≈4 Takte) könnte lauten: | Dm9 | G13 | Cmaj9 | Cmaj9 |, gespielt von Piano/Rhodes.
+                Der Bass (Kontra) spielt hier D-G-C (gelegentlich mit chromatischen Übergängen).
+                Drums würzen mit zurückhaltendem Swing auf Hi-Hat, Snare auf 2+4 (leicht verzögert) und Bassdrum auf 1 und „&“ von 3.
+            </p>
+        </section>
+
+        <section>
+            <h2>Instrumentale Klangfarben (Farbgebung)</h2>
+            <p>
+                Instrumentiert wird klassisch mit Jazz-Instrumenten in tieferem Register für Wärme.
+                Piano (hölzern, je nach Aufnahme akustisch oder FM-Synth) liefert klare Akkorde, Rhodes oder Wurlitzer erzeugen samtig-chorusartige Flächen.
+                <span class="interactive-term" data-term="Hammond-Orgel">Hammond</span> (mit Leslie) oder Orgel für weite Pads und Bass-Fahrten. Bass meist als Kontrabass oder (Jazz-)E-Bass spielend, mit röhrenverstärkter Wärme.
+                Gitarre (elektrisch clean oder akustisch) kann Kompings und Arpeggios beisteuern; Chorus oder Spring-Reverb bringt Vintage-Charme.
+                Blechbläser (Trompete, Posaune) und Saxophone dienen für Soli/Breaks oder subtile Textur, oft im mittleren bis hohen Register.
+                Schlagzeug: kleines Jazz-Set, soft gestimmt, mit röhrigen Kesseln. Drums werden mit Room-/Overhead-Mikros aufgenommen, um natürlichen Raum zu fassen.
+            </p>
+            <p>
+                Mikrofonierung: für warme Hörerlebnisse nutzt man gern Röhren oder Bändchenmikrofone (z.B. Neumann U67, Coles 4038) auf Gesang und Bläsern, dynamische Mics wie SM7 oder EV RE20 auf Trompete/Tenorsax.
+                Synthesizer-Design: weiche Filter (tiefe Cutoff, sanfte Resonanz), subtiles Chorus/Phasing und Overdrive-Modi (Wärme) werden gern eingesetzt.
+                Delays/Modulation (Tape-Echo, Plate-Reverbs, Vintage-Chorus) erhöhen die Räumlichkeit.
+                Praxis-Tipp: Beim Einspielen auf menschliche Ausdrucksstärke achten – z.B. bodennahes Anschlagen der Bass-Saite und akzentuierte Kompakkorde.
+                „Spacing“ (Ausrücken einzelner Instrumente in verschied. Oktaven) lässt den Mix offener wirken.
+            </p>
+        </section>
+
+        <section>
+            <h2>Groove-Entschleunigung</h2>
+            <p>
+                Im Jazz-Hop wird das Tempo oft um 80-100 BPM gehalten, damit jeder Ton zählt.
+                Ein moderater Swing- oder „Push-Pull“-Groove (minimaler Backbeat-Delay) sorgt für lässige Lebendigkeit.
+                Analysen zeigen, dass funkige Genres durch <span class="interactive-term" data-term="Mikrotiming">Mikrotiming</span> (mikrorhythmische Abweichungen) ihren Groove gewinnen: Gerade-16tel werden leicht ungleich gespielt.
+                Die Backbeats (Snare 2+4) liegen oft minimal verzögert, während Hi-Hats und Bassdrum leicht unterschiedlich Spannung aufbauen.
+                Ghost-Notes (leise Snare-Schläge zwischen den Backbeats) und HiHat-Variationen (leise Off-Beats) geben Drive.
+                Im Gegensatz zu ultrapräsisem Quantisieren bleibt Raum für Performancetiming.
+            </p>
+            <p>
+                Beispiel Drum-Groove (Notation): Einfacher Jazz-Beat: Bassdrum auf Beat 1 und „&“ von 3, Snare auf Beats 2+4, HiHat mit Achteln (leicht geswingt, z.B. Hihat-Achtel mit 55% Shuffletakt).
+                Hierbei wird die Snare auf „4“ z.B. um 20-30 ms verzögert gesetzt (just slightly behind the beat), Ghost-Noten (dezente 16tel auf Snare zwischen 2+4) steigern den Groove.
+                Dieses organische Timing kann man aus Live-Drum-Aufnahmen gewinnen oder per humanisierte MIDI-Quantisierung simulieren.
+            </p>
+        </section>
+
+        <section>
+            <h2>Sample- vs. Live-Ansatz (Workflow & Rechtliches)</h2>
+            <p>
+                <strong>Sample-basiert:</strong> Loop-basierte Arbeit mit DAW/Sampler (<span class="interactive-term" data-term="MPC">MPC</span>, Ableton). Workflow: Samples auswählen (z.B. Jazz-Records), in Tempo/Tonhöhe anpassen (Time-Stretching), arrangieren und neu harmonisieren (z.B. neue Akkorde über Loop spielen).
+                Vorteil: günstiger Einstieg, klassische Ästhetik (Staubsampler, Vinyl-Rauschen), reichhaltige Texturen. Nachteil: Eingeschränkte Flexibilität (ursprüngliche Harmonien oft fest), aufwändige Clearing-Prozedur.
+                Rechtlich ist unbegrenztes <span class="interactive-term" data-term="Sampling">Sampling</span> riskant: Jedes Sample unterliegt Urheber- und Tonträgerrecht. Man braucht meist Clearauszüge für Songwerk (Komposition) und Master (Aufnahme).
+            </p>
+            <p>
+                <strong>Live-Instrumente:</strong> Eigenkomposition und Aufnahme von Jazz-Ensembles. Workflow: Songwriting, Proben oder Multi-Track-Recording im Studio.
+                Vorteile: völlige Kontrolle über Harmonik, Dynamik und Arrangement, keine Sampling-Clearances nötig.
+                Mehr Aufwand/Kosten: Musiker, Studiozeit, Equipment. Klangflexibilität hoch.
+                Zudem hybride Ansätze gängig: z.B. gesampelte Breakbeats mit live eingespielten Soli oder Rhodes-Spuren.
+            </p>
+
+            <h3>Vergleichstabelle: Sample vs Live</h3>
+            <table class="w-full text-left text-sm border-collapse my-4">
+                <thead>
+                    <tr>
+                        <th class="border-b p-2">Aspekt</th>
+                        <th class="border-b p-2">Sampling-Ansatz</th>
+                        <th class="border-b p-2">Live-Ansatz</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Vorteile</td>
+                        <td class="border-b p-2">Schneller Einstieg, typischer LoFi-Sound, vielfältige Klangbibliothek</td>
+                        <td class="border-b p-2">Maximale kreative Kontrolle, authentischer Live-Charakter</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Nachteile</td>
+                        <td class="border-b p-2">Eingeschränkte Flexibilität, Clearing nötig</td>
+                        <td class="border-b p-2">Höherer Aufwand/Kosten, komplexere Produktion</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Kosten</td>
+                        <td class="border-b p-2">Gering (DAW/Sampler)</td>
+                        <td class="border-b p-2">Höher (Musiker, Studio)</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Zeitaufwand</td>
+                        <td class="border-b p-2">Geringer (Cuts & Loops)</td>
+                        <td class="border-b p-2">Höher (Songwriting, Recording)</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Klangflexibilität</td>
+                        <td class="border-b p-2">Mittel (Pitch/Stretch)</td>
+                        <td class="border-b p-2">Sehr hoch (Instrumentierung, Artikulation)</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Rechtliches</td>
+                        <td class="border-b p-2">Hohe Hürden (Sample-Clearing)</td>
+                        <td class="border-b p-2">Weniger problematisch (GEMA für Komposition)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>Mixing: Wärme, Raum und Eleganz</h2>
+            <p>
+                Beim Mischen wird besonders auf Analog-Charakter geachtet. <span class="interactive-term" data-term="Sättigung">Sättigung</span>/<span class="interactive-term" data-term="Tape-Emulation">Tape-Emulation</span> erhöht Wärme: Bereits ein leichter "Studer-Bump" (Hauptbetonung im 200-500 Hz-Bereich) und Harmonische verleihen Fülle.
+                EQ: Tiefen (≤80 Hz) bei vielen Instrumenten hart filternd, um Bass-Überlagerung zu vermeiden; dann Band-Pässe sanft anheben (Rumpeln, Wärme).
+                Mittlere Frequenzen beruhigen (500-800 Hz absenken gegen „Boxiness“), Höhen (4-10 kHz) leicht anheben für Präsenz.
+                <span class="interactive-term" data-term="Kompression">Kompression</span>: Moderat, oft in Stufen. Beispiel (Bass): Zwei Kompressoren nacheinander (schneller FET + langsamer VCA).
+                Effekte: Reverbs und Delays erhöhen Raum und Eleganz. Kurze Hallfahnen unter den Keypads und Vocals erzeugen Tiefe ohne „Verwaschen“.
+                Wichtig ist Präzision: etwa Mid/Side-EQ im Reverb. Stereo-Verbreiterung durch Panoramapositionen oder M/S-Processing.
+                Keine Überschneidungen: Während Effekte Wärme und Glanz erlauben, darf der Groove nicht leiden. Daher keine zu dichten Hallräume oder Überkompression.
+            </p>
+
+            <h3>Mixing-Chain-Templates</h3>
+            <table class="w-full text-left text-sm border-collapse my-4">
+                <thead>
+                    <tr>
+                        <th class="border-b p-2">Instrument</th>
+                        <th class="border-b p-2">Beispiel-Mixing-Kette</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Piano/Rhodes</td>
+                        <td class="border-b p-2">EQ (High-Pass ~50 Hz; +300 Hz, +8-12 kHz), Kompressor (2:1), Tape Saturation, Plate Hall (1,5 s).</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Gitarre (elektr.)</td>
+                        <td class="border-b p-2">EQ (Notch 400-500Hz, +5kHz), Kompressor (3:1), Sättigung, Slapback Delay, Chorus.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Bass</td>
+                        <td class="border-b p-2">EQ (Low-Cut ~30Hz; +100Hz Boost; -300-400Hz Cut), Kompressor 1 (FET) + Kompressor 2 (VCA), Vintage EQ.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Schlagzeug</td>
+                        <td class="border-b p-2">Kick EQ (Peak +60-100Hz; Cut 250-500Hz); Snare EQ (Peak +200Hz; +4kHz). Parallel-Kompression (FET). Transient Shaper.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Vocals/Spoken</td>
+                        <td class="border-b p-2">EQ (High-Pass 80Hz; Cut 2-5kHz), 1176-like Compressor, De-Esser, Tape Sat, Plate Hall.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>Arrangement und Performance (Struktur & Technik)</h2>
+            <p>
+                Ein typischer Arrangement-Ablauf für Jazz-HipHop (z.B. bei 80 BPM, 4/4) könnte sein:
+                <strong>Intro (0:00-0:16):</strong> 8-16 Takte solo Piano/Rhodes mit Akkordriff oder Moll-Blue-Loop, sanfter Aufbau.
+                <strong>Theme/Head (0:16-0:48):</strong> Hauptmelodie oder Vocal/Spoken-Part auf wiederkehrender Akkordfolge. Bass und Drums legen den Groove klar fest.
+                <strong>Solo-Section (0:48-1:12):</strong> 16-32 Takte Instrumental-Solo (Gitarre, Sax, Vibraphon) über einer sich wiederholenden Stufe. Abwechslung durch zusätzliche Breaks.
+                <strong>Breakdown/Bridge (1:12-1:28):</strong> Reduzierter Teil (nur Drums + Bass, evtl. Pad) baut Spannung auf.
+                <strong>Reprise/Head (1:28-1:44):</strong> Erneute Kopie der Hauptthemen. Variation durch Taktverschiebung oder kurzen Coda-Einsatz.
+                <strong>Outro (1:44-2:00):</strong> Fade-Out oder Abschluss auf ruhigem Akkord.
+                Wichtig: Dynamics live spielen – Crescendi und Diminuendi, aber auch spontane Pausen für Eleganz.
+            </p>
+        </section>
+
+        <section>
+            <h2>Checkliste: Erzeugung von Wärme, Raum & Eleganz</h2>
+            <ul>
+                <li><strong>Analog/Modellierung:</strong> Tape- oder Röhren-Emulation für subtile Obertonverdickung.</li>
+                <li><strong>EQ-Finesse:</strong> Bodennah glätten (Low-Cut), Studer-Bump (Boost 100-200Hz), Absenken harscher Mitten, Höhen leicht anheben.</li>
+                <li><strong>Sättigung:</strong> Sanfte Verzerrung (0,5-2dB Gain) auf Kanälen.</li>
+                <li><strong>Reverb/Delay:</strong> Warme Presets (Plate/Spring) mit mittlerer Dauer. Pro Delay: 1/8-1/4 Sync.</li>
+                <li><strong>Stereo- und M/S-Processing:</strong> Breite Synth/Pad-Spuren, kompakter Bass und Kick mono. Hochton seitlich aufbreiten.</li>
+                <li><strong>Dynamik:</strong> Automatisiere Pegeländerungen statt starke Kompression.</li>
+                <li><strong>Raum-Signale:</strong> Raumanteile vor dem Kompressor lagern. Hall-EQ: dunkler für Drums, heller für Vocals.</li>
+                <li><strong>Arrangement/Performance:</strong> Lasse „Luft“ an markanten Stellen. Kompings im „Pocket“ spielen.</li>
+                <li><strong>Feinschliff:</strong> Mix auf Referenzen prüfen; A/B-Test.</li>
+            </ul>
+        </section>
+    `
     },
     lofi_hip_hop_tape: {
         id: 'lofi_hip_hop_tape',
@@ -2700,10 +4202,305 @@ const CREATIVE_WORLDS = {
         name: 'G-Funk West Coast',
         icon: '🌴',
         wikiContent: `
-            <h1>G-Funk West Coast (Platzhalter)</h1>
-            <p>Dies ist ein Platzhaltertext fuer die G-Funk-Welt mit rollenden Basslines, synthigen Leads und sonniger Coolness.</p>
-            <p>Beispielbegriffe: <span class="interactive-term" data-term="Talkbox Lead">Talkbox Lead</span>, <span class="interactive-term" data-term="Funk Bassline">Funk Bassline</span>, <span class="interactive-term" data-term="West Coast Swing">West Coast Swing</span>.</p>
-        `
+        <header>
+            <h1>G-Funk: Historische Analyse, Sounddesign und Produktionstechnik</h1>
+        </header>
+
+        <section>
+            <h2>Executive Summary</h2>
+            <p>
+                Dieser Artikel liefert eine tiefgehende Analyse des <span class="interactive-term" data-term="G-Funk">G-Funk</span>-Stils der US-Westküste – eines Subgenres des <span class="interactive-term" data-term="Gangsta-Rap">Gangsta-Rap</span>, das Anfang der 1990er Jahre aus dem Raum Los Angeles hervorging.
+                G-Funk kombiniert die Funk-DNA der 1970er (vor allem <span class="interactive-term" data-term="Parliament-Funkadelic">Parliament-Funkadelic</span> und die Ohio Players) mit Hip-Hop-Elementen, wobei langsame Grooves (ca. 90-100 BPM), multi-lagige, melodische Synthesizerlinien und tiefe Bassläufe dominieren.
+                Charakteristisch sind sägezahnförmige Lead-Synthesizer (mit <span class="interactive-term" data-term="Portamento">Portamento</span>), fette analoge Basspatches (oft mit <span class="interactive-term" data-term="Moog-Synthesizer">Moog-Synthesizern</span>) und der Einsatz von <span class="interactive-term" data-term="Talkbox">Talkbox</span>-Stimmen oder Vocoder-ähnlichen Effekten (inspiriert u. a. von Roger Troutman/Zapp).
+                G-Funk-Beats wirken „laid-back“, haben aber zugleich eine druckvolle Tieftonbasis – ein Klangbild, das die sonnige, aber raue Ästhetik Südkaliforniens der frühen 90er spiegelt.
+                Technisch folgen Produktionen in der Regel einem Aufbau, bei dem zunächst Drums und Bass gelegt werden, dann harmonische Schichten hinzugefügt und abschließend Leads, Hooks und Effekte eingearbeitet werden.
+            </p>
+            <p>
+                Im Folgenden wird die historische Entwicklung des G-Funk skizziert, die musikalischen Merkmale und das Sound-Design analysiert.
+                Danach folgen Abschnitte zu Bass-Engineering, Tempo/Groove, Hook-Architektur, Mixing/Mastering, Produktions-Workflow und kulturellem Kontext, ergänzt um Checklisten für Arrangement und Mixing sowie Tabellen mit exemplarischen Schlüsseltracks und typischen Synth-Parametern.
+            </p>
+        </section>
+
+        <section>
+            <h2>1. Historische Entwicklung (Ursprünge - Hochphase)</h2>
+            <p>
+                <strong>Ursprünge (späte 1980er):</strong> G-Funk geht zurück auf Westküsten-Produzenten, die Funk-Samples der 70er Jahre mit Rap verbanden.
+                Zentrale Vorläufer waren die Ohio Players („Funky Worm“, 1972) und Parliament-Funkadelic. <span class="interactive-term" data-term="Dr. Dre">Dr. Dre</span> produzierte ab 1987 für <span class="interactive-term" data-term="N.W.A.">N.W.A.</span> u.a. Tracks mit herausragenden Funk-Einsprengseln.
+                Auch das Trio Above The Law experimentierte mit Funk-Klängen und prägte offenbar früh den Begriff „G-Funk“. Die Grundbausteine waren gesetzt: langsamere Tempi, Mehrstimmigkeit von Synthesizern und tiefe Basslinien.
+            </p>
+            <p>
+                <strong>Durchbruch (1992-1994):</strong> Das Jahr 1992 markiert den Durchbruch mit Dr. Dres Soloalbum <em>The Chronic</em> (Death Row Records). Dieses Album gilt als Startpunkt des G-Funk.
+                Colin Wolfe, Multiinstrumentalist auf The Chronic, erinnert: „Wir wollten ein echtes Parliament-Funkadelic-Album machen“.
+                <em>The Chronic</em> etablierte den Sound: Dr. Dre verzichtete weitgehend auf rohe Samples und ließ Musiker die Melodien und Basslinien nachspielen. Dr. Dre fügte ein Signalelement hinzu: eine hochgepitchte Moog-Synthesizer-Linie à la „Funky Worm“.
+                Die Mischung aus prägnanten Synth-Melodien, drückendem Bass und harten Drums erwies sich als extrem eingängig und definierte das Westküsten-Rap-Gefühl der 90er.
+            </p>
+            <p>
+                <strong>G-Funk-Ära (1993-1997):</strong> Erfolgreiche Folgealben und -hits folgten schnell: <span class="interactive-term" data-term="Snoop Dogg">Snoop Doggs</span> <em>Doggystyle</em> (1993); Warren G mit „Regulate“ (1994); Snoop & Nate Dogg, Tha Dogg Pound, Coolio u. a.
+                Diese Jahre sind gekennzeichnet durch kommerzielle Dominanz von G-Funk – oft funkige, entspannte Produktionen mit Personen wie Suge Knight, Dre, Warren G und Nate Dogg als Gesichter der Bewegung.
+                Politisch-sozial bot G-Funk den Soundtrack für die Jahre nach den Los-Angeles-Unruhen 1992, wobei Texte Gang-Themen, Parties und den „Westküsten-Lifestyle“ feierten.
+            </p>
+
+            <h3>Tabelle 1: Schlüsselkünstler, Alben und Tracks (Auswahl)</h3>
+            <table class="w-full text-left text-sm border-collapse my-4">
+                <thead>
+                    <tr>
+                        <th class="border-b p-2">Jahr</th>
+                        <th class="border-b p-2">Künstler/Album</th>
+                        <th class="border-b p-2">Schlüsseltrack(s)</th>
+                        <th class="border-b p-2">Merkmale</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border-b p-2 font-medium">1990</td>
+                        <td class="border-b p-2">Above the Law - Livin' Like Hustlers</td>
+                        <td class="border-b p-2">Call It Funky</td>
+                        <td class="border-b p-2">Frühes Sample-Bass/Replay, funkig</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">1992</td>
+                        <td class="border-b p-2">Dr. Dre - The Chronic</td>
+                        <td class="border-b p-2">Nuthin' but a 'G' Thang, Let Me Ride</td>
+                        <td class="border-b p-2">Hohe Moog-Lead-Synths, tiefer Bass</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">1993</td>
+                        <td class="border-b p-2">Snoop Dogg - Doggystyle</td>
+                        <td class="border-b p-2">Gin & Juice, Who Am I</td>
+                        <td class="border-b p-2">Leicht, funkige Gitarren, Falsett-Background</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">1994</td>
+                        <td class="border-b p-2">Warren G - Regulate... G Funk Era</td>
+                        <td class="border-b p-2">Regulate</td>
+                        <td class="border-b p-2">Melodiöser R'n'B-Refrain, Bass-Licks</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">1995</td>
+                        <td class="border-b p-2">2Pac - All Eyez on Me</td>
+                        <td class="border-b p-2">California Love</td>
+                        <td class="border-b p-2">Trombone Hits, Talkbox (Troutman)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>2. Musikalische Merkmale und Instrumentierung</h2>
+            <ul>
+                <li><strong>Harmonie und Akkordfolgen:</strong> G-Funk baut überwiegend auf einfachen, konventionellen Akkordfolgen (häufig Dur/Moll-Triaden oder Septakkorde) auf. Im Gegensatz zum Jazz-lastigen Sampling vieler Eastcoast-Beats sind G-Funk-Harmonien meist geradlinig und funkbetont – oft wiederholt über mehrere Takte das gleiche Pattern, was hypnotisch wirkt. Die Synthesizer-Schichten werden schrittweise eingeführt.</li>
+                <li><strong>Groove und Rhythmus:</strong> G-Funk-Beats sind langsamer (ca. 85-100 BPM, typ. 90-95) und haben einen „schleppenden“, aber gleichzeitig trägen <span class="interactive-term" data-term="Backbeat">Backbeat</span>. Die Snare/Kick-Pattern sind betonend; oft knallen harte Snares auf Schlag 2 und 4. Hi-Hats und Tamburine werden leicht geswingt oder mit Off-Beats versehen. Der Rap-Stil passt sich dem an: Der Rapfluss (Flow) wirkt entspannt und „slowly rappt“ mit gedehnten Silben.</li>
+                <li><strong>Drums/Beats:</strong> Eher minimalistische Patterns mit <span class="interactive-term" data-term="Roland TR-808">808</span>/909-Kick, kräftigen Clap/Snare, ggf. elektronische Percussion oder Scratches.</li>
+                <li><strong>Synthesizer:</strong> Kernstück sind analog oder moduliert klingende Synthesizer. Für Lead-Melodien („G-Funk-Whistle“) setzt man meist zwei Sägezahn-Oszillatoren mit Portamento ein.</li>
+                <li><strong>Talkbox/Vocoder:</strong> Angelehnt an Zapp & Roger wird die Talkbox-Stimme als Effekt-Klang verwendet. Sie verleiht Melodielinien einen „sprechenden“ Charakter, oft für Hook-Lines.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>3. Sound-Design: Synth-Patches und Talkbox-Effekt</h2>
+            <p>Die charakteristischen G-Funk-Klänge entstehen durch einfache, aber wirkungsvolle Synth-Patches:</p>
+            <ul>
+                <li><strong>Moog-Subbass:</strong> Für druckvollen Tiefbass verwendet man häufig einen Moog-ähnlichen Synth. Beiden Oszillatoren werden Quadratwellen zugrunde gelegt, einer eine Oktave tiefer als der andere. Eine geringe Feinstimmung (Detune) fügt Wärme hinzu. Im Filter genügt ein großzügiger Low-Cut (auf ca. 80-100 Hz) und moderate Resonanz. Ein sanftes Portamento verbindet benachbarte Noten für glatte Übergänge.</li>
+                <li><strong>Lead-Synth („Whistle“):</strong> Für die hohe, schrille Lead-Melodie nutzt man zwei <span class="interactive-term" data-term="Sägezahn-Oszillator">Sägezahn-Oszillatoren</span>, hoch gestimmt. Portamento ist oft voll aufgedreht, sodass bei Notenwechseln ein gleitender Effekt hörbar wird. Leichte Vibrato-Modulation durch ein <span class="interactive-term" data-term="LFO">LFO</span> auf die Tonhöhe bringt Leben ins Signal. Typisch ist ein offener Filter, manchmal etwas Emphasis durch eine leichte Filterhüllkurve.</li>
+                <li><strong>Filter und Effekte:</strong> Analogem Charakter entspricht oft ein klassischer Tiefpassfilter (LPF) mit mittelhoher Resonanz für Leads. G-Funk-Produktionen setzen gern Vintage-Effekte ein: klassischer Hall, tapeartiger Chorus oder Delays.</li>
+            </ul>
+
+            
+            <p>
+                <strong>Talkbox-Setup:</strong> Traditionell wird der Talkbox-Effekt erzeugt, indem ein Synth/Gitarren-Signal durch ein Röhrchen in den Mund geleitet und durch die Lautsprecherboxen wiedergegeben wird. Wichtig ist ein glatter, funkiger Grundklang (Wah-Gitarre oder Synth), der über die menschliche Artikulation (Ah/Li-Laute) moduliert wird.
+            </p>
+        </section>
+
+        <section>
+            <h2>4. Bass-Engineering und Low-End</h2>
+            <p>Der Bass ist das Fundament des G-Funk-Sounds. Zentrale Merkmale:</p>
+            <ul>
+                <li><strong>Sub- vs. Mid-Bass:</strong> Oft werden zwei Bass-Ebenen übereinandergelegt. Ein reiner <span class="interactive-term" data-term="Sub-Bass">Sub-Bass</span> (z.B. eine Sinus- oder gedämpfte Square-Welle) liefert die tiefen Frequenzen. Darüber liegt ein Mid-Bass, der den Bass hörbar prägnanter macht.</li>
+                <li><strong>Verlauf und Bewegung:</strong> G-Funk-Basslines folgen meist einer fließenden, rollenden Bewegung. Licks wechseln häufig zwischen Root, Quint und gelegentlich der kleinen Terz. Slides (Portamento) zwischen Noten sind üblich und verleihen dem Bass Elastizität.</li>
+                <li><strong>Oktavierung:</strong> Wie bei Funk üblich, werden Basslinien oft in Oktaven gespielt, entweder durch paralleles Spiel eines tieferen Bass-Signals und eines höheren oder durch Layern eines Synth-Basses mit einem gesampelten E-Bass-Oktavton.</li>
+                <li><strong>Treiber-Effekte:</strong> Ein subtiles Verzerren oder Saturieren sorgt im Mix für Wärme. Dre setzte auf „pumpende“ analoge Basskompression. Wichtig ist, dass der Bass sowohl auf kleinen Lautsprechern gehört werden kann als auch auf Fatboomsystemen richtig pumpt.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>5. Tempo und Groove (Feel)</h2>
+            <p>
+                <strong>BPM-Bereich:</strong> Typisch sind 80-100 BPM, meist um 90-95 BPM. Dieser moderate Bereich lässt den Rap „köcheln“ statt zu hetzen.
+                <strong>Groove:</strong> Der Takt ist 4/4, doch G-Funk-Beats leben von „Off-Beat“-Elementen: Hi-Hats und Tamburine werden oft mit leichtem Swing programmiert. Die Kickdrum folgt einem einfachen, drückenden Rhythmus, während die Snare auf 2 und 4 knallt.
+                <strong>Backbeat-Placement:</strong> Die Betonung liegt sehr auf den Backbeats. Groovemäßig kann der Rapper etwas hinter dem Beat liegen („behind the beat rappen“), wodurch das Feeling noch entspannter wirkt.
+            </p>
+        </section>
+
+        <section>
+            <h2>6. Hook-Architektur (Gesangsarrangement und Melodieführung)</h2>
+            <p>
+                Ein zentrales Merkmal sind stark wiederholte, Melodie- oder Sprach-Hooks. Diese können gesungen (häufig von Gast-R&B-Sängern wie <span class="interactive-term" data-term="Nate Dogg">Nate Dogg</span>) oder gerappt sein. Sie sind meist 8 bis 16 Takte lang.
+                Oft gibt es <span class="interactive-term" data-term="Call-and-Response">Call-and-Response</span> zwischen Rappern, Backing-Chor oder Instrumenten.
+                G-Funk-Chorusse nutzen Wiederholungen; das wiederholte Pattern prägt den Ohrwurm-Charakter. Hook-Melodien sind oft pentatonisch oder in einfachen Dur/Moll-Skalen gehalten, um ein freundlich-summarisches Feeling zu erzielen.
+            </p>
+
+            <h3>Tabelle 2: Vergleich exemplarischer G-Funk-Synth-Patches</h3>
+            <table class="w-full text-left text-sm border-collapse my-4">
+                <thead>
+                    <tr>
+                        <th class="border-b p-2">Parameter</th>
+                        <th class="border-b p-2">Lead-Synth („Whistle“)</th>
+                        <th class="border-b p-2">Bass-Synth</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Oszillatoren</td>
+                        <td class="border-b p-2">2x Sägezahn</td>
+                        <td class="border-b p-2">2x Rechteck</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Tune (Range)</td>
+                        <td class="border-b p-2">Hoch (z. B. 4' und 2')</td>
+                        <td class="border-b p-2">Tief (32' und 16')</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Portamento</td>
+                        <td class="border-b p-2">Lang (großzügig)</td>
+                        <td class="border-b p-2">Mittel bis lang (sanfter Slide)</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Filter</td>
+                        <td class="border-b p-2">Meist offen oder leicht LPF</td>
+                        <td class="border-b p-2">LPF tief (geschnittene Höhen)</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Effekte</td>
+                        <td class="border-b p-2">Hall, Stereo-Delay, Chorus</td>
+                        <td class="border-b p-2">Dezente Sättigung, evtl. Chorus</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>7. Misch- und Mastering-Strategien</h2>
+            <p>
+                <strong>Low-End-Management:</strong> Priorität hat ein sauberer Subbass. Der Bass sollte die 60-120 Hz-Region dominieren, aber mit genügend Platz für Kickdrum.
+                Techniken: <span class="interactive-term" data-term="High-Pass-Filter">High-Pass-Filter</span> auf allen nicht-bassigen Spuren (vor allem Pads/Leads unter 100 Hz wegschneiden) und ggf. <span class="interactive-term" data-term="Sidechain-Kompression">Sidechain-Kompression</span> zwischen Kick und Bass.
+                <strong>Top-End-Glanz:</strong> G-Funk benötigt knackige Höhen: Die Snare-Claps prägnant boosten, Hi-Hats per Glanzfilter anheben und Lead-/Vocal-Spuren mit moderatem Equalizer versehen.
+                <strong>Raum und Tiefe:</strong> G-Funk nutzt großzügig Hall und Delay, vor allem auf melodischen Elementen und Gesang. Ein großer Hall für die Lead-Synths schafft eine atmosphärische Räumlichkeit. Die Drums bleiben eher trocken.
+                <strong>Mastern:</strong> G-Funk-Alben der 90er klangen oft „dreckig“ und lebendig statt extrem laut; ein analoges Mastering (mit leichter <span class="interactive-term" data-term="Tape-Sättigung">Tape-Sättigung</span>) ist typisch. Im Zweifel sind Punchigkeit vor Spitze zu setzen.
+            </p>
+        </section>
+
+        <section>
+            <h2>8. Produktions-Workflow (DAW, Hardware, Sampling)</h2>
+            <p>
+                Im G-Funk-Zeitalter der 90er dominierten Akai-Sampler, analoge Synthesizer (Minimoog, ARP) und Riemenmaschinen. Mixdowns erfolgten über große analoge Pulte.
+                Heute arbeiten Produzenten meist in <span class="interactive-term" data-term="DAW">DAWs</span>. Viele Samples stammen aus Bibliotheken.
+                Vintage-Synth-Plugins (Arturia Minimoog V, TAL-Bassline) werden häufig genutzt.
+                <strong>Sampling vs. Live-Instrumentation:</strong> Dr. Dre war Vorreiter im „Replay“ – er ließ Musikdienste einspielen, statt direkt zu sampeln. Heutzutage mischt sich beides.
+                Ein typischer Arrange-Aufbau: Titel/Grundidee → Schlagzeug-Basis → Bass → Synth-Leads → unterstützende Gitarren/Percussion → Gesangsaufnahmen/Effekte.
+                Für Vocals wählt man dynamische Mikrofone mit Näheffekt, die den warmen Subbass betonen.
+            </p>
+        </section>
+
+        <section>
+            <h2>9. Kultureller Kontext der Westküste</h2>
+            <p>
+                G-Funk entstand in einer Zeit großer Spannung in Südkalifornien (Rassenunruhen 1992, Bandenkriminalität). Künstler wie Dre und Snoop kamen aus Compton/Long Beach.
+                Die Musik spiegelt einerseits Gang-Alltag, andererseits aber auch Feierkultur und „California Love“ wider.
+                Inhalte behandeln typischerweise <span class="interactive-term" data-term="Lowrider">Lowrider</span>-Autos, Polizeikonfrontationen, Slang und Kalifornien-Stolz.
+                Die kulturelle Inszenierung brachte musikalische Entscheidungen hervor: Der Einsatz von Gospel-/Chor-Effekten spiegelt religiöse/historische Themen wider, während dröhnender Bass und Hall-Effekte das gewaltaffine Narrativ unterstreichen.
+                Der „California-Gürtel“ zwischen harten Texten und loungiger Musik macht G-Funk zugänglich.
+            </p>
+        </section>
+
+        <section>
+            <h2>10. Konkrete Arrangement- und Mix-Checklisten</h2>
+            <p>
+                <strong>Arrangement-Checkliste:</strong>
+            </p>
+            <ul>
+                <li>Grundschicht legen: Funk-Loop oder programmierte Drums (90-95 BPM).</li>
+                <li>Bass einfügen: Sub-Bass darunter packen (Moog-Patch, Slide-Portamento).</li>
+                <li>Harmonie/Chords: Keyboards/Gitarre hinzuschichten.</li>
+                <li>Lead & Hook-Elemente: Charakteristische Leit-Melodien einbauen (Synth-Pfeife, Talkbox).</li>
+                <li>Stütz-Elemente: „Ear Candy“ hinzufügen (Shaker, Percussion-Fills).</li>
+                <li>Dynamik: Auf Höhepunkte und Lücken (Breakdowns) achten.</li>
+            </ul>
+            <p>
+                <strong>Mix-Checkliste:</strong>
+            </p>
+            <ul>
+                <li>Tiefenbereich: Bass und Kick getrennt boosten; tiefe Frequenzen nur Bass.</li>
+                <li>Mittenbereich: Snares/Claps emphasen, Vocals klar und verständlich machen.</li>
+                <li>Höhenbereich: Hi-Hats crisp, Leads verhalten evozierend.</li>
+                <li>Stereo-Bild: Leads breit im Panorama, Drums mittig. Call/Response-Synths hart links/rechts anordnen.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>11. Tabellen zur Gegenüberstellung</h2>
+            <h3>Tabelle 3: G-Funk-Schlüsseltracks</h3>
+            <table class="w-full text-left text-sm border-collapse my-4">
+                <thead>
+                    <tr>
+                        <th class="border-b p-2">Track (Jahr)</th>
+                        <th class="border-b p-2">Lead/Hook-Instrument(e)</th>
+                        <th class="border-b p-2">Bass/Groove-Einsatz</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border-b p-2 font-medium">„Nuthin' but a 'G' Thang“ (1992)</td>
+                        <td class="border-b p-2">Hohe Moog-Synth-Leads</td>
+                        <td class="border-b p-2">Runder Moog-Subbass mit Glide</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">„Regulate“ (1994)</td>
+                        <td class="border-b p-2">Sanftes Synth-Pad, E-Piano</td>
+                        <td class="border-b p-2">Saiten-like Basslicks</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">„California Love“ (1995)</td>
+                        <td class="border-b p-2">Talkbox-Gesang + Glocken</td>
+                        <td class="border-b p-2">Funky-Flok Bass (Glides)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Tabelle 4: Typische Instrumentations-Elemente</h3>
+            <table class="w-full text-left text-sm border-collapse my-4">
+                <thead>
+                    <tr>
+                        <th class="border-b p-2">Element</th>
+                        <th class="border-b p-2">Beispiel / Wirkung</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Call-and-Response</td>
+                        <td class="border-b p-2">Refrain-Antwort vs. Rap-Call</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Wiederholte Akkorde</td>
+                        <td class="border-b p-2">Hypnotischer Groove, Refrains ohne Wechsel</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Flächige Pads</td>
+                        <td class="border-b p-2">Füllt Mix – schafft dichten Raumklang</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Percussion Layering</td>
+                        <td class="border-b p-2">Erzeugt Latin-Funk-Feeling</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            
+            <p>
+                Fazit: G-Funk ist ein sorgfältig geschichtetes Genre: Jedes Element – Bass, Synth, Gesang, Atmosphäre – folgt einer bewussten Produktionslogik, die Funk-Traditionen ehrt und sie mit Hip-Hop-Elementen verbindet.
+                Entwickler eines G-Funk-Sounds sollten das Funk-Erbe verstehen, technische Details anwenden und den „Lazy-California-Vibe“ nie aus den Augen verlieren.
+            </p>
+        </section>
+    `
     },
     southern_trap_lab: {
         id: 'southern_trap_lab',
@@ -3056,10 +4853,303 @@ const CREATIVE_WORLDS = {
         name: 'Drill Dark Energy',
         icon: '🖤',
         wikiContent: `
-            <h1>Drill Dark Energy (Platzhalter)</h1>
-            <p>Dies ist ein Platzhaltertext fuer die Drill-Welt mit kalten Melodien, markanten Slides und harter Rhythmik.</p>
-            <p>Beispielbegriffe: <span class="interactive-term" data-term="Dark Piano">Dark Piano</span>, <span class="interactive-term" data-term="Sliding 808">Sliding 808</span>, <span class="interactive-term" data-term="Snare Triplets">Snare Triplets</span>.</p>
-        `
+        <header>
+            <h1>Dark-Drill-Ästhetik: Produktion, Harmonik und regionale Varianten</h1>
+        </header>
+
+        <section>
+            <h2>Executive Summary</h2>
+            <p>
+                <span class="interactive-term" data-term="Dark Drill">Dark Drill</span> ist eine zeitgenössische Spielart des Drill (einer Hip-Hop-Variante), die düstere Harmonik, extrem präzise Rhythmik und ausdrucksstarke Subbass-Bassläufe („<span class="interactive-term" data-term="Sliding 808">Sliding 808</span>“) kombiniert.
+                Dieser Artikel liefert eine analytisch-vergleichende Untersuchung technischer Produktionsmerkmale von Dark Drill.
+                Wir behandeln präzise Melodiebildung (Skalen und Akkord-Voicings), markante Frequenzbereiche, typische Hüllkurven und Modulationseinstellungen sowie den Einsatz von LFOs, <span class="interactive-term" data-term="Sidechain-Kompression">Sidechain-Compression</span>, Saturation und Verzerrung.
+                Anschließend vergleichen wir regionale Drill-Substile (Chicago, UK, NYC/Brooklyn, Afrikanisch/Naija, Mitteleuropa) anhand von Tempo, Quantisierung, HiHat- und Snare-Patterns, Percussionklang, 808-Tuning/Glide, Gesangsperformance und Mix-Techniken.
+                Basierend auf dieser Analyse formulieren wir konkrete Produktionsregeln und Arrangement-Vorgaben für eine Dark-Drill-Ästhetik (inklusive Plugin-Empfehlungen, Effekteinstellungen und Mastering-Hinweisen).
+                Wir illustrieren die Konzepte mit Tabellen und Diagrammen und schließen mit Analysen von Referenztracks aus verschiedenen Regionen.
+            </p>
+        </section>
+
+        <section>
+            <h2>Düstere Harmoniken</h2>
+            <p>
+                Dark Drill steht harmonisch zumeist im <span class="interactive-term" data-term="Moll-Modus">Moll-Modus</span> und setzt auf minimale, spannungsgeladene Akkordfolgen.
+                Übliche Skalen sind natürlich die natürliche Molltonleiter, oft auch <span class="interactive-term" data-term="Phrygisch">phrygisch</span> („spanisch klingend“) oder die harmonische Mollskala für exotische Klangfärbung.
+                Die Akkordfolge bleibt simpel (rare Progressionen über vier Akkorde) und wechselt oft zwischen Grundton und relativen Moll- oder Durakkorden, um zwischen kühl und kraftvoll zu pendeln.
+                So gilt etwa C-Moll → Ab-Dur als „geringster gemeinsamer Nenner“ für eindringliche Spannung.
+                Auch Akkorderweiterungen (z.B. Moll7, Sus-Akkorde) werden eingesetzt, um Harmonien zu „färben“, und gelegentlich verzögerte Dominant-Akkorde (z.B. sus2) verlängern die Auflösung.
+                Wesentlich ist, dass oft nur wenige Akkorde pro Loop verwendet werden, was die düstere Atmosphäre verstärkt.
+            </p>
+            <p>
+                Zwischen den Akkorden sind Tonrepetitionen (<span class="interactive-term" data-term="Pedalpoint">Pedalpoint</span> im Bass) üblich, was zusammen mit Intervallschritten kleiner Sekunde als äußerst unheimlich und „kalt“ empfunden wird.
+                Instrumental dominieren sparse Klänge wie gesamplete Glocken, verzerrte Blechbläser-Hits oder dunkle Keys, oft mit viel Hall, um Tiefe zu erzeugen.
+                Abgestimmte Chor-Samples oder „<span class="interactive-term" data-term="Vocal Chops">Vocal Chops</span>“ sind verbreitet, klingen tonlos oder leer (atmosphärisch).
+            </p>
+            <p>
+                In der Frequenzbalance beanspruchen die Mitteltonbereiche (200-800 Hz) viel Platz für Glocken, Pads und Stimme, während tiefe Frequenzen (< 100 Hz) für Bass-Substanz reserviert sind.
+                Ein typischer Dark-Drill-808 deckt die Subbassregion (30-60 Hz, Grundton) und fügt obertonreichere Komponenten bei ~200-400 Hz hinzu, um auf kleineren Lautsprechern wahrnehmbar zu bleiben.
+                Dieses spektrale Profil erzeugt eine bedrohliche „Wärme“. Drums (Kick, Snare) haben starke Anteile um 60-200 Hz (Punch) und um 2-5 kHz (Knack/Attack). Hohe Perkussion (HiHats, Ride) liegt meist ab 6 kHz.
+                Die gezielten Filterformen (HP/LP-Filter) und dynamischen Hüllkurven unterstützen die Schärfe: Kicks und 808s haben schnelle Attack-Zeiten (nahe 0 ms) für klares Anschlagsverhalten und relativ lange Release-/Decay-Zeiten (bis zu 0.5-1 s) für einen weichen Ausklang.
+                HiHats sind extrem kurz (fast kein Release) und werden oftmals in der <span class="interactive-term" data-term="Velocity">Velocity</span> differenziert, um ein „menschliches“ Versatzspiel zu simulieren.
+                Viel „Air“ und ein leichter Hall auf perkussiven Schlägen sorgen für räumliche Tiefe.
+            </p>
+        </section>
+
+        <section>
+            <h2>Rhythmische Schärfe und Percussion-Architektur</h2>
+            <p>
+                Der Rhythmus im Dark Drill ist extrem präzise und teils unvorhersehbar. Charakteristisch sind schnelle <span class="interactive-term" data-term="HiHat-Rolls">HiHat-Rolls</span> (32tel- oder Triolengruppen) und synkopierte Snare-Platzierungen.
+                Drill-Beats nutzen oft verkürzte <span class="interactive-term" data-term="Triole">Triolen</span> (Sextolen im 4/4) und mikroskopische Rolls, um besondere Akzente zu setzen.
+                Entsprechend finden wir überzählige Sechzehntel- oder Dreiunddreißigstel-Noten in den Hats, die punktiert und mit abwechselnder Velocity (und gelegentlichem Stereo-Panning) arrangiert sind.
+                Die Schrittstellung (<span class="interactive-term" data-term="Quantisierung">Quantisierung</span>) variiert: UK-Drill hat meist Triolenkalibrierung (1/16T) mit betonten Off-Beat-Triolen, Chicago-Drill arbeitet oft mit geraden 1/16-Noten, teilweise leicht swingend, oder gar mit fetten Backbeats (2 und 4) bei sehr niedrigem Tempo.
+            </p>
+            <p>
+                Die Percussion-Architektur schichtet mehrere Ebenen: Ein harter Schlagzeug-Kern aus Kick (meist analog im Charakter) und Clap/Snare auf 2 und/oder 3 sorgt für den Grundpuls.
+                UK-Drill verlagerte die Snare oft leicht hinter das Zählzeitgitter (Offbeat Placement), was den Groove unberechenbarer macht.
+                Dazu kommen Crash- und Ride-Becken und perkussive One-Shots (z.B. 808-kleine Trommelhits, geschnipste Glocken oder populär in UK markante „Gunshot“-Samples) als Füll- und Schockeffekte.
+                Die Betonung liegt auf klaren <span class="interactive-term" data-term="Transiente">Transienten</span>: Snare und Clap erhalten oft etwas Hall oder Plate-Effekt, während Hi-Hats trocken oder nur minimal raumverändert sind, damit die Rolls knallen.
+                Viele Produzenten spielen mit Tonhöhen-Automation in Rollen oder Layern unterschiedliche Hat-Sounds übereinander.
+            </p>
+        </section>
+
+        <section>
+            <h2>Sliding-808-Bassstrukturen</h2>
+            <p>
+                Ein Markenzeichen von Dark Drill sind gleitende 808-Basslines. Anstatt harte Bass-Attacken zu spielen, rutschen die Töne ineinander.
+                Technisch wird dies durch <span class="interactive-term" data-term="Portamento">Portamento</span>/Glide in monophonen Synthesizern oder Samplern erreicht: Man stellt das Instrument auf „legato“ (überlappend) und definiert einen Gleitwert.
+                In der Praxis heißt das: Man spielt z.B. vom C2 hinunter nach G1, und der Ton gleitet (z.B. über 50-200 ms). Die Ziel-Frequenzabstände sind oft groß (einen oder mehrere Halbtöne), was den basslastigen 808 in psychotische Muster verwandelt.
+            </p>
+            <p>
+                Klanglich agiert der 808 wie folgt: Grundton meist um 30-50 Hz (Mollton) plus ein paar Oberwellen, sichtbar im Spektrum bis etwa 250 Hz.
+                Wird die Bass-Engine verzerrt oder saturiert, entstehen zusätzliche Obertöne (im Bereich 150-500 Hz und höher) für Durchsetzungskraft – viele Drill-Producer fügen dem Sub-Oszillator oder Sample ein Soft-Clipping/Tube-<span class="interactive-term" data-term="Saturation">Saturation</span>-Plugin zu (z.B. Soundtoys Decapitator, FabFilter Saturn).
+                Die <span class="interactive-term" data-term="Hüllkurve">Hüllkurve</span> des 808 ist üblicherweise schnell im Attack (0-10 ms, damit der Slide „ins Ohr springt“) und hat lange Release- bzw. Decay-Zeiten (mehrere hundert Millisekunden bis 1 s), damit der Bass einen vollen, anhaltenden Ton bildet.
+                Ein leichter Sidechain-Effekt (Bass wird bei Kick-Transients eingedimmt) garantiert klare Trennung im Mix.
+            </p>
+
+            <h3>Empfehlung: 808-Settings</h3>
+            <table class="w-full text-left text-sm border-collapse my-4">
+                <thead>
+                    <tr>
+                        <th class="border-b p-2">Parameter</th>
+                        <th class="border-b p-2">Einstellung (Beispiel)</th>
+                        <th class="border-b p-2">Kommentar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Sample</td>
+                        <td class="border-b p-2">reines 808-Bass-Sample (Sub)</td>
+                        <td class="border-b p-2">Analog / Vektor Basstyp</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Glide/Portamento</td>
+                        <td class="border-b p-2">50-150 ms (legato)</td>
+                        <td class="border-b p-2">je nach gewünschtem Slide-Tempo</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Hüllkurve Attack</td>
+                        <td class="border-b p-2">~0-5 ms</td>
+                        <td class="border-b p-2">sehr schnell für Punch</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Hüllkurve Decay</td>
+                        <td class="border-b p-2">400-800 ms</td>
+                        <td class="border-b p-2">Basslänge, Stimmungssache</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Release</td>
+                        <td class="border-b p-2">200-600 ms</td>
+                        <td class="border-b p-2">genügend lang zum Ausklingen</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Saturation/Distortion</td>
+                        <td class="border-b p-2">Soft Clip 10-20% (evtl. Mix)</td>
+                        <td class="border-b p-2">harmonische Anreicherung</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Sidechain-Comp (Kick)</td>
+                        <td class="border-b p-2">Ratio 4:1, Schwelle -15 dB</td>
+                        <td class="border-b p-2">Kick drückt 808 leicht ab (Release ~50-100 ms)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>Vokalästhetik</h2>
+            <p>
+                Die Stilistik des Gesangs variiert regional stark, hat aber weltweit einige Drill-Merkmale.
+                Generell ist die Vocal-Performance roh und direkt – es wird meist erzählt statt gesungen, mit wenig Melodie.
+                In <span class="interactive-term" data-term="Chicago Drill">Chicago Drill</span> spricht man von einem „deadpan“ oder monotonen, fast emotionslosen Rap-Flow. Die Worte kommen flach und stoisch, oft auf relativ niedrigem Tempo vorgetragen.
+                Häufig wird <span class="interactive-term" data-term="Auto-Tune">Auto-Tune</span> als Effekthülse eingesetzt – nicht zum Einstimmen einer Melodie, sondern um der Stimme eine „kalte“ Färbung zu geben und Sibilanten zu mildern.
+            </p>
+            <p>
+                Im Gegensatz dazu ist der <span class="interactive-term" data-term="UK Drill">UK Drill</span>-Gesang aggressiver und selbstbewusster, mit vielen Slangausdrücken und oft call-and-response-artigen Adlibs.
+                Die Rapper betonen in londonischen Dialekten („Roadman-Slang“) bestimmte Silben, nutzen abgehackte Phrasierungen und variieren Dynamik (laut/leise, wechselnde Betonung) stärker.
+                Bei <span class="interactive-term" data-term="Brooklyn Drill">Brooklyn Drill</span> (v.a. Pop Smoke, Fivio Foreign) wurden afrokaribische Betonung und Straßeinflüsse gemischt: die Stimme behält oft eine tiefe Färbung, schafft aber mehr melodische Sprünge als Chicago und lässt gelegentlich emotionales Timbre durchscheinen.
+            </p>
+            <p>
+                Nigerianischer Drill („<span class="interactive-term" data-term="Naija Drill">Naija Drill</span>“) mixt diese Drill-Flows mit lokalen Sprachen (Englisch, Pidgin, Yoruba, Igbo).
+                Die Rapper nutzen hohe Schlagzahl und traditionelle afrikanische Intonation – oft mit Call-and-Response-Refrains oder gruppendynamischen Chören.
+                Charakteristisch sind schnelle, perkussive Flows und chant-artige Adlibs, die an Afrobeat-Funktionen erinnern.
+            </p>
+            <p>
+                <strong>Mix- und Effekt-Stil:</strong> Drill-Gesang wird oft recht trocken gemischt (wenig Hall) für Klarheit. Kompressor-/Limiter-Ketten und <span class="interactive-term" data-term="De-Esser">De-Esser</span> behandeln die Stimme, um Durchschlagskraft zu maximieren.
+                Überlagerte Adlibs können Stereo-Panning oder subtile Vocoder/Delay-Effekte erhalten. Bei Dark Drill kann auch vocoderartige Toneinfärbung für düstere Atmosphäre sorgen.
+                Frequenzmäßig nimmt der Gesang die Mitten (200-800 Hz) ein; übliche Bearbeitung sieht vor: Tiefpass von ~100 Hz, grob fixiert zwischen 200-3000 Hz mit Kompression, ein Shelf-Boost von ca. +2 dB bei 5-8 kHz für Präsenz.
+            </p>
+        </section>
+
+        <section>
+            <h2>Regionale Drill-Varianten im Vergleich</h2>
+            <table class="w-full text-left text-sm border-collapse my-4">
+                <thead>
+                    <tr>
+                        <th class="border-b p-2">Merkmal</th>
+                        <th class="border-b p-2">Chicago Drill</th>
+                        <th class="border-b p-2">UK Drill</th>
+                        <th class="border-b p-2">Brooklyn/N.Y. Drill</th>
+                        <th class="border-b p-2">Nigerian/Naija Drill</th>
+                        <th class="border-b p-2">Kontinentaleuropa</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Tempo (BPM)</td>
+                        <td class="border-b p-2">~60-70 (~120-140)</td>
+                        <td class="border-b p-2">~130-150</td>
+                        <td class="border-b p-2">~130-150</td>
+                        <td class="border-b p-2">Um 130</td>
+                        <td class="border-b p-2">Meist 130-150</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Quantisierung/Swing</td>
+                        <td class="border-b p-2">Gerade, minimal Swing</td>
+                        <td class="border-b p-2">Schnelle Triolen, syncopiert</td>
+                        <td class="border-b p-2">Triolen-Raster</td>
+                        <td class="border-b p-2">Triolen, teils straight</td>
+                        <td class="border-b p-2">Triolen, leichte Offsets</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Hi-Hat-Pattern</td>
+                        <td class="border-b p-2">Wenige 1/16, punktuelle Rolls</td>
+                        <td class="border-b p-2">Viele 1/16T/32T-Rolls, Pausen</td>
+                        <td class="border-b p-2">Wie UK: Rolls, Off-beats</td>
+                        <td class="border-b p-2">Schnelle Rolls, 1/16 oder 1/32</td>
+                        <td class="border-b p-2">Wie UK, Off-Rolls</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Snare/Clap</td>
+                        <td class="border-b p-2">Auf 2 & 4 (meist 3)</td>
+                        <td class="border-b p-2">Off-grid (leicht hinterher)</td>
+                        <td class="border-b p-2">Wie UK, manchmal Double-Snare</td>
+                        <td class="border-b p-2">Harte Snare auf 2</td>
+                        <td class="border-b p-2">Backbeat, synthetisch</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">808/Bass</td>
+                        <td class="border-b p-2">Schwerer analoger Sub, wenig Slide</td>
+                        <td class="border-b p-2">Starke Subs, charakteristische Slides</td>
+                        <td class="border-b p-2">Breite Slide-Patterns</td>
+                        <td class="border-b p-2">Wie UK, mehr Füllfrequenzen</td>
+                        <td class="border-b p-2">Wie UK/NY, oft oktaviert</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>Produktions- und Arrangement-Regeln für Dark-Drill</h2>
+            <p>
+                <strong>Tempo & Grid:</strong> Wählen Sie zunächst 140 BPM (für UK/NY-Style) oder 70 BPM (für Chicago-Feel). Verwenden Sie ein <span class="interactive-term" data-term="Triolen-Raster">Triolen-Raster</span> (1/16T oder 1/32T) für Hi-Hat und Perkussion. Ein leichter Shuffle (Swing) um 5-10% kann optional mehr Groove verleihen.
+            </p>
+            <p>
+                <strong>Drum-Presets:</strong>
+                <ul>
+                    <li><strong>Kick:</strong> Kurzer analogartiger Punch mit langer Release-Hüllkurve.</li>
+                    <li><strong>Snare/Clap:</strong> Trockener, knalliger Klang; eventuell mit kurzem Hall (30-50 ms).</li>
+                    <li><strong>Hi-Hats:</strong> Scharfes Sounddesign, schnelle 1/16-1/32-Rolls.</li>
+                    <li><strong>Crash/FX:</strong> Schneidende Crash-Becken, Gunshot-Samples, gestopfte Brass-Stabs.</li>
+                </ul>
+            </p>
+            <p>
+                <strong>Sound-Design:</strong> Um düster zu klingen, setzen Sie Filter ein: Einen <span class="interactive-term" data-term="Lowpass-Filter">Lowpass</span> (z.B. 8-12 kHz) auf alle Melodie-Elemente, um Schärfe zu nehmen, und leichten <span class="interactive-term" data-term="Low-Shelf">Low-Shelving</span>-Boost (~100 Hz) im Bass. Tiefpass-Automation (LFO) kann rhythmische Bewegung erzeugen.
+            </p>
+            <p>
+                <strong>Mixing-Chain (Signalkette):</strong>
+                <ul>
+                    <li><strong>Sidechain-Compression:</strong> Ducking der 808 gegen den Kick (Fast Attack, mittlere Release, Ratio ~4:1).</li>
+                    <li><strong>Saturator/Distortion:</strong> Leichte Sättigung auf Subbass oder Drum-Bus.</li>
+                    <li><strong>Transient Shaper:</strong> Schärft Kick und Snare.</li>
+                    <li><strong>Panning/EQ:</strong> Trennung von Drums (Kick mono, HiHats stereo), <span class="interactive-term" data-term="Highpass-Filter">Highpass</span> bei 50-100 Hz auf Drums/Vocals.</li>
+                    <li><strong>Limiter (Master):</strong> Ziel-<span class="interactive-term" data-term="LUFS">LUFS</span> etwa -7 bis -5 im Finale, Output-Headroom 0.1 dBFS.</li>
+                </ul>
+            </p>
+
+            <h3>Signalfluss</h3>
+            <p>
+                Der Signalfluss beginnt typischerweise mit der Kick, die komprimiert und als Sidechain-Trigger für den Bass-Kompressor dient.
+                Der Bass durchläuft Sättigung und EQ. Snare und Claps erhalten leichten Hall, HiHats ein Delay. Vocals werden komprimiert und mit Delay versehen.
+                Alle Gruppen laufen im Master-Mixer zusammen.
+            </p>
+
+            <h3>Arrangement-Blueprint</h3>
+            <p>
+                Strukturieren Sie Beats klassisch in Intro, Verse, Bridge, Chorus. Ein 8-Takte-Intro geht oft in einen 16-Takte-Vers über, bevor Hook/Drop mit voller Instrumentierung wiederholt wird.
+            </p>
+            <ul>
+                <li><strong>Intro:</strong> Düstere Atmosphären, vereinzelte Melodiestabs (8 Takte).</li>
+                <li><strong>Verse:</strong> Drums, Bass und minimale Melodie. Spartanisch, Fokus auf Vocals (16 Takte).</li>
+                <li><strong>Bridge:</strong> Spannung aufbauen, Melodie kurz herausnehmen, Crescendo (8 Takte).</li>
+                <li><strong>Chorus/Hook:</strong> Alle Elemente (volle Drum-Groove, Slide-808, Hauptmelodie) laufen (16 Takte).</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Empfohlene Plugin-Parameter</h2>
+            <table class="w-full text-left text-sm border-collapse my-4">
+                <thead>
+                    <tr>
+                        <th class="border-b p-2">Produkt</th>
+                        <th class="border-b p-2">Typ/Verwendung</th>
+                        <th class="border-b p-2">Parameter-Beispiel</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Kompressor (Vocal)</td>
+                        <td class="border-b p-2">Kompression Vocals</td>
+                        <td class="border-b p-2">Ratio 3:1-4:1, Threshold ca. -15 dB</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Saturator (808)</td>
+                        <td class="border-b p-2">Subbass-Sättigung</td>
+                        <td class="border-b p-2">Drive 10-20%, Mix 30-50%</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Transient Shaper</td>
+                        <td class="border-b p-2">Kick/Snare Attacks</td>
+                        <td class="border-b p-2">Attack +5-10 dB, Release ~100 ms</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Limiter (Master)</td>
+                        <td class="border-b p-2">Brickwall-Limiter</td>
+                        <td class="border-b p-2">Peak -0.3 dB, LUFS -7 bis -5</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>Referenz-Analysen (Beispiele)</h2>
+            <p>
+                <strong>Chief Keef – „Love Sosa“ (Chicago, 2012):</strong> Langsamer Groove (~64 BPM), klare Clap/Snare auf 2 und 4. 808 kickt hart in Sub (60 Hz) ohne Slide. Vocals extrem monoton („deadpan“) und stark gepitcht.
+                <strong>Digga D – „Woi“ (UK, 2019):</strong> Schnell (~140 BPM), ausgeprägte Triolen-Hats und Offbeat-Snares. Bass gleitet auf Knock-Pattern-Melodie (voller Slide).
+                <strong>Pop Smoke – „Dior“ (Brooklyn, 2019):</strong> Repetierter Glockenloop und starker 808-Glide. Drums mischen UK-Hats und amerikanisches Kick-Snare-Feeling.
+                <strong>Odumodublvck – „Picanto“ (Nigeria, 2023):</strong> Typischer Naija-Drill mit 130 BPM. Schlagzeug orientiert sich an UK, aber fließende multilinguale Raps und Afrobeat-Akzente.
+                <strong>Nino Brown – „J. Wells“ (Deutschland, 2020):</strong> Deutscher Drill auf englischsprachigem UK-Drill-Beat. UK-typische Triolen und geschichtete Snares.
+            </p>
+        </section>
+    `
     },
     conscious_hip_hop_poetics: {
         id: 'conscious_hip_hop_poetics',
@@ -3067,10 +5157,218 @@ const CREATIVE_WORLDS = {
         name: 'Conscious Hip Hop Poetics',
         icon: '📝',
         wikiContent: `
-            <h1>Conscious Hip Hop Poetics (Platzhalter)</h1>
-            <p>Dies ist ein Platzhaltertext fuer die Conscious-Hip-Hop-Welt mit Fokus auf Message, Storytelling und sprachlicher Praezision.</p>
-            <p>Beispielbegriffe: <span class="interactive-term" data-term="Storytelling">Storytelling</span>, <span class="interactive-term" data-term="Social Commentary">Social Commentary</span>, <span class="interactive-term" data-term="Multisyllabic Rhyme">Multisyllabic Rhyme</span>.</p>
-        `
+        <header>
+            <h1>Conscious Hip Hop Poetik</h1>
+        </header>
+
+        <section>
+            <h2>Exekutivzusammenfassung</h2>
+            <p>
+                <span class="interactive-term" data-term="Conscious Hip Hop">Conscious Hip Hop</span> verbindet erzählstarke Lyrik mit gesellschaftspolitischem Engagement. Rappende nutzen Erzählperspektiven und handlungsorientierte Strukturen, um Geschichten zu vermitteln.
+                Zentrale Rolle spielt dabei die Stimme ("voice"): <span class="interactive-term" data-term="MC">MCs</span> agieren nicht nur authentisch als sie selbst, sondern oft auch als fiktionale Erzähler mit Mehrfach-Perspektiven.
+                Sprachlich nutzen sie klassische Stilmittel wie <span class="interactive-term" data-term="Metapher">Metaphern</span>, Allegorien und <span class="interactive-term" data-term="Anapher">Anaphern</span>, um komplexe Themen zu veranschaulichen.
+                Beispiel: Anaphern ("I'm gonna...", „Wir werden...") verstärken Botschaften, Metaphern („Ketten sprengen" als Befreiungsbild) schaffen eine Ebene zwischen Wörtern und Idee.
+                <span class="interactive-term" data-term="Enjambement">Enjambements</span> in den Versen – etwa durch überlappende Satzstrukturen – können den Takt bewusst „brechen" und die Aufmerksamkeit auf bestimmte Worte lenken.
+                Auch <span class="interactive-term" data-term="Code-Switching">Code-Switching</span> (Wechsel zwischen Sprachen oder Varietäten) dient als rhetorisches Mittel, um kulturelle Identität und Vielsprachigkeit hörbar zu machen.
+            </p>
+            <p>
+                Die Reimarchitektur im Conscious Rap ist oft komplex. Übliche Reimschemata (Couplets oder Kreuzreim) werden erweitert durch <span class="interactive-term" data-term="Binnenreim">Binnenreime</span> und <span class="interactive-term" data-term="Multisyllabischer Reim">multisyllabische Reime</span>: Rapper reimen mehrsilbige Wortgruppen ("craze you crave", "major way") oder setzen <span class="interactive-term" data-term="Assonanz">Assonanz</span>/Alliteration ein, um Klangfarbe und Dichte zu erhöhen.
+                Der <span class="interactive-term" data-term="Flow">Flow</span> variiert stark: Standardbeats (z.B. klassischer <span class="interactive-term" data-term="Boom-Bap">Boom-Bap</span> mit Betonung auf jedem Viertelschlag) können einem gleichmäßigen Muster dienen, wie bei Kurtis Blow; andere Passagen zeichnen sich durch unvorhersehbare Betonungen und extrem schnelle Unterteilungen aus, wie <span class="interactive-term" data-term="RZA">RZA</span> es praktiziert.
+                Diese Technik – zum Beispiel das durchgängige Spiel mit <span class="interactive-term" data-term="Synkope">Synkopen</span> und Versschüben – schafft einen Strom von Silben, der sich über den Beat legt.
+            </p>
+            <p>
+                Soziale und politische Inhalte sind charakteristisch: Themen sind Rassismus, Armut, Polizeigewalt und Befreiung.
+                Bereits frühe Conscious Tracks wie <span class="interactive-term" data-term="Grandmaster Flash">Grandmaster Flashs</span> „The Message“ (1982) thematisieren den Alltagskampf in den Ghetto-Slum-Lebenswelten.
+                Solche Texte nehmen Bezug auf historische Konflikte und visieren kollektive Erfahrungen an. Gleichwohl wird nicht nur angeklagt, sondern oft aktiv nach Lösungen gesucht oder Selbstermächtigung propagiert.
+                <span class="interactive-term" data-term="Call-and-Response">Call-and-Response</span>-Elemente dienen hier als rhetorische Brücken: In Songs spricht der Rapper mit der Crowd oder anderen Stimmen, um Gemeinschaft und Partizipation herzustellen.
+            </p>
+            <p>
+                Musikalisch werden Beats bewusst als Bedeutungsträger eingesetzt. Tempo, Takt und Harmonieführung reflektieren die Stimmung: Langsame Doom-Beats oder Moll-Harmonien können Trauer, Wut oder Entschlossenheit akzentuieren.
+                Produzenten sampeln gerne alte Soul-, Jazz- und Filmmusik, um historische Kontinuität und Wärme zu erzeugen. <span class="interactive-term" data-term="Sampling">Sampling</span> wirkt wie ein „Produkt genauen Hörens“ und setzt akustische Kommentare, indem alte Stücke neu kontextualisiert werden.
+                Räumliche Effekte (Hall, Stereo-Verteilung) und Klangfarben unterstützen die Botschaft. Zusammen wirken Text, Delivery und Sound so, dass sie einander semantisch verstärken.
+            </p>
+        </section>
+
+        <section>
+            <h2>Entwicklung und Kontext (Timeline)</h2>
+            <p>
+                Seit seinen Anfängen in den späten 1970er Jahren trägt Hip Hop immer wieder bewusstes, politisches Songwriting hervor.
+            </p>
+            <ul>
+                <li><strong>1980:</strong> Erstes bewusstes Hip-Hop-Lied ("How We Gonna Make the Black Nation Rise?" - Brother D).</li>
+                <li><strong>1982:</strong> "The Message" thematisiert Armut und Gewalt.</li>
+                <li><strong>1988:</strong> <span class="interactive-term" data-term="Public Enemy">Public Enemy</span> – politischer Protest-Rap (Album <em>It Takes a Nation of Millions...</em>).</li>
+                <li><strong>1990er:</strong> Bewusstsein für Rassen- und Armutsfragen wächst ("Golden Age").</li>
+                <li><strong>2000er:</strong> Internationalisierung: Conscious Rap weltweit.</li>
+                <li><strong>2015:</strong> <span class="interactive-term" data-term="Kendrick Lamar">Kendrick Lamar</span> und J. Cole bringen sozialkritische Themen in den Mainstream.</li>
+                <li><strong>2020:</strong> Globalisierung bewusster Themensetzung (Bewegungen wie BLM finden Rap-Äquivalente).</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Erzählstrategien</h2>
+            <p>
+                Conscious MCs handeln gerne als <span class="interactive-term" data-term="Storytelling">Storyteller</span>. Sie nutzen Charaktere, Dialoge und Konflikte, oft auf den Ebenen persönlicher und kollektiver Erfahrung.
+                Häufig wird chronologisch oder mit Rückblenden erzählt, wobei das Verhältnis zwischen „Ich“-Erzähler und Mitfiguren variiert.
+                Das zentrale Element jedes Rap-Storytellings ist die Stimme – oft eine Ich-Erzählung, die Authentizität suggeriert, zugleich aber Spielraum für Fiktion lässt.
+                Raps können auch mehrere Erzählebenen kombinieren: Ein MC erzählt aus Sicht eines Betroffenen, lässt andere zu Wort kommen oder implementiert Rap-Sketche als Dialoge.
+            </p>
+        </section>
+
+        <section>
+            <h2>Rhetorische Mittel</h2>
+            <p>
+                Conscious Rap bedient sich zahlreicher Figuren, um Überzeugungskraft zu entfalten.
+            </p>
+            <ul>
+                <li><strong>Metaphern und Allegorien:</strong> Komplexe Sachverhalte werden bildhaft dargestellt. „Ketten sprengen“ steht für Befreiung, „Schleier lüften“ für Enthüllung verborgener Wahrheiten.</li>
+                <li><strong>Anapher:</strong> Wiederholung eines Wortes oder Satzanfangs („We gon'...“, „Ich hab'...“) betont Aussagen und schafft Rhythmus.</li>
+                <li><strong>Enjambement:</strong> Verschiebt Sätze über Zeilengrenzen hinweg. Rapper artikulieren so, um den metrischen Takt zu überlagern. Dieser Bruch zwischen Grammatik und Metrum erzeugt Spannung und Unvorhersehbarkeit.</li>
+                <li><strong>Code-Switching:</strong> Sprachwechsel (z.B. Englisch/Spanisch) reflektiert multikulturelle Identität oder Adressatenwechsel und kann kulturelle Differenzen kommentieren.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Reimarchitektur und Flow-Variationen</h2>
+            <p>
+                Die Reimstruktur im Conscious Rap ist oft sehr vielschichtig. Klassische Endreime werden ergänzt durch Binnenreime, Assonanz (Vokalwiederholungen) und <span class="interactive-term" data-term="Alliteration">Alliterationen</span>.
+                Besonders markant sind multisyllabische Reime: Rhyme sets beziehen mehrere Silben ein (sog. „Schiefe Reime“). So entsteht ein dichter Reimfluss, bei dem sich ein Rhyme-Paar über mehrere Beats hinziehen kann.
+                Das Metrum selbst wird kreativ durchbrochen. Einige Stücke folgen strikt einem Vierteltakt, andere verschieben gezielt Akzente.
+                Kurtis Blow verfolgt ein gleichmäßiges Muster mit Betonung auf jedem Downbeat, während RZA unvorhersehbare Akzente setzt und mit <span class="interactive-term" data-term="Triole">Triolen</span> bzw. 32tel-Noten spielt.
+                Dadurch wird die Versstruktur kaum mehr normal getaktet wahrgenommen; stattdessen entsteht ein flüssiges, teils manisches Sprachbild.
+                Flow-Variationen umfassen Länge der Silben, Pausen und Artikulation: Schnelle Alliterationsketten erzeugen Aggressivität, gedehnte Vokale melodiöse Gelassenheit.
+                Rap wird hier zu „performance art“, in der Formmuster explizit zur Bedeutung beitragen.
+            </p>
+        </section>
+
+        <section>
+            <h2>Soziale und politische Themen</h2>
+            <p>
+                Conscious Hip Hop agiert als Sprachrohr für Aktivismus. Typische Themen sind: Antirassismus, Anti-Kolonialismus, Armutskritik, Krieg/Gewalt sowie Selbstermächtigung.
+                Als Beispiele dienen alte Bürgerrechts- oder Black-Power-Botschaften, die in modernen Kontext gesetzt werden.
+                Beats fungieren dabei als Teil eines „lehrreichen Archivs“. Wichtig ist, dass Texte nicht bloß belehren, sondern Identifikation ermöglichen.
+                So finden sich häufig historische Referenzen und Bilder, die in das kollektive Gedächtnis der Hörer eingreifen.
+            </p>
+        </section>
+
+        <section>
+            <h2>Beat-Auswahl als semantischer Träger</h2>
+            <p>
+                Ein <span class="interactive-term" data-term="Beat">Beat</span> ist mehr als Rhythmus: Er kodiert Bedeutung. Tempo, Taktart, Harmonik und Klangfarbe werden gezielt gewählt.
+                Beispielsweise assoziiert ein langsamer 60-70 BPM-Beat Trauer und Nachdenklichkeit, während 90-100 BPM oft einen kämpferischen Groove unterstützen.
+                Molltonalitäten erzeugen Ernsthaftigkeit, Dur oder modale Skalen können Hoffnung symbolisieren.
+                Sampling dient als akustisches Zitat: Wenn ein Conscious-Track ein altes Rede- oder Liedstück sampelt, evoziert er dessen politische Botschaft nachträglich.
+                Die Produktionstechniken formen den „Klangraum“: Dry vs. Wet (viel oder wenig <span class="interactive-term" data-term="Hall">Hall</span>), Stereo-Imaging und EQ-Charakteristik unterstreichen die Atmosphäre.
+            </p>
+        </section>
+
+        <section>
+            <h2>Analysen exemplarischer Tracks</h2>
+            <p>
+                <strong>Tracktyp A - Politischer Protestsong:</strong> Richtet sich an die Gesellschaft. Rhetorik: Anaphern und Metaphern („Ketten sind Zahlen“). Reimarchitektur: AABB-Schema. Flow: Moderates 4/4-Tempo, Betonung „on beat“. Produktion: Hall auf der Stimme, Hammond-Orgelsample für feierliche Atmosphäre.
+            </p>
+            <p>
+                <strong>Tracktyp B - Introspektiver Storytelling-Track:</strong> Erzähler blickt auf persönliches Trauma. Narration: Erste Person singular. Rhetorik: Allegorien (Leben als Labyrinth), Enjambements. Flow: Variabel. Beat: Warme Bassgitarre, melancholisches Jazz-Piano.
+            </p>
+            <p>
+                <strong>Tracktyp C - Kollektiver Call-and-Response-Track:</strong> Gemeinschaftslied. Wechsel zwischen Solo-Part und Chor. Rhetorik: Viele Wiederholungen. Flow: Klarer, gleichbleibender Rhythmus. Beat: Starker 4/4-Elektro-Beat, motivierend. Semantik: Wechsel symbolisiert Einheit.
+            </p>
+            <p>
+                <strong>Tracktyp D - Experimenteller Beat-getriebener Track:</strong> Fokus auf Klangexperiment. Rhetorik: Freestyle-Metaphern. Reime: Unsauber (Assonanz). Flow: Stark synkopisch. Beat: Ungewöhnliche Taktart, analoge Samples. Semantik: Avantgardistischer Eindruck.
+            </p>
+        </section>
+
+        <section>
+            <h2>Praxistipps für Songwriting und Produktion</h2>
+            <ul>
+                <li><strong>Erzählperspektive wählen:</strong> Schreibe einen Vers aus Ich-Perspektive und einen aus Wir-Perspektive.</li>
+                <li><strong>Bildhafte Sprache nutzen:</strong> Setze Metaphern nebeneinander und übertreibe sie.</li>
+                <li><strong>Rhetorische Figuren systematisch einbauen:</strong> Schreibe eine Hook mit Anapher.</li>
+                <li><strong>Variieren der Reimschemata:</strong> Experimentiere mit Paarreim, Binnenreim und multisyllabischem Reim.</li>
+                <li><strong>Flow-Training:</strong> Nimm zwei unterschiedliche Beats und schreibe denselben Text darauf; variiere Silbenzahl und Pausen.</li>
+                <li><strong>Beat- und Klangentscheidungen:</strong> Sammele Sounds, die zum Thema passen (Reden-Samples). Experimentiere mit Stimmungen.</li>
+                <li><strong>Performance und Delivery üben:</strong> Übe Betonung, lies Lyrics in verschiedenen Tonlagen.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Vergleichstabelle rhetorischer Mittel, Reimtypen und Beat-Parameter</h2>
+            <table class="w-full text-left text-sm border-collapse my-4">
+                <thead>
+                    <tr>
+                        <th class="border-b p-2">Kategorie</th>
+                        <th class="border-b p-2">Beispiele</th>
+                        <th class="border-b p-2">Effekt/Beschreibung</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Metapher / Allegorie</td>
+                        <td class="border-b p-2">„Waffen niederlegen = Mauern bauen“</td>
+                        <td class="border-b p-2">Veranschaulicht Ideen, schafft Denkspiel.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Anapher</td>
+                        <td class="border-b p-2">Wiederholung („Wir werden...“)</td>
+                        <td class="border-b p-2">Verstärkt Aussage durch Rhythmus, einprägsam.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Enjambement</td>
+                        <td class="border-b p-2">Vers bricht grammatisch</td>
+                        <td class="border-b p-2">Bricht Takt, wirkt fließend/unvorhersehbar.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Code-Switching</td>
+                        <td class="border-b p-2">Englisch ↔ Deutsch</td>
+                        <td class="border-b p-2">Betont kulturelle Dualität.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Endreim</td>
+                        <td class="border-b p-2">AABB, ABAB etc.</td>
+                        <td class="border-b p-2">Struktur für Formales, Eingängigkeit.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Binnenreim / Assonanz</td>
+                        <td class="border-b p-2">„Schwarz wie Lachs im Abwasch“</td>
+                        <td class="border-b p-2">Verknüpft Zeilen, Klangfarbe intensiv.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Multisyllabischer Reim</td>
+                        <td class="border-b p-2">„Major way“ // „craze you crave“</td>
+                        <td class="border-b p-2">Komplexe Klangmuster, dichte Textur.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Takt/Tempo</td>
+                        <td class="border-b p-2">Boom-Bap vs. Snare-Shift</td>
+                        <td class="border-b p-2">Rhythmusstabilität vs. Überraschung.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Harmonik/Tonart</td>
+                        <td class="border-b p-2">Moll vs. Dur</td>
+                        <td class="border-b p-2">Legt emotionale Grundstimmung fest.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Timbre/Sound-Auswahl</td>
+                        <td class="border-b p-2">Flöten-Sample, Gospel-Choir, 808</td>
+                        <td class="border-b p-2">Kulturelle oder emotionale Referenz.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Raum/Effekte</td>
+                        <td class="border-b p-2">Viel Hall vs. trocken</td>
+                        <td class="border-b p-2">Gestaltung der Atmosphäre.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>Schlussbetrachtung</h2>
+            <p>
+                Conscious Hip Hop zeichnet sich durch das enge Zusammenspiel von Inhalt, Form und Klang aus. Durch tiefschürfende Narration, Sprachkunst und durchdachte Soundgestaltung werden soziale Botschaften kraftvoll vermittelt.
+                Kontinuität zwischen Wort und Klang, Authentizität in der Stimme und Konsequenz in der Botschaft sind die Schlüssel für überzeugenden, politisch bewussten Hip Hop.
+            </p>
+        </section>
+    `
     },
     party_hip_hop_classics: {
         id: 'party_hip_hop_classics',
@@ -3078,10 +5376,182 @@ const CREATIVE_WORLDS = {
         name: 'Party Hip Hop Classics',
         icon: '🎉',
         wikiContent: `
-            <h1>Party Hip Hop Classics (Platzhalter)</h1>
-            <p>Dies ist ein Platzhaltertext fuer die Party-Hip-Hop-Welt mit hohem Energielevel, klaren Hooks und crowd-ready Patterns.</p>
-            <p>Beispielbegriffe: <span class="interactive-term" data-term="Party Hook">Party Hook</span>, <span class="interactive-term" data-term="Call and Response">Call and Response</span>, <span class="interactive-term" data-term="Club Drums">Club Drums</span>.</p>
-        `
+        <header>
+            <h1>Party-Hip-Hop: Analyse von Hooks, Arrangement und Crowd-Psychologie</h1>
+        </header>
+
+        <section>
+            <h2>Executive Summary</h2>
+            <p>
+                <span class="interactive-term" data-term="Party-Hip-Hop">Party-Hip-Hop</span>-Klassiker zeichnen sich durch extrem prägnante, eingängige <span class="interactive-term" data-term="Hook">Hooks</span> und energetische Arrangements aus, die eine sofortige Massenreaktion auslösen.
+                Die Hooks sind meist kurz (typischerweise 4-8 Takte) und hoch repetitiv, damit sie schnell hängenbleiben.
+                <span class="interactive-term" data-term="Call-and-Response">Call-&-Response</span>-Elemente – etwa das abwechselnde Rufen eines Sängers und einer Zuschauergruppe – aktivieren das Publikum zusätzlich.
+                Die Musik spielt mit Erwartung und Überraschung: moderate <span class="interactive-term" data-term="Synkope">Synkopen</span> und unerwartete Akzente erzeugen Groove und Vorfreude, sodass der Crowdbounce bei Drops oder Hooks explodiert.
+                Typische Party-Hip-Hop-Tempi liegen meist im Bereich von etwa 90-110 <span class="interactive-term" data-term="BPM">BPM</span> (teilweise doppelt fühlbar), mit ausgeprägtem <span class="interactive-term" data-term="Subbass">Subbass</span> (808-Kicks) und klarer Kick-Snare-Relation für treibenden Groove.
+                Für DJs sind strukturierte Mixpunkte wichtig: Längere Intros/Outros (8-16 Takte) und klar phrasiertes Songarrangement (Intro → Build → Hook → Verse → Build → Drop/Break → Hook → Outro) erleichtern das nahtlose Überblenden.
+                Insgesamt gilt: Wiederholung, Call-&-Response und Breaks werden so eingesetzt, dass sie Spannung aufbauen und im <span class="interactive-term" data-term="Drop">Drop</span> oder Chorus kollektiv lösen.
+            </p>
+        </section>
+
+        <section>
+            <h2>Hook-Mechanik: Melodie, Rhythmus, Text, Länge</h2>
+            <p>
+                Party-Hip-Hop-Hooks sind extrem einprägsam: Sie bestehen oft aus wenigen Worten oder Silben und werden mehrfach hintereinander wiederholt.
+                Studien zeigen, dass Hooks im <span class="interactive-term" data-term="Topline-Gesang">Topline-Gesang</span> und im Refrain (Chorus) besonders hervorstechen und Memorabilität erzeugen.
+                Typische Hooks liegen meist über 4-8 Takte und werden mehrfach wiederholt.
+                Beispiel House of Pain „Jump Around“: Der Chorus wird mehrmals wiederholt und endet mit einer extremen Wiederholung, die die Crowd in einen kollektiven Ausbruch führt.
+                Ähnlich nutzt Lil Jon mantraartige Wiederholungen und Calls.
+            </p>
+            <p>
+                Besonders wirkungsvoll sind komplexe bzw. gekoppelte Hooks (<span class="interactive-term" data-term="Compound Hooks">Compound Hooks</span>), bei denen mehrere Elemente kombiniert werden – etwa ein kurzer Wortlaut plus eingängige Melodie oder eine Abfolge aus Gesang und Rap.
+                Solche „compound hooks“ werden im Chorus als am stärksten merkbar bewertet.
+                Entsprechend kombinieren Party-Tracks oft einfache Melodiezeilen mit rhythmisch akzentuierten Phrasen.
+                Die Hook-Länge wird in der Regel mehrfach pro Song wiederholt und liefert so immer wieder den Höhepunkt (<span class="interactive-term" data-term="Release">Release</span>) kurz vor dem Drop oder zweiten Refrain.
+            </p>
+            
+            <h3>Check-Merkmale des Hooks:</h3>
+            <ul>
+                <li><strong>Länge:</strong> Meist 4-8 Takte, prägnant und prägnant zu wiederholen.</li>
+                <li><strong>Wiederholung:</strong> 2-4 Wiederholungen pro Hook, oft mehrfach im Song.</li>
+                <li><strong>Melodische Einfachheit:</strong> Eingängige Intervalle, repetitive Tonfolgen. Ein-Wort-Hooks sind typisch.</li>
+                <li><strong>Rhythmus:</strong> Betonungen meist auf <span class="interactive-term" data-term="Downbeat">Downbeats</span>, häufig Synkopen für Groove.</li>
+                <li><strong>Text:</strong> Häufig ein Kommando oder Slogan, das Publikum direkt anspricht.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Call-and-Response: Struktur, Timing, Vocal-Arrangement</h2>
+            <p>
+                Das Call-&-Response-Prinzip ist ein Grundbaustein der afroamerikanischen Musiktradition und in Hip-Hop-Partytracks sehr verbreitet.
+                Es bedeutet: Ein Sänger („Call“) spricht oder singt eine Phrase, die vom Chor, von <span class="interactive-term" data-term="Adlib">Ad-libs</span> oder vom Publikum als „Response“ beantwortet wird.
+                Charakteristisch sind oft abrupte Antworten oder Echofragmente direkt nach einer Zeile.
+                Beispiele: DMX „Party Up“ oder Usher „Yeah!“, wo Hype-Vocals als Antwort auf Textzeilen dienen.
+                Solche Elemente aktivieren das Publikum: Wenn der DJ oder MC den Call ruft, antwortet die Menge reflexhaft.
+                In Party-Hip-Hop-Arrangements wird Call-&-Response oft in den Refrain oder direkt vor den Drops platziert.
+                Die Struktur ist meist einfach: Der Call dauert nur eine Zeile oder Phrase (1-2 Takte), die Response folgt sofort oder leicht versetzt.
+            </p>
+        </section>
+
+        <section>
+            <h2>Crowd-Psychologie: Erwartung, Spannung, Release</h2>
+            <p>
+                Die Wirkung von Party-Hip-Hop fußt stark auf psychologischen Prinzipien. Erwartung und Überraschung spielen eine große Rolle.
+                Ein mittleres Maß an unerwarteten Rhythmusabweichungen (Synkopen) erzeugt das stärkste Bewegungs- und Tanzverlangen.
+                Voll vorhersehbare Beats wirken stumpf, völlig chaotische eher irritierend – Partymusik setzt daher oft auf leichte Überraschungen (unerwartete Einsätze, Breaks, Fills), um die Vorfreude (<span class="interactive-term" data-term="Tension">Tension</span>) aufzubauen.
+                Diese Spannung wird im Drop oder Refrain („Release“) gelöst: Ein kollektives Aufspringen etwa bei der ersten Bassnote nach einem Moment Stille erzeugt kollektive Euphorie.
+                Zudem fördern bestimmte Design-Elemente Gruppendynamik und soziale Integration. Die gemeinsam geteilte Hook oder der partizipative Call führt zu einem sozialen Zusammenschluss.
+                DJs leiten die Crowd mit Körpersprache und Musikwahl und verstärken das Gefühl von „Wir“-Gemeinschaft.
+            </p>
+        </section>
+
+        <section>
+            <h2>Beat-Ökonomie: Tempo, Groove, Subbass</h2>
+            <p>
+                Typische Party-Rap-Tracks nutzen tiefgehende Bassdrums (<span class="interactive-term" data-term="808-Kick">808-Kicks</span>) und eher minimale Midrange-Ansprache, um den Tanzboden zu füllen.
+                In Südrap-Klassikern finden sich oft nur ein Kick, eine Snare/Clap auf 2 und 4 sowie gelegentlich ein Hi-Hat-Pattern.
+                Dies lässt Platz für einen extrem druckvollen Subbass. Diese „Ökonomie“ reduziert Überladenheit und maximiert die Bassenergie.
+                Das Tempo variiert je nach Stil, liegt aber bei Club-Hip-Hop meist im oberen Bereich seiner typischen Spanne (90-110 BPM, z.B. <span class="interactive-term" data-term="Crunk">Crunk</span> oder moderner <span class="interactive-term" data-term="Trap">Trap</span>).
+                Die Kick-Snare-Beziehung ist unverkennbar: Die Bassdrum dominiert, während Snares/Claps punktuell Höhepunkte markieren.
+            </p>
+        </section>
+
+        <section>
+            <h2>DJ-Kompatibilität: Mix-Points und Struktur</h2>
+            <p>
+                Für Clubmixes ist die Aufnahmestruktur entscheidend: Glatte Übergänge erfordern klare Phrasierungen.
+                Party-Hip-Hop-Tracks enthalten meist Intros und Outros von 8 oder 16 Takten, die oft nur aus Rhythmus und sparsamen Stabs bestehen.
+                Loop-Punkte findet man häufig am Songende oder unmittelbar vor Wiederholungen.
+                <span class="interactive-term" data-term="Harmonic Mixing">Key-Management</span>: Viele Party-Tracks sind in dancefreundlichen Moll-Tonarten geschrieben. Tracks ohne Melodieanteil lassen sich leicht in jede Mixumgebung einfügen.
+                Ein DJ-freundlicher Party-Hip-Hop bietet immer einen hörbaren Vorlauf und einen erneuten Ausstieg (Smooth Exit), damit Übergänge nicht abrupt klingen.
+            </p>
+        </section>
+
+        <section>
+            <h2>Arrangement für maximale Reaktion</h2>
+            <p>
+                Das Arrangement eines optimalen Party-Hip-Hop-Tracks folgt typischerweise einem sich steigernden Muster:
+            </p>
+            <ul>
+                <li><strong>Intro:</strong> Einführung des Beats (Drums/Subbass) – niedrige Energie.</li>
+                <li><strong><span class="interactive-term" data-term="Build">Build</span>:</strong> Zusätzliche Elemente (Synth-Schichten) steigern Spannung.</li>
+                <li><strong>Hook/Drop:</strong> Voller Energieausschlag – der Break löst sich in einem gewaltigen Bass-Downbeat oder Chorushook auf.</li>
+                <li><strong>Verse:</strong> Energie bleibt hoch, oft etwas reduziert im Vergleich zum Hook.</li>
+                <li><strong>Break/Build 2:</strong> Nach dem zweiten Hook folgt manchmal ein kleiner gedämpfter Teil (<span class="interactive-term" data-term="Breakdown">Breakdown</span>), der zum finalen Drop hinführt.</li>
+                <li><strong>Outro:</strong> Abklingen, oft Refrain-Melodie fade-out oder langsam rauslaufen.</li>
+            </ul>
+            
+            <p>
+                <strong>Energie-Kurve:</strong> Typischerweise beginnt das Intro mit geringer Energie, steigt während Build und Verse langsam an, gipfelt im ersten Hook (Peak).
+                Ein kleiner Dip folgt (Verse 2), erneut Aufbau zum zweiten Peak (zweiter Hook/Drop). Dann fällt die Kurve allmählich im Outro ab.
+            </p>
+        </section>
+
+        <section>
+            <h2>Beispiele und Analyse</h2>
+            <p>
+                <strong>Jump Around (House of Pain):</strong> Chorushook mit extremer Wiederholung, unmittelbar tanzwirksam. Kein klassischer Breakdown, sondern ein einziges, stetiges Energielevel. DJ-freundlich: klarer 16-taktiger Beat.
+            </p>
+            <p>
+                <strong>Party Up (DMX):</strong> Hook mit Call & Response-Charakter. Drop fehlt, aber DJ kann hier z.B. nach dem dritten „up in here“ loopen. Tempo ~110 BPM.
+            </p>
+            <p>
+                <strong>Yeah! (Usher ft. Lil Jon):</strong> Muster-Hook startet mit Hype-Vocals. Struktur: Intro → Verse → Hook → Rap-Part → Hook. Der Hook wird zweimal voll gespielt, idealer Dancepeak. Sehr DJ-freundlich.
+            </p>
+            <p>
+                <strong>Get Low (Lil Jon):</strong> Refrain baut auf Calls auf. Der „Drop“ ist weniger dramatisch, hier ist die Hook selbst der Höhepunkt. Tiefe 808-Kicks.
+            </p>
+        </section>
+
+        <section>
+            <h2>Produktions-Checkpoints & Checkliste</h2>
+            <table class="w-full text-left text-sm border-collapse my-4">
+                <thead>
+                    <tr>
+                        <th class="border-b p-2">Priorität</th>
+                        <th class="border-b p-2">Checkpoint</th>
+                        <th class="border-b p-2">Spezifikation / Messwert</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Hoch</td>
+                        <td class="border-b p-2">Tempo</td>
+                        <td class="border-b p-2">90-110 BPM (hip-hop dancefloor); ganzzahlig für genauen Takt.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Hoch</td>
+                        <td class="border-b p-2">Lautheit</td>
+                        <td class="border-b p-2">Integrated: -8 bis -10 <span class="interactive-term" data-term="LUFS">LUFS</span>; TP-Peak: -1dB; Ziel Club-Lautstärke.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Hoch</td>
+                        <td class="border-b p-2">Tiefbass/808</td>
+                        <td class="border-b p-2">Subbass bis ~30-40 Hz; Kick-Shape: 60-80 Hz; Kein Rumpeln (Resonanzen &lt;40 Hz filtern).</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Mittel</td>
+                        <td class="border-b p-2">Hook</td>
+                        <td class="border-b p-2">Länge 4-8 Takte; mind. 2x Wiederholung; max. 2 Takte Break vor Wiederholung.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Mittel</td>
+                        <td class="border-b p-2">Call-Response</td>
+                        <td class="border-b p-2">Call-Phrasen im Chorus; einfacher Text für Publikums-Antwort.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Mittel</td>
+                        <td class="border-b p-2">Intro/Outro</td>
+                        <td class="border-b p-2">Intro: 8 Takte reine Drums; Outro: 8 Takte fade-out oder Instrumental.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Gering</td>
+                        <td class="border-b p-2">Frequenzbalance</td>
+                        <td class="border-b p-2">Sub (0-60 Hz) dominierend; Kick-Body (60-100 Hz); Snare/Clap „Knack“ (2-4 kHz).</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    `
     },
     experimental_hip_hop_future: {
         id: 'experimental_hip_hop_future',
@@ -3089,10 +5559,296 @@ const CREATIVE_WORLDS = {
         name: 'Experimental Hip Hop Future',
         icon: '🧪',
         wikiContent: `
-            <h1>Experimental Hip Hop Future (Platzhalter)</h1>
-            <p>Dies ist ein Platzhaltertext fuer die experimentelle Hip-Hop-Welt mit genre-crossing Sounddesign und mutigen Strukturen.</p>
-            <p>Beispielbegriffe: <span class="interactive-term" data-term="Glitch Texture">Glitch Texture</span>, <span class="interactive-term" data-term="Abstract Rhythm">Abstract Rhythm</span>, <span class="interactive-term" data-term="Hybrid Sound Design">Hybrid Sound Design</span>.</p>
-        `
+        <header>
+            <h1>Experimental Hip Hop: Entwicklung, Produktion und Ästhetik</h1>
+        </header>
+
+        <section>
+            <h2>Executive Summary</h2>
+            <p>
+                Dieses Paper untersucht die aktuellen Entwicklungen im <span class="interactive-term" data-term="Experimental Hip Hop">Experimental Hip Hop</span>, insbesondere die kreative Verschmelzung von Hip-Hop mit elektronischer Avantgarde, Noise, Jazz und Clubmusik.
+                Wir analysieren die Ästhetik des <span class="interactive-term" data-term="Glitch">Glitch</span> und des <span class="interactive-term" data-term="Noise">Noise</span>, den Einsatz ungerader Taktarten und polymetrischer Pattern sowie ungewöhnliche Klangquellen (<span class="interactive-term" data-term="Field Recording">Field Recordings</span>, Circuit-Bending, modulare Synthese, Found Objects).
+                Moderne Produktionsparadigmen – KI/ML-unterstützte Tools, generative Systeme, kollaborative Netzwerke und performative DAW-Workflows – werden vorgestellt und mit einem Praxisblick bewertet.
+                Dabei werden Chancen und Risiken für die Hörbarkeit (z. B. Streaming-Algorithmen, Playlist-Fähigkeit, Live-Performance) sowie für musikalische und soziokulturelle Identität diskutiert.
+                Aufbauend auf Künstlerstatements und Analysen konzipieren wir konkrete Strategien und Workflows, die radikale Innovation mit musikalischer Kohärenz verbinden.
+                Dazu zählen Arrangement-Patterns, Übergangstechniken, Hook-Design, Mixing- und Mastering-Prinzipien sowie Methoden zur Einbindung von Vocals und Flows.
+            </p>
+        </section>
+
+        <section>
+            <h2>Genre-Hybride und Ästhetiken</h2>
+            <p>
+                Experimenteller Hip-Hop lebt von Genre-Grenzüberschreitungen. Bekannte Subgenres wie <span class="interactive-term" data-term="Glitch Hop">Glitch Hop</span> bringen Hip-Hop-Beats mit elektronischen Klängen und „defekten“ Sounds zusammen.
+                Der Begriff beschreibt eine Mischung aus funkigen Hip-Hop-Rhythmen und glitchy Artefakten (Übersprung, Datenfehlfunktionen, <span class="interactive-term" data-term="Bitcrusher">Bit-Crushing</span>), die einen handgemachten, unpolierten Sound ergeben.
+                Glitch Hop-Beats liegen typischerweise im mittleren Tempobereich (80-130 BPM) und variieren zwischen klassischem Breakbeat-Swing und digitalen Texturen.
+                Im Ergebnis entsteht eine "mutability": Das Genre verschmilzt lo-fi Hip-Hop, Trap und Dubstep-Elemente mit starker Sound-Manipulation.
+            </p>
+            <p>
+                Neben Glitch Hop greifen Künstler immer öfter auf <span class="interactive-term" data-term="Sound Collage">Sound Collage</span>-Techniken zurück, bei denen Sprachfragmente, Field Recordings, Störgeräusche und Samples zu neuen Klanglandschaften montiert werden.
+                So wird das Studio zum Labor, in dem Klänge als rohes Material fungieren: geschnitten, geloopt und überlagert. Dies geht oft zulasten konventioneller Harmonik und Melodie; statt harmonischer Abläufe stehen Textur und Raumimprovisation im Vordergrund.
+                Der Sound-Collage-Ansatz reicht von avantgardistischen Tape-Experimenten bis zu sample-dichten Hip-Hop-Tracks – immer mit politischem oder narrativem Unterton oder bewusst abstrakt.
+            </p>
+            <p>
+                Parallel vermischen sich Jazz-Ästhetiken und Club-Strukturen mit Hip-Hop. So arbeiten Produzent:innen mit Jazz-Samples, Free-Jazz-Ästhetik (Texturorientierung, kollektivem Improvisieren) und Funk-Elementen, aber auch mit Drum'n'Bass- und Dubstep-Rhythmen.
+                Ein herausragendes Beispiel ist die <span class="interactive-term" data-term="LA Beat Scene">LA Beat Scene</span>, in der ungerade Drum-Patterns auf tiefe Subbässe und psychedelische Samples treffen.
+                Stets ist die Haltung „Studio als Instrument“ zentral: ähnliche Techniken wie in IDM/Experimental Electronic (z.B. granular, spektral, modulare Synthese) kommen hier in einen Hip-Hop-Kontext.
+                Dabei gelten avantgardistische Grundsätze: Es wird mit <span class="interactive-term" data-term="Atonalität">Atonalität</span>, <span class="interactive-term" data-term="Indeterminismus">Indeterminismus</span> und dem Emanzipieren von Geräuschen experimentiert.
+            </p>
+
+            <h3>Tabelle: Genre-Elemente und ihre Hörbarkeits-Trade-offs</h3>
+            <table class="w-full text-left text-sm border-collapse my-4">
+                <thead>
+                    <tr>
+                        <th class="border-b p-2">Genre-Element</th>
+                        <th class="border-b p-2">Charakteristische Merkmale</th>
+                        <th class="border-b p-2">Beispiel (Artist/Track)</th>
+                        <th class="border-b p-2">Hörbarkeits-Trade-off (Risiko/Chance)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Glitch/Noise</td>
+                        <td class="border-b p-2">Digitale Artefakte (Clicks, Skips, Verzerrung), „defekter“ Klang</td>
+                        <td class="border-b p-2">Clipping – Body & Blood (Noise-Rap)</td>
+                        <td class="border-b p-2">Risiko: Kann Hörer irritieren; Chance: kraftvoller, ungewöhnlicher Sound.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Jazz/Funk</td>
+                        <td class="border-b p-2">Offbeat-Grooves, improvisierte Soli, organische Harmonien</td>
+                        <td class="border-b p-2">Flying Lotus, BADBADNOTGOOD</td>
+                        <td class="border-b p-2">Risiko: schwer tanzbar, komplex; Chance: warme, dynamische Texturen.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Club/Electronica</td>
+                        <td class="border-b p-2">Gerade 4/4-Beats, Drop-Strukturen, Synth-Glides</td>
+                        <td class="border-b p-2">DJ Haram – Grace EP (Future Beats mit Breaks)</td>
+                        <td class="border-b p-2">Risiko: kann konventioneller wirken; Chance: zugängliche Beats mit Experiment-Einsprengseln.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Polyrhythmik/World</td>
+                        <td class="border-b p-2"><span class="interactive-term" data-term="Aksak">Aksak</span>-Taktarten (5/8, 7/8 etc.), Off-Beat-Puls</td>
+                        <td class="border-b p-2">DJ Haram – Middle Eastern Rhythms</td>
+                        <td class="border-b p-2">Risiko: Höhere Einstiegshürde für Publikum; Chance: neuartige Grooves, kulturelle Tiefe.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Sound Collage</td>
+                        <td class="border-b p-2">Field-Recordings, Media-Klänge, Drones</td>
+                        <td class="border-b p-2">Moor Mother – All of the Money</td>
+                        <td class="border-b p-2">Risiko: ohne „Hook“ wenig eingängig; Chance: Textur-Fokus, starke Atmosphäre.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>Rhythmus, Metrik und Struktur</h2>
+            <p>
+                Traditioneller Hip-Hop ruht meist auf geraden 4/4-Takten mit betonten Backbeats. Experimentelle Ansätze dehnen dieses Schema.
+                Produzent:innen nutzen ungerade Taktarten (5/8, 7/8 etc.), <span class="interactive-term" data-term="Polymetrik">polymetrische</span> Loops und ungewöhnliche Phrasierung.
+                Dies lässt sich technisch etwa durch additive oder unregelmäßige Rhythmen (bekannt aus Balkanmusik) realisieren.
+                In der Praxis kombiniert man etwa Hip-Hop-typische Kick-Snare-Pattern mit darüber gelegten Offbeat- oder Polymeter-Grooves, wodurch ein „hinkender“ Puls entsteht.
+                Beispielsweise könnte ein Beat in einem 7/8-Grundtakt Pulse in 4+3 aufgliedern oder zwei Ebenen mischen: ein 4/4 Beat auf der einen, eine 6/8-Feel-Pattern auf der anderen Spur.
+                Dadurch entsteht Spannung und Unvorhersehbarkeit. Auch Tempi sind variabel: Wie im Glitch Hop üblich liegen Beats oft im mittleren Bereich (~80-110 BPM), doch es kann auch mit Halftime- oder Doubletime-Spielarten gearbeitet werden.
+            </p>
+            <p>
+                Solche Komplexität birgt Herausforderungen: Ungewöhnliche Rhythmen sind für Zuhörerinnen oft schwerer zu greifen.
+                Wie eine studentische Arbeit zur Aksak Electronica zeigt, werden exotische Taktarten in westlicher Tanzmusik selten eingesetzt, weil sie „Irritationen beim Publikum“ erzeugen.
+                Dennoch bieten sie enormes kreatives Potenzial und Einzigartigkeit. Der Schlüssel ist, polyrhythmische Elemente sorgsam mit eingängigen Mustern zu verschränken, sodass ein Groove spürbar bleibt.
+            </p>
+        </section>
+
+        <section>
+            <h2>Unkonventionelle Klangquellen und Sound-Design</h2>
+            <p>
+                Im Experimental Hip Hop werden Alltagsgeräusche und unorthodoxe Quellen systematisch einbezogen.
+                <span class="interactive-term" data-term="Field Recording">Field Recordings</span> (z.B. Stadtlärm, Naturgeräusche, Kultursamples) dienen als klangliche Texturen und atmosphärische Ebenen.
+                Artists wie Moor Mother oder DJ Haram beziehen explizit Diaspora- und Heimatklänge ein: DJ Haram etwa wuchs mit analogen Aufnahmen persischer Hochzeitsmusik auf und betont, wie wichtig es ist, diese „Geräuschkulisse unserer Kultur“ einzubinden.
+                Ebenso nutzt Moor Mother gesampelte Street-Field-Aufnahmen und Jazz-Overdubs, um Geschichte zu erzählen.
+            </p>
+            <p>
+                <span class="interactive-term" data-term="Circuit-Bending">Circuit-Bent</span> Devices und modulare Synthesizer bieten aggressive Texturen: Experimentell gebaute oder veränderte Spielzeuge (mittels Circuit-Bending) erzeugen unvorhersehbare Crashes, Clicks und Lo-Fi-Artefakte.
+                <span class="interactive-term" data-term="Modularer Synthesizer">Modulare Systeme</span> erlauben generative Klangstrukturen (selbstlaufende Sequencer, Feedback-Patches).
+                Auch klassische Hip-Hop-Werkzeuge (Sampler, Drumcomputer, MPC) werden ekstatisch verwendet: Schnelle Wiederholschleifen, <span class="interactive-term" data-term="Granularsynthese">Granular-</span> oder Granulierungseffekte, Glitch-Plugins (Stottertools) und Spektralbearbeitung sind alltäglich, um abseits standardisierter Sounds zu operieren.
+                Nicht-lineare Verfahren wie Algorithmik oder KI-gestützte Generierung erweitern die Klangpalette zusätzlich.
+            </p>
+
+            <h3>Tabelle: Vergleich ausgewählter Produktionswerkzeuge und -technologien</h3>
+            <table class="w-full text-left text-sm border-collapse my-4">
+                <thead>
+                    <tr>
+                        <th class="border-b p-2">Werkzeug/Technologie</th>
+                        <th class="border-b p-2">Typ/Anwendungsgebiet</th>
+                        <th class="border-b p-2">Besonderheiten</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border-b p-2 font-medium"><span class="interactive-term" data-term="DAW">DAW</span> (z.B. Ableton Live)</td>
+                        <td class="border-b p-2">Zentrale Produktionsumgebung</td>
+                        <td class="border-b p-2">Clip-basierte Arrangierarbeit, Echtzeit-Performance-Modus („Session View“).</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium"><span class="interactive-term" data-term="Sampler">Sampler</span> (Akai, SP-404)</td>
+                        <td class="border-b p-2">Pattern/Loop-Erstellung</td>
+                        <td class="border-b p-2">Pitch-Shift, Time-Stretch, Reverse, Sampler-FX für texturierte Beats.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Modulare Synthesizer</td>
+                        <td class="border-b p-2">Generierung und Modulation von Klang</td>
+                        <td class="border-b p-2">Endlose Modulationsmatrix, visuelles Patchen, Semimodular für driftende Melodien/Gate-Verschiebungen.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Circuit-Bent Geräte</td>
+                        <td class="border-b p-2">Klangsynthese durch Hardware-Mod</td>
+                        <td class="border-b p-2">Unerwartete Störungen/Artefakte (Crackle, Warp), lowfi-Narrativen.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Field-Recorder</td>
+                        <td class="border-b p-2">Aufnahmen vor Ort</td>
+                        <td class="border-b p-2">Natürliche Texturen, Umgebungsgeräusche, Found-Sound-Samples.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Software-Plugins (Glitch/Effekt)</td>
+                        <td class="border-b p-2">Audioeffekte</td>
+                        <td class="border-b p-2">Granularsynthese, Spektraleffekte, Bitcrusher, Glitch-Slicer.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">KI-Tools (z.B. Splice, MusicLM)</td>
+                        <td class="border-b p-2">Generative Produktion</td>
+                        <td class="border-b p-2">Sofortige Erstellung von Loops/Melodien, Inspiration durch datengestützte Muster.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Kollaborationstools</td>
+                        <td class="border-b p-2">Projekt- und Sample-Sharing</td>
+                        <td class="border-b p-2">Gemeinsames Arbeiten via Cloud, Echtzeit-Jams über Netzwerke.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p>
+                Die Mixing-/Mastering-Praxis muss radikale Klänge zugleich klar transportieren. Grobkörnige Noise-Elemente werden oft parallel bearbeitet: Beispielhaft wird ein verzerrter Buss mit originalem Signal gemischt, um Rauschen einzugrenzen, aber dennoch präsent zu halten.
+                Wichtige Drums (Kick, Snare) erhalten klare Frequenznischen, damit sie vor den Experimentalklängen durchdringen.
+                Hall, Delay und Stereo-Verteilung können helfen, dichte Soundscapes räumlich zu staffeln.
+                Beim Mastering werden Headroom und Dynamik betont – statt maximaler Loudness ist oft dynamische Vielfalt gefragt, um rauhe Elemente nicht zu überkomprimieren.
+            </p>
+        </section>
+
+        <section>
+            <h2>Neue Produktionsparadigmen</h2>
+            <p>
+                Aktuelle technologische Trends prägen die Szene stark. KI/ML-Tools gewinnen an Bedeutung: Große Labels und Plattformen treiben lizenzierte <span class="interactive-term" data-term="Künstliche Intelligenz">KI</span>-Kreativtools voran.
+                Beispielsweise hat Universal Music Group mit Splice eine Kooperation zur Entwicklung von KI-Funktionen angekündigt, die „hochwertigen Sound“ liefern und präzise künstlerische Kontrolle erlauben.
+                Dies umfasst etwa intelligente Sample-Transformationen, Stimmungs-Variation oder Hilfestellung beim Arrangieren – stets als Ergänzung, nicht als Autopilot.
+                Hersteller wie iZotope (Ozone/Music Production Suite) oder LANDR bieten bereits KI-Assistenz im Mastering an; in Zukunft werden wohl auch KI-Companion-Plugins für Beatmaking, Melodien und Mastering (Text-to-Audio) gängiger werden.
+            </p>
+            <p>
+                <span class="interactive-term" data-term="Generatives System">Generative Systeme</span> (MusicLM, Amper, AIVA u.a.) ermöglichen die (teilweise) automatische Komposition.
+                Experimentelle Musiker nutzen solche Systeme, um Ausgangsideen oder Klangtexturen zu bekommen, die sie im DAW weiterformen.
+                Manche publizierte Experimente mischen KI-Generiertes mit menschlicher Nachbearbeitung im Iterationsprozess (Re-Upload-Prinzip).
+                Insgesamt folgt die Branche einem Trend: KI soll Kreative unterstützen (Samples erzeugen, Slices variieren, Automationen vorschlagen), unter Beachtung von Urheber- und Qualitätskontrolle.
+            </p>
+            <p>
+                Kollaborative Netzwerke erlauben verteiltes Arbeiten. Plattformen wie Splice, Blend.io oder cloudbasierte DAWs (Soundtrap, BandLab) bieten Sample- und Projekt-Sharing sowie Versionierung.
+                Tools wie Ableton Link synchronisieren Geräte über WLAN. So entstehen Producer Communities: Künstlerinnen können <span class="interactive-term" data-term="Stems">Stem</span>-Packs austauschen oder in Echtzeit gemeinsam jammen.
+                Dieselbe performative Offenheit zeigt sich in Live-DAW-Workflows: Viele Producer nutzen Abletons Session View, NI Maschine oder Ableton Push, um Beats live anzupassen und Songteile zu improvisieren, bevor sie ins Arrangement überführt werden.
+                Dies schafft einen fließenden Übergang zwischen Produktions- und Performance-Modus.
+            </p>
+        </section>
+
+        <section>
+            <h2>Hörbarkeit und Identität</h2>
+            <p>
+                Experimentelle Klänge generieren spezifische Chance-Risiko-Konstellationen. Moor Mother etwa beschreibt die Herausforderung so: „Wir sind süchtig nach bestimmten Klängen. Sobald du diese nicht bietest, ist es nervenaufreibend...“.
+                Anders gesagt: Außergewöhnliche Sounds mögen für das Publikum fremd sein (Risiko), aber sie schaffen Raum für einzigartige Identität und inhaltliche Dringlichkeit (Chance).
+                Der beschriebene Publikumsdruck erklärt, warum Radioplattformen und Streaming-Algorithmen oft auf standardisierte Merkmale („Hit-Formeln“) ausgelegt sind.
+                Experimenteller Hip Hop kämpft hier gegen Normierung: Nicht selten erreichen radikale Tracks geringere Streamingzahlen oder finden in Live-Programmen nur Nischen-Plätze.
+                Clipping. verweist auf ein ähnliches Dilemma: Künstler können nicht kontrollieren, wie Hörerinnen ihre Intention deuten.
+                Für Produzentinnen heißt das: Sie müssen eine Balance finden zwischen ihrer Vision und dem Angebot eines Ankerpunkts, der den Hörenden Orientierung gibt.
+                Zugleich prägt Experimentelles die soziokulturelle Identität stark – etwa indem es marginalisierten Perspektiven Raum gibt oder globale Klänge integriert.
+            </p>
+
+            <h3>Tabelle: Experimental-Elemente, ihre Zugänglichkeit vs. Innovationspotenzial</h3>
+            <table class="w-full text-left text-sm border-collapse my-4">
+                <thead>
+                    <tr>
+                        <th class="border-b p-2">Experimentelles Element</th>
+                        <th class="border-b p-2">Auswirkung auf Zugänglichkeit (Risiko)</th>
+                        <th class="border-b p-2">Chance für Identität/Kohärenz</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Atonalität/Noise</td>
+                        <td class="border-b p-2">Kann irritierend sein, verliert Playability; Mainstream-Geschmack fehlt.</td>
+                        <td class="border-b p-2">Starker Wiedererkennungswert, Ausdruckskraft, kulturelles Markenzeichen.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Polymetrik/Unkonventionelle Offbeats</td>
+                        <td class="border-b p-2">Schwerer zu folgen; weniger tanzbar.</td>
+                        <td class="border-b p-2">Neuartige Grooves, starkes Publikumserlebnis, kulturelle Vielfalt.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Radikale Samples/Verarbeitung</td>
+                        <td class="border-b p-2">Fehlende Vertrautheit; Audio-Algorithmen erkennen Samples evt. nicht. Verwaschene Struktur, kann „chaotisch“ wirken.</td>
+                        <td class="border-b p-2">Tiefgründige Atmosphäre, kontextuelle Tiefe, politischer/poetischer Wert. Schärft eigenständigen Stil, experimentelle Klangästhetik; lockert Genregrenzen.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Generative Elemente (KI)</td>
+                        <td class="border-b p-2">Risiko von Rechtsunsicherheit; mögliche Homogenisierung.</td>
+                        <td class="border-b p-2">Schneller Ideenreichtum, neue Klangkombinationen, Demokratisierung von Produktion.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p>
+                Die Zusammenführung dieser Aspekte erfordert klare Strategien. Künstler müssen radikale Ideen mit einem gewissen Maß Eingängigkeit verbinden, damit das Publikum nicht ganz abgehängt wird.
+                Moor Mother betont beispielsweise: Wenn man konkrete Botschaften haben will, führt langfristig kein Weg an expliziten <span class="interactive-term" data-term="Vocal">Vocals</span> vorbei.
+                In ihrem Projekt wird die Stimme immer wieder zum zentralen „Leitmotiv“. Auf "All of the Money" etwa zieht sich der gesampelte Ausruf „Where'd they get all the money?“ mehrfach durch den Track; die darüber geschichteten, sich verdichtenden Klangflächen erzeugen eine beklemmende Wirkung.
+                Ein solcher Einsatz von Wiederholung und Steigerung (<span class="interactive-term" data-term="Call-and-Response">Call-and-Response</span>-artig) dient als Hook, die auch im experimentellen Kontext als erkennbares Element fungiert.
+            </p>
+            <p>
+                Ähnlich empfiehlt DJ Haram, Rhythmik und Sounddesign verknüpfend zu denken: Für ihre Grace-EP plante sie Tracks, die zwar „experimentelles Sounddesign“ enthielten, aber zugleich als einfache Drum-Tracks in Club-Sets funktionieren konnten.
+                Sie stellt damit sicher, dass die Stücke in DJs Livesets nahtlos eingebaut werden können.
+                Ihre Strategie: Erst Rhythmus programmieren (Bounce/Stomp im Takt), dann Klang-Experimente überlagern, dabei Ausgewogenheit wahren.
+                Dies bedeutet etwa, den Bassdrum- und Snare-Impuls aggressiv zu gestalten (komprimieren, saturieren), während helle Artefakte oder Field-Samples im Stereo-Raum schweben.
+            </p>
+            <p>
+                Im Arrangement kann man klassische Song-Muster als Anker verwenden: Intro-Verse-Bridge-Refrain, auch wenn diese Teile sehr frei gestaltet sind.
+                Beispielsweise beginnt man mit einer Off-Grid-Groove-Textur als Intro (knarzende Samples, Ambient-Flächen), lässt dann einen konventionelleren <span class="interactive-term" data-term="Drop">Drop</span> (ein einstürmender Beat mit Hook-Sample) folgen, um das Publikum „abzuholen“.
+                Übergänge setzt man mittels typischer Produzententricks: Filter-Automationen, Reverse-Bass-Sweeps, frittierte Transienten oder rhythmische Glitch-Fills.
+                Solche Übergangs-Signale geben dem Gehörteinschlag Struktur und lenken die Erwartung.
+            </p>
+            <p>
+                Die Einbindung von Vocals/Flows erfordert besondere Aufmerksamkeit. Neben linearem Rap ist gesprochenes Wort oder Soundpoesie beliebt.
+                Vocals können selbst Effekte erhalten (Pitch-Shifting, Vocoder, starker Hall), um sich in experimentelle Klangräume einzufügen.
+                Wichtig ist, dass Vocals nicht verloren gehen: Man mixe sie mit <span class="interactive-term" data-term="Sidechain">Sidechain</span> oder manuellem <span class="interactive-term" data-term="Ducking">Ducking</span> überdröhnender Elemente.
+                Als Mastering-Prinzip empfiehlt sich hier moderate <span class="interactive-term" data-term="Limiter">Limiter</span>-Einstellungen und ggf. leichte <span class="interactive-term" data-term="Equalizer">EQ</span>-Korrekturen, um Präsenz im Mix zu sichern, ohne den Gesamtdruck zu verlieren.
+            </p>
+        </section>
+
+        <section>
+            <h2>Beispielhafter Produktionsprozess (Zeitlicher Ablauf)</h2>
+            <ul>
+                <li><strong>2025:</strong> Inspirationsphase (Samples sammeln, Feldaufnahmen); Konzeptentwicklung (Stilmittel, Themen).</li>
+                <li><strong>2026 (Früh):</strong> Sounddesign (Experimentelle Synths, Circuit-Bending); Beatprogramming (unregelmäßige Grooves).</li>
+                <li><strong>2026 (Mitte):</strong> Arrangement (Strukturierung in Intros, Drops, Refrains); Vocals (Text/Capture/Fx).</li>
+                <li><strong>2026 (Spät):</strong> Mixing-Phase (Balance von Distortion, Clear-Mids für Vocals); Mastering (Dynamik-Fokus, analoges Kleben).</li>
+                <li><strong>2026 (Ende):</strong> Release-Vorbereitung (Artwork, Distribution); Live-Set-Up (Performative Einbindung).</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Quellen</h2>
+            <p>
+                Die hier präsentierten Beobachtungen stützen sich auf Fachartikel, Interviews und Primärquellen.
+                So beschreibt etwa Red Bull Music Academy Daily die Band clipping. als „eine Generation, die jede und alle Klänge nutzt, um ihre Kreativität auszudrücken“.
+                Moor Mother erläutert in Guardian-Interviews, wie sie Klangexperimente „die emotionalen Grenzen dessen, was ein Song erreichen kann“, austesten – zugleich kritisiert sie die Populärheitslogik im Musikgeschäft.
+                DJ Haram gibt Einblick in ihre Produktionsstrategie, indem sie Hip-Hop-typische Drums mit arabischen Klangmotiven und fortgeschrittenem Sounddesign kombiniert.
+                Branchennews von Rareform Audio und anderen Quellen dokumentieren aktuelle KI/ML-Entwicklungen.
+                Die genannten Erkenntnisse wurden durch Analyse maßgeblicher Releases, Producer-Statements und aktueller Literatur trianguliert, um praxisnahe, umsetzbare Empfehlungen abzuleiten.
+            </p>
+        </section>
+    `
     },
     instrumental_beat_scene: {
         id: 'instrumental_beat_scene',
@@ -3378,10 +6134,229 @@ const CREATIVE_WORLDS = {
         name: 'Arabischer Takht',
         icon: '🪕',
         wikiContent: `
-            <h1>Arabischer Takht (Platzhalter)</h1>
-            <p>Dies ist ein Platzhaltertext fuer die kommende Takht-Welt in der Kreativ-Bibliothek.</p>
-            <p>Beispielbegriffe: <span class="interactive-term" data-term="Maqam">Maqam</span>, <span class="interactive-term" data-term="Iqa">Iqa</span>, <span class="interactive-term" data-term="Oud">Oud</span>.</p>
-        `
+        <header>
+            <h1>Arabischer Takht: Phänomenologie, Akustik und digitale Transformation eines mikrotonalen Ökosystems</h1>
+        </header>
+
+        <section>
+            <h2>1. Einleitung: Die Ästhetik der Heterophonie und das Takht-Ensemble</h2>
+            <p>
+                Das arabische <span class="interactive-term" data-term="Takht">Takht</span>-Ensemble (arabischwörtlich „Podest“ oder „Bett“, im Sinne eines erhöhten Sitzplatzes für Musiker) repräsentiert weit mehr als eine organologische Ansammlung von Instrumenten; es ist das klangliche, strukturelle und soziokulturelle Herzstück der klassischen arabischen Musiktradition der Levante und Ägyptens (Mashriq).
+                Historisch verankert in den kulturellen Zentren von Kairo, Damaskus, Aleppo und Bagdad, fungiert das Takht als mikrokosmisches Abbild der arabischen Musikästhetik, die nicht auf der vertikalen harmonischen Schichtung des Westens, sondern auf melodischer Horizontalität, modaler Feinheit und rhythmischer Zyklizität beruht.
+            </p>
+            <p>
+                Im Zentrum dieser Tradition steht das strukturelle Phänomen der <span class="interactive-term" data-term="Heterophonie">Heterophonie</span> – die gleichzeitige, individuelle Variation einer einzigen Melodielinie durch mehrere Instrumentalisten.
+                Anders als in der westlichen Polyphonie, wo unabhängige Stimmen kontrapunktisch gegeneinandergesetzt werden, oder der Homophonie, in der Akkorde eine Melodie stützen, zelebriert das Takht die individuelle Interpretation innerhalb der kollektiven Einheit.
+                Jeder Musiker ornamentiert, verzögert oder antizipiert die Kernmelodie basierend auf der idiomatischen Natur seines Instruments, seiner technischen Fertigkeit und seinem emotionalen Zustand im Moment der Aufführung.
+                Das Resultat ist ein dichtes, schimmerndes Klanggewebe, das oft metaphorisch als „klanglicher Teppich“ oder Arabeske beschrieben wird, in dem die Individualität des Einzelnen nicht zugunsten des Kollektivs ausgelöscht, sondern in dieses integriert wird, um eine psychoakustische Dichte zu erzeugen.
+            </p>
+
+            <h3>1.1 Historische Entwicklung: Von der Nahda zur Firqa</h3>
+            <p>
+                Die Blütezeit des klassischen Takht fällt in die Ära der <span class="interactive-term" data-term="Nahda">Nahda</span> (arabische Renaissance) im späten 19. und frühen 20. Jahrhundert.
+                In dieser Periode war das Takht ein kleines Kammerensemble, typischerweise bestehend aus vier bis fünf Musikern: Oud, Qanun, Nay, Kamanjah und Riqq.
+                Diese Intimität erlaubte eine hochgradige Interaktion und Improvisation, die für das Erreichen des Tarab (musikalischer Ekstase) essenziell war.
+                Mit dem Aufkommen großer Stars wie Umm Kulthum wandelte sich das Takht unter dem Einfluss westlicher Orchestermusik zur <span class="interactive-term" data-term="Firqa">Firqa</span> (Orchester).
+                Die Firqa erweiterte das traditionelle Takht um eine massive Streichersektion und integrierte später auch westliche Instrumente wie Akkordeon und elektrische Gitarre.
+                Die heutige Praxis erlebt eine Renaissance des klassischen Takht, sowohl in akademischen Kreisen als auch in der Fusion-Szene (z.B. Hello Psychaleppo, Tarek Yamani).
+            </p>
+
+            <h3>1.2 Die soziale Funktion: Jalsa und Sahra</h3>
+            <p>
+                Das traditionelle Takht ist untrennbar mit dem Konzept der <span class="interactive-term" data-term="Jalsa">Jalsa</span> (Sitzung) oder Sahra (Abendgesellschaft) verbunden.
+                Im Gegensatz zum westlichen Konzertsaal fand die Musik des Takht ursprünglich in privaten Salons oder Cafés statt, wo die Grenze zwischen Musiker und Zuhörer durchlässig war.
+                Das Publikum, oft bestehend aus Kennern (Sammi'ah), spielte eine aktive Rolle durch verbale Ermutigung und emotionale Reaktionen, die den Verlauf der Musik direkt beeinflussten.
+            </p>
+        </section>
+
+        <section>
+            <h2>2. Organologie und Akustik: Das Instrumentarium des Takht</h2>
+            <p>
+                Man unterscheidet traditionell zwischen zwei Familien, deren klangliche Eigenschaften sich ergänzen: <span class="interactive-term" data-term="Sahb">Sahb</span> (ziehend/gestrichen/geblasen – Violine, Nay) und Naqr (gezupft/geschlagen – Oud, Qanun).
+            </p>
+
+            <h3>2.1 Die Oud (Kurzhalslaute): Der Sultan der Instrumente</h3>
+            <p>
+                Die <span class="interactive-term" data-term="Oud">Oud</span> ist das primäre Theorie- und Kompositionsinstrument. Sie besitzt einen großen, birnenförmigen Resonanzkörper und einen kurzen Hals ohne Bünde.
+                Das Fehlen von Bünden ist das entscheidende Merkmal, das die Ausführung der stufenlosen mikrotonalen Maqam-Intervalle und Glissandi ermöglicht.
+                Moderne arabische Ouds haben typischerweise 11 Saiten. Die arabische Oud ist oft größer, hat eine längere Mensur und wird tiefer gestimmt als die türkische Oud, was zu einem wärmeren Klang führt.
+                <strong>Akustische Signatur:</strong> Grundtonbereich ca. 65 Hz bis 1000 Hz. Eine starke Körperresonanz liegt oft zwischen 90 Hz und 120 Hz. Der Anschlag mit dem Risha (Plektrum) erzeugt wichtige Transienten im Bereich von 2 kHz bis 5 kHz.
+            </p>
+
+            <h3>2.2 Das Qanun (Kastenzither): Das Gesetz der Intonation</h3>
+            <p>
+                Das <span class="interactive-term" data-term="Qanun">Qanun</span> liefert die Tonhöhenreferenz. Es handelt sich um eine trapezförmige Zither mit 24 bis 27 Saitenchören.
+                Das revolutionäre Merkmal sind die <span class="interactive-term" data-term="Mandal">Mandal</span> (Hebel) am linken Rand, die es dem Spieler ermöglichen, die Stimmung jeder Saite in winzigen Schritten (Kommas) während des Spiels zu verändern.
+                Dies ermöglicht die Erzeugung von Mikrotönen.
+                <strong>Klangcharakteristik:</strong> Extrem transientenreicher Attack, gefolgt von kurzem Sustain. Transienten sind stark im Bereich 3 kHz - 8 kHz.
+            </p>
+
+            <h3>2.3 Die Nay (Rohrflöte): Der Atem der Seele</h3>
+            <p>
+                Die <span class="interactive-term" data-term="Nay">Nay</span> ist das einzige Blasinstrument im klassischen Takht. Es ist eine offene Rohrflöte ohne Mundstück.
+                Ein Nay-Spieler benötigt ein Set von 7 verschiedenen Flöten unterschiedlicher Länge, um alle Maqamat spielen zu können.
+                Der Klang ist reich an Luftgeräuschen (Breath noise) und ungeraden Obertönen.
+            </p>
+
+            <h3>2.4 Die Violine (Kamanjah): Die arabisierte Stimme</h3>
+            <p>
+                Die arabische Violine (<span class="interactive-term" data-term="Kamanjah">Kamanjah</span>) wird oft im Sitzen gespielt und häufig auf G-D-G-D gestimmt.
+                Da sie keine Bünde hat, ist sie perfekt für die Intonation von Vierteltönen geeignet und übernimmt oft die führende melodische Rolle mit langen, singenden Phrasen.
+            </p>
+
+            <h3>2.5 Das Riqq (Arabisches Tamburin): Der rhythmische Dirigent</h3>
+            <p>
+                Das <span class="interactive-term" data-term="Riqq">Riqq</span> kontrolliert die komplexen Iqa'at. Es besteht aus einem kleinen Holzrahmen mit Fischhaut und fünf Paaren von schweren Messing-Zils.
+                Klangvielfalt: Dum (tiefer Bassschlag), Tak (hoher Schlag am Rand), Sakk/Zil (Schlagen der Schellen).
+            </p>
+        </section>
+
+        <section>
+            <h2>3. Das Maqam-System: Theorie, Intonation und emotionale Architektur</h2>
+            <p>
+                Das <span class="interactive-term" data-term="Maqam">Maqam</span>-System ist das modale Gerüst der arabischen Musik. Es definiert Intervallstruktur, melodische Verhaltensweisen, emotionale Konnotationen und Modulationen.
+            </p>
+
+            <h3>3.1 Struktur: Ajnas als molekulare Bausteine</h3>
+            <p>
+                Jeder Maqam besteht aus einer Kette von <span class="interactive-term" data-term="Ajnas">Ajnas</span> (Singular: Jins; Skalenfragmente von meist 3-5 Tönen):
+                1. Jins Al-Asl (Wurzel-Jins): Definiert die Grundtonalität.
+                2. Jins Al-Far' (Zweig-Jins): Das obere Jins.
+                3. Ghammaz: Der Knotenpunkt (meist Quinte oder Quarte), an dem die Modulation stattfindet.
+            </p>
+
+            <h3>3.2 Mikrotonalität: Die Physik des „neutralen Intervalls“</h3>
+            <p>
+                Ein definierendes Merkmal ist die Verwendung von Intervallen kleiner als ein Halbton (Mikrotöne).
+                Die neutrale Terz (Sikah) liegt zwischen Dur (400 Cents) und Moll (300 Cents), oft um 340-355 Cents, variierend je nach regionaler Schule (z.B. Syrisch vs. Ägyptisch).
+                Konsequenzen für Produktion: Standard-Tuning-Tools im chromatischen Modus zerstören diese Nuancen.
+            </p>
+
+            <h3>3.3 Sayr und Modulation</h3>
+            <p>
+                Jeder Maqam hat einen <span class="interactive-term" data-term="Sayr">Sayr</span> (Pfad/Verlauf), der regelt, wie sich die Melodie bewegt (betonte Töne, Ruhezonen, Richtung).
+                Modulation erfolgt meist an den Ghammaz-Punkten und folgt etablierten ästhetischen Pfaden (z.B. von Bayati zu Rast auf der Dominante).
+            </p>
+        </section>
+
+        <section>
+            <h2>4. Rhythmische Architektur: Iqa'at</h2>
+            <p>
+                Der Rhythmus ist zyklisch organisiert in <span class="interactive-term" data-term="Iqa">Iqa'at</span> (Singular: Iqa).
+                Die Sprache der Trommel nutzt Silben wie Dum (Bass), Tak (Akzent) und Sakk (Slap).
+            </p>
+
+            <table class="w-full text-left text-sm border-collapse my-4">
+                <thead>
+                    <tr>
+                        <th class="border-b p-2">Iqa Name</th>
+                        <th class="border-b p-2">Taktart</th>
+                        <th class="border-b p-2">Struktur (Skelett)</th>
+                        <th class="border-b p-2">Charakter / Verwendung</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Malfuf</td>
+                        <td class="border-b p-2">2/4</td>
+                        <td class="border-b p-2">Dum Tak - Tak</td>
+                        <td class="border-b p-2">Schnell, treibend, zyklisch.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Maqsum</td>
+                        <td class="border-b p-2">4/4</td>
+                        <td class="border-b p-2">Dum Tak - Tak Dum - Tak</td>
+                        <td class="border-b p-2">Der Standard-Rhythmus, sehr vielseitig.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Samai Thaqil</td>
+                        <td class="border-b p-2">10/8</td>
+                        <td class="border-b p-2">Dum - - Tak - Dum Dum Tak - -</td>
+                        <td class="border-b p-2">Asymmetrisch, majestätisch, schwer.</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Masmudi Kabir</td>
+                        <td class="border-b p-2">8/4</td>
+                        <td class="border-b p-2">Dum Dum - Tak Dum - Tak -</td>
+                        <td class="border-b p-2">Schwer, langsam, trägt oft den Gesang.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>4.3 Ornamentierung und Groove-Quantisierung</h3>
+            <p>
+                Ein lebendiges Iqa lebt vom Micro-Timing und der Ornamentierung (Tasqiyah). Das notierte Iqa ist nur das Skelett.
+                Zwischen den Hauptschlägen füllt der Riqq-Spieler den Raum oft mit schnellen 16tel-Noten. In der DAW müssen diese „Geisternoten“ leiser und leicht verschoben (Swing) programmiert werden.
+            </p>
+        </section>
+
+        <section>
+            <h2>5. Aufführungspraxis und Ensemble-Interaktion</h2>
+            <h3>5.1 Heterophonie als Interaktionsmodell</h3>
+            <p>
+                Heterophonie im Takht ist eine kollektive Variation. Jeder Musiker interpretiert die Melodie individuell (Tremolos, Glissandi, Atemakzente, Arpeggios).
+                Das Ergebnis ist eine „Breitband-Melodie“. Für Produzenten bedeutet dies: Jede Spur muss individuell eingespielt oder variiert werden.
+            </p>
+
+            <h3>5.2 Tarab: Das psychoakustische Ziel</h3>
+            <p>
+                <span class="interactive-term" data-term="Tarab">Tarab</span> bezeichnet den Zustand der musikalischen Ekstase. Er entsteht durch Manipulation von Spannung und Auflösung und Interaktion mit dem Publikum.
+                Der Musiker muss den Zustand des kreativen Flows (Saltanah) erreichen, um Tarab auszulösen.
+            </p>
+
+            <h3>5.3 Die Wasla-Suite: Struktur eines Konzerts</h3>
+            <p>
+                Die klassische Darbietungsform ist die <span class="interactive-term" data-term="Wasla">Wasla</span> (Suite). Sie folgt einer dramaturgischen Kurve:
+                1. Instrumentales Intro (Bashraf/Sama'i).
+                2. Taqsim (Solo-Improvisation).
+                3. Muwashshah (Komplexes Vokalstück).
+                4. Taqtuqa/Ughniya (Leichtere Lieder).
+                5. Solo / Dawr (Höhepunkt mit Improvisation).
+                6. Abschluss (Qafla/Qadd).
+            </p>
+        </section>
+
+        <section>
+            <h2>6. Moderne Produktion: Aufnahme, Mixing und Synthese</h2>
+            <h3>6.1 Aufnahmetechniken</h3>
+            <p>
+                Eine Stereo-Hauptmikrofonierung im Raum ist essenziell, um die heterophone Verschmelzung einzufangen. Spot-Mikrofone dienen der Stützung.
+                Qanun: Mikrofonierung von oben.
+                Riqq: Bändchenmikrofon in Abstand für runderen Klang.
+                Nay: Ein Mikrofon am Mundstück (Luft) und eines am Körper (Ton).
+            </p>
+
+            <h3>6.2 Mixing-Strategien</h3>
+            <p>
+                Da viele Instrumente im Low-Mid-Bereich (200-500 Hz) agieren, ist Frequency Masking ein Problem.
+                EQ-Empfehlungen: Oud Körper bei 80-150 Hz, Qanun Präsenz bei 5-8 kHz, Nay Luft bei 8-12 kHz.
+                Panning: Fächerartige Verteilung (z.B. Oud Center, Qanun L, Violine R) statt hartes Panning.
+            </p>
+
+            <h3>6.3 Mikrotonalität in der DAW</h3>
+            <p>
+                Die Integration von Maqam-Skalen erfordert Tools wie <span class="interactive-term" data-term="MTS-ESP">MTS-ESP</span> Suite (Oddsound) für globales Microtuning oder die Nutzung von Scala-Dateien (.scl).
+                Ableton Live 12 bietet native Unterstützung für Stimmungssysteme.
+            </p>
+        </section>
+
+        <section>
+            <h2>7. Moderne Transformation: Fusion und Elektronik</h2>
+            <p>
+                Künstler wie Hello Psychaleppo (Electro-Tarab) nutzen Sampling alter Aufnahmen und unterlegen diese mit elektronischen Beats.
+                Tarek Yamani erforscht Jazz-Maqam Fusion, indem er Golf-Rhythmen in Jazz-Piano-Kompositionen integriert.
+                Acid Arab nutzt Synthesizer (z.B. TB-303), um Maqam-Skalen zu spielen und verbindet Acid-Techno mit Tarab-Ekstase.
+            </p>
+        </section>
+
+        <section>
+            <h2>8. Fazit</h2>
+            <p>
+                Das Takht-Ensemble bleibt durch seine Anpassungsfähigkeit relevant. Der Kern – Maqam, Iqa', Heterophonie – bleibt erhalten.
+                Die Zukunft liegt in einer Hybridität, die akustische Wärme und menschliche Unvollkommenheit mit digitalen Möglichkeiten vereint, ohne den Tarab zu verlieren.
+            </p>
+        </section>
+    `
     },
     hindustani_raga_ensemble: {
         id: 'hindustani_raga_ensemble',
@@ -3958,10 +6933,445 @@ const CREATIVE_WORLDS = {
         name: 'Balkan Brass-Orchester',
         icon: '🎺',
         wikiContent: `
-            <h1>Balkan Brass-Orchester (Platzhalter)</h1>
-            <p>Dies ist ein Platzhaltertext fuer die kommende Balkan-Brass-Welt in der Kreativ-Bibliothek.</p>
-            <p>Beispielbegriffe: <span class="interactive-term" data-term="Odd Meter">Odd Meter</span>, <span class="interactive-term" data-term="Trompete">Trompete</span>, <span class="interactive-term" data-term="Festival Groove">Festival Groove</span>.</p>
-        `
+        <header>
+            <h1>Balkan Brass-Orchester: Historisch-ethnomusikologische Fundierung und produktionspraktische Umsetzung</h1>
+        </header>
+
+        <section>
+            <h2>Executive Summary</h2>
+            <p>
+                „<span class="interactive-term" data-term="Balkan Brass">Balkan Brass-Orchester</span>“ (im regionalen Sprachgebrauch häufig als <span class="interactive-term" data-term="Trubači">trubači</span> bzw. Brass-Bands/Brass-Orkestri bezeichnet) sind weniger ein homogenes Genre als ein Set performativer Praktiken, das aus (a) militärisch geprägten Bläsertraditionen, (b) lokalen Tanz- und Ritualrepertoires (Hochzeiten, Prozessionen, Dorf- und Stadtfeste) und (c) stark <span class="interactive-term" data-term="Romani">romani</span> geprägten Berufsmusiker-Netzwerken hervorgeht.
+                Für die heutige Ästhetik zentral sind: hohe akustische Durchsetzung, dichte unisono/heterophone Bläsersätze, asymmetrische Metren (<span class="interactive-term" data-term="Aksak">aksak</span>) sowie die körperlich-räumliche Performance (Straße/Parade/Festival).
+            </p>
+            <p>
+                Die rhythmische Grammatik vieler Repertoires lässt sich analytisch als Subdivisionsmuster (z.B. 7/8 = 2+2+3 oder 3+2+2; 9/8 = 2+2+2+3; 11/16 = 2+2+3+2+2) beschreiben.
+                Gleichzeitig zeigen mikrozeitliche Studien, dass reale Aufführungspraxis systematisch von einer „starren 2:3-Proportionsidee“ abweichen kann (Phrasenenden, Gruppierungslogik, Interaktion, Spieltechnik).
+                Für Arrangement/Produktion ist das praktisch: Groove entsteht nicht nur aus der Notation, sondern aus Akzentdesign + Mikrotiming + Registergewichtung.
+            </p>
+            <p>
+                Produktionstechnisch bedeutet Balkan-Brass fast immer: viel Schalldruck und Impulsivität (Schlagwerk + Blechattacke).
+                Messdaten aus Akustik/Recording-Praxis zeigen, dass Trompete (bis extrem forte) und Percussion sehr hohe Spitzenpegel erzeugen können; Percussion ist zudem häufig hoch-impulsiv (hohe Crest-Faktoren/Peaks).
+                Konsequenz: Headroom-Management, Transientensteuerung, Bus-Strategien und spektrale Entflechtung sind wichtiger als „HiFi-Perfektion“.
+            </p>
+            <p>
+                Im Mix bewährt sich ein Modell aus (1) Section-Bussen (High Brass / Mid Brass / Bass / Drums), (2) Parallel-Kompression für „Druck ohne Totquetschen“, (3) gezielter EQ (insb. Low-Mid-Aufräumen und 2-4 kHz-Kontrolle), (4) kurzen Raumanteilen (Room/Plate) statt langen Hallfahnen – außer als bewusstes Stilmittel für Bühne/Studio – und (5) für Streaming: Lautheits- und <span class="interactive-term" data-term="True-Peak">True-Peak</span>-Kontrolle unter Normalisierung (LUFS).
+            </p>
+        </section>
+
+        <section>
+            <h2>Historischer Kontext und Entwicklungslinien</h2>
+            <p>
+                Bläser- und Blaskapellenkulturen sind global gesehen eng an militärische Institutionen gebunden: Instrumentarium und Organisationsformen westlicher Wind-/Brass-Bands verbreiteten sich historisch durch Militarisierung und Kolonialismus; zugleich wurden lokale Traditionen daraus „lokalisiert“ (Rituale, Prozessionen, Hochzeiten, Straßenfeste).
+                Für Südosteuropa überlagern sich dabei mehrere Linien: Erstens wirkte die osmanische Militärmusik (<span class="interactive-term" data-term="Mehterhane">mehterhane</span>/Janitscharentraditionen) als ein wichtiger Referenz- und Kontaktpunkt in europäischen Militärmusiken; zugleich beeinflusste das osmanische Umfeld die regionale Instrumentenökologie (lautstarke Outdoor-Ensembles, Trommeln/Becken/Schalmeien) – eine Wechselbewegung, die die Forschung für das „lange 19. Jahrhundert“ explizit als transkulturell beschreibt.
+            </p>
+            <p>
+                Zweitens entwickelten sich im Raum des heutigen Serbien Brass- und Trompetenpraktiken als rural-städtische Festmusik, stark getragen von Berufsmusikern.
+                Eine zentrale Quelle in deutscher Sprache betont für Südostserbien die Rolle romani Blasmusiker als Kulturvermittler; plausibilisiert wird auch ein Lern-/Transfermoment im Umfeld der Balkankriege 1912/13.
+                Drittens wurde die Tradition im späten 20. und 21. Jahrhundert massiv durch Festivalisierung und Medienökonomien gerahmt: Eine wissenschaftliche Analyse der Guča-Diskurse beschreibt, dass historische Kontinuitäten teilweise unterbrochen waren und die Tradition im Rahmen des Festivals auch als (re-)konstruiert und institutionell beaufsichtigt („Rulebook“, Expertenaufsicht, Normierung von Repertoire/Ästhetik/Technik) verstanden werden kann.
+                Zugleich werden die 1990er Jahre als Phase beschrieben, in der internationale Film- und Weltmusikzirkulation (u.a. Kusturica-Filme, World-Music-Markt) die globale Sichtbarkeit stark erhöhte.
+            </p>
+            <p>
+                Ein tellendes Beispiel für das Zusammenspiel aus Lokalität, Ritual und globaler Wahrnehmung ist das Festival in <span class="interactive-term" data-term="Guča">Guča</span> (Gründung 1961 laut offizieller Festivalchronik).
+                Die offizielle Darstellung betont u.a. militärgeschichtliche Ursprungsnarrative, eine breite Funktion als Begleitmusik für Lebenszyklusrituale sowie Selbstlern-/Gehörtraditionen vieler Spieler.
+                Diese Aussagen sind als festival-eigene Narrative zu lesen, aber sie markieren die Selbstbeschreibung, die den touristisch-kulturellen Rahmen des Genres mitprägt.
+                Zur Größenordnung: Offizielle staatliche Meldungen nennen für einzelne Festivaljahre Erwartungen von „etwa einer halben Million“ Besucher*innen. Solche Zahlen variieren stark je nach Jahr, Zählmethode und Veranstaltungslänge und sollten für wissenschaftliche Argumente trianguliert werden; für Produktionspraxis sind sie dennoch relevant, weil sie die Erwartung extremer Lautheitsumgebungen und einer „Straßen-Ökologie“ der Musik stützen.
+            </p>
+        </section>
+
+        <section>
+            <h2>Asymmetrische Metren und rhythmische Grammatik</h2>
+            <p>
+                <strong>Begriffe und Theoriegerüst (aksak):</strong> In der europäischen Ethnomusikologie wird „aksak“ seit der Rezeption des Begriffs (u.a. bei Constantin Brăiloiu) als Kategorie für „hinkende/irreguläre“ Metren diskutiert; wichtig ist, dass der Begriff historische Vorläufer in bulgarischer Musikologie hat und dass Brăiloiu den türkischen Terminus als musikwissenschaftliche Kategorie universalisiert.
+                Der Überblicksartikel „L'aksak“ diskutiert außerdem die methodische Spannung zwischen (a) Beschreibung über gleichmäßige Subdivisionen (2+3-Logik) und (b) Beschreibung über Long/Short-Kategorien (nicht rein isochron).
+                Warum das für Produktion zählt: Mikrozeitliche Studien zeigen, dass Performer nicht zwingend „metronomisch“ eine fixe 3:2-Proportion realisieren. Vielmehr können Phrasenenden, Gruppierungslogik und Interaktion (z.B. Gesang + Trommel vs. nur Trommel) systematisch Proportionen verschieben.
+                Für Arrangement heißt das: Akzent, Artikulation und Bassfundament müssen so gesetzt werden, dass der Groove auch bei realem Mikrotiming stabil bleibt.
+            </p>
+
+            <h3>Grundprinzip: Subdivisionen als „Lesart“, nicht als Klang-Determinismus</h3>
+            <p>Praktisch arbeitet man in der Produktions-/Arrangementarbeit mit zwei Ebenen gleichzeitig:</p>
+            <ol>
+                <li><strong>Notationsebene (Subdivisionen):</strong> z. B. 7/8 als 2+2+3 (QQS) oder 3+2+2 (SQQ).</li>
+                <li><strong>Performanzebene (Timing/Artikulation):</strong> leichte „Dehnungen“ an Gruppenenden, Vorhalts- und Verzierungsschläge, tapan-/snare-Schnarranteile, Bläserattacken und Atemlogik.</li>
+            </ol>
+
+            <h3>7/8: 2+2+3 (Rachenitsa-Lesart) und 3+2+2 (Horo/Schwer-Lesart)</h3>
+            <p>
+                Typische metrische Unterteilungen und Akzentuierung:
+                <strong>7/8 = 2+2+3 (QQS):</strong> Akzente auf 1, 3, 5 (wenn in Achteln gezählt: 1-2, 3-4, 5-6-7). Diese Lesart wird in der Literatur explizit als „<span class="interactive-term" data-term="Rachenitsa">Rachenitsa</span> in 7/8 (2+2+3)“ beschrieben; sie ist zugleich eng an Wettbewerb/Improvisationspraktiken im Tanz gekoppelt.
+                <strong>7/8 = 3+2+2 (SQQ):</strong> Akzente auf 1, 4, 6. Neuere Mikrozeitstudien zu Tanzliedern aus dem Pirin-Mazedonien-Kontext betonen, dass die „3-Beat long-short-short“-Beschreibung zwar gängig ist, aber nicht zwingend als fixe 2:3-Ratio realisiert wird.
+                Phrasierung: Häufig treten 7/8-Grooves in 2- oder 4-taktigen Phrasen auf; Studien zu Timingvariationen zeigen u.a. Group-final lengthening (Verlängerungen an Gruppen- und Phrasenenden) als wiederkehrendes Phänomen.
+            </p>
+
+            <p><strong>Drum-/Tapan-Denken (ASCII-Akzentmodell, 7/8 = 3+2+2):</strong></p>
+            <pre>
+Zählzeit (8tel): 1 2 3 4 5 6 7
+Akzent:          >     >   >
+"Groß" (tapan):  D     D   D
+"Fein" (tapan):  t t t t t t
+            </pre>
+            <p>
+                Das Modell folgt der in der Forschung beschriebenen Spielweise der großen Zylinder-Trommel (<span class="interactive-term" data-term="Tapan">tapan</span>/davul): Hauptschläge mit schwerem Schlägel, Subdivisionen mit dünnem Stock.
+            </p>
+
+            <h3>9/8: 2+2+2+3 als Produktions-Standard für „laufende“ Oros</h3>
+            <p>
+                9/8 wird in vielen Balkan-Tanz-Kontexten als 2+2+2+3 beschrieben (drei kurze Zweiergruppen + eine Dreiergruppe).
+                Für Produktionspraxis hat das zwei Konsequenzen: (1) die Dreiergruppe eignet sich hervorragend für Kick-Cymbal-„Push“ (Aufschub/Antrieb), (2) Bläserphrasen lassen sich gut als 3x2-Antwort + 3er-„Turnaround“ bauen (Call-Response).
+                Als Referenz für die Notationsidee 2+2+2+3 wird sie in der allgemeinen Aksak-Diskussion und in Tanznotizen/Didaktikmaterialien regelmäßig genannt; entscheidend ist, sie als „Formbaustein“ zu verwenden, nicht als mechanische Schablone.
+            </p>
+
+            <h3>11/8 bzw. 11/16: „Kopanitsa-Logik“ (2+2+3+2+2) als Akzentmatrix</h3>
+            <p>
+                Für 11er-Metren ist in der Praxis (v.a. bulgarische Kontexte) eine 2+2+3+2+2-Akzentmatrix verbreitet (<span class="interactive-term" data-term="Kopanitsa">Kopanitsa</span>).
+                Auch wenn einzelne Quellen aus dem Tanzkontext stammen, sind sie nützlich, weil sie genau das liefern, was Produktion braucht: eine verlässliche Akzentkarte, an die Bass- und Bläserstimmen gekoppelt werden können.
+            </p>
+
+            <h3>„Aksak in der Aufnahme“: Mikrozeit + Ornamentik als Teil des Meters</h3>
+            <p>
+                Zwei Befunde sind für Recording/Mix besonders handfest:
+                1. Long/Short als kognitive Basis, Subdivision als analytische Hilfsebene: Diese Dualität wird explizit diskutiert (L:S-Schema, Grundratio, aber zugleich Relevanz isochroner Untergruppen für Analyse/Beschreibung).
+                2. Timing ist phrasen- und interaktionssensitiv: Messungen zeigen z.B. bei 7/8, dass nicht nur Beats, sondern auch innerhalb der Beat-Substruktur stabile, aber nicht-triviale Proportionen entstehen können; außerdem erscheinen Verlängerungen an bestimmten Positionen (z.B. Übergang zum Downbeat) als „hartes Reset“ des Zyklus.
+                Praktische Konsequenz: Beim Editieren/Comping lieber phrase-basiert schneiden (z.B. 4-Takter), nicht „beat-basiert quantisieren“, wenn der „Balkan-Drive“ authentisch bleiben soll.
+            </p>
+        </section>
+
+        <section>
+            <h2>Instrumente, Ensemble, Orchestrierung, Klanghierarchie</h2>
+            <h3>Typische Besetzung und Stimmhierarchie (Blech)</h3>
+            <p>
+                Eine disziplinäre „Grundidee“ für Balkan-Brass ist die Hierarchie Lead (High Brass) → Mittelstimmen (Tenor/Bariton) → Bassfundament (Tuba/Helikon) → Schlagwerk.
+                Dass diese Idee praktisch wird, sieht man an Quellen, die „klassische“ serbische Blaskapellen-Besetzungen grob als mehrere Trompeten, mehrere Bass-/Tuba-Stimmen, Side Drum und Bass Drum/Cymbals beschreiben; daneben kommen in einigen Regionen auch Saxophone/Klarinetten vor (seltener bzw. regional unterschiedlich).
+                Die folgende Tabelle fasst ein produktionstechnisch nützliches Rollenmodell zusammen.
+            </p>
+
+            <table class="w-full text-left text-sm border-collapse my-4">
+                <thead>
+                    <tr>
+                        <th class="border-b p-2">Register/Instrument</th>
+                        <th class="border-b p-2">Typische Rolle im Arrangement</th>
+                        <th class="border-b p-2">Dynamisches Verhalten</th>
+                        <th class="border-b p-2">Spektraler Schwerpunkt</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Lead-Trompete</td>
+                        <td class="border-b p-2">Melodieführung, Signale, „Rufe“; oft Beginn/Abschluss von Formteilen</td>
+                        <td class="border-b p-2">sehr hohe Spitzen, prägnante Attacke; stark richtungsabhängig</td>
+                        <td class="border-b p-2">Präsenz/Brillanz bis in hohe Obertöne; starke Energie im oberen Mid/High</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">2./3. Trompete(n)</td>
+                        <td class="border-b p-2">Unisono-Doublings, Terz/Quart-Stützstimmen, Antwortfiguren</td>
+                        <td class="border-b p-2">ähnliches Spektrum, „gebundener“, stützt Lautheit</td>
+                        <td class="border-b p-2">oft als „Chorus“ wahrnehmbar</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Tenor-/Baritonhörner</td>
+                        <td class="border-b p-2">Innenstimmen, Gegenlinien, Akkordfüllung; rhythmische Ostinati</td>
+                        <td class="border-b p-2">mittlere Peaks, tragen „Body“</td>
+                        <td class="border-b p-2">Low-Mid bis Mid; entscheidend für „Fülle“ ohne Schärfe</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium"><span class="interactive-term" data-term="Tuba">Tuba</span>/„Bass“/<span class="interactive-term" data-term="Helikon">Helikon</span></td>
+                        <td class="border-b p-2">Bassfundament, Pedale, „Pump“; oft ostinatoartig metrisch stabilisierend</td>
+                        <td class="border-b p-2">große Energiereserven, aber langsamere Transienten als Snare</td>
+                        <td class="border-b p-2">Fundament/Low-Mid; begrenztere Obertonreichweite als Trompete</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Snare/Side Drum</td>
+                        <td class="border-b p-2">Puls, Marsch-Drive, Wirbel, Akzentkaskaden</td>
+                        <td class="border-b p-2">sehr impulsiv, kurze Attack</td>
+                        <td class="border-b p-2">80 Hz-4 kHz (breit), starke Transienten</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Bassdrum/Goč + Becken</td>
+                        <td class="border-b p-2">Downbeats, „Schwung“, formale Marker</td>
+                        <td class="border-b p-2">hohe Peaks, v.a. mit Becken</td>
+                        <td class="border-b p-2">Tiefbass/Low-Mid + breite Hochfrequenzanteile durch Becken</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium"><span class="interactive-term" data-term="Tapan">Tapan</span> (davul)</td>
+                        <td class="border-b p-2">Long/Short-Beats + Subdivisionen (zwei Schlägel/Stocks)</td>
+                        <td class="border-b p-2">sehr körperlich, stark positionsabhängig</td>
+                        <td class="border-b p-2">tiefer Körper + klickige Stockanteile</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium"><span class="interactive-term" data-term="Darbuka">Darbuka</span></td>
+                        <td class="border-b p-2">Subdivisionen, Fills, „Dum/Tek“-Artikulation</td>
+                        <td class="border-b p-2">sehr schnelle Transienten</td>
+                        <td class="border-b p-2">Mid/High-Fokus, definierte Attack</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Schlagwerk: Instrumente und Spieltechniken</h3>
+            <p>
+                <strong>Tapan/Davul (und regionale Terminologie):</strong> Ein einschlägiger Instrumentenüberblick beschreibt die große Zylindertrommel (tapan/davul; regional auch <span class="interactive-term" data-term="Goč">goč</span>/bubanj etc.) als Outdoor-Instrument mit zwei Spielwerkzeugen: Hauptschläge mit einem gebogenen/kräftigen Schlägel (tokmak/čukalka etc.), Unterteilungen mit einem dünnen Stock (çubuk/prčka/prutić etc.). Diese Zweistocklogik ist das zentrale „Produktions-Feature“: Sie erzeugt gleichzeitig Makro-Akzente und Mikro-Puls (Subtactus).
+            </p>
+            <p>
+                <strong>Darbuka (Becher-/Kelchtrommel):</strong> Organologische Arbeiten betonen, dass die Bezeichnung (darbuka vs. dümbelek) kulturell/sozial gerahmt ist; für die Spielpraxis sind Grundschläge wie Dum (Bass) und Tek/Ka (höhere Randanschläge) zentral. Technische Lehr-/Notation-Keys standardisieren zudem Slap/Open-Tone-Vokabular.
+                Impulsivität und Arbeitsschutz als Produktionsrealität: Akustische Messungen von Percussion-Samples zeigen sehr hohe Peak-Werte und betonen „dangerously high“ SPL in Übe-/Raumkontexten; selbst wenn das nicht 1:1 auf Festivalstraßen übertragbar ist, unterstreicht es: Transienten/Peaks dominieren und müssen in Recording/Mix kontrolliert werden (Headroom, Limiter-Strategie, Mikrofonabstand).
+            </p>
+
+            <h3>Melodieführung, Ornamentik, Skalen/Modi und Improvisation</h3>
+            <p>
+                <strong>Ornamentik als Klangdesign:</strong> Eine Quelle zur zurna-Praxis (im davul-zurna / tapan-zurla Kontext) beschreibt Mikrotonalität, Glissandi und schnelle Ornamente (Triller, Nebennoten, Vibrato über Atemdruck) als stilprägend. Auch wenn Brass-Orchester nicht zurna sind, ist die Aussage für Balkan-Ästhetiken relevant, weil viele Brass-Praktiken genau diese „vokale/oboe-artige“ Ornamentik imitieren (Lip-Bends, Falls, schnelle Vorschläge).
+            </p>
+            <p>
+                <strong>Makam-Einflüsse (als Modell, nicht als 1:1-Übernahme):</strong> <span class="interactive-term" data-term="Makam">Makam</span>/Maqam-Theorie beschreibt Modi als Kombinationen aus Tetrachorden/Pentachorden und betont, dass ein taksim/taqsim eine semi-improvisierte Form ist, die Makam-Struktur vorstellt und modulieren kann. Für Balkan-Brass ist entscheidend, dass solche Konzepte als „Orientalitätsmarker“ in Phrase/Ornamentik wirken, selbst wenn viele Ensembles praktisch in (semi-)gleichstufigem Instrumentarium spielen.
+                <span class="interactive-term" data-term="Hicaz">Hicaz</span>/Hijaz-Familie (phrygisch-dominante Anmutung): Ein technischer Überblick zu türkischen Tetrachorden nennt „Hicaz“ als charakteristische Struktur, die in westlicher Terminologie häufig dem „phrygian-dominant“-Klang (inkl. aug. Sekunde) angenähert wird. Für Produktion heißt das: Ornamentik und Intonation können bewusst „angeraut“ werden (Bends, Scoops), ohne zwingend mikrotonal notieren zu müssen.
+            </p>
+        </section>
+
+        <section>
+            <h2>Arrangementpraxis und regionale Stilvarianten</h2>
+            <h3>Konkrete Arrangement-Empfehlungen</h3>
+            <p>Stimmaufteilung als „Energiepyramide“ – ein praxistaugliches Standardmodell ist:</p>
+            <ul>
+                <li><strong>Lead-Trompete:</strong> Melody/Calls (meist im obersten Register, klare Artikulation, kurze Atempausen als „Punch“)</li>
+                <li><strong>High-Brass-Layer:</strong> Unisono-Verdichtung oder parallele Terz/Sext (je nach Region)</li>
+                <li><strong>Mid-Brass (Tenor/Bariton):</strong> rhythmische Gegenbewegung (Offbeats/Antworten), Akkordkerne (3/5/7), gelegentlich melodische „Schattenlinie“</li>
+                <li><strong>Tuba/Helikon:</strong> ostinates Fundament, das den Aksak nicht nur zählt, sondern „schiebt“ (Akzent auf Long-Beats, Antizipation vor Gruppenenden)</li>
+                <li><strong>Drums:</strong> duale Ebene aus „Makro-Beat“ (Downbeats, Long-Beats) und „Mikro-Puls“ (Subdivisionen, Wirbel, Ghosts)</li>
+            </ul>
+            <p>
+                <strong>Voicings:</strong> konkret und robust (für laute Umgebungen). Unisono + Oktaven als Default, weil sie bei Noise/Festivalcrowd am stabilsten „durchkommen“ und Intonationsstreuung weniger problematisch ist. „Innenstimmen sparsam“: Wenn Tenor/Bariton Akkorde füllt, dann bevorzugt Quinten/Quarten + Terz als Farbe, nicht als dichtes Jazz-Cluster.
+                <strong>Call-and-Response-Schablone (8-16 Takte):</strong> Call (Lead-Trompete) = 2 Takte, Response (Trompeten-Chorus + Tenor/Bariton) = 2 Takte, „Turnaround“ = 1 Takt (meist auf der „langen“ Gruppe des Aksak). Bass/Drums bleiben konstant als Groove-Anker.
+                <strong>Soli platzieren:</strong> Für Soli empfiehlt sich eine zeitlich klar definierte „Lücke“ im High-Brass-Layer (z.B. nur eine Trompete + Bass + reduziertes Schlagwerk), weil sonst Maskierung im Präsenzbereich entsteht.
+            </p>
+
+            <h3>Regionale Unterschiede mit Referenzaufnahmen</h3>
+            <table class="w-full text-left text-sm border-collapse my-4">
+                <thead>
+                    <tr>
+                        <th class="border-b p-2">Region</th>
+                        <th class="border-b p-2">Stilmarker</th>
+                        <th class="border-b p-2">Typische Metren</th>
+                        <th class="border-b p-2">Worauf beim Hören achten</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Serbien</td>
+                        <td class="border-b p-2">Festivalisierung (Guča), starke Trompetenführung, Romani-Brass</td>
+                        <td class="border-b p-2">häufig 2/4-basierte Tänze + Aksak-Inseln</td>
+                        <td class="border-b p-2">High-Brass, schnelle Attacks; „Druck“ durch Bass+Snare</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Nordmazedonien</td>
+                        <td class="border-b p-2">„Romska orientalna muzika“, starker Aksak-Fußabdruck, tapan-Logik</td>
+                        <td class="border-b p-2">7/8 (3+2+2), 9/8 (2+2+2+3) häufig</td>
+                        <td class="border-b p-2">Dichtes Subdivisionen; Mid-Brass als „Motor“; Breaks oft an Gruppenenden</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Bulgarien</td>
+                        <td class="border-b p-2">Starke Aksak-Diversität (Rachenitsa/Kopanitsa), Mikrozeit-Debatten</td>
+                        <td class="border-b p-2">7/8 (2+2+3 / 3+2+2), 11/16 (2+2+3+2+2)</td>
+                        <td class="border-b p-2">Achte auf „Long-Short“-Drive und (evtl.) weniger starre 2:3-Proportion; häufige „Push“-Akzente</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Rumänien</td>
+                        <td class="border-b p-2">Virtuose „Speed-Brass“-Ästhetik, hohe Präzision, schnelle Tempi</td>
+                        <td class="border-b p-2">häufig schnelle 2/4-/6/8-Derivate plus regionale Mischformen</td>
+                        <td class="border-b p-2">„Breakneck tempos“, sehr „tightes“ Unisono; Mix-Referenz: Transienten bleiben trotz Tempo lesbar</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Kosovo / Bosnien und Herzegowina</td>
+                        <td class="border-b p-2">Repertoires aus Kosovo zirkulieren in Hochzeiten; Osmanische Militärmusikspuren + Hybridformen</td>
+                        <td class="border-b p-2">Suite in 7/8 dokumentiert; Metren kontextabhängig</td>
+                        <td class="border-b p-2">7/8 als Suite-Struktur; Achte auf Übergänge zwischen Songteilen; Mischung aus Brass + Vocals + zusätzl. Instrumenten</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>Mixing, Sounddesign und Mastering</h2>
+            <h3>Ausgangslage: Pegel, Transienten, Spektrum</h3>
+            <p>
+                Brass + Percussion sind in Balkan-Settings physisch laut. Trompete erreicht extreme forte SPL-Regionen; Snare/Bassdrum/Becken sind ebenfalls hochpegelig und extrem transientenreich. Zusätzlich zeigen akustische Messungen von Percussion-Samples sehr hohe Peak-SPL und betonen die Impulsivität (Crest-Faktoren). Daraus folgt: Preamp-Headroom, Pad-Nutzung, Abstand/Off-Axis und Peak-Management sind kein Luxus, sondern Grundbedingung.
+            </p>
+
+            <h3>Signalfluss: „Section-Bus + Parallel + kontrollierter Raum“</h3>
+            <div class="mermaid">
+            flowchart LR
+                A[Tracking: Close Mics / Stereo Pair / Room] --> B[Editing: phrase-based comping]
+                B--> C1[High Brass Bus\n(Lead+Trumpet stack)]
+                B--> C2[Mid Brass Bus\n(Tenor/Bariton)]
+                B--> C3[Bass Bus\n(Tuba/Helikon)]
+                B--> C4[Drum Bus\n(Snare/Tapan/Bassdrum/Cymbals/Darbuka)]
+                C1 --> D[Mix Bus]
+                C2 --> D
+                C3 --> D
+                C4 --> D
+                C1 --> P1[Parallel Comp: Brass Smash]
+                C4 --> P2[Parallel Comp: Drum Crunch]
+                P1 --> D
+                P2 --> D
+                D --> R1[Reverb Sends\n(Room/Plate)]
+                R1 --> D
+                D--> M[Master: Loudness + True Peak + Translation Checks]
+            </div>
+            <p>
+                Das Bus-Modell ist eine direkte Ableitung aus (a) stark registerbezogener Klanghierarchie und (b) dem Bedarf, Transienten (Drums) und Präsenz (Brass) getrennt zu steuern.
+            </p>
+
+            <h3>Preset-artige Einstellungen (Startpunkte)</h3>
+            <table class="w-full text-left text-sm border-collapse my-4">
+                <thead>
+                    <tr>
+                        <th class="border-b p-2">Target</th>
+                        <th class="border-b p-2">Kompressor-Typ</th>
+                        <th class="border-b p-2">Ratio</th>
+                        <th class="border-b p-2">Attack</th>
+                        <th class="border-b p-2">Release</th>
+                        <th class="border-b p-2">EQ-Startpunkte (Hz)</th>
+                        <th class="border-b p-2">Zusätze</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Lead-Trompete</td>
+                        <td class="border-b p-2">FET oder VCA</td>
+                        <td class="border-b p-2">3:1</td>
+                        <td class="border-b p-2">5-10 ms</td>
+                        <td class="border-b p-2">80-100 ms</td>
+                        <td class="border-b p-2">HPF 80-120; -2 dB bei ~3k (Edge); +1-2 dB 10-12k (Air)</td>
+                        <td class="border-b p-2">De-Harsh via dynamischem 2.5-4k; kurze Plate-Send</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Trompeten-Stack</td>
+                        <td class="border-b p-2">VCA</td>
+                        <td class="border-b p-2">2:1-4:1</td>
+                        <td class="border-b p-2">10-30 ms</td>
+                        <td class="border-b p-2">100-200 ms</td>
+                        <td class="border-b p-2">HPF 60-100; Low-Mid-Aufräumen 200-450</td>
+                        <td class="border-b p-2">Parallel „Smash“ statt hartes Bus-Squash</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Tenor/Bariton</td>
+                        <td class="border-b p-2">Opto oder VCA</td>
+                        <td class="border-b p-2">2:1-3:1</td>
+                        <td class="border-b p-2">10-30 ms</td>
+                        <td class="border-b p-2">120-250 ms</td>
+                        <td class="border-b p-2">HPF 40-80; -2 dB 250-400 (Mud); +1 dB 1-2k (Definition)</td>
+                        <td class="border-b p-2">Sidechain-Ducking gegen Lead (leicht)</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Tuba/Helikon</td>
+                        <td class="border-b p-2">VCA/VariMu (soft)</td>
+                        <td class="border-b p-2">2:1-4:1</td>
+                        <td class="border-b p-2">20-40 ms</td>
+                        <td class="border-b p-2">150-300 ms</td>
+                        <td class="border-b p-2">HPF 30-40; -2 dB 120-250 (Wummern); +1 dB 700-1k (Ton)</td>
+                        <td class="border-b p-2">Low-End mono, ggf. <span class="interactive-term" data-term="Tape-Sättigung">Tape-Sättigung</span></td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Snare / Side Drum</td>
+                        <td class="border-b p-2">VCA/FET</td>
+                        <td class="border-b p-2">4:1-8:1</td>
+                        <td class="border-b p-2">1-5 ms</td>
+                        <td class="border-b p-2">50-120 ms</td>
+                        <td class="border-b p-2">HPF 80; +2-4 dB 2-4k (Crack); -2 dB 5-8k (Scharfheit)</td>
+                        <td class="border-b p-2"><span class="interactive-term" data-term="Transient Shaper">Transient Shaper</span> Attack wenn Brass maskiert</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Bassdrum/Goč</td>
+                        <td class="border-b p-2">VCA</td>
+                        <td class="border-b p-2">3:1-6:1</td>
+                        <td class="border-b p-2">5-15 ms</td>
+                        <td class="border-b p-2">80-150 ms</td>
+                        <td class="border-b p-2">Kick: 50-80 (Body), 3-5k (Click); Cym: HPF 250-400</td>
+                        <td class="border-b p-2">Cymbal-Dämpfung, <span class="interactive-term" data-term="De-Esser">De-Essing</span> bei 7-10k</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">Tapan (davul)</td>
+                        <td class="border-b p-2">VCA</td>
+                        <td class="border-b p-2">3:1-6:1</td>
+                        <td class="border-b p-2">5-20 ms</td>
+                        <td class="border-b p-2">80-160 ms</td>
+                        <td class="border-b p-2">HPF 40; +2 dB 100-160 (Thump); +1-2 dB 2-3k (Stick)</td>
+                        <td class="border-b p-2">M/S-Room: Cent für Thump, Side für Raum</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Spektralverteilung (praktisches Zielbild)</h3>
+            <p>
+                Eine robuste Produktionsheuristik für Balkan-Brass ist, das Ensemble wie ein „wanderndes PA-System“ zu behandeln: Low gehört Bass+Kick/Goč; Low-Mid muss sauber sein, sonst wird Alles „breiig“; Mid/High-Mid ist Verständlichkeit (Melodie/Attack); High ist Brillanz/Metall (Becken, Luft).
+            </p>
+            <table class="w-full text-left text-sm border-collapse my-4">
+                <thead>
+                    <tr>
+                        <th class="border-b p-2">Band</th>
+                        <th class="border-b p-2">Ziel</th>
+                        <th class="border-b p-2">Hauptträger</th>
+                        <th class="border-b p-2">Gegenmaßnahme</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="border-b p-2 font-medium">30-80 Hz</td>
+                        <td class="border-b p-2">Fundament ohne Wummern</td>
+                        <td class="border-b p-2">Tuba/Helikon, Kick</td>
+                        <td class="border-b p-2">HPF-Disziplin, dynamischer Low-Shelf</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">80-250 Hz</td>
+                        <td class="border-b p-2">Körper/„Bauch“</td>
+                        <td class="border-b p-2">Tuba, Tenor/Bariton, Goč</td>
+                        <td class="border-b p-2">selektives -2 dB (Q mittel), <span class="interactive-term" data-term="Sidechain">Sidechain</span></td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">250-800 Hz</td>
+                        <td class="border-b p-2">Wärme vs. Box</td>
+                        <td class="border-b p-2">Mid-Brass</td>
+                        <td class="border-b p-2">breitbandige Cuts, Arrangement-Lücken</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">1-4 kHz</td>
+                        <td class="border-b p-2">Präsenz/Attack</td>
+                        <td class="border-b p-2">Trompeten, Snare, Stick</td>
+                        <td class="border-b p-2">dynamischer EQ, De-Harsh, Off-Axis</td>
+                    </tr>
+                    <tr>
+                        <td class="border-b p-2 font-medium">6-12 kHz</td>
+                        <td class="border-b p-2">Luft/Metall</td>
+                        <td class="border-b p-2">Becken, Trompete-Obertöne</td>
+                        <td class="border-b p-2">LPF auf Returns, De-Essing</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Straßen/Festival vs Bühne/Studio</h3>
+            <p>
+                <strong>Straße/Parade:</strong> Bevorzugt Unisono/Oktave, kurze Riffs, klare Bassanker, häufige Wiederholungen. Mikrofonierung priorisiert Robustheit gegen SPL und Wind; Stereo-Paar (ORTF/XY) + wenige Close-Mics. Mix: eher kurze Räume, harte Kontrolle von Low-Mid-Matsch.
+                <strong>Bühne/Studio:</strong> Mehr Platz für Innenstimmen, Zwischenharmonien, längere Formen. Mehr Kontrolle über Off-Axis-Färbung und Platzierung. Reverb: Aux/Return-Modell mit EQ-Filtern vor dem Reverb und ggf. Ducking.
+            </p>
+
+            <h3>Ensemble-Layout (Mermaid): Bühne vs Straße</h3>
+            <div class="mermaid">
+            flowchart TB
+                subgraph Street [Strasse/Parade]
+                    D1[Tapan/Goč + Cymbals\n(zentral, Puls)]
+                    B1[Tuba/Helikon\n(nahe Drums)]
+                    M1[Tenor/Bariton\n(Seitlich, Füllung)]
+                    H1[Trumpets (Lead vorn)\nRufe/Antworten]
+                end
+                subgraph Stage [Buehne/Studio]
+                    D2[Drumline\n(Snare + BD Cym ggf. Tapan)]
+                    B2[Tuba/Helikon Backline]
+                    M2[Mid Brass Center-Left/Right]
+                    H2[Lead/High Brass Frontline]
+                    R[Room Mics / Audience / Ambience]
+                end
+            </div>
+            <p>
+                Das Layout spiegelt die in Quellen beschriebene Funktionalität wider: Drums als strukturierender Kern, Bass nahe am Puls, Lead-Trompete als „Front-Fokus“ und der Rest als klangliche Füllung/Antwort.
+            </p>
+        </section>
+    `
     },
     andean_ensemble: {
         id: 'andean_ensemble',
