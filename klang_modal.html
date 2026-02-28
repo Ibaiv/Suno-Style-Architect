@@ -1,0 +1,714 @@
+    <!-- ### KLANG-STUDIO MODAL (Full Screen - Fixed Layout) ### -->
+    <div id="klang-studio-modal" class="fixed inset-0 z-[130] hidden">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/95 backdrop-blur-xl"></div>
+
+        <!-- Modal Container -->
+        <div class="relative w-full h-full flex items-center justify-center p-4">
+            <div
+                class="bg-[#0b0b14] border border-neutral-700/50 shadow-2xl rounded-3xl w-[95vw] h-[90vh] overflow-hidden relative ks-layout">
+
+                <!-- Ambient Background Glow -->
+                <div class="absolute inset-0 overflow-hidden pointer-events-none">
+                    <div
+                        class="absolute top-[-20%] left-[-10%] w-[40%] h-[40%] bg-cyan-900/15 rounded-full blur-[100px]">
+                    </div>
+                    <div
+                        class="absolute bottom-[-20%] right-[-10%] w-[40%] h-[40%] bg-teal-900/15 rounded-full blur-[100px]">
+                    </div>
+                </div>
+
+                <!-- Header with Tabs -->
+                <div class="ks-header">
+                    <div class="ks-header-title">
+                        <h2 class="text-2xl font-bold text-white flex items-center gap-3">
+                            <span
+                                class="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-500 to-teal-600 flex items-center justify-center text-base shadow-lg shadow-cyan-900/30">🎛️</span>
+                            Klang-Studio
+                        </h2>
+                        <button id="close-klang-studio"
+                            class="text-neutral-400 hover:text-white bg-white/5 hover:bg-white/10 p-2 rounded-full transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 6 6 18" />
+                                <path d="m6 6 12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div id="ks-module-tabs" class="flex gap-2 overflow-x-auto scrollbar-hide">
+                        <button class="ks-tab active" data-module="synth"><span class="icon">🎹</span> Synth</button>
+                        <button class="ks-tab" data-module="orchestra"><span class="icon">🎻</span> Orchester</button>
+                        <button class="ks-tab" data-module="blender"><span class="icon">🔀</span> Blender</button>
+                        <button class="ks-tab" data-module="vocal"><span class="icon">🎤</span> Vocal</button>
+                        <button class="ks-tab" data-module="rhythm"><span class="icon">🥁</span> Rhythmus</button>
+                        <button class="ks-tab" data-module="ambient"><span class="icon">🌌</span> Ambient</button>
+                    </div>
+                </div>
+
+                <!-- Main Grid -->
+                <div class="ks-main-grid">
+                    <!-- TOP: Module Controls -->
+                    <div class="ks-top-section" id="ks-content-area">
+                        <!-- SYNTH MODULE -->
+                        <div id="ks-module-synth" class="ks-module-content compact active">
+
+                            <!-- Waveform Selection -->
+                            <div class="ks-panel mb-6">
+                                <p class="ks-panel-header">1. Wellenform</p>
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="ks-waveform" value="sawtooth" class="sr-only peer"
+                                            checked>
+                                        <div class="ks-radio-card">
+                                            <span class="ks-card-icon">◢</span>
+                                            <span class="ks-card-label">Sägezahn</span>
+                                        </div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="ks-waveform" value="sine" class="sr-only peer">
+                                        <div class="ks-radio-card">
+                                            <span class="ks-card-icon">∿</span>
+                                            <span class="ks-card-label">Sinus</span>
+                                        </div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="ks-waveform" value="triangle" class="sr-only peer">
+                                        <div class="ks-radio-card">
+                                            <span class="ks-card-icon">△</span>
+                                            <span class="ks-card-label">Dreieck</span>
+                                        </div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="ks-waveform" value="square" class="sr-only peer">
+                                        <div class="ks-radio-card">
+                                            <span class="ks-card-icon">▢</span>
+                                            <span class="ks-card-label">Rechteck</span>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Filter Brightness Slider -->
+                            <div class="ks-panel mb-6">
+                                <p class="ks-panel-header">2. Filter-Charakter</p>
+                                <div class="flex items-center gap-4 mb-3">
+                                    <span class="text-neutral-500 text-sm">Dunkel</span>
+                                    <input type="range" id="ks-filter-slider" min="0" max="100" value="50"
+                                        class="ks-slider flex-1">
+                                    <span class="text-neutral-500 text-sm">Hell</span>
+                                </div>
+                                <p id="ks-filter-label" class="text-center text-cyan-300 text-sm font-medium">
+                                    Warm-Mittig
+                                </p>
+                            </div>
+
+                            <!-- Cutoff Reference -->
+                            <div class="ks-panel mb-6">
+                                <p class="ks-panel-header">3. Cutoff-Referenz</p>
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="ks-cutoff" value="2000" class="sr-only peer">
+                                        <div class="ks-radio-card py-3">
+                                            <span class="ks-card-label">Unter 2kHz</span>
+                                            <span class="ks-card-sublabel">Sehr dunkel</span>
+                                        </div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="ks-cutoff" value="8000" class="sr-only peer" checked>
+                                        <div class="ks-radio-card py-3">
+                                            <span class="ks-card-label">Unter 8kHz</span>
+                                            <span class="ks-card-sublabel">Warm</span>
+                                        </div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="ks-cutoff" value="15000" class="sr-only peer">
+                                        <div class="ks-radio-card py-3">
+                                            <span class="ks-card-label">Unter 15kHz</span>
+                                            <span class="ks-card-sublabel">Offen</span>
+                                        </div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="ks-cutoff" value="none" class="sr-only peer">
+                                        <div class="ks-radio-card py-3">
+                                            <span class="ks-card-label">Kein Cutoff</span>
+                                            <span class="ks-card-sublabel">Volle Helligkeit</span>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Envelope -->
+                            <div class="ks-panel mb-6">
+                                <p class="ks-panel-header">4. Hüllkurve (Envelope)</p>
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="ks-envelope" value="percussive" class="sr-only peer">
+                                        <div class="ks-radio-card py-3">
+                                            <span class="ks-card-label">Perkussiv</span>
+                                            <span class="ks-card-sublabel">Kurzer Attack</span>
+                                        </div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="ks-envelope" value="pad" class="sr-only peer" checked>
+                                        <div class="ks-radio-card py-3">
+                                            <span class="ks-card-label">Pad-artig</span>
+                                            <span class="ks-card-sublabel">Langsam, schwebend</span>
+                                        </div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="ks-envelope" value="plucky" class="sr-only peer">
+                                        <div class="ks-radio-card py-3">
+                                            <span class="ks-card-label">Plucky</span>
+                                            <span class="ks-card-sublabel">Schnell, prägnant</span>
+                                        </div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="ks-envelope" value="sustained" class="sr-only peer">
+                                        <div class="ks-radio-card py-3">
+                                            <span class="ks-card-label">Sustained</span>
+                                            <span class="ks-card-sublabel">Hält lange</span>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Effects -->
+                            <div class="ks-panel mb-6">
+                                <p class="ks-panel-header">5. Effekte</p>
+                                <div class="flex flex-wrap gap-3">
+                                    <label class="cursor-pointer">
+                                        <input type="checkbox" name="ks-effects" value="reverb" class="sr-only peer"
+                                            checked>
+                                        <div class="ks-effect-pill">🌊 Reverb</div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="checkbox" name="ks-effects" value="delay" class="sr-only peer"
+                                            checked>
+                                        <div class="ks-effect-pill">🔁 Delay</div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="checkbox" name="ks-effects" value="chorus" class="sr-only peer">
+                                        <div class="ks-effect-pill">🎭 Chorus</div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="checkbox" name="ks-effects" value="distortion"
+                                            class="sr-only peer">
+                                        <div class="ks-effect-pill">⚡ Distortion</div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="checkbox" name="ks-effects" value="phaser" class="sr-only peer">
+                                        <div class="ks-effect-pill">🌀 Phaser</div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Blend Function -->
+                            <div class="ks-panel">
+                                <p class="ks-panel-header">6. Blend-Funktion</p>
+                                <div class="mb-4">
+                                    <label class="block text-sm text-neutral-400 mb-2">Sekundärer Sound</label>
+                                    <select id="ks-blend-sound" class="ks-select w-full">
+                                        <option value="">Kein Blend</option>
+                                        <optgroup label="Ethnische Instrumente">
+                                            <option value="native_flute">Indigene Amerikanische Flöte</option>
+                                            <option value="shakuhachi">Shakuhachi</option>
+                                            <option value="duduk">Duduk</option>
+                                            <option value="sitar">Sitar</option>
+                                            <option value="erhu">Erhu</option>
+                                        </optgroup>
+                                        <optgroup label="Streicher">
+                                            <option value="violin">Violine</option>
+                                            <option value="cello">Cello</option>
+                                            <option value="strings">Streicher-Ensemble</option>
+                                        </optgroup>
+                                        <optgroup label="Andere">
+                                            <option value="piano">Klavier</option>
+                                            <option value="organ">Orgel</option>
+                                            <option value="harp">Harfe</option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+                                <div class="ks-blend-container">
+                                    <span class="ks-blend-label">Synth</span>
+                                    <div class="ks-blend-slider-container">
+                                        <input type="range" id="ks-blend-ratio" min="0" max="100" value="70"
+                                            class="ks-slider w-full">
+                                        <p id="ks-blend-display" class="ks-blend-percentage">70% Synth / 30% Blend</p>
+                                    </div>
+                                    <span class="ks-blend-label">Blend</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ORCHESTRA DESIGNER MODULE -->
+                        <div id="ks-module-orchestra" class="ks-module-content ks-orch-fullscreen">
+
+                            <!-- Main 3-Column Grid -->
+                            <div class="ks-orch-grid">
+
+                                <!-- LEFT COLUMN: Presets + Token Preview -->
+                                <div class="ks-orch-left">
+                                    <div class="ks-orch-presets-panel">
+                                        <p class="ks-orch-section-title">Orchester-Presets</p>
+                                        <div class="ks-orch-preset-list">
+                                            <button class="ks-orch-preset-btn active" data-preset="symphony">
+                                                <span class="preset-icon">🎼</span>
+                                                <span class="preset-name">Sinfonieorchester</span>
+                                            </button>
+                                            <button class="ks-orch-preset-btn" data-preset="chamber">
+                                                <span class="preset-icon">🎵</span>
+                                                <span class="preset-name">Kammerorchester</span>
+                                            </button>
+                                            <button class="ks-orch-preset-btn" data-preset="quartet">
+                                                <span class="preset-icon">🎻</span>
+                                                <span class="preset-name">Streichquartett</span>
+                                            </button>
+                                            <button class="ks-orch-preset-btn" data-preset="brass">
+                                                <span class="preset-icon">🎺</span>
+                                                <span class="preset-name">Bläserensemble</span>
+                                            </button>
+                                            <button class="ks-orch-preset-btn" data-preset="woodwind">
+                                                <span class="preset-icon">🪈</span>
+                                                <span class="preset-name">Holzbläser</span>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="ks-orch-token-panel">
+                                        <p class="ks-orch-section-title">Token-Vorschau</p>
+                                        <div class="ks-orch-token-display">
+                                            <code id="ks-orch-token-output">> initializing_orchestration_engine...
+> loading_preset: Sinfonieorchester
+> adjusting_section_dynamics:
+  strings(80%), woodwinds(50%)
+> applying_articulations: Legato, Weich
+> room_acoustics: Konzert
+> ready_for_prompt_generation...
+> token_count: 245</code>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- CENTER: Stage Visualization (Bird's-Eye View) -->
+                                <div class="ks-orch-center">
+                                    <div class="ks-orch-stage-birdsview">
+                                        <!-- Stage Floor with Gradient -->
+                                        <div class="ks-orch-stage-floor">
+
+                                            <!-- Row 5 (Back/Top): Percussion -->
+                                            <div class="ks-orch-arc-row ks-orch-arc-5" data-section="percussion">
+                                                <div class="ks-orch-seat-wide active" data-instrument="pauke"
+                                                    data-section="percussion">Pauke</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="pauke"
+                                                    data-section="percussion">Pauke</div>
+                                                <div class="ks-orch-seat-wide" data-instrument="becken"
+                                                    data-section="percussion">Becken</div>
+                                            </div>
+
+                                            <!-- Row 4: Brass -->
+                                            <div class="ks-orch-arc-row ks-orch-arc-4" data-section="brass">
+                                                <div class="ks-orch-seat-wide active" data-instrument="tuba"
+                                                    data-section="brass">Tuba</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="posaune"
+                                                    data-section="brass">Posaune</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="trompete"
+                                                    data-section="brass">Trompete</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="trompete"
+                                                    data-section="brass">Trompete</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="horn"
+                                                    data-section="brass">Horn</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="horn"
+                                                    data-section="brass">Horn</div>
+                                            </div>
+
+                                            <!-- Row 3: Woodwinds -->
+                                            <div class="ks-orch-arc-row ks-orch-arc-3" data-section="woodwinds">
+                                                <div class="ks-orch-seat-wide active" data-instrument="fagott"
+                                                    data-section="woodwinds">Fagott</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="fagott"
+                                                    data-section="woodwinds">Fagott</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="klarinette"
+                                                    data-section="woodwinds">Klarinette</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="klarinette"
+                                                    data-section="woodwinds">Klarinette</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="oboe"
+                                                    data-section="woodwinds">Oboe</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="oboe"
+                                                    data-section="woodwinds">Oboe</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="floete"
+                                                    data-section="woodwinds">Flöte</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="floete"
+                                                    data-section="woodwinds">Flöte</div>
+                                            </div>
+
+                                            <!-- Row 2: Strings (Back - Kontrabass, Cello, Viola) -->
+                                            <div class="ks-orch-arc-row ks-orch-arc-2" data-section="strings">
+                                                <div class="ks-orch-seat-wide active" data-instrument="kontrabass"
+                                                    data-section="strings">Kontrabass</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="kontrabass"
+                                                    data-section="strings">Kontrabass</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="violoncello"
+                                                    data-section="strings">Violoncello</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="violoncello"
+                                                    data-section="strings">Violoncello</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="violoncello"
+                                                    data-section="strings">Violoncello</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="viola"
+                                                    data-section="strings">Viola</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="viola"
+                                                    data-section="strings">Viola</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="viola"
+                                                    data-section="strings">Viola</div>
+                                            </div>
+
+                                            <!-- Row 1 (Front/Bottom): Strings - Violins -->
+                                            <div class="ks-orch-arc-row ks-orch-arc-1" data-section="strings">
+                                                <div class="ks-orch-seat-wide active" data-instrument="zweite-violine"
+                                                    data-section="strings">Zweite Violine</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="zweite-violine"
+                                                    data-section="strings">Zweite Violine</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="zweite-violine"
+                                                    data-section="strings">Zweite Violine</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="erste-violine"
+                                                    data-section="strings">Erste Violine</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="erste-violine"
+                                                    data-section="strings">Erste Violine</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="erste-violine"
+                                                    data-section="strings">Erste Violine</div>
+                                                <div class="ks-orch-seat-wide active" data-instrument="erste-violine"
+                                                    data-section="strings">Erste Violine</div>
+                                            </div>
+
+                                        </div>
+
+                                        <!-- Conductor at Bottom -->
+                                        <div class="ks-orch-conductor-bottom">
+                                            <span class="conductor-icon">🎼</span>
+                                            <span class="conductor-label">Dirigent</span>
+                                        </div>
+
+                                        <!-- Hint -->
+                                        <p class="ks-orch-hint">Klicke auf ein Instrument zum Aktivieren/Deaktivieren
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <!-- RIGHT COLUMN: Section Controls + Features -->
+                                <div class="ks-orch-right">
+                                    <div class="ks-orch-controls-panel">
+                                        <p class="ks-orch-section-title">Sektions-Kontrolle</p>
+
+                                        <!-- Strings -->
+                                        <div class="ks-orch-control-group">
+                                            <div class="ks-orch-control-header">
+                                                <span class="control-name">Streicher</span>
+                                                <span class="control-value" id="ks-strings-value">80%</span>
+                                            </div>
+                                            <input type="range" min="0" max="100" value="80" class="ks-orch-slider"
+                                                data-section="strings" id="ks-strings-slider">
+                                            <div class="ks-orch-tags">
+                                                <button class="ks-orch-tag active" data-tag="legato">Legato</button>
+                                                <button class="ks-orch-tag" data-tag="staccato">Staccato</button>
+                                                <button class="ks-orch-tag" data-tag="pizzicato">Pizzicato</button>
+                                            </div>
+                                        </div>
+
+                                        <!-- Woodwinds -->
+                                        <div class="ks-orch-control-group">
+                                            <div class="ks-orch-control-header">
+                                                <span class="control-name">Holzbläser</span>
+                                                <span class="control-value" id="ks-woodwinds-value">55%</span>
+                                            </div>
+                                            <input type="range" min="0" max="100" value="55" class="ks-orch-slider"
+                                                data-section="woodwinds" id="ks-woodwinds-slider">
+                                            <div class="ks-orch-tags">
+                                                <button class="ks-orch-tag active" data-tag="weich">Weich</button>
+                                                <button class="ks-orch-tag" data-tag="brilliant">Brilliant</button>
+                                            </div>
+                                        </div>
+
+                                        <!-- Brass -->
+                                        <div class="ks-orch-control-group">
+                                            <div class="ks-orch-control-header">
+                                                <span class="control-name">Blechbläser</span>
+                                                <span class="control-value" id="ks-brass-value">40%</span>
+                                            </div>
+                                            <input type="range" min="0" max="100" value="40" class="ks-orch-slider"
+                                                data-section="brass" id="ks-brass-slider">
+                                            <div class="ks-orch-tags">
+                                                <button class="ks-orch-tag" data-tag="muted">Muted</button>
+                                                <button class="ks-orch-tag active" data-tag="open">Open</button>
+                                            </div>
+                                        </div>
+
+                                        <!-- Percussion -->
+                                        <div class="ks-orch-control-group">
+                                            <div class="ks-orch-control-header">
+                                                <span class="control-name">Percussion</span>
+                                                <span class="control-value" id="ks-percussion-value">25%</span>
+                                            </div>
+                                            <input type="range" min="0" max="100" value="25" class="ks-orch-slider"
+                                                data-section="percussion" id="ks-percussion-slider">
+                                            <div class="ks-orch-tags">
+                                                <button class="ks-orch-tag active" data-tag="dezent">Dezent</button>
+                                                <button class="ks-orch-tag" data-tag="dramatisch">Dramatisch</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="ks-orch-features-panel">
+                                        <p class="ks-orch-section-title">Zusätzliche Features</p>
+
+                                        <div class="ks-orch-feature-row">
+                                            <label class="feature-label">Solo-Instrument</label>
+                                            <select class="ks-orch-select" id="ks-solo-instrument">
+                                                <option value="none">None</option>
+                                                <option value="violin">Solo Violin</option>
+                                                <option value="flute">Flute</option>
+                                                <option value="trumpet">Trumpet</option>
+                                                <option value="cello">Cello</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="ks-orch-feature-row">
+                                            <label class="feature-label">Artikulation</label>
+                                            <select class="ks-orch-select" id="ks-articulation">
+                                                <option value="standard">Standard</option>
+                                                <option value="espressivo">Espressivo</option>
+                                                <option value="marcato">Marcato</option>
+                                                <option value="tremolo">Tremolo</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="ks-orch-feature-row">
+                                            <label class="feature-label">Dynamik-Kurve</label>
+                                            <div class="ks-orch-dynamics">
+                                                <span class="dynamics-label">pp</span>
+                                                <input type="range" min="0" max="100" value="60"
+                                                    class="ks-orch-slider dynamics-slider" id="ks-dynamics-slider">
+                                                <span class="dynamics-label">ff</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- BOTTOM: Room Acoustics & Effects -->
+                            <div class="ks-orch-bottom">
+                                <p class="ks-orch-section-title">Raumakustik & Effekte</p>
+
+                                <div class="ks-orch-bottom-grid">
+                                    <!-- Room Presets -->
+                                    <div class="ks-orch-room-presets">
+                                        <button class="ks-orch-room-btn" data-room="intimate">
+                                            <span class="room-icon">🏠</span>
+                                            <span class="room-name">Intim</span>
+                                        </button>
+                                        <button class="ks-orch-room-btn active" data-room="concert">
+                                            <span class="room-icon">🏛️</span>
+                                            <span class="room-name">Konzert</span>
+                                        </button>
+                                        <button class="ks-orch-room-btn" data-room="cathedral">
+                                            <span class="room-icon">⛪</span>
+                                            <span class="room-name">Kathedrale</span>
+                                        </button>
+                                        <button class="ks-orch-room-btn" data-room="studio">
+                                            <span class="room-icon">🎬</span>
+                                            <span class="room-name">Studio</span>
+                                        </button>
+                                    </div>
+
+                                    <!-- Effect Sliders -->
+                                    <div class="ks-orch-effect-sliders">
+                                        <div class="ks-orch-effect-row">
+                                            <div class="effect-info">
+                                                <span class="effect-name">Hall-Intensität</span>
+                                                <span class="effect-value" id="ks-hall-value">60%</span>
+                                            </div>
+                                            <input type="range" min="0" max="100" value="60"
+                                                class="ks-orch-slider effect-slider" data-effect="hall"
+                                                id="ks-hall-slider">
+                                            <span class="effect-label" id="ks-hall-label">Warmer Saal</span>
+                                        </div>
+
+                                        <div class="ks-orch-effect-row">
+                                            <div class="effect-info">
+                                                <span class="effect-name">Echo-Tiefe</span>
+                                                <span class="effect-value" id="ks-echo-value">35%</span>
+                                            </div>
+                                            <input type="range" min="0" max="100" value="35"
+                                                class="ks-orch-slider effect-slider" data-effect="echo"
+                                                id="ks-echo-slider">
+                                            <span class="effect-label" id="ks-echo-label">Subtiles Echo</span>
+                                        </div>
+
+                                        <div class="ks-orch-effect-row">
+                                            <div class="effect-info">
+                                                <span class="effect-name">Luftigkeit</span>
+                                                <span class="effect-value" id="ks-air-value">65%</span>
+                                            </div>
+                                            <input type="range" min="0" max="100" value="65"
+                                                class="ks-orch-slider effect-slider" data-effect="air"
+                                                id="ks-air-slider">
+                                            <span class="effect-label" id="ks-air-label">Offen-Transparent</span>
+                                        </div>
+
+                                        <div class="ks-orch-effect-row">
+                                            <div class="effect-info">
+                                                <span class="effect-name">Wärme</span>
+                                                <span class="effect-value" id="ks-warmth-value">55%</span>
+                                            </div>
+                                            <input type="range" min="0" max="100" value="55"
+                                                class="ks-orch-slider effect-slider" data-effect="warmth"
+                                                id="ks-warmth-slider">
+                                            <span class="effect-label" id="ks-warmth-label">Warm-Mittig</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- INSTRUMENT BLENDER MODULE -->
+                        <div id="ks-module-blender" class="ks-module-content max-w-4xl mx-auto">
+
+                            <div class="ks-panel mb-6">
+                                <p class="ks-panel-header">Primärklang</p>
+                                <select id="ks-primary-sound" class="ks-select w-full">
+                                    <optgroup label="Synthesizer">
+                                        <option value="synth_pad">Synth Pad</option>
+                                        <option value="synth_lead" selected>Synth Lead</option>
+                                        <option value="synth_bass">Synth Bass</option>
+                                        <option value="synth_pluck">Synth Pluck</option>
+                                    </optgroup>
+                                    <optgroup label="Streicher">
+                                        <option value="violin">Violine</option>
+                                        <option value="cello">Cello</option>
+                                        <option value="string_section">Streicher-Sektion</option>
+                                    </optgroup>
+                                    <optgroup label="Tasten">
+                                        <option value="piano">Klavier</option>
+                                        <option value="organ">Orgel</option>
+                                        <option value="electric_piano">E-Piano</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+
+                            <div class="ks-panel mb-6">
+                                <p class="ks-panel-header">Sekundärklang (Blend-Partner)</p>
+                                <select id="ks-secondary-sound" class="ks-select w-full">
+                                    <optgroup label="Ethnisch">
+                                        <option value="sitar">Sitar</option>
+                                        <option value="shakuhachi" selected>Shakuhachi</option>
+                                        <option value="duduk">Duduk</option>
+                                        <option value="pan_flute">Panflöte</option>
+                                        <option value="native_flute">Indigene Flöte</option>
+                                        <option value="erhu">Erhu</option>
+                                        <option value="koto">Koto</option>
+                                    </optgroup>
+                                    <optgroup label="Bläser">
+                                        <option value="flute">Flöte</option>
+                                        <option value="clarinet">Klarinette</option>
+                                        <option value="saxophone">Saxophon</option>
+                                    </optgroup>
+                                    <optgroup label="Andere">
+                                        <option value="harp">Harfe</option>
+                                        <option value="guitar">Gitarre</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+
+                            <div class="ks-panel mb-6">
+                                <p class="ks-panel-header">Mix-Verhältnis</p>
+                                <div class="ks-blend-container">
+                                    <span class="ks-blend-label text-pink-400">Primär</span>
+                                    <div class="ks-blend-slider-container">
+                                        <input type="range" id="ks-blender-ratio" min="0" max="100" value="60"
+                                            class="ks-slider w-full">
+                                        <p id="ks-blender-display" class="ks-blend-percentage">60% Primär / 40% Sekundär
+                                        </p>
+                                    </div>
+                                    <span class="ks-blend-label text-pink-400">Sekundär</span>
+                                </div>
+                            </div>
+
+                            <div class="ks-panel">
+                                <p class="ks-panel-header">Blend-Modus</p>
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="ks-blend-mode" value="harmonic" class="sr-only peer"
+                                            checked>
+                                        <div class="ks-radio-card py-3">
+                                            <span class="ks-card-icon">🎶</span>
+                                            <span class="ks-card-label">Harmonisch</span>
+                                        </div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="ks-blend-mode" value="contrast" class="sr-only peer">
+                                        <div class="ks-radio-card py-3">
+                                            <span class="ks-card-icon">⚡</span>
+                                            <span class="ks-card-label">Kontrastierend</span>
+                                        </div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="ks-blend-mode" value="layered" class="sr-only peer">
+                                        <div class="ks-radio-card py-3">
+                                            <span class="ks-card-icon">📚</span>
+                                            <span class="ks-card-label">Layered</span>
+                                        </div>
+                                    </label>
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="ks-blend-mode" value="freq_split"
+                                            class="sr-only peer">
+                                        <div class="ks-radio-card py-3">
+                                            <span class="ks-card-icon">📊</span>
+                                            <span class="ks-card-label">Frequenz-Split</span>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- VOCAL MODULE (Coming Soon) -->
+                        <div id="ks-module-vocal" class="ks-module-content max-w-4xl mx-auto">
+                            <div class="ks-coming-soon">
+                                <div class="ks-coming-soon-icon">🎤</div>
+                                <p class="ks-coming-soon-text">Vocal-Designer</p>
+                                <p class="ks-coming-soon-sub">Kommt in Phase 2</p>
+                            </div>
+                        </div>
+
+                        <!-- RHYTHM MODULE (Coming Soon) -->
+                        <div id="ks-module-rhythm" class="ks-module-content max-w-4xl mx-auto">
+                            <div class="ks-coming-soon">
+                                <div class="ks-coming-soon-icon">🥁</div>
+                                <p class="ks-coming-soon-text">Rhythmus-Labor</p>
+                                <p class="ks-coming-soon-sub">Kommt in Phase 2</p>
+                            </div>
+                        </div>
+
+                        <!-- AMBIENT MODULE (Coming Soon) -->
+                        <div id="ks-module-ambient" class="ks-module-content max-w-4xl mx-auto">
+                            <div class="ks-coming-soon">
+                                <div class="ks-coming-soon-icon">🌌</div>
+                                <p class="ks-coming-soon-text">Ambient-Architekt</p>
+                                <p class="ks-coming-soon-sub">Kommt in Phase 2</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <!-- BOTTOM SECTION REMOVED - Now integrated in module content -->
+                </div>
+
+                <!-- Footer -->
+                <div class="ks-footer">
+                    <button id="ks-revert-btn" class="ks-footer-btn danger">↩ Revert</button>
+                    <button id="ks-decline-btn" class="ks-footer-btn">✕ Decline</button>
+                    <button id="ks-accept-btn" class="ks-footer-btn primary">✓ Accept</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Context Menu (Global) -->

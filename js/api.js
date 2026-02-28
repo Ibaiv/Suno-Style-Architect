@@ -34,6 +34,15 @@ async function callFalAPI(prompt, options = {}) {
                 output_format: 'png'
             };
 
+            // Nano Banana 2 payload (4x faster, supports resolution & web search)
+            const nanoBanana2Payload = {
+                prompt,
+                num_images: 1,
+                aspect_ratio: '16:9',
+                output_format: 'png',
+                resolution: '1K'
+            };
+
             // Recraft V3 payload
             const recraftPayload = {
                 prompt,
@@ -84,6 +93,7 @@ async function callFalAPI(prompt, options = {}) {
 
             // Select payload based on model
             if (FAL_MODEL === 'fal-ai/nano-banana-pro') return [nanoBananaPayload];
+            if (FAL_MODEL === 'fal-ai/nano-banana-2') return [nanoBanana2Payload];
             if (FAL_MODEL === 'fal-ai/recraft/v3/text-to-image') return [recraftPayload];
             if (FAL_MODEL === 'fal-ai/flux-pro') return [fluxProPayload];
             if (FAL_MODEL === 'fal-ai/flux-pro/kontext') return [fluxKontextPayload];
