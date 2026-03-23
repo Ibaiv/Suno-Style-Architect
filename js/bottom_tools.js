@@ -55,6 +55,11 @@
                 var card = document.createElement('div');
                 card.className = 'bd-tool-card';
                 card.style.animationDelay = ((parseInt(colId, 10) - 1) * 80 + i * 35) + 'ms';
+                card.setAttribute('data-desc', tool.desc);
+                card.setAttribute('data-col', colId);
+                card.setAttribute('data-tool-name', tool.name);
+                card.setAttribute('data-tool-emoji', tool.emoji);
+                card.setAttribute('aria-label', tool.name + ' – ' + tool.desc);
                 card.innerHTML =
                     '<span class="bd-tool-emoji">' + tool.emoji + '</span>' +
                     '<span class="bd-tool-name">' + tool.name + '</span>';

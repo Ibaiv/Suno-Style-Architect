@@ -3743,3 +3743,56 @@ input:checked+.ks-preset-card,
         gap: 6px;
     }
 }
+
+/* ------------------------------------------------------------------ */
+/*  Kachel-System: Tool-Tooltips (#101)                               */
+/* ------------------------------------------------------------------ */
+
+.bd-tooltip {
+    position: absolute;
+    z-index: 50;
+    max-width: 220px;
+    padding: 8px 12px;
+    background: rgba(13, 13, 15, 0.95);
+    border: 1px solid rgba(115, 115, 115, 0.2);
+    border-radius: 8px;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    font-size: 0.7rem;
+    line-height: 1.4;
+    color: rgba(255, 255, 255, 0.85);
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 150ms ease, transform 150ms ease;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.bd-tooltip-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.bd-tooltip-head {
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.95);
+}
+
+.bd-tooltip-desc {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* Spalten-Akzent-Ränder */
+.bd-tooltip-col-1 {
+    border-color: rgba(168, 85, 247, 0.4);
+}
+
+.bd-tooltip-col-2 {
+    border-color: rgba(34, 211, 238, 0.4);
+}
+
+.bd-tooltip-col-3 {
+    border-color: rgba(52, 211, 153, 0.4);
+}
