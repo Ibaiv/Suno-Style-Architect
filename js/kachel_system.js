@@ -766,6 +766,150 @@
     }
 
     /* ------------------------------------------------------------------ */
+    /*  Feature: Keyboard Navigation (#102)                              */
+    /* ------------------------------------------------------------------ */
+
+    var navState = {
+        active: false,
+        col: 1,       // current column (1, 2, 3)
+        index: 0,     // current card index within visible cards
+        lastFocusedCard: null
+    };
+
+    function getVisibleCards(colId) {
+        var list = document.getElementById('bd-list-' + colId);
+        if (!list) return [];
+        return Array.from(list.querySelectorAll('.bd-tool-card:not(.bd-card-hidden)'));
+    }
+
+    function setFocusedCard(col, index) {
+        // Remove previous focus
+        var prev = document.querySelector('.bd-tool-card.bd-kb-focused');
+        if (prev) prev.classList.remove('bd-kb-focused');
+
+        var cards = getVisibleCards(col);
+        if (cards.length === 0) return;
+
+        // Clamp index
+        index = Math.max(0, Math.min(index, cards.length - 1));
+
+        navState.col = col;
+        navState.index = index;
+        navState.active = true;
+
+        var card = cards[index];
+        card.classList.add('bd-kb-focused');
+        card.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        navState.lastFocusedCard = card;
+    }
+
+    function deactivateNav() {
+        navState.active = false;
+        var prev = document.querySelector('.bd-tool-card.bd-kb-focused');
+        if (prev) prev.classList.remove('bd-kb-focused');
+    }
+
+    function initKeyboardNav() {
+        var dashboard = document.querySelector('.bottom-dashboard');
+        if (!dashboard) return;
+
+        // Make all cards programmatically focusable (but not in tab order)
+        var allCards = dashboard.querySelectorAll('.bd-tool-card');
+        allCards.forEach(function (card) {
+            card.setAttribute('tabindex', '-1');
+        });
+
+        // When dashboard receives focus via Tab, activate nav on first card
+        dashboard.addEventListener('focus', function () {
+            if (!navState.active) {
+                setFocusedCard(1, 0);
+            }
+        });
+
+        // Keyboard handler on dashboard
+        dashboard.addEventListener('keydown', function (e) {
+            // Skip if focus is inside a search input
+            var tag = (e.target.tagName || '').toLowerCase();
+            if (tag === 'input' || tag === 'textarea') return;
+
+            var key = e.key;
+
+            if (key === 'ArrowDown') {
+                e.preventDefault();
+                var cards = getVisibleCards(navState.col);
+                if (cards.length === 0) return;
+                var nextIdx = (navState.index + 1) % cards.length;
+                setFocusedCard(navState.col, nextIdx);
+
+            } else if (key === 'ArrowUp') {
+                e.preventDefault();
+                var cardsUp = getVisibleCards(navState.col);
+                if (cardsUp.length === 0) return;
+                var prevIdx = (navState.index - 1 + cardsUp.length) % cardsUp.length;
+                setFocusedCard(navState.col, prevIdx);
+
+            } else if (key === 'ArrowRight') {
+                e.preventDefault();
+                var nextCol = navState.col === 3 ? 1 : navState.col + 1;
+                setFocusedCard(nextCol, navState.index);
+
+            } else if (key === 'ArrowLeft') {
+                e.preventDefault();
+                var prevCol = navState.col === 1 ? 3 : navState.col - 1;
+                setFocusedCard(prevCol, navState.index);
+
+            } else if (key === 'Enter') {
+                e.preventDefault();
+                if (navState.lastFocusedCard) {
+                    navState.lastFocusedCard.click();
+                }
+
+            } else if (key === ' ') {
+                e.preventDefault();
+                if (navState.lastFocusedCard) {
+                    var qaBtn = navState.lastFocusedCard.querySelector('.bd-quick-apply');
+                    if (qaBtn) qaBtn.click();
+                }
+
+            } else if (key === 'Escape') {
+                // Only deactivate nav if no overlay is open
+                var anyOverlayOpen = false;
+                [1, 2, 3].forEach(function (id) {
+                    var ov = document.getElementById('bd-detail-' + id);
+                    if (ov && ov.classList.contains('active')) anyOverlayOpen = true;
+                });
+                if (!anyOverlayOpen) {
+                    deactivateNav();
+                    dashboard.blur();
+                }
+                // Let the existing Escape handler in bottom_tools.js close overlays
+
+            } else if (key === 'Tab') {
+                // Deactivate nav when tabbing out
+                deactivateNav();
+            }
+        });
+
+        // Deactivate when clicking outside the dashboard
+        document.addEventListener('mousedown', function (e) {
+            if (navState.active && !dashboard.contains(e.target)) {
+                deactivateNav();
+            }
+        });
+
+        // Focus restoration after modal/overlay close
+        document.addEventListener('modal:close', function () {
+            if (navState.lastFocusedCard && navState.active) {
+                // Small delay to let the overlay close transition finish
+                setTimeout(function () {
+                    setFocusedCard(navState.col, navState.index);
+                    dashboard.focus({ preventScroll: true });
+                }, 50);
+            }
+        });
+    }
+
+    /* ------------------------------------------------------------------ */
     /*  Bootstrap: warten auf bottomtools:ready                           */
     /* ------------------------------------------------------------------ */
 
@@ -776,6 +920,7 @@
         initSearch();
         initPinning();
         initQuickApply();
+        initKeyboardNav();
         if (!undoInitialized) { initUndo(); undoInitialized = true; }
     });
 

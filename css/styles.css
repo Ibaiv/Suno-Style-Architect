@@ -4016,3 +4016,27 @@ input:checked+.ks-preset-card,
     border-color: rgba(52, 211, 153, 0.5) !important;
     transition: border-color 1.5s ease;
 }
+
+/* === Kachel-System: Keyboard Navigation (#102) === */
+.bd-tool-card.bd-kb-focused {
+    outline: 2px solid rgba(115, 115, 115, 0.5);
+    outline-offset: -1px;
+    z-index: 2;
+}
+.bd-col-purple .bd-tool-card.bd-kb-focused {
+    outline-color: rgba(168, 85, 247, 0.6);
+}
+.bd-col-cyan .bd-tool-card.bd-kb-focused {
+    outline-color: rgba(34, 211, 238, 0.6);
+}
+.bd-col-emerald .bd-tool-card.bd-kb-focused {
+    outline-color: rgba(52, 211, 153, 0.6);
+}
+/* Hide default browser focus outline on cards */
+.bd-tool-card:focus {
+    outline: none;
+}
+/* Dashboard itself when focused — no visible outline */
+.bottom-dashboard:focus {
+    outline: none;
+}
