@@ -563,6 +563,209 @@
     }
 
     /* ------------------------------------------------------------------ */
+    /*  Feature: Quick-Apply Mode (#96)                                  */
+    /* ------------------------------------------------------------------ */
+
+    // Map each buttonId to a function that returns the system prompt.
+    // Expert tools (column 1) use their refiner prompts with a default influence of 50.
+    // Klug tools (column 2) that need only the current prompt are mapped directly.
+    // Tagger tools return comma-separated lists — quick-apply appends them.
+    // Tools requiring complex modal input (synth-designer, genre-mixer, hook-generator,
+    // song-structure, artist-suggester, tempo-finder, narrative-chapters, release-forecast)
+    // are omitted; clicking quick-apply will log a warning.
+
+    var TOOL_PROMPT_MAP = {
+        // Column 1 — Expert Refiners
+        'producer-refine-button':       function () { return PRODUCER_REFINER_PROMPT; },
+        'musician-refine-button':       function () { return MUSICIAN_REFINER_PROMPT; },
+        'composer-refine-button':       function () { return FILM_COMPOSER_REFINER_PROMPT; },
+        'dj-refine-button':            function () { return DJ_REMIXER_REFINER_PROMPT; },
+        'avantgarde-refine-button':     function () { return AVANTGARDE_REFINER_PROMPT; },
+        'minimalist-refine-button':     function () { return MINIMALIST_REFINER_PROMPT; },
+        'vocal-harmony-refine-button':  function () { return VOCAL_HARMONY_REFINER_PROMPT; },
+        'ethno-refine-button':          function () { return ETHNO_REFINER_PROMPT; },
+        'sound-engineer-button':        function () { return SOUND_ENGINEER_PROMPT; },
+
+        // Column 2 — Klug Tools (simple prompt-in/prompt-out)
+        'vibe-enhancer-button':         function () { return VIBE_ENHANCER_PROMPT; },
+        'mood-analyzer-button':         function () { return MOOD_ANALYZER_PROMPT; },
+        'production-finish-button':     function () { return PRODUCTION_FINISH_PROMPT; },
+        'vocal-stylist-button':         function () { return VOCAL_STYLIST_PROMPT; },
+        'groove-meister-button':        function () { return GROOVE_MEISTER_PROMPT; },
+        'performance-coach-button':     function () { return PERFORMANCE_COACH_PROMPT; },
+        'effect-chain-button':          function () { return EFFECT_CHAIN_PROMPT; },
+
+        // Column 3 — Future Lab (prompt-in/prompt-out with structured output)
+        'adaptive-flow-button':         function () { return ADAPTIVE_FLOW_PROMPT; },
+        'ai-collab-button':             function () { return AI_COLLAB_PROMPT; },
+        'story-arc-button':             function () { return STORY_ARC_DESIGNER_PROMPT; },
+        'immersive-space-button':       function () { return IMMERSIVE_SPACE_PROMPT; },
+        'human-touch-button':           function () { return HUMAN_TOUCH_PROMPT; }
+    };
+
+    // Tools whose API response contains structured output (PROMPT:\n...\n---\nNOTES:)
+    // We extract only the prompt portion for quick-apply.
+    var STRUCTURED_RESPONSE_TOOLS = {
+        'adaptive-flow-button': true,
+        'ai-collab-button': true,
+        'story-arc-button': true,
+        'immersive-space-button': true,
+        'human-touch-button': true
+    };
+
+    // Expert tools send influence level — default to 50 for quick-apply
+    var EXPERT_TOOLS = {
+        'producer-refine-button': true,
+        'musician-refine-button': true,
+        'composer-refine-button': true,
+        'dj-refine-button': true,
+        'avantgarde-refine-button': true,
+        'minimalist-refine-button': true,
+        'vocal-harmony-refine-button': true,
+        'ethno-refine-button': true
+    };
+
+    // Tagger tools return comma-separated lists that get appended
+    var TAGGER_TOOLS = {
+        'mood-analyzer-button': true,
+        'production-finish-button': true,
+        'vocal-stylist-button': true,
+        'groove-meister-button': true,
+        'performance-coach-button': true,
+        'effect-chain-button': true
+    };
+
+    var qaQueue = [];
+    var qaRunning = false;
+
+    function quickApplyTool(buttonId, toolName) {
+        if (typeof isPromptGenerated !== 'undefined' && !isPromptGenerated) {
+            return Promise.resolve();
+        }
+
+        var promptFn = TOOL_PROMPT_MAP[buttonId];
+        if (!promptFn) {
+            console.warn('Quick-Apply: Kein Prompt-Mapping für', buttonId);
+            return Promise.resolve();
+        }
+
+        // Capture undo state before modification
+        if (window.BdUndo) {
+            window.BdUndo.captureBeforeApply(toolName);
+        }
+
+        var resultEl = document.getElementById('result-text');
+        var currentText = (resultEl.textContent || '').trim();
+        var sysPrompt = promptFn();
+
+        // Build user message based on tool type
+        var userMsg;
+        if (EXPERT_TOOLS[buttonId]) {
+            userMsg = 'Prompt: "' + currentText + '"\nInfluence Level: 50';
+        } else if (buttonId === 'sound-engineer-button') {
+            userMsg = 'Base prompt: "' + currentText + '"\n\nIncorporate the following specific instructions:\n1. Enhance overall sound quality and polish';
+        } else if (STRUCTURED_RESPONSE_TOOLS[buttonId]) {
+            userMsg = 'Base prompt: "' + currentText + '"';
+            if (buttonId === 'adaptive-flow-button') {
+                userMsg += '\nDynamic intensity (0-100): 65';
+            }
+        } else {
+            userMsg = currentText;
+        }
+
+        return callOpenRouterAPI(userMsg, sysPrompt).then(function (result) {
+            var finalText = result;
+
+            // For structured response tools, extract only the prompt part
+            if (STRUCTURED_RESPONSE_TOOLS[buttonId]) {
+                var parts = result.split('---');
+                if (parts.length > 0) {
+                    finalText = parts[0].replace(/^PROMPT:\s*/i, '').trim();
+                }
+            }
+
+            // For tagger tools, append the tags to the current prompt
+            if (TAGGER_TOOLS[buttonId]) {
+                var trimmedResult = finalText.trim();
+                var trimmedCurrent = currentText.trim();
+                if (trimmedCurrent && trimmedResult) {
+                    var needsSpace = /[.!?…]$/.test(trimmedCurrent) || trimmedCurrent.endsWith(')');
+                    var separator = needsSpace ? ' ' : trimmedCurrent.endsWith(',') ? ' ' : ', ';
+                    finalText = trimmedCurrent + separator + trimmedResult;
+                }
+            }
+
+            resultEl.textContent = finalText;
+            if (window.QW) {
+                window.QW.onPromptUpdated({ source: 'quick-apply:' + toolName });
+            }
+        });
+    }
+
+    function enqueueQuickApply(buttonId, toolName, cardEl) {
+        qaQueue.push({ buttonId: buttonId, toolName: toolName, cardEl: cardEl });
+        cardEl.classList.add('bd-qa-queued');
+        processQueue();
+    }
+
+    function processQueue() {
+        if (qaRunning || qaQueue.length === 0) return;
+        qaRunning = true;
+        var item = qaQueue.shift();
+        item.cardEl.classList.remove('bd-qa-queued');
+        item.cardEl.classList.add('bd-qa-running');
+
+        quickApplyTool(item.buttonId, item.toolName)
+            .catch(function (e) { console.error('Quick-apply Fehler:', e); })
+            .then(function () {  // .then after .catch = finally
+                item.cardEl.classList.remove('bd-qa-running');
+                item.cardEl.classList.add('bd-qa-done');
+                setTimeout(function () { item.cardEl.classList.remove('bd-qa-done'); }, 1500);
+                qaRunning = false;
+                processQueue();
+            });
+    }
+
+    function initQuickApply() {
+        var dashboard = document.querySelector('.bottom-dashboard');
+        if (!dashboard) return;
+
+        // Event delegation on each tool list
+        var lists = dashboard.querySelectorAll('.bd-tool-list');
+        lists.forEach(function (list) {
+            list.addEventListener('click', function (e) {
+                var btn = e.target.closest('.bd-quick-apply');
+                if (!btn) return;
+
+                e.stopPropagation();
+                e.preventDefault();
+
+                // Guard: prompt must exist
+                if (typeof isPromptGenerated !== 'undefined' && !isPromptGenerated) return;
+
+                var buttonId = btn.getAttribute('data-button-id');
+                var toolName = btn.getAttribute('data-tool-name');
+                var cardEl = btn.closest('.bd-tool-card');
+                if (!buttonId || !cardEl) return;
+
+                // Check if this tool has a prompt mapping
+                if (!TOOL_PROMPT_MAP[buttonId]) {
+                    console.warn('Quick-Apply: Tool "' + toolName + '" benötigt die modale Eingabe.');
+                    return;
+                }
+
+                enqueueQuickApply(buttonId, toolName, cardEl);
+            });
+        });
+
+        // Expose API for chain builder (#99)
+        window.BdQuickApply = {
+            enqueue: enqueueQuickApply,
+            getPromptMap: function () { return TOOL_PROMPT_MAP; }
+        };
+    }
+
+    /* ------------------------------------------------------------------ */
     /*  Bootstrap: warten auf bottomtools:ready                           */
     /* ------------------------------------------------------------------ */
 
@@ -572,6 +775,7 @@
         initTooltips();
         initSearch();
         initPinning();
+        initQuickApply();
         if (!undoInitialized) { initUndo(); undoInitialized = true; }
     });
 

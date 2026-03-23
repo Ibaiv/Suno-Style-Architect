@@ -64,7 +64,8 @@
                 card.innerHTML =
                     '<button class="bd-pin-btn" data-button-id="' + tool.buttonId + '" aria-label="Favorit">\u2606</button>' +
                     '<span class="bd-tool-emoji">' + tool.emoji + '</span>' +
-                    '<span class="bd-tool-name">' + tool.name + '</span>';
+                    '<span class="bd-tool-name">' + tool.name + '</span>' +
+                    '<button class="bd-quick-apply" data-button-id="' + tool.buttonId + '" data-tool-name="' + tool.name + '" aria-label="Schnell anwenden" title="Schnell anwenden">\u25B6</button>';
                 card.addEventListener('click', function () {
                     openBdDetail(colId, tool);
                 });

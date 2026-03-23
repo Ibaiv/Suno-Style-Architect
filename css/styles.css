@@ -3956,3 +3956,63 @@ input:checked+.ks-preset-card,
     min-width: 12px;
     text-align: center;
 }
+
+/* === Kachel-System: Quick-Apply (#96) === */
+.bd-quick-apply {
+    position: absolute;
+    bottom: 3px;
+    right: 4px;
+    background: none;
+    border: 1px solid rgba(115, 115, 115, 0.15);
+    font-size: 0.5rem;
+    color: rgba(156, 163, 175, 0.4);
+    cursor: pointer;
+    padding: 1px 4px;
+    line-height: 1;
+    z-index: 2;
+    border-radius: 4px;
+    transition: all 150ms ease;
+}
+.bd-quick-apply:hover {
+    color: #e5e7eb;
+    border-color: rgba(115, 115, 115, 0.4);
+    background: rgba(255, 255, 255, 0.05);
+}
+/* Column accent on hover */
+.bd-col-purple .bd-quick-apply:hover {
+    border-color: rgba(168, 85, 247, 0.4);
+    color: rgba(168, 85, 247, 0.9);
+}
+.bd-col-cyan .bd-quick-apply:hover {
+    border-color: rgba(34, 211, 238, 0.4);
+    color: rgba(34, 211, 238, 0.9);
+}
+.bd-col-emerald .bd-quick-apply:hover {
+    border-color: rgba(52, 211, 153, 0.4);
+    color: rgba(52, 211, 153, 0.9);
+}
+
+/* Running state */
+.bd-qa-running {
+    border-color: rgba(34, 211, 238, 0.5) !important;
+}
+.bd-qa-running .bd-quick-apply {
+    animation: bdQaPulse 1s infinite;
+    color: rgba(34, 211, 238, 0.9);
+}
+@keyframes bdQaPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+
+/* Queued state */
+.bd-qa-queued .bd-quick-apply {
+    color: rgba(251, 191, 36, 0.6);
+    border-color: rgba(251, 191, 36, 0.3);
+}
+
+/* Done flash */
+.bd-qa-done {
+    border-color: rgba(52, 211, 153, 0.5) !important;
+    transition: border-color 1.5s ease;
+}
