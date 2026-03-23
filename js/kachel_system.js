@@ -1294,6 +1294,423 @@
     }
 
     /* ------------------------------------------------------------------ */
+    /*  Feature: Multi-Tool Chain Builder / Visual Pipeline (#99)         */
+    /* ------------------------------------------------------------------ */
+
+    var chainItems = [];  // [{buttonId, toolName, emoji}]
+    var chainRunning = false;
+    var CHAIN_STORAGE_KEY = 'ssa_bd_chains_v1';
+
+    var DEFAULT_CHAIN_PRESETS = [
+        {
+            name: 'Studio Polish',
+            items: [
+                { buttonId: 'producer-refine-button', toolName: 'Produzent', emoji: '\uD83C\uDFA4' },
+                { buttonId: 'production-finish-button', toolName: 'Production-Finish', emoji: '\uD83D\uDC8E' },
+                { buttonId: 'vocal-stylist-button', toolName: 'Vocal-Stylist', emoji: '\uD83D\uDDE3\uFE0F' }
+            ]
+        },
+        {
+            name: 'Full Mix',
+            items: [
+                { buttonId: 'vibe-enhancer-button', toolName: 'Vibe-Veredler', emoji: '\u2728' },
+                { buttonId: 'groove-meister-button', toolName: 'Groove-Meister', emoji: '\uD83E\uDD41' },
+                { buttonId: 'sound-engineer-button', toolName: 'Sound-Ingenieur', emoji: '\uD83D\uDD27' }
+            ]
+        }
+    ];
+
+    var CHAIN_EMPTY_TEXT = 'Klicke \u2295 auf einer Tool-Karte, um sie zur Kette hinzuzuf\u00fcgen';
+
+    function renderChain() {
+        var slots = document.getElementById('bd-chain-slots');
+        var countEl = document.getElementById('bd-chain-count');
+        var runBtn = document.getElementById('bd-chain-run');
+        if (!slots || !countEl || !runBtn) return;
+
+        slots.innerHTML = '';
+
+        if (chainItems.length === 0) {
+            var empty = document.createElement('div');
+            empty.className = 'bd-chain-empty';
+            empty.textContent = CHAIN_EMPTY_TEXT;
+            slots.appendChild(empty);
+            countEl.textContent = '0 Tools';
+            runBtn.disabled = true;
+            return;
+        }
+        countEl.textContent = chainItems.length + (chainItems.length === 1 ? ' Tool' : ' Tools');
+        runBtn.disabled = false;
+
+        chainItems.forEach(function (item, i) {
+            if (i > 0) {
+                var arrow = document.createElement('span');
+                arrow.className = 'bd-chain-arrow';
+                arrow.textContent = '\u2192';
+                slots.appendChild(arrow);
+            }
+            var chip = document.createElement('div');
+            chip.className = 'bd-chain-item';
+            chip.setAttribute('data-idx', i);
+            chip.innerHTML = '<span class="bd-chain-item-emoji">' + item.emoji + '</span>' +
+                '<span class="bd-chain-item-name">' + item.toolName + '</span>' +
+                '<button class="bd-chain-item-remove" data-idx="' + i + '" title="Entfernen">\u2715</button>';
+            slots.appendChild(chip);
+        });
+    }
+
+    function addToChain(buttonId, toolName, emoji) {
+        chainItems.push({ buttonId: buttonId, toolName: toolName, emoji: emoji });
+        renderChain();
+    }
+
+    function removeFromChain(idx) {
+        if (idx >= 0 && idx < chainItems.length) {
+            chainItems.splice(idx, 1);
+            renderChain();
+        }
+    }
+
+    function clearChain() {
+        chainItems = [];
+        renderChain();
+    }
+
+    function runChain() {
+        if (chainItems.length === 0 || chainRunning) return;
+        if (typeof isPromptGenerated !== 'undefined' && !isPromptGenerated) return;
+
+        chainRunning = true;
+        var runBtn = document.getElementById('bd-chain-run');
+        if (runBtn) {
+            runBtn.disabled = true;
+            runBtn.textContent = '\u23F3 L\u00e4uft\u2026';
+        }
+
+        // Single undo entry for entire chain
+        var chainName = 'Kette: ' + chainItems.map(function (c) { return c.toolName; }).join(' \u2192 ');
+        if (window.BdUndo) window.BdUndo.captureBeforeApply(chainName);
+
+        var progressBar = document.getElementById('bd-chain-progress-bar');
+        var progress = document.getElementById('bd-chain-progress');
+        if (progress) progress.classList.add('bd-chain-progress-active');
+
+        var promptMap = window.BdQuickApply ? window.BdQuickApply.getPromptMap() : {};
+
+        var promise = Promise.resolve();
+        var itemsCopy = chainItems.slice(); // snapshot
+
+        itemsCopy.forEach(function (item, i) {
+            promise = promise.then(function () {
+                // Update progress
+                var pct = ((i + 1) / itemsCopy.length * 100);
+                if (progressBar) progressBar.style.width = pct + '%';
+
+                // Highlight current step
+                var chips = document.querySelectorAll('.bd-chain-item');
+                chips.forEach(function (c, j) {
+                    c.classList.remove('bd-chain-item-active', 'bd-chain-item-done');
+                    if (j < i) c.classList.add('bd-chain-item-done');
+                    if (j === i) c.classList.add('bd-chain-item-active');
+                });
+
+                var promptFn = promptMap[item.buttonId];
+                if (!promptFn) {
+                    console.warn('Chain: kein Prompt f\u00fcr', item.buttonId);
+                    return Promise.resolve();
+                }
+
+                var resultEl = document.getElementById('result-text');
+                var currentText = (resultEl.textContent || '').trim();
+
+                // Build user message based on tool type (same logic as quickApplyTool)
+                var userMsg;
+                if (EXPERT_TOOLS[item.buttonId]) {
+                    userMsg = 'Prompt: "' + currentText + '"\nInfluence Level: 50';
+                } else if (item.buttonId === 'sound-engineer-button') {
+                    userMsg = 'Base prompt: "' + currentText + '"\n\nIncorporate the following specific instructions:\n1. Enhance overall sound quality and polish';
+                } else if (STRUCTURED_RESPONSE_TOOLS[item.buttonId]) {
+                    userMsg = 'Base prompt: "' + currentText + '"';
+                    if (item.buttonId === 'adaptive-flow-button') {
+                        userMsg += '\nDynamic intensity (0-100): 65';
+                    }
+                } else {
+                    userMsg = currentText;
+                }
+
+                return callOpenRouterAPI(userMsg, promptFn()).then(function (result) {
+                    var finalText = result;
+
+                    // For structured response tools, extract only the prompt part
+                    if (STRUCTURED_RESPONSE_TOOLS[item.buttonId]) {
+                        var parts = result.split('---');
+                        if (parts.length > 0) {
+                            finalText = parts[0].replace(/^PROMPT:\s*/i, '').trim();
+                        }
+                    }
+
+                    // For tagger tools, append tags
+                    if (TAGGER_TOOLS[item.buttonId]) {
+                        var trimmedResult = finalText.trim();
+                        var trimmedCurrent = currentText.trim();
+                        if (trimmedCurrent && trimmedResult) {
+                            var needsSpace = /[.!?…]$/.test(trimmedCurrent) || trimmedCurrent.endsWith(')');
+                            var separator = needsSpace ? ' ' : trimmedCurrent.endsWith(',') ? ' ' : ', ';
+                            finalText = trimmedCurrent + separator + trimmedResult;
+                        }
+                    }
+
+                    resultEl.textContent = finalText;
+                });
+            });
+        });
+
+        return promise.then(function () {
+            // Mark all done
+            document.querySelectorAll('.bd-chain-item').forEach(function (c) {
+                c.classList.remove('bd-chain-item-active');
+                c.classList.add('bd-chain-item-done');
+            });
+
+            // Cleanup after a short delay
+            setTimeout(function () {
+                if (progress) progress.classList.remove('bd-chain-progress-active');
+                if (progressBar) progressBar.style.width = '0%';
+                document.querySelectorAll('.bd-chain-item').forEach(function (c) {
+                    c.classList.remove('bd-chain-item-done');
+                });
+            }, 1500);
+
+            chainRunning = false;
+            if (runBtn) {
+                runBtn.disabled = false;
+                runBtn.textContent = '\u25B6 Ausf\u00fchren';
+            }
+            if (window.QW) window.QW.onPromptUpdated({ source: 'chain' });
+        }).catch(function (e) {
+            console.error('Chain Fehler:', e);
+            chainRunning = false;
+            if (runBtn) {
+                runBtn.disabled = false;
+                runBtn.textContent = '\u25B6 Ausf\u00fchren';
+            }
+            if (progress) progress.classList.remove('bd-chain-progress-active');
+            if (progressBar) progressBar.style.width = '0%';
+        });
+    }
+
+    function loadChainPresets() {
+        try {
+            var stored = localStorage.getItem(CHAIN_STORAGE_KEY);
+            if (stored) return JSON.parse(stored);
+        } catch (e) { /* ignore */ }
+        return [];
+    }
+
+    function saveChainPresets(presets) {
+        try {
+            localStorage.setItem(CHAIN_STORAGE_KEY, JSON.stringify(presets));
+        } catch (e) { /* quota exceeded */ }
+    }
+
+    function saveCurrentChain() {
+        if (chainItems.length === 0) return;
+        var name = window.prompt('Name f\u00fcr die Tool-Kette:');
+        if (!name || !name.trim()) return;
+        name = name.trim();
+
+        var presets = loadChainPresets();
+        // Replace existing preset with same name
+        var existing = -1;
+        presets.forEach(function (p, i) { if (p.name === name) existing = i; });
+        var entry = {
+            name: name,
+            items: chainItems.map(function (c) {
+                return { buttonId: c.buttonId, toolName: c.toolName, emoji: c.emoji };
+            })
+        };
+        if (existing !== -1) {
+            presets[existing] = entry;
+        } else {
+            presets.push(entry);
+        }
+        saveChainPresets(presets);
+    }
+
+    function showLoadPresetPopup() {
+        var userPresets = loadChainPresets();
+        var allPresets = DEFAULT_CHAIN_PRESETS.concat(userPresets);
+
+        if (allPresets.length === 0) {
+            window.alert('Keine gespeicherten Presets vorhanden.');
+            return;
+        }
+
+        // Remove any existing popup
+        var old = document.getElementById('bd-chain-preset-popup');
+        if (old) old.remove();
+
+        var popup = document.createElement('div');
+        popup.id = 'bd-chain-preset-popup';
+        popup.className = 'bd-chain-preset-popup';
+
+        var header = document.createElement('div');
+        header.className = 'bd-chain-preset-popup-header';
+        header.innerHTML = '<span>Preset laden</span><button class="bd-chain-preset-popup-close">\u2715</button>';
+        popup.appendChild(header);
+
+        var list = document.createElement('div');
+        list.className = 'bd-chain-preset-popup-list';
+
+        allPresets.forEach(function (preset, idx) {
+            var row = document.createElement('button');
+            row.className = 'bd-chain-preset-row';
+            var isDefault = idx < DEFAULT_CHAIN_PRESETS.length;
+            var label = preset.name + (isDefault ? ' (Standard)' : '');
+            var toolNames = preset.items.map(function (it) { return it.emoji + ' ' + it.toolName; }).join(' \u2192 ');
+            row.innerHTML = '<span class="bd-chain-preset-name">' + label + '</span>' +
+                '<span class="bd-chain-preset-tools">' + toolNames + '</span>';
+
+            row.addEventListener('click', function () {
+                chainItems = preset.items.slice();
+                renderChain();
+                popup.remove();
+            });
+            list.appendChild(row);
+
+            // Add delete button for user presets
+            if (!isDefault) {
+                var delBtn = document.createElement('button');
+                delBtn.className = 'bd-chain-preset-delete';
+                delBtn.textContent = '\u2715';
+                delBtn.title = 'Preset l\u00f6schen';
+                delBtn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    var presets = loadChainPresets();
+                    var userIdx = idx - DEFAULT_CHAIN_PRESETS.length;
+                    presets.splice(userIdx, 1);
+                    saveChainPresets(presets);
+                    row.remove();
+                });
+                row.appendChild(delBtn);
+            }
+        });
+
+        popup.appendChild(list);
+
+        // Close button handler
+        header.querySelector('.bd-chain-preset-popup-close').addEventListener('click', function () {
+            popup.remove();
+        });
+
+        // Position popup near the load button
+        var strip = document.getElementById('bd-chain-strip');
+        if (strip) {
+            strip.style.position = 'relative';
+            strip.appendChild(popup);
+        }
+
+        // Close on outside click
+        setTimeout(function () {
+            function outsideClick(e) {
+                if (!popup.contains(e.target)) {
+                    popup.remove();
+                    document.removeEventListener('mousedown', outsideClick);
+                }
+            }
+            document.addEventListener('mousedown', outsideClick);
+        }, 50);
+    }
+
+    function initChainBuilder() {
+        var strip = document.getElementById('bd-chain-strip');
+        if (!strip) return;
+
+        // Run button
+        var runBtn = document.getElementById('bd-chain-run');
+        if (runBtn) {
+            runBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                runChain();
+            });
+        }
+
+        // Clear button
+        var clearBtn = document.getElementById('bd-chain-clear');
+        if (clearBtn) {
+            clearBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                clearChain();
+            });
+        }
+
+        // Save button
+        var saveBtn = document.getElementById('bd-chain-save');
+        if (saveBtn) {
+            saveBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                saveCurrentChain();
+            });
+        }
+
+        // Load button
+        var loadBtn = document.getElementById('bd-chain-load');
+        if (loadBtn) {
+            loadBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                showLoadPresetPopup();
+            });
+        }
+
+        // Remove item from chain (event delegation on slots)
+        var slots = document.getElementById('bd-chain-slots');
+        if (slots) {
+            slots.addEventListener('click', function (e) {
+                var removeBtn = e.target.closest('.bd-chain-item-remove');
+                if (!removeBtn) return;
+                e.stopPropagation();
+                var idx = parseInt(removeBtn.getAttribute('data-idx'), 10);
+                if (!isNaN(idx)) removeFromChain(idx);
+            });
+        }
+
+        // Event delegation for chain-add buttons on each tool list
+        var dashboard = document.querySelector('.bottom-dashboard');
+        if (dashboard) {
+            var lists = dashboard.querySelectorAll('.bd-tool-list');
+            lists.forEach(function (list) {
+                list.addEventListener('click', function (e) {
+                    var addBtn = e.target.closest('.bd-chain-add');
+                    if (!addBtn) return;
+
+                    e.stopPropagation();
+                    e.preventDefault();
+
+                    var buttonId = addBtn.getAttribute('data-button-id');
+                    var toolName = addBtn.getAttribute('data-tool-name');
+                    var emoji = addBtn.getAttribute('data-tool-emoji');
+                    if (!buttonId) return;
+
+                    addToChain(buttonId, toolName, emoji);
+
+                    // Brief visual feedback
+                    addBtn.classList.add('bd-chain-add-flash');
+                    setTimeout(function () { addBtn.classList.remove('bd-chain-add-flash'); }, 400);
+                });
+            });
+        }
+
+        // Expose API
+        window.BdChain = {
+            add: addToChain,
+            remove: removeFromChain,
+            clear: clearChain,
+            run: runChain,
+            getItems: function () { return chainItems.slice(); }
+        };
+    }
+
+    /* ------------------------------------------------------------------ */
     /*  Bootstrap: warten auf bottomtools:ready                           */
     /* ------------------------------------------------------------------ */
 
@@ -1305,6 +1722,7 @@
         initDragDrop();   // Must run BEFORE initPinning to restore saved order first
         initPinning();
         initQuickApply();
+        initChainBuilder();
         initKeyboardNav();
         if (!undoInitialized) { initUndo(); undoInitialized = true; }
     });
