@@ -288,12 +288,177 @@
     }
 
     /* ------------------------------------------------------------------ */
+    /*  Feature: Tool Favorites / Pinning (#98)                          */
+    /* ------------------------------------------------------------------ */
+
+    var PINNING_KEY = 'ssa_bd_favorites_v1';
+    var originalOrder = {}; // { "1": ["producer-refine-button", ...], ... }
+    var favorites = {};     // { "1": ["some-button-id", ...], ... }
+
+    function loadFavorites() {
+        try {
+            var stored = localStorage.getItem(PINNING_KEY);
+            if (stored) {
+                favorites = JSON.parse(stored);
+            }
+        } catch (e) {
+            favorites = {};
+        }
+        // Ensure each column has an array
+        [1, 2, 3].forEach(function (c) {
+            if (!Array.isArray(favorites[c])) favorites[c] = [];
+        });
+    }
+
+    function saveFavorites() {
+        try {
+            localStorage.setItem(PINNING_KEY, JSON.stringify(favorites));
+        } catch (e) { /* quota exceeded — silently ignore */ }
+    }
+
+    function isPinned(colId, buttonId) {
+        return favorites[colId] && favorites[colId].indexOf(buttonId) !== -1;
+    }
+
+    function getFavorites() {
+        return favorites;
+    }
+
+    function reorderColumn(colId) {
+        var list = document.getElementById('bd-list-' + colId);
+        if (!list) return;
+
+        var cards = Array.prototype.slice.call(list.querySelectorAll('.bd-tool-card'));
+        var pinnedIds = favorites[colId] || [];
+        var origIds = originalOrder[colId] || [];
+
+        // Remove existing separator
+        var oldSep = list.querySelector('.bd-pin-separator');
+        if (oldSep) oldSep.remove();
+
+        // Sort cards: pinned first (in pin order), then unpinned (in original order)
+        cards.sort(function (a, b) {
+            var aId = a.getAttribute('data-button-id');
+            var bId = b.getAttribute('data-button-id');
+            var aPinned = pinnedIds.indexOf(aId) !== -1;
+            var bPinned = pinnedIds.indexOf(bId) !== -1;
+
+            if (aPinned && bPinned) {
+                return pinnedIds.indexOf(aId) - pinnedIds.indexOf(bId);
+            }
+            if (aPinned && !bPinned) return -1;
+            if (!aPinned && bPinned) return 1;
+            // Both unpinned — original order
+            return origIds.indexOf(aId) - origIds.indexOf(bId);
+        });
+
+        // Re-append in sorted order (moves, preserves listeners)
+        var hasPinned = false;
+        cards.forEach(function (card) {
+            var btnId = card.getAttribute('data-button-id');
+            var pinned = pinnedIds.indexOf(btnId) !== -1;
+
+            if (pinned) {
+                card.classList.add('bd-pinned');
+                card.querySelector('.bd-pin-btn').textContent = '\u2605';
+                hasPinned = true;
+            } else {
+                card.classList.remove('bd-pinned');
+                card.querySelector('.bd-pin-btn').textContent = '\u2606';
+            }
+
+            list.appendChild(card);
+        });
+
+        // Insert separator between pinned and unpinned
+        if (hasPinned && pinnedIds.length < cards.length) {
+            var sep = document.createElement('div');
+            sep.className = 'bd-pin-separator';
+            // Find the first unpinned card
+            var firstUnpinned = list.querySelector('.bd-tool-card:not(.bd-pinned)');
+            if (firstUnpinned) {
+                list.insertBefore(sep, firstUnpinned);
+            }
+        }
+
+        // Update column count to show pinned count
+        updateColumnCount(colId, pinnedIds.length, cards.length);
+    }
+
+    function updateColumnCount(colId, pinnedCount, totalCount) {
+        var col = document.getElementById('bd-col-' + colId);
+        if (!col) return;
+        var countEl = col.querySelector('.bd-column-count');
+        if (!countEl) return;
+
+        if (pinnedCount > 0) {
+            countEl.textContent = '\u2605' + pinnedCount + ' / ' + totalCount;
+        } else {
+            countEl.textContent = totalCount;
+        }
+    }
+
+    function initPinning() {
+        loadFavorites();
+
+        // Capture original card order before any reordering
+        [1, 2, 3].forEach(function (colId) {
+            var list = document.getElementById('bd-list-' + colId);
+            if (!list) return;
+            var cards = list.querySelectorAll('.bd-tool-card');
+            originalOrder[colId] = [];
+            cards.forEach(function (card) {
+                originalOrder[colId].push(card.getAttribute('data-button-id'));
+            });
+        });
+
+        // Set up event delegation for pin buttons on each list
+        [1, 2, 3].forEach(function (colId) {
+            var list = document.getElementById('bd-list-' + colId);
+            if (!list) return;
+
+            list.addEventListener('click', function (e) {
+                var pinBtn = e.target.closest('.bd-pin-btn');
+                if (!pinBtn) return;
+
+                e.stopPropagation();
+
+                var buttonId = pinBtn.getAttribute('data-button-id');
+                if (!buttonId) return;
+
+                var idx = favorites[colId].indexOf(buttonId);
+                if (idx !== -1) {
+                    // Unpin
+                    favorites[colId].splice(idx, 1);
+                } else {
+                    // Pin — add to end of pinned list
+                    favorites[colId].push(buttonId);
+                }
+
+                saveFavorites();
+                reorderColumn(colId);
+            });
+
+            // Initial reorder based on saved favorites
+            reorderColumn(colId);
+        });
+
+        // Expose API for other features
+        window.BdPinning = {
+            reorderColumn: reorderColumn,
+            isPinned: isPinned,
+            getFavorites: getFavorites
+        };
+    }
+
+    /* ------------------------------------------------------------------ */
     /*  Bootstrap: warten auf bottomtools:ready                           */
     /* ------------------------------------------------------------------ */
 
     document.addEventListener('bottomtools:ready', function () {
         initTooltips();
         initSearch();
+        initPinning();
     });
 
 })();
