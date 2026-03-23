@@ -63,7 +63,7 @@ body.app-no-scroll {
     cursor: pointer;
     color: rgba(156, 163, 175, 0.7);
     font-family: 'Inter', sans-serif;
-    font-size: 0.65rem;
+    font-size: 0.8rem;
     letter-spacing: 0.04em;
     transition: color 200ms;
     user-select: none;
@@ -72,12 +72,12 @@ body.app-no-scroll {
     color: rgba(229, 231, 235, 0.9);
 }
 .bd-collapse-icon {
-    font-size: 0.85rem;
+    font-size: 1rem;
     line-height: 1;
     transition: transform 300ms cubic-bezier(0.23, 1, 0.32, 1);
 }
 .bd-collapse-count {
-    font-size: 0.55rem;
+    font-size: 0.7rem;
     font-weight: 600;
     padding: 0 5px;
     border-radius: 20px;
@@ -196,7 +196,7 @@ body.app-no-scroll {
 .bd-col-emerald .bd-column-icon { background: var(--bd-emerald-glow); border: 1px solid var(--bd-emerald-border); }
 
 .bd-column-name {
-    font-size: 0.8rem;
+    font-size: 0.95rem;
     font-weight: 700;
     letter-spacing: -0.01em;
     white-space: nowrap;
@@ -207,7 +207,7 @@ body.app-no-scroll {
 .bd-col-emerald .bd-column-name { color: var(--bd-emerald); }
 
 .bd-column-count {
-    font-size: 0.6rem;
+    font-size: 0.75rem;
     font-weight: 600;
     padding: 1px 6px;
     border-radius: 20px;
@@ -251,7 +251,7 @@ body.app-no-scroll {
 }
 
 .bd-tool-card .bd-tool-emoji {
-    font-size: 1rem;
+    font-size: 1.125rem;
     line-height: 1;
     flex-shrink: 0;
     width: 22px;
@@ -259,7 +259,7 @@ body.app-no-scroll {
 }
 
 .bd-tool-card .bd-tool-name {
-    font-size: 0.72rem;
+    font-size: 0.875rem;
     font-weight: 500;
     color: var(--bd-text-body);
     white-space: nowrap;
@@ -351,14 +351,14 @@ body.app-no-scroll {
 .bd-detail-emoji { font-size: 2rem; line-height: 1; margin-bottom: 2px; }
 
 .bd-detail-name {
-    font-size: 0.9rem;
+    font-size: 1.05rem;
     font-weight: 700;
     text-align: center;
     line-height: 1.2;
 }
 
 .bd-detail-desc {
-    font-size: 0.7rem;
+    font-size: 0.85rem;
     color: var(--bd-text-secondary);
     text-align: center;
     line-height: 1.45;
@@ -371,7 +371,7 @@ body.app-no-scroll {
     border-radius: 8px;
     border: none;
     font-family: 'Inter', sans-serif;
-    font-size: 0.72rem;
+    font-size: 0.875rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 200ms var(--bd-ease-ui);
@@ -3751,14 +3751,14 @@ input:checked+.ks-preset-card,
 .bd-tooltip {
     position: absolute;
     z-index: 50;
-    max-width: 220px;
+    max-width: 260px;
     padding: 8px 12px;
     background: rgba(13, 13, 15, 0.95);
     border: 1px solid rgba(115, 115, 115, 0.2);
     border-radius: 8px;
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     line-height: 1.4;
     color: rgba(255, 255, 255, 0.85);
     pointer-events: none;
@@ -3776,7 +3776,7 @@ input:checked+.ks-preset-card,
 }
 
 .bd-tooltip-head {
-    font-size: 0.72rem;
+    font-size: 0.85rem;
     color: rgba(255, 255, 255, 0.95);
 }
 
@@ -3854,7 +3854,7 @@ input:checked+.ks-preset-card,
     border: 1px solid rgba(115, 115, 115, 0.2);
     border-radius: 6px;
     padding: 4px 24px 4px 8px;
-    font-size: 0.72rem;
+    font-size: 0.85rem;
     color: #e5e7eb;
     font-family: 'Inter', sans-serif;
     outline: none;
@@ -3878,7 +3878,7 @@ input:checked+.ks-preset-card,
     border: none;
     color: rgba(156, 163, 175, 0.5);
     cursor: pointer;
-    font-size: 0.7rem;
+    font-size: 0.85rem;
     padding: 2px 4px;
     line-height: 1;
     border-radius: 3px;
@@ -3897,14 +3897,14 @@ input:checked+.ks-preset-card,
     padding: 12px;
     text-align: center;
     color: rgba(156, 163, 175, 0.4);
-    font-size: 0.7rem;
+    font-size: 0.85rem;
     font-style: italic;
 }
 
 /* === Kachel-System: Pinning (#98) === */
 .bd-pin-btn {
     position: absolute; top: 2px; right: 4px;
-    background: none; border: none; font-size: 0.6rem;
+    background: none; border: none; font-size: 0.75rem;
     color: rgba(156, 163, 175, 0.3);
     cursor: pointer; padding: 2px; line-height: 1; z-index: 2;
     transition: color 150ms ease, transform 150ms ease;
@@ -3964,10 +3964,10 @@ input:checked+.ks-preset-card,
     right: 20px;
     background: none;
     border: 1px solid rgba(115, 115, 115, 0.15);
-    font-size: 0.5rem;
+    font-size: 0.65rem;
     color: rgba(156, 163, 175, 0.4);
     cursor: pointer;
-    padding: 1px 4px;
+    padding: 2px 5px;
     line-height: 1;
     z-index: 2;
     border-radius: 4px;
@@ -4044,7 +4044,7 @@ input:checked+.ks-preset-card,
 /* === Kachel-System: Drag-and-Drop (#103) === */
 .bd-drag-handle {
     position: absolute; left: -1px; top: 50%; transform: translateY(-50%);
-    font-size: 0.55rem; color: rgba(156,163,175,0.2);
+    font-size: 0.7rem; color: rgba(156,163,175,0.2);
     cursor: grab; opacity: 0; transition: opacity 150ms ease;
     user-select: none; padding: 2px; line-height: 1;
     z-index: 2; touch-action: none;
@@ -4126,7 +4126,7 @@ input:checked+.ks-preset-card,
     position: absolute; top: -4px; right: -4px;
     background: none; border: none;
     color: rgba(156,163,175,0.5); cursor: pointer;
-    font-size: 0.8rem; padding: 4px;
+    font-size: 0.95rem; padding: 4px;
     transition: color 150ms ease;
 }
 .bd-chain-popup-close:hover { color: #e5e7eb; }
@@ -4146,7 +4146,7 @@ input:checked+.ks-preset-card,
 .bd-chain-badge {
     position: absolute; top: -4px; right: -6px;
     background: rgba(34, 211, 238, 0.8);
-    color: #000; font-size: 0.5rem; font-weight: 700;
+    color: #000; font-size: 0.6rem; font-weight: 700;
     min-width: 12px; height: 12px;
     border-radius: 6px;
     display: flex; align-items: center; justify-content: center;
@@ -4155,10 +4155,10 @@ input:checked+.ks-preset-card,
 }
 .bd-chain-badge:empty { display: none; }
 .bd-chain-title {
-    font-size: 0.75rem; font-weight: 600; color: #e5e7eb;
+    font-size: 0.9rem; font-weight: 600; color: #e5e7eb;
 }
 .bd-chain-count {
-    font-size: 0.65rem; color: rgba(156,163,175,0.5);
+    font-size: 0.8rem; color: rgba(156,163,175,0.5);
 }
 .bd-chain-actions {
     margin-left: auto;
@@ -4170,7 +4170,7 @@ input:checked+.ks-preset-card,
     border-radius: 6px;
     color: rgba(156,163,175,0.6);
     cursor: pointer; padding: 3px 8px;
-    font-size: 0.65rem; line-height: 1.2;
+    font-size: 0.8rem; line-height: 1.2;
     transition: all 150ms ease;
     white-space: nowrap;
 }
@@ -4191,7 +4191,7 @@ input:checked+.ks-preset-card,
 .bd-chain-slots::-webkit-scrollbar { height: 3px; }
 .bd-chain-slots::-webkit-scrollbar-thumb { background: rgba(115,115,115,0.3); border-radius: 3px; }
 .bd-chain-empty {
-    font-size: 0.65rem; color: rgba(156,163,175,0.3);
+    font-size: 0.8rem; color: rgba(156,163,175,0.3);
     font-style: italic; padding: 2px 0;
 }
 .bd-chain-item {
@@ -4199,7 +4199,7 @@ input:checked+.ks-preset-card,
     padding: 3px 6px; border-radius: 6px;
     background: rgba(255,255,255,0.05);
     border: 1px solid rgba(115,115,115,0.2);
-    font-size: 0.65rem; color: #e5e7eb;
+    font-size: 0.8rem; color: #e5e7eb;
     white-space: nowrap;
     transition: all 200ms ease;
 }
@@ -4214,12 +4214,12 @@ input:checked+.ks-preset-card,
 .bd-chain-item-remove {
     background: none; border: none;
     color: rgba(156,163,175,0.4); cursor: pointer;
-    font-size: 0.6rem; padding: 0 2px; line-height: 1;
+    font-size: 0.75rem; padding: 0 2px; line-height: 1;
     transition: color 150ms ease;
 }
 .bd-chain-item-remove:hover { color: rgba(239,68,68,0.8); }
 .bd-chain-arrow {
-    color: rgba(156,163,175,0.3); font-size: 0.6rem;
+    color: rgba(156,163,175,0.3); font-size: 0.75rem;
     flex-shrink: 0;
 }
 .bd-chain-progress {

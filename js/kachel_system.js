@@ -1235,12 +1235,10 @@
         dragState.longPressTimer = null;
 
         // Fix 5: Block the synthesized click that fires after pointerup to prevent portal opening
-        if (!cancelled) {
-            document.addEventListener('click', function (e) {
-                e.stopPropagation();
-                e.preventDefault();
-            }, { capture: true, once: true });
-        }
+        document.addEventListener('click', function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+        }, { capture: true, once: true });
     }
 
     function initDragDrop() {
