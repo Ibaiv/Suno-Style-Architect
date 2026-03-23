@@ -62,6 +62,7 @@
                 card.setAttribute('data-button-id', tool.buttonId);
                 card.setAttribute('aria-label', tool.name + ' – ' + tool.desc);
                 card.innerHTML =
+                    '<span class="bd-drag-handle" aria-hidden="true">\u283F</span>' +
                     '<button class="bd-pin-btn" data-button-id="' + tool.buttonId + '" aria-label="Favorit">\u2606</button>' +
                     '<span class="bd-tool-emoji">' + tool.emoji + '</span>' +
                     '<span class="bd-tool-name">' + tool.name + '</span>' +

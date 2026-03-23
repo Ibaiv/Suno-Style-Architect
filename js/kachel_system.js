@@ -910,6 +910,390 @@
     }
 
     /* ------------------------------------------------------------------ */
+    /*  Feature: Drag-and-Drop Tool Reordering (#103)                    */
+    /* ------------------------------------------------------------------ */
+
+    var DRAG_ORDER_KEY = 'ssa_bd_order_v1';
+
+    var dragState = {
+        active: false,
+        colId: null,
+        sourceCard: null,
+        ghost: null,
+        placeholder: null,
+        startY: 0,
+        startX: 0,
+        isPinnedZone: false,
+        longPressTimer: null,
+        scrollInterval: null,
+        handled: false
+    };
+
+    var dragGeneration = 0;
+
+    function loadDragOrder() {
+        try {
+            var stored = localStorage.getItem(DRAG_ORDER_KEY);
+            if (stored) return JSON.parse(stored);
+        } catch (e) { /* ignore */ }
+        return null;
+    }
+
+    function saveDragOrder() {
+        var order = {};
+        [1, 2, 3].forEach(function (colId) {
+            var list = document.getElementById('bd-list-' + colId);
+            if (!list) return;
+            var cards = list.querySelectorAll('.bd-tool-card');
+            order[colId] = [];
+            cards.forEach(function (card) {
+                order[colId].push(card.getAttribute('data-button-id'));
+            });
+        });
+        try {
+            localStorage.setItem(DRAG_ORDER_KEY, JSON.stringify(order));
+        } catch (e) { /* quota exceeded */ }
+    }
+
+    function restoreDragOrder() {
+        var saved = loadDragOrder();
+        if (!saved) return;
+
+        [1, 2, 3].forEach(function (colId) {
+            var ids = saved[colId];
+            if (!Array.isArray(ids) || ids.length === 0) return;
+
+            var list = document.getElementById('bd-list-' + colId);
+            if (!list) return;
+
+            var cards = Array.prototype.slice.call(list.querySelectorAll('.bd-tool-card'));
+            var cardMap = {};
+            cards.forEach(function (card) {
+                cardMap[card.getAttribute('data-button-id')] = card;
+            });
+
+            // Append cards in saved order; any new cards not in saved order go at end
+            var appended = {};
+            ids.forEach(function (id) {
+                if (cardMap[id]) {
+                    list.appendChild(cardMap[id]);
+                    appended[id] = true;
+                }
+            });
+            // Append remaining cards (newly added tools)
+            cards.forEach(function (card) {
+                var id = card.getAttribute('data-button-id');
+                if (!appended[id]) {
+                    list.appendChild(card);
+                }
+            });
+        });
+    }
+
+    function getColumnForCard(card) {
+        var list = card.closest('.bd-tool-list');
+        if (!list) return null;
+        var m = list.id.match(/bd-list-(\d)/);
+        return m ? m[1] : null;
+    }
+
+    function isInPinnedZone(card) {
+        // A card is in the pinned zone if it appears before the separator
+        var list = card.closest('.bd-tool-list');
+        if (!list) return false;
+        var sep = list.querySelector('.bd-pin-separator');
+        if (!sep) return card.classList.contains('bd-pinned');
+        // Check if card comes before separator in DOM
+        return !!(sep.compareDocumentPosition(card) & Node.DOCUMENT_POSITION_PRECEDING);
+    }
+
+    function getSiblingCards(list, pinnedZone) {
+        var cards = Array.prototype.slice.call(list.querySelectorAll('.bd-tool-card'));
+        var sep = list.querySelector('.bd-pin-separator');
+
+        if (!sep) {
+            // No separator — if pinnedZone requested, return pinned cards; else unpinned
+            return cards.filter(function (c) {
+                return pinnedZone ? c.classList.contains('bd-pinned') : !c.classList.contains('bd-pinned');
+            });
+        }
+
+        return cards.filter(function (c) {
+            var beforeSep = !!(sep.compareDocumentPosition(c) & Node.DOCUMENT_POSITION_PRECEDING);
+            return pinnedZone ? beforeSep : !beforeSep;
+        });
+    }
+
+    function startDrag(card, e) {
+        if (dragState.active) return;
+
+        var colId = getColumnForCard(card);
+        if (!colId) return;
+
+        dragState.active = true;
+        dragState.colId = colId;
+        dragState.sourceCard = card;
+        dragState.startX = e.clientX;
+        dragState.startY = e.clientY;
+        dragState.isPinnedZone = isInPinnedZone(card);
+        dragState.pointerId = e.pointerId;
+
+        // Create ghost
+        var rect = card.getBoundingClientRect();
+        var ghost = card.cloneNode(true);
+        ghost.className = 'bd-tool-card bd-drag-ghost';
+        ghost.style.width = rect.width + 'px';
+        ghost.style.height = rect.height + 'px';
+        ghost.style.left = rect.left + 'px';
+        ghost.style.top = rect.top + 'px';
+        document.body.appendChild(ghost);
+        dragState.ghost = ghost;
+
+        // Mark source
+        card.classList.add('bd-dragging');
+        card.style.touchAction = 'none'; // Fix 3: prevent scroll during drag on mobile
+
+        // Add transition class to sibling cards (Fix 4)
+        var parentList = card.closest('.bd-tool-list');
+        if (parentList) parentList.classList.add('bd-drag-active');
+
+        // Create placeholder
+        var placeholder = document.createElement('div');
+        placeholder.className = 'bd-drag-placeholder';
+        placeholder.style.height = rect.height + 'px';
+        card.parentNode.insertBefore(placeholder, card);
+        dragState.placeholder = placeholder;
+
+        // Capture pointer for reliable tracking
+        try { card.setPointerCapture(e.pointerId); } catch (ex) { /* older browser */ }
+
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    function moveDrag(e) {
+        if (!dragState.active) return;
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        // Move ghost
+        var ghost = dragState.ghost;
+        ghost.style.left = (e.clientX - ghost.offsetWidth / 2) + 'px';
+        ghost.style.top = (e.clientY - ghost.offsetHeight / 2) + 'px';
+
+        // Find the list
+        var list = document.getElementById('bd-list-' + dragState.colId);
+        if (!list) return;
+
+        // Check if pointer is still within the column
+        var listRect = list.getBoundingClientRect();
+        if (e.clientX < listRect.left - 50 || e.clientX > listRect.right + 50) {
+            return; // Don't update insertion point if too far outside column
+        }
+
+        // Get sibling cards in same zone (exclude source card)
+        var siblings = getSiblingCards(list, dragState.isPinnedZone).filter(function (c) {
+            return c !== dragState.sourceCard;
+        });
+
+        // Find insertion point based on Y position
+        var placeholder = dragState.placeholder;
+        var insertBefore = null;
+
+        for (var i = 0; i < siblings.length; i++) {
+            var sibRect = siblings[i].getBoundingClientRect();
+            var midY = sibRect.top + sibRect.height / 2;
+            if (e.clientY < midY) {
+                insertBefore = siblings[i];
+                break;
+            }
+        }
+
+        // Move placeholder
+        if (insertBefore) {
+            if (placeholder.nextSibling !== insertBefore) {
+                list.insertBefore(placeholder, insertBefore);
+            }
+        } else {
+            // Insert at end of zone
+            if (dragState.isPinnedZone) {
+                var sep = list.querySelector('.bd-pin-separator');
+                if (sep) {
+                    if (placeholder.nextSibling !== sep) {
+                        list.insertBefore(placeholder, sep);
+                    }
+                } else {
+                    list.appendChild(placeholder);
+                }
+            } else {
+                // End of unpinned zone = end of list
+                if (placeholder !== list.lastElementChild) {
+                    list.appendChild(placeholder);
+                }
+            }
+        }
+
+        // Auto-scroll the list if near edges
+        var scrollMargin = 30;
+        if (e.clientY < listRect.top + scrollMargin) {
+            list.scrollTop -= 5;
+        } else if (e.clientY > listRect.bottom - scrollMargin) {
+            list.scrollTop += 5;
+        }
+    }
+
+    function endDrag(cancelled) {
+        if (!dragState.active) return;
+
+        var card = dragState.sourceCard;
+        var placeholder = dragState.placeholder;
+        var ghost = dragState.ghost;
+        var list = document.getElementById('bd-list-' + dragState.colId);
+
+        if (!cancelled && placeholder && placeholder.parentNode && list) {
+            // Insert source card at placeholder position
+            placeholder.parentNode.insertBefore(card, placeholder);
+            saveDragOrder();
+        }
+
+        // Cleanup
+        card.classList.remove('bd-dragging');
+        card.style.touchAction = ''; // Fix 3: restore touch-action
+
+        // Remove sibling transition class (Fix 4)
+        if (list) list.classList.remove('bd-drag-active');
+
+        if (ghost && ghost.parentNode) ghost.parentNode.removeChild(ghost);
+        if (placeholder && placeholder.parentNode) placeholder.parentNode.removeChild(placeholder);
+
+        try { card.releasePointerCapture(dragState.pointerId); } catch (ex) { /* ignore */ }
+
+        dragState.active = false;
+        dragState.colId = null;
+        dragState.sourceCard = null;
+        dragState.ghost = null;
+        dragState.placeholder = null;
+        dragState.isPinnedZone = false;
+        dragState.handled = false;
+        clearTimeout(dragState.longPressTimer);
+        dragState.longPressTimer = null;
+
+        // Fix 5: Block the synthesized click that fires after pointerup to prevent portal opening
+        if (!cancelled) {
+            document.addEventListener('click', function (e) {
+                e.stopPropagation();
+                e.preventDefault();
+            }, { capture: true, once: true });
+        }
+    }
+
+    function initDragDrop() {
+        // Restore saved order BEFORE pinning runs
+        restoreDragOrder();
+
+        var dashboard = document.querySelector('.bottom-dashboard');
+        if (!dashboard) return;
+
+        // Track pointer movement to cancel long-press if moved too much
+        var pointerStartX = 0;
+        var pointerStartY = 0;
+        var longPressCard = null;
+
+        dashboard.addEventListener('pointerdown', function (e) {
+            // Only primary button
+            if (e.button !== 0) return;
+
+            var handle = e.target.closest('.bd-drag-handle');
+            var card = e.target.closest('.bd-tool-card');
+            if (!card) return;
+
+            // Don't interfere with pin button or quick-apply
+            if (e.target.closest('.bd-pin-btn') || e.target.closest('.bd-quick-apply')) return;
+
+            pointerStartX = e.clientX;
+            pointerStartY = e.clientY;
+            dragGeneration++;
+
+            if (handle) {
+                // Immediate drag from handle
+                startDrag(card, e);
+            } else {
+                // Long-press on card body
+                longPressCard = card;
+                var gen = dragGeneration;
+                dragState.longPressTimer = setTimeout(function () {
+                    if (longPressCard === card && gen === dragGeneration) {
+                        startDrag(card, e);
+                        longPressCard = null;
+                    }
+                }, 200);
+            }
+        }, true);
+
+        dashboard.addEventListener('pointermove', function (e) {
+            // Cancel long-press if moved too far
+            if (longPressCard && !dragState.active) {
+                var dx = e.clientX - pointerStartX;
+                var dy = e.clientY - pointerStartY;
+                if (Math.sqrt(dx * dx + dy * dy) > 5) {
+                    clearTimeout(dragState.longPressTimer);
+                    longPressCard = null;
+                }
+            }
+
+            if (dragState.active) {
+                moveDrag(e);
+            }
+        }, true);
+
+        dashboard.addEventListener('pointerup', function (e) {
+            clearTimeout(dragState.longPressTimer);
+            longPressCard = null;
+            dragGeneration++;
+
+            if (dragState.active) {
+                // Check if pointer is still within the column
+                var list = document.getElementById('bd-list-' + dragState.colId);
+                var cancelled = false;
+                if (list) {
+                    var listRect = list.getBoundingClientRect();
+                    if (e.clientX < listRect.left - 50 || e.clientX > listRect.right + 50) {
+                        cancelled = true;
+                    }
+                }
+                dragState.handled = true;
+                endDrag(cancelled);
+                e.preventDefault();
+                e.stopPropagation();
+            }
+        }, true);
+
+        dashboard.addEventListener('pointercancel', function () {
+            clearTimeout(dragState.longPressTimer);
+            longPressCard = null;
+            dragGeneration++;
+            if (dragState.active) {
+                endDrag(true);
+            }
+        }, true);
+
+        // Also listen on document for pointerup in case pointer leaves dashboard
+        document.addEventListener('pointerup', function (e) {
+            if (!dragState.active) return;
+            if (dragState.handled) { dragState.handled = false; return; }
+            endDrag(true); // Cancel if dropped outside dashboard
+        });
+
+        // Prevent context menu during drag on touch
+        dashboard.addEventListener('contextmenu', function (e) {
+            if (dragState.active) {
+                e.preventDefault();
+            }
+        });
+    }
+
+    /* ------------------------------------------------------------------ */
     /*  Bootstrap: warten auf bottomtools:ready                           */
     /* ------------------------------------------------------------------ */
 
@@ -918,6 +1302,7 @@
     document.addEventListener('bottomtools:ready', function () {
         initTooltips();
         initSearch();
+        initDragDrop();   // Must run BEFORE initPinning to restore saved order first
         initPinning();
         initQuickApply();
         initKeyboardNav();

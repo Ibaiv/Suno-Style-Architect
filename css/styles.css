@@ -4040,3 +4040,36 @@ input:checked+.ks-preset-card,
 .bottom-dashboard:focus {
     outline: none;
 }
+
+/* === Kachel-System: Drag-and-Drop (#103) === */
+.bd-drag-handle {
+    position: absolute; left: -1px; top: 50%; transform: translateY(-50%);
+    font-size: 0.55rem; color: rgba(156,163,175,0.2);
+    cursor: grab; opacity: 0; transition: opacity 150ms ease;
+    user-select: none; padding: 2px; line-height: 1;
+    z-index: 2; touch-action: none;
+}
+.bd-tool-card:hover .bd-drag-handle { opacity: 0.5; }
+.bd-drag-handle:hover { opacity: 1 !important; cursor: grab; }
+.bd-drag-handle:active { cursor: grabbing; }
+
+.bd-tool-card.bd-dragging {
+    opacity: 0.25;
+    pointer-events: none;
+}
+.bd-drag-ghost {
+    position: fixed; z-index: 200; pointer-events: none;
+    opacity: 0.85; transform: scale(1.03);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    border-radius: 12px;
+    transition: none;
+}
+.bd-drag-placeholder {
+    border: 1px dashed rgba(115,115,115,0.25);
+    border-radius: 10px;
+    background: transparent;
+    transition: height 150ms ease;
+}
+.bd-tool-list.bd-drag-active .bd-tool-card {
+    transition: transform 150ms ease;
+}
