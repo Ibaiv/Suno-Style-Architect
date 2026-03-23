@@ -331,6 +331,12 @@ function setKlugToolsState(enabled) {
             }
         }
     });
+
+    // Toggle bottom dashboard visual state
+    var bd = document.querySelector('.bottom-dashboard');
+    if (bd) {
+        bd.classList.toggle('bd-tools-inactive', !enabled);
+    }
 }
 
 // Modal setup function

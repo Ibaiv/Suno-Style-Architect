@@ -40,11 +40,60 @@ body.app-no-scroll {
 
 .app-bottom-row {
     height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .app-top-row>.app-top-card,
 .app-bottom-row>.tool-system-panel {
     min-height: 0;
+}
+
+/* ── Collapse Toggle ── */
+.bd-collapse-toggle {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    padding: 3px 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: rgba(156, 163, 175, 0.7);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.04em;
+    transition: color 200ms;
+    user-select: none;
+}
+.bd-collapse-toggle:hover {
+    color: rgba(229, 231, 235, 0.9);
+}
+.bd-collapse-icon {
+    font-size: 0.85rem;
+    line-height: 1;
+    transition: transform 300ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.bd-collapse-count {
+    font-size: 0.55rem;
+    font-weight: 600;
+    padding: 0 5px;
+    border-radius: 20px;
+    background: rgba(115, 115, 115, 0.15);
+    border: 1px solid rgba(115, 115, 115, 0.15);
+}
+
+/* Collapsed state */
+.app-main-layout.bd-collapsed {
+    grid-template-rows: 1fr auto !important;
+}
+.app-main-layout.bd-collapsed .bottom-dashboard {
+    display: none;
+}
+.app-main-layout.bd-collapsed .bd-collapse-icon {
+    transform: rotate(-90deg);
 }
 
 /* ───────── BOTTOM DASHBOARD (Three-Column Tool System) ───────── */
@@ -71,7 +120,7 @@ body.app-no-scroll {
     --bd-scrollbar-thumb: rgba(115, 115, 115, 0.3);
 
     width: 100%;
-    height: 100%;
+    flex: 1;
     min-height: 0;
     background: var(--bd-glass);
     backdrop-filter: blur(16px);
@@ -364,6 +413,117 @@ body.app-no-scroll {
     box-shadow: 0 0 28px rgba(110, 231, 183, 0.15);
 }
 .bd-col-emerald .bd-detail-name { color: var(--bd-emerald); }
+
+/* ── Disabled State (before prompt generation) ── */
+.bd-tools-inactive .bd-tool-card {
+    opacity: 0.45;
+    filter: grayscale(60%);
+}
+.bd-tools-inactive .bd-tool-card:hover {
+    transform: none;
+    box-shadow: none;
+}
+.bd-detail-btn.bd-btn-disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* ── Inline Modal (portaled into column overlay) ── */
+.bd-inline {
+    position: relative !important;
+    inset: auto !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    z-index: auto !important;
+    padding: 0 !important;
+    width: 100%;
+    height: 100%;
+    overflow: visible !important;
+}
+.bd-inline .modal-content {
+    max-width: 100% !important;
+    width: 100% !important;
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    padding: 10px 14px !important;
+    overflow: visible !important;
+}
+/* Scale down headings and spacing for the compact column context */
+.bd-inline .modal-content h2 {
+    font-size: 0.95rem !important;
+}
+.bd-inline .modal-content p {
+    font-size: 0.75rem !important;
+}
+.bd-inline .modal-content .mb-4 { margin-bottom: 0.6rem !important; }
+.bd-inline .modal-content .mb-8 { margin-bottom: 1rem !important; }
+.bd-inline .modal-content .space-y-8 > * + * { margin-top: 1rem !important; }
+.bd-inline .modal-content .gap-4 { gap: 0.5rem !important; }
+.bd-inline .modal-content .gap-3 { gap: 0.4rem !important; }
+.bd-inline .modal-content .p-6 { padding: 0.75rem !important; }
+.bd-inline .modal-content .p-8 { padding: 0.75rem !important; }
+.bd-inline .modal-content .p-4 { padding: 0.5rem !important; }
+
+/* Hide the modal's own close button; overlay's X handles closing */
+.bd-inline .close-modal-button {
+    display: none !important;
+}
+
+/* Constrain form elements for the narrow column */
+.bd-inline .modal-content textarea {
+    min-height: 32px !important;
+    max-height: 52px !important;
+    font-size: 0.75rem !important;
+    resize: vertical;
+}
+.bd-inline .modal-content input[type="text"],
+.bd-inline .modal-content select {
+    padding: 4px 8px !important;
+    font-size: 0.75rem !important;
+}
+.bd-inline .modal-content button {
+    font-size: 0.8rem !important;
+    padding: 6px 12px !important;
+}
+.bd-inline .modal-content .flex-wrap { gap: 4px !important; }
+.bd-inline .modal-content .min-h-\[50px\] { min-height: 30px !important; }
+.bd-inline .modal-content .min-h-\[100px\] { min-height: 40px !important; }
+.bd-inline .modal-content .min-h-\[150px\] { min-height: 50px !important; }
+.bd-inline .modal-content .max-h-\[50vh\] { max-height: none !important; }
+.bd-inline .modal-content .max-h-\[60vh\] { max-height: none !important; }
+/* Force multi-column grids into compact layout within the narrow column */
+.bd-inline .modal-content .grid[class*="md:grid-cols-3"],
+.bd-inline .modal-content .grid[class*="lg:grid-cols-3"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+}
+.bd-inline .modal-content .grid[class*="sm:grid-cols-4"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+}
+/* Synth designer cards — smaller in inline mode */
+.bd-inline .synth-card { min-height: 0 !important; }
+.bd-inline .synth-card .aspect-square { aspect-ratio: auto !important; }
+.bd-inline .synth-card svg { width: 20px !important; height: 20px !important; }
+
+/* Hide old preview elements when a modal is portaled */
+.bd-has-modal > .bd-detail-emoji,
+.bd-has-modal > .bd-detail-name,
+.bd-has-modal > .bd-detail-desc,
+.bd-has-modal > .bd-detail-btn {
+    display: none !important;
+}
+
+/* Make overlay scrollable when hosting a modal */
+.bd-detail-overlay.bd-has-modal {
+    justify-content: flex-start;
+    align-items: stretch;
+    padding: 28px 4px 4px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
 
 /* ── Animations ── */
 @keyframes bdPanelSlideUp {

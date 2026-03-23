@@ -8,8 +8,13 @@ document.addEventListener('modals:ready', () => {
     initializeAdvancedFeatures();
 });
 
+// Re-initialize after bottom dashboard proxy buttons are created
+document.addEventListener('bottomtools:ready', () => {
+    initializeAdvancedFeatures();
+});
+
 function initializeAdvancedFeatures() {
-    const hasBottomToolSystems = !!document.querySelector('.tool-system-panel');
+    const hasBottomToolSystems = !!document.querySelector('.bottom-dashboard');
 
     // Setup all modals
     setupIdeaSpark();
