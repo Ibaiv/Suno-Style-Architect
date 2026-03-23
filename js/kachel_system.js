@@ -206,11 +206,13 @@
 
             function openSearch() {
                 searchBar.classList.add('bd-search-open');
+                if(window.CloseStack) CloseStack.push(function(){ closeSearch(); }, { id: 'bd-search' });
                 // Focus after transition
                 setTimeout(function () { input.focus(); }, 210);
             }
 
             function closeSearch() {
+                if(window.CloseStack) CloseStack.pop('bd-search');
                 searchBar.classList.remove('bd-search-open');
                 input.value = '';
                 clearFilter();
@@ -278,12 +280,7 @@
             // Real-time filtering
             input.addEventListener('input', filterCards);
 
-            // Escape key closes search
-            input.addEventListener('keydown', function (e) {
-                if (e.key === 'Escape') {
-                    closeSearch();
-                }
-            });
+            // Escape now handled by CloseStack (close_stack.js)
         });
     }
 
@@ -536,23 +533,13 @@
             });
         }
 
-        // Keyboard shortcuts
-        document.addEventListener('keydown', function (e) {
-            // Skip if focus is in an input, textarea, or contenteditable
-            var tag = (e.target.tagName || '').toLowerCase();
-            if (tag === 'input' || tag === 'textarea' || e.target.isContentEditable) return;
-
-            var isUndo = (e.key === 'z' || e.key === 'Z') && (e.ctrlKey || e.metaKey) && !e.shiftKey;
-            var isRedo = (e.key === 'z' || e.key === 'Z') && (e.ctrlKey || e.metaKey) && e.shiftKey;
-
-            if (isRedo) {
-                e.preventDefault();
-                redoPerform();
-            } else if (isUndo) {
-                e.preventDefault();
-                undoPerform();
-            }
-        });
+        // Keyboard shortcuts — migrated to Keys registry (Phase 2, P2-3)
+        if(window.Keys){
+            Keys.register({ id:'undo', label:'R\u00fcckg\u00e4ngig', scope:'global',
+                bindings:['Mod+z'], run: undoPerform });
+            Keys.register({ id:'redo', label:'Wiederholen', scope:'global',
+                bindings:['Mod+Shift+z'], run: redoPerform });
+        }
 
         // Expose globally
         window.BdUndo = {
@@ -807,6 +794,11 @@
         navState.active = false;
         var prev = document.querySelector('.bd-tool-card.bd-kb-focused');
         if (prev) prev.classList.remove('bd-kb-focused');
+        // Phase 3 (P3-8): Pop dashboard scope
+        if(window.ScopeStack && navState.scopeToken){
+            ScopeStack.pop(navState.scopeToken);
+            navState.scopeToken = null;
+        }
     }
 
     function initKeyboardNav() {
@@ -823,6 +815,10 @@
         dashboard.addEventListener('focus', function () {
             if (!navState.active) {
                 setFocusedCard(1, 0);
+            }
+            // Phase 3 (P3-8): Push dashboard scope
+            if(window.ScopeStack && !navState.scopeToken){
+                navState.scopeToken = ScopeStack.push('dashboard');
             }
         });
 
@@ -874,6 +870,8 @@
                 }
 
             } else if (key === 'Escape') {
+                // Let CloseStack handle Escape if it has entries (overlays, modals, etc.)
+                if(window.CloseStack && CloseStack.size > 0) return;
                 // Only deactivate nav if no overlay is open
                 var anyOverlayOpen = false;
                 [1, 2, 3].forEach(function (id) {
@@ -884,7 +882,6 @@
                     deactivateNav();
                     dashboard.blur();
                 }
-                // Let the existing Escape handler in bottom_tools.js close overlays
 
             } else if (key === 'Tab') {
                 // Deactivate nav when tabbing out
@@ -1707,6 +1704,7 @@
         if (popup) {
             clearTimeout(chainPopupAutoCloseTimer);
             popup.classList.add('bd-chain-popup-visible');
+            if(window.CloseStack) CloseStack.push(function(){ hideChainPopup(); }, { id: 'chain-popup' });
 
             // Show backdrop only for icon-click opens, not during drag
             if (withBackdrop !== false) {
@@ -1739,6 +1737,7 @@
     }
 
     function hideChainPopup() {
+        if(window.CloseStack) CloseStack.pop('chain-popup');
         var popup = document.getElementById('bd-chain-popup');
         if (popup) {
             popup.classList.remove('bd-chain-popup-visible', 'bd-chain-drop-active');
@@ -1877,15 +1876,7 @@
             });
         });
 
-        // ESC to close chain popup
-        document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape') {
-                if (dragState && dragState.active) {
-                    dragState.overChainPopup = false;
-                }
-                hideChainPopup();
-            }
-        });
+        // Escape for chain popup now handled by CloseStack (close_stack.js)
 
         // Initialize badges
         updateChainBadges();

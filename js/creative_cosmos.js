@@ -9960,10 +9960,7 @@ function initCreativeCosmos() {
         contentArea.addEventListener('mouseup', handleTextSelection);
     }
 
-    // Close popup on escape or click outside
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') hideSelectionPopup();
-    });
+    // Close popup on click outside (Escape handled by CloseStack)
     document.addEventListener('mousedown', (e) => {
         const popup = document.getElementById('selection-popup-menu');
         if (popup && !popup.contains(e.target)) {
@@ -9979,72 +9976,56 @@ function initCreativeCosmos() {
         resetBtn.addEventListener('click', resetAllSelections);
     }
 
-    // Keyboard Shortcuts
-    document.addEventListener('keydown', handleKeyboardShortcuts);
+    // Keyboard Shortcuts — migrated to Keys registry (Phase 2, P2-7)
+    registerCosmosShortcuts();
 }
 
-// === KEYBOARD SHORTCUTS ===
+// === KEYBOARD SHORTCUTS (Phase 2+3: via Keys registry) ===
 
-function handleKeyboardShortcuts(e) {
-    // Only active if the modal is visible (based on whether we have a currentWorldId and the view is active)
-    const modal = document.getElementById('idea-starter-modal');
-    if (!modal || modal.classList.contains('hidden') || !currentWorldId) return;
+function registerCosmosShortcuts() {
+    if (!window.Keys) return;
 
-    // Do not trigger if user is typing in an input field (e.g. note input)
-    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-
-    // M - Quick Mark
-    if (e.key.toLowerCase() === 'm') {
-        const selection = window.getSelection();
-        const text = selection.toString().trim();
-        if (text && text.length >= 2) {
-            e.preventDefault();
-            markSelectedText(text, selection.getRangeAt(0), null);
-            selection.removeAllRanges();
-            hideSelectionPopup();
-        }
-    }
-
-    // N - Mark with Note
-    if (e.key.toLowerCase() === 'n') {
-        const selection = window.getSelection();
-        const text = selection.toString().trim();
-        if (text && text.length >= 2) {
-            e.preventDefault();
-            const range = selection.getRangeAt(0);
-
-            // Calculate a position for the popup
-            const rect = range.getBoundingClientRect();
-            // Use existing logic to show popup, then immediately switch to note
-            showSelectionPopup(rect.left + rect.width / 2, rect.top, text, range);
-
-            const popup = document.getElementById('selection-popup-menu');
-            if (popup) {
-                showNoteInput(popup, text, range);
+    // Phase 3: scope-based activation (creative-cosmos scope pushed by openIdeaStarter)
+    Keys.register({ id:'cosmos.mark', label:'Schnell-Markierung', scope:'creative-cosmos',
+        bindings:['m'], run: function(){
+            // Keep selection check inside run() — don't put in when(), to prevent fallthrough
+            const selection = window.getSelection();
+            const text = selection.toString().trim();
+            if (text && text.length >= 2) {
+                markSelectedText(text, selection.getRangeAt(0), null);
+                selection.removeAllRanges();
+                hideSelectionPopup();
             }
         }
-    }
+    });
 
-    // Escape - Clear Selection / Close Popup
-    if (e.key === 'Escape') {
-        if (document.getElementById('selection-popup-menu')) {
-            e.preventDefault(); // Prevent closing the main modal if popup is open
-            hideSelectionPopup();
-            window.getSelection().removeAllRanges();
+    Keys.register({ id:'cosmos.mark-note', label:'Markierung mit Notiz', scope:'creative-cosmos',
+        bindings:['n'], run: function(){
+            const selection = window.getSelection();
+            const text = selection.toString().trim();
+            if (text && text.length >= 2) {
+                const range = selection.getRangeAt(0);
+                const rect = range.getBoundingClientRect();
+                showSelectionPopup(rect.left + rect.width / 2, rect.top, text, range);
+                const popup = document.getElementById('selection-popup-menu');
+                if (popup) {
+                    showNoteInput(popup, text, range);
+                }
+            }
         }
-    }
+    });
 
-    // Backspace / Delete - Undo Last Mark
-    if (e.key === 'Backspace' || e.key === 'Delete') {
-        // e.preventDefault(); // Careful, might block normal backspace if not cautious. Check for input already done above.
-        undoLastSelection();
-    }
+    Keys.register({ id:'cosmos.undo-mark', label:'Letzte Markierung r\u00fcckg\u00e4ngig', scope:'creative-cosmos',
+        bindings:['Backspace', 'Delete'], run: function(){
+            undoLastSelection();
+        }
+    });
 
-    // Shift + R - Reset All
-    if (e.shiftKey && e.key.toLowerCase() === 'r') {
-        e.preventDefault();
-        resetAllSelections();
-    }
+    Keys.register({ id:'cosmos.reset', label:'Alle Markierungen zur\u00fccksetzen', scope:'creative-cosmos',
+        bindings:['Shift+r'], run: function(){
+            resetAllSelections();
+        }
+    });
 }
 
 // === TEXT SELECTION MARKING FUNCTIONS ===
@@ -10121,6 +10102,7 @@ function showSelectionPopup(x, y, selectedText, range) {
     popup.style.top = `${y - 10}px`;
 
     document.body.appendChild(popup);
+    if(window.CloseStack) CloseStack.push(function(){ hideSelectionPopup(); window.getSelection().removeAllRanges(); }, { id: 'selection-popup' });
 
     // Adjust if off-screen
     const rect = popup.getBoundingClientRect();
@@ -10145,6 +10127,7 @@ function showSelectionPopup(x, y, selectedText, range) {
 }
 
 function hideSelectionPopup() {
+    if(window.CloseStack) CloseStack.pop('selection-popup');
     const popup = document.getElementById('selection-popup-menu');
     if (popup) popup.remove();
 }
@@ -10432,6 +10415,12 @@ function openIdeaStarter() {
     const modal = document.getElementById('idea-starter-modal');
     modal.classList.remove('hidden');
     modal.classList.add('flex', 'fade-in');
+    // Phase 3 (P3-4): Push creative-cosmos scope
+    if(window.ScopeStack){
+        modal._scopeToken = ScopeStack.push('creative-cosmos');
+    }
+    // CloseStack integration — Escape closes this modal
+    if(window.CloseStack) CloseStack.push(closeIdeaStarter, { id: 'creative-cosmos' });
 
     if (!currentWorldId) {
         selectWorld('orchestra_treatise'); // Default
@@ -10442,6 +10431,13 @@ function closeIdeaStarter() {
     const modal = document.getElementById('idea-starter-modal');
     modal.classList.add('hidden');
     modal.classList.remove('flex');
+    // Pop CloseStack entry (safe if already popped by Escape)
+    if(window.CloseStack) CloseStack.pop('creative-cosmos');
+    // Phase 3 (P3-4): Pop creative-cosmos scope
+    if(window.ScopeStack && modal._scopeToken){
+        ScopeStack.pop(modal._scopeToken);
+        modal._scopeToken = null;
+    }
 }
 
 function renderWorldTabs() {

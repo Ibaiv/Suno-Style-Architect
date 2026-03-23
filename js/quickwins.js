@@ -331,37 +331,161 @@
   }
 
   // Keyboard shortcuts & help
+  // Phase 1 base + Phase 2 QWERTZ dual bindings (P2-9)
   function registerKeybindings(){
-    if(!window.Keys) return; // fallback to none if registry missing
+    if(!window.Keys) return;
 
     const resExists = () => !!getCurrentPrompt();
 
-    Keys.register({ id:'focus.idea', label:'Fokus: Vision', scope:'global', bindings:['Slash'], run:()=> $('idea-input')?.focus() });
+    // Phase 2 (P2-9): QWERTZ dual bindings — Slash + Mod+f, Shift+Slash + F1
+    Keys.register({ id:'focus.idea', label:'Fokus: Vision', scope:'global', bindings:['Slash', 'Mod+f'], run:()=> $('idea-input')?.focus() });
 
-    Keys.register({ id:'generate', label:'Generieren', scope:'global', bindings:['KeyG','Mod+Enter'], run:()=> $('generate-button')?.click() });
+    Keys.register({ id:'generate', label:'Generieren', scope:'global', bindings:['g','Mod+Enter'], when:()=> !$('generate-button')?.disabled, run:()=> {
+      $('generate-button')?.click();
+      // Phase 4 (P4-3): Tip on generate shortcut use — mark as learned
+      if(window.Tips) Tips.markLearned('generate');
+    }});
 
-    Keys.register({ id:'refine.pro', label:'Für Pro', scope:'global', bindings:['KeyP'], when:resExists, run:()=> $('suno-pro-button')?.click() });
+    Keys.register({ id:'refine.pro', label:'F\u00fcr Pro', scope:'global', bindings:['p'], when:resExists, run:()=> $('suno-pro-button')?.click() });
 
-    Keys.register({ id:'copy.result', label:'Ergebnis kopieren', scope:'global', bindings:['KeyC'], when:resExists, run:()=> (window.copyResult && window.copyResult()) });
+    Keys.register({ id:'copy.result', label:'Ergebnis kopieren', scope:'global', bindings:['c'], when:resExists, run:()=> (window.copyResult && window.copyResult()) });
 
-    Keys.register({ id:'history.toggle', label:'Verlauf', scope:'global', bindings:['KeyH'], run:()=> $('history-toggle-button')?.click() });
+    Keys.register({ id:'history.toggle', label:'Verlauf', scope:'global', bindings:['h'], run:()=> $('history-toggle-button')?.click() });
 
-    Keys.register({ id:'auto.trim', label:'Auto-Trim 200', scope:'global', bindings:['KeyB'], when:resExists, run:()=> $('auto-trim-v3-button')?.click() });
+    Keys.register({ id:'auto.trim', label:'Auto-Trim 200', scope:'global', bindings:['b'], when:resExists, run:()=> $('auto-trim-v3-button')?.click() });
 
-    Keys.register({ id:'help.shortcuts', label:'Tastenkürzel', scope:'any', bindings:['Shift+Slash'], run:()=> openShortcutModal() });
+    // Phase 2 (P2-9): QWERTZ dual binding — Shift+Slash + F1
+    Keys.register({ id:'help.shortcuts', label:'Tastenk\u00fcrzel', scope:'any', bindings:['Shift+Slash', 'F1'], run:()=> openShortcutModal() });
 
     Keys.register({ id:'palette.open', label:'Befehlspalette', scope:'any', bindings:['Mod+K'], run:()=> window.Palette && window.Palette.open() });
+
+    // --- Phase 4, Batch 1: High-Impact Shortcuts (P4-5) ---
+    Keys.register({ id:'dashboard.toggle', label:'Dashboard ein/aus', scope:'global',
+      bindings:['Mod+d'], run: toggleDashboard });
+
+    Keys.register({ id:'settings.open', label:'Einstellungen', scope:'global',
+      bindings:['Mod+Comma'], run: openSettings });
+
+    Keys.register({ id:'export.prompt', label:'Prompt exportieren', scope:'global',
+      bindings:['Mod+Shift+e'], when:resExists, run: exportCurrentPrompt });
+
+    Keys.register({ id:'save.export', label:'Schnell-Export', scope:'global',
+      bindings:['Mod+s'], when:resExists, run: exportCurrentPrompt });
+
+    // --- Phase 4, Batch 2: Tool Access Shortcuts (P4-6) ---
+    Keys.register({ id:'open.idea-spark', label:'Idea Spark', scope:'global',
+      bindings:['Mod+i'], run:()=> document.getElementById('spark-idea-button')?.click() });
+
+    Keys.register({ id:'open.style-sync', label:'Style Sync', scope:'global',
+      bindings:['Mod+y'], run:()=> document.getElementById('style-sync-tile')?.click() });
+
+    Keys.register({ id:'open.klang-studio', label:'Klang Studio', scope:'global',
+      bindings:['Mod+l'], run:()=> document.getElementById('klang-studio-tile')?.click() });
+
+    // --- Phase 4, Batch 3: Navigation & Panel Shortcuts (P4-7) ---
+    Keys.register({ id:'page.prev', label:'Vorherige Seite', scope:'dashboard',
+      bindings:['BracketLeft', 'Mod+ArrowLeft'],
+      when:()=> document.querySelector('.bottom-dashboard')?.contains(document.activeElement),
+      run:()=> window.ToolPaging?.prevPage && window.ToolPaging.prevPage() });
+
+    Keys.register({ id:'page.next', label:'N\u00e4chste Seite', scope:'dashboard',
+      bindings:['BracketRight', 'Mod+ArrowRight'],
+      when:()=> document.querySelector('.bottom-dashboard')?.contains(document.activeElement),
+      run:()=> window.ToolPaging?.nextPage && window.ToolPaging.nextPage() });
   }
+
+  // Phase 4 (P4-5): Helper functions for new shortcuts
+  function toggleDashboard(){
+    const bd = document.querySelector('.bottom-dashboard');
+    if(bd) bd.classList.toggle('hidden');
+  }
+  function openSettings(){
+    const modal = document.getElementById('api-setup-modal');
+    if(modal) modal.style.display = 'flex';
+  }
+
+  // Phase 4 (P4-8): Button hints — add shortcut labels to key UI elements
+  function addButtonHints(){
+    const genBtn = $('generate-button');
+    if(genBtn && !genBtn.dataset.hintAdded){
+      genBtn.dataset.hintAdded = '1';
+      const hint = document.createElement('span');
+      hint.className = 'shortcut-hint';
+      hint.textContent = ' (g)';
+      const textEl = genBtn.querySelector('#button-text');
+      if(textEl) textEl.appendChild(hint);
+    }
+    // Palette icon tooltip
+    const paletteIcon = document.querySelector('[data-action="open-palette"]') || document.getElementById('cmdk-trigger');
+    if(paletteIcon) paletteIcon.title = 'Befehlspalette (\u2318K)';
+  }
+
+  // Phase 4 (P4-9): Layout + Scope-aware cheat sheet
+  function formatBinding(binding, isQWERTZ){
+    if(isQWERTZ && binding === 'Slash') return '\u2318F';
+    if(isQWERTZ && binding === 'Shift+Slash') return 'F1';
+    return binding
+      .replace('Mod+', '\u2318')
+      .replace('Shift+', '\u21E7')
+      .replace('Alt+', '\u2325')
+      .replace('BracketLeft', '[')
+      .replace('BracketRight', ']')
+      .replace('Comma', ',')
+      .replace('ArrowUp', '\u2191')
+      .replace('ArrowDown', '\u2193')
+      .replace('ArrowLeft', '\u2190')
+      .replace('ArrowRight', '\u2192')
+      .replace('Backspace', '\u232B')
+      .replace('Delete', '\u2326');
+  }
+
   function openShortcutModal(){
     const m = document.getElementById('shortcut-modal');
     if(!m) return;
+    const body = m.querySelector('.shortcut-body') || m.querySelector('.modal-body') || m.querySelector('.p-6');
+    if(body && window.Keys){
+      const all = Keys.listDetailed();
+      const isDE = window.KeyboardLayout && KeyboardLayout.isQWERTZ();
+      const currentScope = window.ScopeStack ? ScopeStack.current : 'global';
+
+      // Group by scope/category
+      const groups = {};
+      all.forEach(function(a){
+        var group = a.scope === 'global' ? 'Global' :
+                    a.scope === 'creative-cosmos' ? 'Creative Cosmos' :
+                    a.scope === 'command-palette' ? 'Befehlspalette' :
+                    a.scope === 'dashboard' ? 'Dashboard' :
+                    a.scope === 'chord-builder' ? 'Chord-Modus' :
+                    a.scope === 'any' ? 'Global' : 'Sonstige';
+        (groups[group] = groups[group] || []).push(a);
+      });
+
+      var html = '';
+      for(var groupName in groups){
+        var actions = groups[groupName];
+        html += '<div class="shortcut-group-header text-xs uppercase tracking-wider text-neutral-500 mt-3 mb-1 px-1">' + groupName + '</div>';
+        actions.forEach(function(a){
+          var active = a.scope === 'global' || a.scope === 'any' || a.scope === currentScope;
+          var dimClass = active ? '' : ' opacity-40';
+          var keys = (a.bindings && a.bindings.length ? a.bindings : a.defaults || [])
+            .map(function(b){ return '<kbd class="shortcut-key">' + formatBinding(b, isDE) + '</kbd>'; }).join(' / ');
+          html += '<div class="shortcut-row flex justify-between items-center py-1.5 border-b border-neutral-800' + dimClass + '">'
+            + '<span class="text-neutral-200">' + a.label + '</span>'
+            + '<span>' + keys + '</span></div>';
+        });
+      }
+      body.innerHTML = html || '<p class="text-neutral-400">Keine Tastenk\u00fcrzel registriert.</p>';
+    }
     m.classList.remove('hidden');
     const card = m.querySelector('.modal-content') || m.querySelector('.relative,.p-6');
     if(card) card.classList.add('animate-zoom-in');
-    // Close handlers
-    const close = ()=> m.classList.add('hidden');
-    document.getElementById('shortcut-close')?.addEventListener('click', close, { once: true });
-    m.querySelector('.absolute')?.addEventListener('click', close, { once: true });
+    const closeShortcutModal = ()=> {
+      if(window.CloseStack) CloseStack.pop('shortcut-modal');
+      m.classList.add('hidden');
+    };
+    if(window.CloseStack) CloseStack.push(closeShortcutModal, { id: 'shortcut-modal' });
+    document.getElementById('shortcut-close')?.addEventListener('click', closeShortcutModal, { once: true });
+    m.querySelector('.absolute')?.addEventListener('click', closeShortcutModal, { once: true });
   }
 
   // History panel controls
@@ -412,6 +536,8 @@
     observeResult();
     registerKeybindings();
     wireUI();
+    // Phase 4 (P4-8): Add shortcut hints to buttons
+    addButtonHints();
   }
 
   // expose minimal API for integration points

@@ -118,6 +118,8 @@ function setupExpertRefinement(type, systemPrompt) {
     if (!modal || !openButton || !applyButton) return;
 
     const modalLogic = setupModal(modal, openButton);
+    // Phase 4 (P4-3): Tip for expert chord on mouse click
+    openButton.addEventListener('click', function(){ if(window.Tips) Tips.show('chord.expert', openButton); });
 
     applyButton.addEventListener('click', async () => {
         const influence = slider.value;
@@ -531,6 +533,8 @@ function setupAdaptiveFlow() {
     if (!modal || !openButton || !runButton || !slider || !levelBadge || !output) return;
 
     const modalLogic = setupModal(modal, openButton);
+    // Phase 4 (P4-3): Tip for Future Lab chord on mouse click
+    openButton.addEventListener('click', function(){ if(window.Tips) Tips.show('chord.future', openButton); });
 
     slider.addEventListener('input', () => {
         levelBadge.textContent = slider.value;
@@ -1951,9 +1955,17 @@ function setupStyleSync() {
 
         studioModal.classList.remove('hidden');
         document.body.style.overflow = 'hidden';
+        if(window.CloseStack) CloseStack.push(closeStudio, { id: 'style-sync-studio' });
+        // Phase 3 (P3-5): Push style-sync scope
+        if(window.ScopeStack) studioModal._scopeToken = ScopeStack.push('style-sync');
+        // Phase 4 (P4-3): Tip for chord.expert when opening via mouse
+        if(window.Tips && openButton) Tips.show('chord.future', openButton);
     };
 
     const closeStudio = () => {
+        if(window.CloseStack) CloseStack.pop('style-sync-studio');
+        // Phase 3 (P3-5): Pop style-sync scope
+        if(window.ScopeStack && studioModal._scopeToken){ ScopeStack.pop(studioModal._scopeToken); studioModal._scopeToken = null; }
         studioModal.classList.add('hidden');
         document.body.style.overflow = '';
     };
@@ -1961,12 +1973,7 @@ function setupStyleSync() {
     openButton.addEventListener('click', openStudio);
     if (closeButton) closeButton.addEventListener('click', closeStudio);
 
-    // ESC key closes the modal
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && !studioModal.classList.contains('hidden')) {
-            closeStudio();
-        }
-    });
+    // Escape now handled by CloseStack (close_stack.js)
 
     // --- ENCODER LOGIC (Text -> Image) ---
     // Guard against multiple event listener attachments
@@ -2236,11 +2243,17 @@ function setupKlangStudio() {
     openTile.addEventListener('click', () => {
         modal.classList.remove('hidden');
         document.body.style.overflow = 'hidden';
+        if(window.CloseStack) CloseStack.push(closeModal, { id: 'klang-studio' });
+        // Phase 3 (P3-5): Push klang-studio scope
+        if(window.ScopeStack) modal._scopeToken = ScopeStack.push('klang-studio');
         updateTokenPreview();
     });
 
     // Close Modal
     const closeModal = () => {
+        if(window.CloseStack) CloseStack.pop('klang-studio');
+        // Phase 3 (P3-5): Pop klang-studio scope
+        if(window.ScopeStack && modal._scopeToken){ ScopeStack.pop(modal._scopeToken); modal._scopeToken = null; }
         modal.classList.add('hidden');
         document.body.style.overflow = '';
     };
@@ -2252,12 +2265,7 @@ function setupKlangStudio() {
         }
     });
 
-    // ESC key to close
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
-            closeModal();
-        }
-    });
+    // Escape now handled by CloseStack (close_stack.js)
 
     // Tab Switching
     tabs.forEach(tab => {

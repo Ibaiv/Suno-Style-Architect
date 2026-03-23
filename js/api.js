@@ -196,6 +196,7 @@ async function callOpenRouterAPI(userMessage, systemPrompt, imageUrl = null) {
 
     const payload = {
         model: SELECTED_MODEL,
+        stream: false,
         messages: [
             { role: "system", content: systemPrompt },
             { role: "user", content: userContent }
@@ -205,29 +206,63 @@ async function callOpenRouterAPI(userMessage, systemPrompt, imageUrl = null) {
         top_p: 0.9
     };
 
-    const response = await fetch(API_URL, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${API_KEY}`,
-            'HTTP-Referer': window.location.origin,
-            'X-Title': 'Suno Style Architect'
-        },
-        body: JSON.stringify(payload)
-    });
+    // Timeout after 60 seconds to prevent infinite hanging
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => {
+        controller.abort(new Error('API Timeout: Die Anfrage hat zu lange gedauert (60s). Bitte versuche es erneut.'));
+    }, 60000);
+
+    console.log('[SSA] API Request:', { model: SELECTED_MODEL, url: API_URL, messageLength: userMessage.length });
+
+    let response;
+    try {
+        response = await fetch(API_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${API_KEY}`,
+                'HTTP-Referer': window.location.origin,
+                'X-Title': 'Suno Style Architect'
+            },
+            body: JSON.stringify(payload),
+            signal: controller.signal
+        });
+    } catch (fetchErr) {
+        clearTimeout(timeoutId);
+        if (fetchErr.name === 'AbortError' || fetchErr.message?.includes('Timeout')) {
+            throw new Error('API Timeout: Die Anfrage hat zu lange gedauert. Bitte prüfe deine Internetverbindung und versuche es erneut.');
+        }
+        throw new Error(`Netzwerkfehler: ${fetchErr.message}`);
+    }
+
+    clearTimeout(timeoutId);
+
+    console.log('[SSA] API Response status:', response.status);
 
     if (!response.ok) {
         const errorData = await response.text();
+        console.error('[SSA] API Error:', response.status, errorData);
         throw new Error(`API request failed (${response.status}): ${errorData}`);
     }
 
-    const result = await response.json();
+    // Read response as text first, then parse - avoids hanging on malformed/streamed responses
+    const responseText = await response.text();
+    console.log('[SSA] API Response length:', responseText.length);
+
+    let result;
+    try {
+        result = JSON.parse(responseText);
+    } catch (parseErr) {
+        console.error('[SSA] Failed to parse API response:', responseText.substring(0, 500));
+        throw new Error('API-Antwort konnte nicht verarbeitet werden. Möglicherweise ein Server-Problem.');
+    }
 
     if (result.choices?.[0]?.message?.content) {
         return result.choices[0].message.content.trim();
     } else if (result.error) {
         throw new Error(`API Error: ${result.error.message || 'Unknown error'}`);
     } else {
+        console.error('[SSA] Unexpected API response structure:', JSON.stringify(result).substring(0, 500));
         throw new Error('Invalid API response structure.');
     }
 }
@@ -339,7 +374,7 @@ function setKlugToolsState(enabled) {
     }
 }
 
-// Modal setup function
+// Modal setup function (Phase 3: scope integration via openWithScope)
 function setupModal(modal, openButton) {
     if (!modal) return { open: () => { }, close: () => { } };
     const closeButtons = modal.querySelectorAll('.close-modal-button');
@@ -353,9 +388,25 @@ function setupModal(modal, openButton) {
         document.body.style.overflow = 'hidden';
         modal.classList.remove('modal-leave-to');
         modal.classList.add('modal-enter-to');
+        // Phase 3 (P3-3): Linked push — CloseStack + ScopeStack together
+        if(window.ScopeStack && window.ScopeStack.openWithScope){
+            modal._scopeBinding = ScopeStack.openWithScope(close, 'modal', 'modal-' + modal.id);
+        } else {
+            if(window.CloseStack) CloseStack.push(close, { id: 'modal-' + modal.id });
+        }
         document.dispatchEvent(new CustomEvent('modal:open', { detail: { id: modal.id } }));
     };
     const close = () => {
+        // Clean up scope + CloseStack when called directly (not via Escape)
+        if(modal._scopeBinding){
+            // Pop the CloseStack ghost entry (removes without calling linked closeFn)
+            if(window.CloseStack) CloseStack.pop(modal._scopeBinding.closeId);
+            // Pop the ScopeStack token
+            if(window.ScopeStack) ScopeStack.pop(modal._scopeBinding.scopeToken);
+            modal._scopeBinding = null;
+        } else {
+            if(window.CloseStack) CloseStack.pop('modal-' + modal.id);
+        }
         modal.classList.remove('modal-enter-to');
         modal.classList.add('modal-leave-to');
         setTimeout(() => {

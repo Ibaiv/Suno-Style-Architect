@@ -89,12 +89,7 @@
             });
         });
 
-        // ESC to close all overlays
-        document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape') {
-                [1, 2, 3].forEach(function (id) { closeBdDetail(id); });
-            }
-        });
+        // Escape now handled by CloseStack (close_stack.js) — each overlay pushes its own entry
 
         // Auto-close overlay when a portaled modal's own close() fires
         document.addEventListener('modal:close', function (e) {
@@ -126,6 +121,7 @@
             }
             overlay.classList.remove('bd-has-modal');
             overlay.classList.add('active');
+            if(window.CloseStack) CloseStack.push(function(){ closeBdDetail(colId); }, { id: 'bd-detail-' + colId });
             return;
         }
 
@@ -148,6 +144,7 @@
 
         // Hide the old preview content, show overlay
         overlay.classList.add('bd-has-modal', 'active');
+        if(window.CloseStack) CloseStack.push(function(){ closeBdDetail(colId); }, { id: 'bd-detail-' + colId });
 
         // Trigger the proxy button to fire all on-open handlers
         // (data loading for taggers, UI reset for synth-designer, etc.)
@@ -161,6 +158,7 @@
         var overlay = document.getElementById('bd-detail-' + colId);
         if (!overlay || overlay._closing) return;
         overlay._closing = true;
+        if(window.CloseStack) CloseStack.pop('bd-detail-' + colId);
 
         var modal = overlay._portaledModal;
         if (modal) {
