@@ -828,6 +828,8 @@
 
         // Keyboard handler on dashboard
         dashboard.addEventListener('keydown', function (e) {
+            if (dragState && dragState.active) return;
+
             // Skip if focus is inside a search input
             var tag = (e.target.tagName || '').toLowerCase();
             if (tag === 'input' || tag === 'textarea') return;
@@ -1090,12 +1092,12 @@
         // Check if pointer is still within the column
         var listRect = list.getBoundingClientRect();
         var outsideColumn = e.clientX < listRect.left - 50 || e.clientX > listRect.right + 50 ||
-                            e.clientY < listRect.top - 30;
+                            e.clientY < listRect.top - 30 || e.clientY > listRect.bottom + 30;
 
         // Detect drag-out-of-column: show chain popup as drop target
         var chainPopup = document.getElementById('bd-chain-popup');
         if (outsideColumn && chainPopup) {
-            showChainPopup();
+            showChainPopup(false);
 
             // Check if ghost hovers over the chain popup
             var popupRect = chainPopup.getBoundingClientRect();
@@ -1194,6 +1196,13 @@
             chainPopupAutoCloseTimer = setTimeout(function () {
                 hideChainPopup();
             }, 800);
+        } else if (cancelled && document.getElementById('bd-chain-popup') &&
+                   document.getElementById('bd-chain-popup').classList.contains('bd-chain-popup-visible')) {
+            // Popup was shown during drag but user didn't drop on it — close it
+            clearTimeout(chainPopupAutoCloseTimer);
+            chainPopupAutoCloseTimer = setTimeout(function() {
+                hideChainPopup();
+            }, 400);
         }
 
         if (!cancelled && placeholder && placeholder.parentNode && list) {
@@ -1306,7 +1315,8 @@
                     var list = document.getElementById('bd-list-' + dragState.colId);
                     if (list) {
                         var listRect = list.getBoundingClientRect();
-                        if (e.clientX < listRect.left - 50 || e.clientX > listRect.right + 50) {
+                        if (e.clientX < listRect.left - 50 || e.clientX > listRect.right + 50 ||
+                            e.clientY < listRect.top - 30 || e.clientY > listRect.bottom + 30) {
                             cancelled = true;
                         }
                     }
@@ -1416,6 +1426,7 @@
     }
 
     function addToChain(buttonId, toolName, emoji) {
+        if (chainRunning) return;
         chainItems.push({ buttonId: buttonId, toolName: toolName, emoji: emoji });
         renderChain();
         updateChainBadges();
@@ -1465,13 +1476,18 @@
                 var pct = ((i + 1) / itemsCopy.length * 100);
                 if (progressBar) progressBar.style.width = pct + '%';
 
+                // Check if chain was cancelled
+                if (!chainRunning) return Promise.reject(new Error('Chain cancelled'));
+
                 // Highlight current step
                 var chips = document.querySelectorAll('.bd-chain-item');
-                chips.forEach(function (c, j) {
-                    c.classList.remove('bd-chain-item-active', 'bd-chain-item-done');
-                    if (j < i) c.classList.add('bd-chain-item-done');
-                    if (j === i) c.classList.add('bd-chain-item-active');
-                });
+                if (chips.length > 0) {
+                    chips.forEach(function (c, j) {
+                        c.classList.remove('bd-chain-item-active', 'bd-chain-item-done');
+                        if (j < i) c.classList.add('bd-chain-item-done');
+                        if (j === i) c.classList.add('bd-chain-item-active');
+                    });
+                }
 
                 var promptFn = promptMap[item.buttonId];
                 if (!promptFn) {
@@ -1561,9 +1577,16 @@
     function loadChainPresets() {
         try {
             var stored = localStorage.getItem(CHAIN_STORAGE_KEY);
-            if (stored) return JSON.parse(stored);
-        } catch (e) { /* ignore */ }
-        return [];
+            if (!stored) return [];
+            var presets = JSON.parse(stored);
+            if (!Array.isArray(presets)) return [];
+            return presets.filter(function(p) {
+                return p && typeof p.name === 'string' && Array.isArray(p.items) &&
+                    p.items.every(function(item) {
+                        return item && item.buttonId && item.toolName;
+                    });
+            });
+        } catch (e) { return []; }
     }
 
     function saveChainPresets(presets) {
@@ -1681,11 +1704,39 @@
         }, 50);
     }
 
-    function showChainPopup() {
+    function showChainPopup(withBackdrop) {
         var popup = document.getElementById('bd-chain-popup');
         if (popup) {
             clearTimeout(chainPopupAutoCloseTimer);
             popup.classList.add('bd-chain-popup-visible');
+
+            // Show backdrop only for icon-click opens, not during drag
+            if (withBackdrop !== false) {
+                var backdrop = document.getElementById('bd-chain-backdrop');
+                if (backdrop) backdrop.classList.add('bd-chain-backdrop-visible');
+            }
+
+            // Click outside to close (with delay to avoid catching the trigger click)
+            setTimeout(function() {
+                function outsideClickHandler(e) {
+                    if (!popup.contains(e.target) && !e.target.closest('.bd-chain-toggle')) {
+                        hideChainPopup();
+                        document.removeEventListener('mousedown', outsideClickHandler);
+                    }
+                }
+                // Remove any previous handler
+                if (popup._outsideHandler) {
+                    document.removeEventListener('mousedown', popup._outsideHandler);
+                }
+                popup._outsideHandler = outsideClickHandler;
+                document.addEventListener('mousedown', outsideClickHandler);
+            }, 50);
+
+            // Auto-focus the first button after transition
+            setTimeout(function() {
+                var firstBtn = popup.querySelector('.bd-chain-action-btn');
+                if (firstBtn) firstBtn.focus();
+            }, 210);
         }
     }
 
@@ -1694,6 +1745,16 @@
         if (popup) {
             popup.classList.remove('bd-chain-popup-visible', 'bd-chain-drop-active');
             clearTimeout(chainPopupAutoCloseTimer);
+
+            // Clean up outside-click handler
+            if (popup._outsideHandler) {
+                document.removeEventListener('mousedown', popup._outsideHandler);
+                popup._outsideHandler = null;
+            }
+
+            // Hide backdrop
+            var backdrop = document.getElementById('bd-chain-backdrop');
+            if (backdrop) backdrop.classList.remove('bd-chain-backdrop-visible');
         }
     }
 
@@ -1734,7 +1795,7 @@
                     '<button id="bd-chain-load" class="bd-chain-action-btn" title="Laden">\uD83D\uDCC2</button>' +
                     '<button id="bd-chain-clear" class="bd-chain-action-btn" title="Leeren">\u2715</button>' +
                 '</div>' +
-                '<button class="bd-chain-popup-close" id="bd-chain-popup-close">\u2715</button>' +
+                '<button class="bd-chain-popup-close" id="bd-chain-popup-close" aria-label="Schlie\u00dfen">\u2715</button>' +
             '</div>' +
             '<div class="bd-chain-slots" id="bd-chain-slots">' +
                 '<div class="bd-chain-empty">Tools hierher ziehen oder aus dem Men\u00fc hinzuf\u00fcgen</div>' +
@@ -1742,7 +1803,18 @@
             '<div class="bd-chain-progress" id="bd-chain-progress">' +
                 '<div class="bd-chain-progress-bar" id="bd-chain-progress-bar"></div>' +
             '</div>';
+        // Accessibility attributes (Fix 13)
+        chainPopup.setAttribute('role', 'dialog');
+        chainPopup.setAttribute('aria-modal', 'true');
+        chainPopup.setAttribute('aria-label', 'Tool-Kette');
+
         document.body.appendChild(chainPopup);
+
+        // Create backdrop overlay (Fix 12)
+        var chainBackdrop = document.createElement('div');
+        chainBackdrop.className = 'bd-chain-backdrop';
+        chainBackdrop.id = 'bd-chain-backdrop';
+        document.body.appendChild(chainBackdrop);
 
         // Close button
         document.getElementById('bd-chain-popup-close').addEventListener('click', function (e) {
@@ -1810,6 +1882,9 @@
         // ESC to close chain popup
         document.addEventListener('keydown', function (e) {
             if (e.key === 'Escape') {
+                if (dragState && dragState.active) {
+                    dragState.overChainPopup = false;
+                }
                 hideChainPopup();
             }
         });

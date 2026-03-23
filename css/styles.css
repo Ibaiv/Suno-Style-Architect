@@ -4074,6 +4074,21 @@ input:checked+.ks-preset-card,
     transition: transform 150ms ease;
 }
 
+/* === Kachel-System: Chain Builder (#99) — Backdrop === */
+.bd-chain-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 179;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 200ms ease;
+}
+.bd-chain-backdrop.bd-chain-backdrop-visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
 /* === Kachel-System: Chain Builder (#99) — Popup === */
 .bd-chain-popup {
     position: fixed;
@@ -4125,6 +4140,9 @@ input:checked+.ks-preset-card,
     position: relative;
 }
 .bd-chain-toggle:hover { color: #e5e7eb; }
+.bd-col-purple .bd-chain-toggle:hover { color: rgba(168, 85, 247, 0.8); }
+.bd-col-cyan .bd-chain-toggle:hover { color: rgba(34, 211, 238, 0.8); }
+.bd-col-emerald .bd-chain-toggle:hover { color: rgba(52, 211, 153, 0.8); }
 .bd-chain-badge {
     position: absolute; top: -4px; right: -6px;
     background: rgba(34, 211, 238, 0.8);
