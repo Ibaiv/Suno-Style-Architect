@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design 4 — Command Palette Tool Browser</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-page: #0d0d0f;
+            --glass-bg: rgba(23, 23, 23, 0.4);
+            --glass-border: rgba(115, 115, 115, 0.2);
+            --glass-blur: blur(16px);
+            --elevated-bg: rgba(13, 13, 15, 0.95);
+            --elevated-border: rgba(115, 115, 115, 0.4);
+            --elevated-blur: blur(24px);
+            --text-primary: #ffffff;
+            --text-body: #e5e7eb;
+            --text-secondary: #9ca3af;
+            --text-disabled: #6b7280;
+            --accent-purple: rgba(168, 85, 247, 0.85);
+            --accent-purple-dim: rgba(168, 85, 247, 0.15);
+            --accent-cyan: rgba(34, 211, 238, 0.85);
+            --accent-cyan-dim: rgba(34, 211, 238, 0.15);
+            --accent-green: rgba(74, 222, 128, 0.85);
+            --accent-green-dim: rgba(74, 222, 128, 0.15);
+            --focus-border: rgba(59, 130, 246, 0.5);
+            --focus-shadow: rgba(59, 130, 246, 0.1);
+            --ease-major: cubic-bezier(0.23, 1, 0.32, 1);
+            --ease-ui: cubic-bezier(0.4, 0, 0.2, 1);
+            --radius-container: 24px;
+            --radius-card: 12px;
+            --radius-input: 8px;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--bg-page);
+            color: var(--text-body);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ── Simulated app area above the palette ── */
+        .app-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 33vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
+
+        .app-canvas-hint {
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-disabled);
+            opacity: 0.5;
+            user-select: none;
+        }
+
+        .app-canvas-hint kbd {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 6px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.7rem;
+            margin-left: 6px;
+            vertical-align: 1px;
+        }
+
+        /* ── Command Palette Container ── */
+        .command-palette {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 33vh;
+            min-height: 260px;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            padding: 0 16px 16px 16px;
+        }
+
+        .palette-glass {
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-container);
+            overflow: hidden;
+            box-shadow:
+                0 -4px 60px rgba(0, 0, 0, 0.5),
+                0 -1px 20px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.03);
+        }
+
+        /* ── Top edge glow ── */
+        .palette-glass::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 10%;
+            right: 10%;
+            height: 1px;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(168, 85, 247, 0.3) 20%,
+                rgba(59, 130, 246, 0.4) 50%,
+                rgba(34, 211, 238, 0.3) 80%,
+                transparent
+            );
+            z-index: 1;
+        }
+
+        /* ── Search Section ── */
+        .search-section {
+            flex-shrink: 0;
+            padding: 16px 20px 12px 20px;
+            position: relative;
+        }
+
+        .search-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            color: var(--text-disabled);
+            pointer-events: none;
+            transition: color 0.2s var(--ease-ui);
+        }
+
+        .search-input {
+            width: 100%;
+            height: 44px;
+            padding: 0 80px 0 42px;
+            border-radius: var(--radius-input);
+            border: 1px solid var(--glass-border);
+            background: rgba(0, 0, 0, 0.3);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+            outline: none;
+            transition: all 0.25s var(--ease-ui);
+        }
+
+        .search-input::placeholder {
+            color: var(--text-disabled);
+            font-weight: 400;
+        }
+
+        .search-input:focus {
+            border-color: var(--focus-border);
+            box-shadow: 0 0 0 3px var(--focus-shadow);
+            background: rgba(0, 0, 0, 0.45);
+        }
+
+        .search-input:focus ~ .search-icon {
+            color: var(--text-secondary);
+        }
+
+        .shortcut-badge {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--text-disabled);
+            letter-spacing: 0.02em;
+            user-select: none;
+            pointer-events: none;
+            transition: opacity 0.2s var(--ease-ui);
+        }
+
+        .search-input:focus ~ .shortcut-badge {
+            opacity: 0.4;
+        }
+
+        /* ── Divider ── */
+        .palette-divider {
+            height: 1px;
+            margin: 0 20px;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                var(--glass-border) 20%,
+                var(--glass-border) 80%,
+                transparent
+            );
+            flex-shrink: 0;
+        }
+
+        /* ── Tool List ── */
+        .tool-list-area {
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 8px 12px 12px 12px;
+            scroll-behavior: smooth;
+        }
+
+        /* Custom scrollbar */
+        .tool-list-area::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .tool-list-area::-webkit-scrollbar-track {
+            background: transparent;
+            margin: 8px 0;
+        }
+
+        .tool-list-area::-webkit-scrollbar-thumb {
+            background: rgba(115, 115, 115, 0.25);
+            border-radius: 3px;
+        }
+
+        .tool-list-area::-webkit-scrollbar-thumb:hover {
+            background: rgba(115, 115, 115, 0.45);
+        }
+
+        /* ── Category Group ── */
+        .category-group {
+            margin-bottom: 6px;
+        }
+
+        .category-group.hidden {
+            display: none;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            padding: 8px 8px 6px 8px;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+
+        .category-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 3px 10px 3px 8px;
+            border-radius: 6px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            user-select: none;
+        }
+
+        .category-badge.purple {
+            background: var(--accent-purple-dim);
+            color: rgba(192, 132, 252, 0.95);
+            border: 1px solid rgba(168, 85, 247, 0.2);
+        }
+
+        .category-badge.cyan {
+            background: var(--accent-cyan-dim);
+            color: rgba(103, 232, 249, 0.95);
+            border: 1px solid rgba(34, 211, 238, 0.2);
+        }
+
+        .category-badge.green {
+            background: var(--accent-green-dim);
+            color: rgba(134, 239, 172, 0.95);
+            border: 1px solid rgba(74, 222, 128, 0.2);
+        }
+
+        .category-count {
+            margin-left: 8px;
+            font-size: 0.65rem;
+            font-weight: 500;
+            color: var(--text-disabled);
+        }
+
+        /* ── Tool Item ── */
+        .tool-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 12px;
+            border-radius: var(--radius-card);
+            cursor: pointer;
+            transition: all 0.15s var(--ease-ui);
+            position: relative;
+            user-select: none;
+        }
+
+        .tool-item:hover {
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .tool-item.focused {
+            background: rgba(59, 130, 246, 0.08);
+            outline: 1px solid rgba(59, 130, 246, 0.15);
+            outline-offset: -1px;
+        }
+
+        .tool-item.focused::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 25%;
+            bottom: 25%;
+            width: 2px;
+            border-radius: 1px;
+            background: rgba(59, 130, 246, 0.6);
+        }
+
+        .tool-emoji {
+            font-size: 1.25rem;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .tool-info {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+        }
+
+        .tool-name {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            letter-spacing: -0.01em;
+        }
+
+        .tool-name mark {
+            background: rgba(250, 204, 21, 0.25);
+            color: rgba(253, 224, 71, 1);
+            border-radius: 2px;
+            padding: 0 1px;
+        }
+
+        .tool-desc {
+            font-size: 0.72rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.4;
+        }
+
+        .tool-desc mark {
+            background: rgba(250, 204, 21, 0.15);
+            color: rgba(253, 224, 71, 0.85);
+            border-radius: 2px;
+            padding: 0 1px;
+        }
+
+        .tool-arrow {
+            flex-shrink: 0;
+            width: 16px;
+            height: 16px;
+            color: var(--text-disabled);
+            opacity: 0;
+            transform: translateX(-4px);
+            transition: all 0.2s var(--ease-ui);
+        }
+
+        .tool-item:hover .tool-arrow,
+        .tool-item.focused .tool-arrow {
+            opacity: 0.7;
+            transform: translateX(0);
+        }
+
+        /* ── Detail Panel ── */
+        .detail-panel {
+            display: none;
+            flex-direction: column;
+            padding: 24px 28px;
+            animation: detailFadeIn 0.35s var(--ease-major) both;
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+        }
+
+        .detail-panel.active {
+            display: flex;
+        }
+
+        @keyframes detailFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .detail-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 4px 0;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            transition: color 0.2s var(--ease-ui);
+            user-select: none;
+            background: none;
+            border: none;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .detail-back:hover {
+            color: var(--text-primary);
+        }
+
+        .detail-back svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .detail-hero {
+            display: flex;
+            align-items: flex-start;
+            gap: 18px;
+            margin-bottom: 18px;
+        }
+
+        .detail-emoji-wrap {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            flex-shrink: 0;
+            border: 1px solid var(--glass-border);
+        }
+
+        .detail-emoji-wrap.purple {
+            background: var(--accent-purple-dim);
+            border-color: rgba(168, 85, 247, 0.2);
+        }
+
+        .detail-emoji-wrap.cyan {
+            background: var(--accent-cyan-dim);
+            border-color: rgba(34, 211, 238, 0.2);
+        }
+
+        .detail-emoji-wrap.green {
+            background: var(--accent-green-dim);
+            border-color: rgba(74, 222, 128, 0.2);
+        }
+
+        .detail-meta {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .detail-category {
+            display: inline-block;
+            font-size: 0.6rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .detail-category.purple {
+            background: var(--accent-purple-dim);
+            color: rgba(192, 132, 252, 0.95);
+        }
+
+        .detail-category.cyan {
+            background: var(--accent-cyan-dim);
+            color: rgba(103, 232, 249, 0.95);
+        }
+
+        .detail-category.green {
+            background: var(--accent-green-dim);
+            color: rgba(134, 239, 172, 0.95);
+        }
+
+        .detail-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            margin-bottom: 6px;
+        }
+
+        .detail-description {
+            font-size: 0.85rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .detail-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: auto;
+            padding-top: 16px;
+        }
+
+        .btn-apply {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 24px;
+            border-radius: var(--radius-input);
+            border: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            cursor: pointer;
+            transition: all 0.2s var(--ease-ui);
+            color: #fff;
+        }
+
+        .btn-apply.purple {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.8), rgba(139, 92, 246, 0.9));
+            box-shadow: 0 2px 16px rgba(168, 85, 247, 0.25), inset 0 1px 0 rgba(255,255,255,0.1);
+        }
+
+        .btn-apply.purple:hover {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.95), rgba(139, 92, 246, 1));
+            box-shadow: 0 4px 24px rgba(168, 85, 247, 0.35), inset 0 1px 0 rgba(255,255,255,0.15);
+            transform: translateY(-1px);
+        }
+
+        .btn-apply.cyan {
+            background: linear-gradient(135deg, rgba(34, 211, 238, 0.7), rgba(6, 182, 212, 0.85));
+            box-shadow: 0 2px 16px rgba(34, 211, 238, 0.2), inset 0 1px 0 rgba(255,255,255,0.1);
+        }
+
+        .btn-apply.cyan:hover {
+            background: linear-gradient(135deg, rgba(34, 211, 238, 0.9), rgba(6, 182, 212, 1));
+            box-shadow: 0 4px 24px rgba(34, 211, 238, 0.3), inset 0 1px 0 rgba(255,255,255,0.15);
+            transform: translateY(-1px);
+        }
+
+        .btn-apply.green {
+            background: linear-gradient(135deg, rgba(74, 222, 128, 0.7), rgba(34, 197, 94, 0.85));
+            box-shadow: 0 2px 16px rgba(74, 222, 128, 0.2), inset 0 1px 0 rgba(255,255,255,0.1);
+        }
+
+        .btn-apply.green:hover {
+            background: linear-gradient(135deg, rgba(74, 222, 128, 0.9), rgba(34, 197, 94, 1));
+            box-shadow: 0 4px 24px rgba(74, 222, 128, 0.3), inset 0 1px 0 rgba(255,255,255,0.15);
+            transform: translateY(-1px);
+        }
+
+        .btn-apply:active {
+            transform: translateY(0);
+        }
+
+        .btn-apply svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .detail-shortcut-hint {
+            font-size: 0.7rem;
+            color: var(--text-disabled);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .detail-shortcut-hint kbd {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.65rem;
+            font-weight: 600;
+        }
+
+        /* ── Empty state ── */
+        .empty-state {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 32px;
+            text-align: center;
+            flex: 1;
+        }
+
+        .empty-state.active {
+            display: flex;
+        }
+
+        .empty-state-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            opacity: 0.4;
+        }
+
+        .empty-state-text {
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: var(--text-disabled);
+        }
+
+        .empty-state-sub {
+            font-size: 0.72rem;
+            color: var(--text-disabled);
+            opacity: 0.6;
+            margin-top: 4px;
+        }
+
+        /* ── Status bar ── */
+        .palette-status {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 6px 20px 10px 20px;
+            font-size: 0.65rem;
+            color: var(--text-disabled);
+            user-select: none;
+        }
+
+        .status-keys {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .status-keys span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .status-keys kbd {
+            display: inline-block;
+            padding: 1px 5px;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.6rem;
+            font-weight: 600;
+            min-width: 18px;
+            text-align: center;
+        }
+
+        /* ── Fade masks for scroll ── */
+        .tool-list-area {
+            mask-image: linear-gradient(
+                to bottom,
+                transparent 0px,
+                black 8px,
+                black calc(100% - 8px),
+                transparent 100%
+            );
+            -webkit-mask-image: linear-gradient(
+                to bottom,
+                transparent 0px,
+                black 8px,
+                black calc(100% - 8px),
+                transparent 100%
+            );
+        }
+
+        /* Detail scrollbar */
+        .detail-panel::-webkit-scrollbar {
+            width: 6px;
+        }
+        .detail-panel::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .detail-panel::-webkit-scrollbar-thumb {
+            background: rgba(115, 115, 115, 0.25);
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Simulated app area -->
+    <div class="app-canvas">
+        <div class="app-canvas-hint">
+            Klang Studio — Drücke <kbd>⌘K</kbd> für Tool-Suche
+        </div>
+    </div>
+
+    <!-- Command Palette -->
+    <div class="command-palette">
+        <div class="palette-glass">
+            <!-- Search Section -->
+            <div class="search-section">
+                <div class="search-wrapper">
+                    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"/>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                    <input
+                        type="text"
+                        class="search-input"
+                        id="searchInput"
+                        placeholder="Tool suchen..."
+                        autocomplete="off"
+                        spellcheck="false"
+                    >
+                    <div class="shortcut-badge">⌘K</div>
+                </div>
+            </div>
+
+            <div class="palette-divider"></div>
+
+            <!-- Tool List -->
+            <div class="tool-list-area" id="toolListArea">
+                <!-- Categories rendered by JS -->
+            </div>
+
+            <!-- Empty state -->
+            <div class="empty-state" id="emptyState">
+                <div class="empty-state-icon">🔍</div>
+                <div class="empty-state-text">Keine Tools gefunden</div>
+                <div class="empty-state-sub">Versuche einen anderen Suchbegriff</div>
+            </div>
+
+            <!-- Detail Panel -->
+            <div class="detail-panel" id="detailPanel">
+                <button class="detail-back" id="detailBack">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"/>
+                    </svg>
+                    Zurück zur Liste
+                </button>
+                <div class="detail-hero">
+                    <div class="detail-emoji-wrap" id="detailEmoji"></div>
+                    <div class="detail-meta">
+                        <div class="detail-category" id="detailCategory"></div>
+                        <div class="detail-name" id="detailName"></div>
+                        <div class="detail-description" id="detailDesc"></div>
+                    </div>
+                </div>
+                <div class="detail-actions">
+                    <button class="btn-apply" id="detailApplyBtn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                        Anwenden
+                    </button>
+                    <div class="detail-shortcut-hint">
+                        <kbd>Enter</kbd> Anwenden &nbsp; <kbd>Esc</kbd> Zurück
+                    </div>
+                </div>
+            </div>
+
+            <!-- Status bar -->
+            <div class="palette-status" id="paletteStatus">
+                <div id="statusCount">29 Tools verfügbar</div>
+                <div class="status-keys">
+                    <span><kbd>↑</kbd><kbd>↓</kbd> Navigieren</span>
+                    <span><kbd>↵</kbd> Öffnen</span>
+                    <span><kbd>Esc</kbd> Schließen</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // ── Tool Data ──
+    const TOOLS = [
+        // Experten-Tools (purple)
+        { emoji: '🎤', name: 'Produzent', desc: 'Professionelle Produktions-Perspektive auf deinen Prompt', category: 'experten', categoryLabel: 'Experten-Tools', color: 'purple' },
+        { emoji: '🎹', name: 'Musiker', desc: 'Musikalische Tiefe und Arrangement-Expertise', category: 'experten', categoryLabel: 'Experten-Tools', color: 'purple' },
+        { emoji: '🎬', name: 'Filmkomponist', desc: 'Cinematic Scoring und emotionale Klanglandschaften', category: 'experten', categoryLabel: 'Experten-Tools', color: 'purple' },
+        { emoji: '🎧', name: 'DJ/Remixer', desc: 'Club-taugliche Beats und Remix-Techniken', category: 'experten', categoryLabel: 'Experten-Tools', color: 'purple' },
+        { emoji: '🎨', name: 'Avantgarde', desc: 'Experimentelle und grenzüberschreitende Klangwelten', category: 'experten', categoryLabel: 'Experten-Tools', color: 'purple' },
+        { emoji: '🔲', name: 'Minimalist', desc: 'Reduktion auf das Wesentliche, klare Strukturen', category: 'experten', categoryLabel: 'Experten-Tools', color: 'purple' },
+        { emoji: '🎵', name: 'Vocal-Harmony', desc: 'Mehrstimmige Arrangements und Vocal-Texturen', category: 'experten', categoryLabel: 'Experten-Tools', color: 'purple' },
+        { emoji: '🌍', name: 'Ethno', desc: 'Weltmusik-Einflüsse und kulturelle Klangfarben', category: 'experten', categoryLabel: 'Experten-Tools', color: 'purple' },
+        { emoji: '🔧', name: 'Sound-Ingenieur', desc: 'Technische Klangoptimierung und Mixing-Expertise', category: 'experten', categoryLabel: 'Experten-Tools', color: 'purple' },
+
+        // Klug-Tools (cyan)
+        { emoji: '🎛️', name: 'Synth-Designer Lab', desc: 'Synthesizer-Sounds und Klangdesign-Werkstatt', category: 'klug', categoryLabel: 'Klug-Tools', color: 'cyan' },
+        { emoji: '🧬', name: 'Genre-Mixer', desc: 'Kreative Genre-Kreuzungen und Hybrid-Stile', category: 'klug', categoryLabel: 'Klug-Tools', color: 'cyan' },
+        { emoji: '🪝', name: 'Hook-Generator', desc: 'Eingängige Melodien und Ohrwurm-Formeln', category: 'klug', categoryLabel: 'Klug-Tools', color: 'cyan' },
+        { emoji: '🏗️', name: 'Song-Struktur', desc: 'Professioneller Song-Aufbau und Arrangements', category: 'klug', categoryLabel: 'Klug-Tools', color: 'cyan' },
+        { emoji: '✨', name: 'Vibe-Veredler', desc: 'Atmosphärische Verfeinerung und Stimmungs-Tuning', category: 'klug', categoryLabel: 'Klug-Tools', color: 'cyan' },
+        { emoji: '🧑‍🎤', name: 'Künstler-Kompass', desc: 'Stilistische Orientierung an bekannten Künstlern', category: 'klug', categoryLabel: 'Klug-Tools', color: 'cyan' },
+        { emoji: '⏱️', name: 'Tempo-Finder', desc: 'Optimales BPM und rhythmische Grundlage', category: 'klug', categoryLabel: 'Klug-Tools', color: 'cyan' },
+        { emoji: '🧭', name: 'Mood-Analyzer', desc: 'Stimmungsanalyse und emotionale Feinabstimmung', category: 'klug', categoryLabel: 'Klug-Tools', color: 'cyan' },
+        { emoji: '💎', name: 'Production-Finish', desc: 'Finaler Feinschliff für Produktionsqualität', category: 'klug', categoryLabel: 'Klug-Tools', color: 'cyan' },
+        { emoji: '🗣️', name: 'Vocal-Stylist', desc: 'Gesangsstil und Vocal-Charakter-Design', category: 'klug', categoryLabel: 'Klug-Tools', color: 'cyan' },
+        { emoji: '🥁', name: 'Groove-Meister', desc: 'Rhythmus-Patterns und Groove-Entwicklung', category: 'klug', categoryLabel: 'Klug-Tools', color: 'cyan' },
+        { emoji: '🏋️', name: 'Performance-Coach', desc: 'Live-Performance und Energie-Optimierung', category: 'klug', categoryLabel: 'Klug-Tools', color: 'cyan' },
+        { emoji: '🔗', name: 'Effect-Chain', desc: 'Effektketten und Signal-Processing', category: 'klug', categoryLabel: 'Klug-Tools', color: 'cyan' },
+
+        // Futures Lab (green)
+        { emoji: '🌊', name: 'Adaptive Flow', desc: 'Dynamische Prompt-Anpassung in Echtzeit', category: 'futures', categoryLabel: 'Futures Lab', color: 'green' },
+        { emoji: '🤖', name: 'AI Collaboration', desc: 'KI-gestützte kreative Zusammenarbeit', category: 'futures', categoryLabel: 'Futures Lab', color: 'green' },
+        { emoji: '📖', name: 'Story Arc Designer', desc: 'Narrative Spannungsbögen für Songs', category: 'futures', categoryLabel: 'Futures Lab', color: 'green' },
+        { emoji: '📚', name: 'Narrative Chapters', desc: 'Kapitelbasierte Song-Erzählungen', category: 'futures', categoryLabel: 'Futures Lab', color: 'green' },
+        { emoji: '🌌', name: 'Immersive Space', desc: 'Räumliche Klanglandschaften und 3D-Audio', category: 'futures', categoryLabel: 'Futures Lab', color: 'green' },
+        { emoji: '🫀', name: 'Human Touch', desc: 'Menschliche Wärme und organische Elemente', category: 'futures', categoryLabel: 'Futures Lab', color: 'green' },
+        { emoji: '📊', name: 'Release Forecast', desc: 'Veröffentlichungs-Timing und Trend-Analyse', category: 'futures', categoryLabel: 'Futures Lab', color: 'green' },
+    ];
+
+    const CATEGORY_ORDER = ['experten', 'klug', 'futures'];
+
+    // ── State ──
+    let filteredTools = [...TOOLS];
+    let focusedIndex = -1;
+    let detailOpen = false;
+    let selectedTool = null;
+
+    // ── DOM refs ──
+    const searchInput = document.getElementById('searchInput');
+    const toolListArea = document.getElementById('toolListArea');
+    const emptyState = document.getElementById('emptyState');
+    const detailPanel = document.getElementById('detailPanel');
+    const detailBack = document.getElementById('detailBack');
+    const detailEmoji = document.getElementById('detailEmoji');
+    const detailCategory = document.getElementById('detailCategory');
+    const detailName = document.getElementById('detailName');
+    const detailDesc = document.getElementById('detailDesc');
+    const detailApplyBtn = document.getElementById('detailApplyBtn');
+    const statusCount = document.getElementById('statusCount');
+    const paletteStatus = document.getElementById('paletteStatus');
+
+    // ── Fuzzy match ──
+    function fuzzyMatch(text, query) {
+        const lowerText = text.toLowerCase();
+        const lowerQuery = query.toLowerCase();
+        if (lowerText.includes(lowerQuery)) return true;
+        // Simple character-sequence fuzzy
+        let qi = 0;
+        for (let i = 0; i < lowerText.length && qi < lowerQuery.length; i++) {
+            if (lowerText[i] === lowerQuery[qi]) qi++;
+        }
+        return qi === lowerQuery.length;
+    }
+
+    function highlightMatch(text, query) {
+        if (!query) return escapeHTML(text);
+        const lowerText = text.toLowerCase();
+        const lowerQuery = query.toLowerCase();
+
+        // Try substring match first
+        const idx = lowerText.indexOf(lowerQuery);
+        if (idx !== -1) {
+            const before = escapeHTML(text.slice(0, idx));
+            const match = escapeHTML(text.slice(idx, idx + query.length));
+            const after = escapeHTML(text.slice(idx + query.length));
+            return `${before}<mark>${match}</mark>${after}`;
+        }
+
+        // Fuzzy highlight
+        let result = '';
+        let qi = 0;
+        for (let i = 0; i < text.length; i++) {
+            if (qi < lowerQuery.length && text[i].toLowerCase() === lowerQuery[qi]) {
+                result += `<mark>${escapeHTML(text[i])}</mark>`;
+                qi++;
+            } else {
+                result += escapeHTML(text[i]);
+            }
+        }
+        return result;
+    }
+
+    function escapeHTML(str) {
+        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    // ── Render ──
+    function render() {
+        const query = searchInput.value.trim();
+
+        // Filter
+        if (query) {
+            filteredTools = TOOLS.filter(t =>
+                fuzzyMatch(t.name, query) || fuzzyMatch(t.desc, query)
+            );
+        } else {
+            filteredTools = [...TOOLS];
+        }
+
+        // Update status
+        statusCount.textContent = `${filteredTools.length} Tool${filteredTools.length !== 1 ? 's' : ''} ${query ? 'gefunden' : 'verfügbar'}`;
+
+        // Show/hide empty
+        if (filteredTools.length === 0) {
+            toolListArea.style.display = 'none';
+            emptyState.classList.add('active');
+            return;
+        } else {
+            toolListArea.style.display = '';
+            emptyState.classList.remove('active');
+        }
+
+        // Clamp focus index
+        if (focusedIndex >= filteredTools.length) {
+            focusedIndex = filteredTools.length - 1;
+        }
+
+        // Group by category
+        const groups = {};
+        filteredTools.forEach((tool, globalIdx) => {
+            if (!groups[tool.category]) {
+                groups[tool.category] = [];
+            }
+            groups[tool.category].push({ ...tool, _idx: globalIdx });
+        });
+
+        // Build HTML
+        let html = '';
+        CATEGORY_ORDER.forEach(cat => {
+            if (!groups[cat]) return;
+            const items = groups[cat];
+            const first = items[0];
+            const count = items.length;
+
+            html += `<div class="category-group" data-category="${cat}">`;
+            html += `<div class="category-header">`;
+            html += `<span class="category-badge ${first.color}">${first.categoryLabel}</span>`;
+            html += `<span class="category-count">${count}</span>`;
+            html += `</div>`;
+
+            items.forEach(tool => {
+                const isFocused = tool._idx === focusedIndex;
+                html += `<div class="tool-item${isFocused ? ' focused' : ''}" data-index="${tool._idx}">`;
+                html += `<div class="tool-emoji">${tool.emoji}</div>`;
+                html += `<div class="tool-info">`;
+                html += `<div class="tool-name">${highlightMatch(tool.name, query)}</div>`;
+                html += `<div class="tool-desc">${highlightMatch(tool.desc, query)}</div>`;
+                html += `</div>`;
+                html += `<svg class="tool-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>`;
+                html += `</div>`;
+            });
+
+            html += `</div>`;
+        });
+
+        toolListArea.innerHTML = html;
+
+        // Scroll focused into view
+        if (focusedIndex >= 0) {
+            const focusedEl = toolListArea.querySelector('.tool-item.focused');
+            if (focusedEl) {
+                focusedEl.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+            }
+        }
+    }
+
+    // ── Detail view ──
+    function openDetail(tool) {
+        selectedTool = tool;
+        detailOpen = true;
+
+        detailEmoji.textContent = tool.emoji;
+        detailEmoji.className = `detail-emoji-wrap ${tool.color}`;
+        detailCategory.textContent = tool.categoryLabel;
+        detailCategory.className = `detail-category ${tool.color}`;
+        detailName.textContent = tool.name;
+        detailDesc.textContent = tool.desc;
+        detailApplyBtn.className = `btn-apply ${tool.color}`;
+
+        toolListArea.style.display = 'none';
+        emptyState.classList.remove('active');
+        detailPanel.classList.add('active');
+        paletteStatus.style.display = 'none';
+
+        // Re-trigger animation
+        detailPanel.style.animation = 'none';
+        detailPanel.offsetHeight; // reflow
+        detailPanel.style.animation = '';
+    }
+
+    function closeDetail() {
+        detailOpen = false;
+        selectedTool = null;
+        detailPanel.classList.remove('active');
+        toolListArea.style.display = '';
+        paletteStatus.style.display = '';
+        render();
+        searchInput.focus();
+    }
+
+    // ── Event: input ──
+    searchInput.addEventListener('input', () => {
+        if (detailOpen) closeDetail();
+        focusedIndex = -1;
+        render();
+    });
+
+    // ── Event: click tool ──
+    toolListArea.addEventListener('click', (e) => {
+        const item = e.target.closest('.tool-item');
+        if (!item) return;
+        const idx = parseInt(item.dataset.index, 10);
+        const tool = filteredTools[idx];
+        if (tool) openDetail(tool);
+    });
+
+    // ── Event: back button ──
+    detailBack.addEventListener('click', closeDetail);
+
+    // ── Event: apply button ──
+    detailApplyBtn.addEventListener('click', () => {
+        if (selectedTool) {
+            // Visual feedback
+            const btn = detailApplyBtn;
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><polyline points="20 6 9 17 4 12"/></svg> Angewendet!`;
+            btn.style.opacity = '0.7';
+            btn.style.pointerEvents = 'none';
+            setTimeout(() => {
+                btn.innerHTML = originalHTML;
+                btn.style.opacity = '';
+                btn.style.pointerEvents = '';
+            }, 1200);
+        }
+    });
+
+    // ── Event: keyboard ──
+    document.addEventListener('keydown', (e) => {
+        // ⌘K to focus search
+        if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+            e.preventDefault();
+            if (detailOpen) closeDetail();
+            searchInput.focus();
+            searchInput.select();
+            return;
+        }
+
+        // ESC behavior
+        if (e.key === 'Escape') {
+            e.preventDefault();
+            if (detailOpen) {
+                closeDetail();
+                return;
+            }
+            if (searchInput.value) {
+                searchInput.value = '';
+                focusedIndex = -1;
+                render();
+                searchInput.focus();
+                return;
+            }
+            searchInput.blur();
+            return;
+        }
+
+        // Arrow navigation (only when not in detail)
+        if (!detailOpen && (e.key === 'ArrowDown' || e.key === 'ArrowUp')) {
+            e.preventDefault();
+            if (filteredTools.length === 0) return;
+
+            if (e.key === 'ArrowDown') {
+                focusedIndex = focusedIndex < filteredTools.length - 1 ? focusedIndex + 1 : 0;
+            } else {
+                focusedIndex = focusedIndex > 0 ? focusedIndex - 1 : filteredTools.length - 1;
+            }
+            render();
+            // Focus search to keep typing working
+            if (document.activeElement !== searchInput) {
+                searchInput.focus();
+            }
+            return;
+        }
+
+        // Enter to select / apply
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            if (detailOpen && selectedTool) {
+                detailApplyBtn.click();
+                return;
+            }
+            if (focusedIndex >= 0 && focusedIndex < filteredTools.length) {
+                openDetail(filteredTools[focusedIndex]);
+            }
+            return;
+        }
+    });
+
+    // ── Event: hover sets focus ──
+    toolListArea.addEventListener('mousemove', (e) => {
+        const item = e.target.closest('.tool-item');
+        if (!item) return;
+        const idx = parseInt(item.dataset.index, 10);
+        if (idx !== focusedIndex) {
+            focusedIndex = idx;
+            // Lightweight: just toggle classes without full re-render
+            toolListArea.querySelectorAll('.tool-item.focused').forEach(el => el.classList.remove('focused'));
+            item.classList.add('focused');
+        }
+    });
+
+    // ── Initial render ──
+    render();
+
+    // Auto-focus search on load
+    setTimeout(() => searchInput.focus(), 100);
+    </script>
+</body>
+</html>

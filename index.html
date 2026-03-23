@@ -412,15 +412,60 @@
             </div>
 
             <div class="app-bottom-row">
-                <section
-                    class="systems-rework-banner bg-neutral-800/20 backdrop-blur-md border border-neutral-700/60 rounded-3xl shadow-2xl shadow-black/20">
-                    <div class="systems-rework-inner">
-                        <p class="systems-rework-kicker">REWORK STATUS</p>
-                        <h2>Die drei Kachel-Systeme werden aktuell neu aufgebaut.</h2>
-                        <p>Dieser Bereich ist in Re-Implementierung. Die App fokussiert jetzt auf die drei oberen
-                            Systeme, damit Performance und Stabilität sauber bleiben.</p>
+                <div class="bottom-dashboard">
+
+                    <!-- Column 1: Experten-Tools -->
+                    <div class="bd-column bd-col-purple" id="bd-col-1">
+                        <div class="bd-column-header">
+                            <div class="bd-column-icon">🎯</div>
+                            <span class="bd-column-name">Experten-Tools</span>
+                            <span class="bd-column-count">9</span>
+                        </div>
+                        <div class="bd-tool-list" id="bd-list-1"></div>
+                        <div class="bd-detail-overlay" id="bd-detail-1">
+                            <button class="bd-detail-close" data-col="1">&times;</button>
+                            <div class="bd-detail-emoji" id="bd-detail-emoji-1"></div>
+                            <div class="bd-detail-name" id="bd-detail-name-1"></div>
+                            <div class="bd-detail-desc" id="bd-detail-desc-1"></div>
+                            <button class="bd-detail-btn" data-col="1">Anwenden</button>
+                        </div>
                     </div>
-                </section>
+
+                    <!-- Column 2: Klug-Tools -->
+                    <div class="bd-column bd-col-cyan" id="bd-col-2">
+                        <div class="bd-column-header">
+                            <div class="bd-column-icon">🧠</div>
+                            <span class="bd-column-name">Klug-Tools</span>
+                            <span class="bd-column-count">13</span>
+                        </div>
+                        <div class="bd-tool-list" id="bd-list-2"></div>
+                        <div class="bd-detail-overlay" id="bd-detail-2">
+                            <button class="bd-detail-close" data-col="2">&times;</button>
+                            <div class="bd-detail-emoji" id="bd-detail-emoji-2"></div>
+                            <div class="bd-detail-name" id="bd-detail-name-2"></div>
+                            <div class="bd-detail-desc" id="bd-detail-desc-2"></div>
+                            <button class="bd-detail-btn" data-col="2">Anwenden</button>
+                        </div>
+                    </div>
+
+                    <!-- Column 3: Futures Lab -->
+                    <div class="bd-column bd-col-emerald" id="bd-col-3">
+                        <div class="bd-column-header">
+                            <div class="bd-column-icon">🔮</div>
+                            <span class="bd-column-name">Futures Lab</span>
+                            <span class="bd-column-count">7</span>
+                        </div>
+                        <div class="bd-tool-list" id="bd-list-3"></div>
+                        <div class="bd-detail-overlay" id="bd-detail-3">
+                            <button class="bd-detail-close" data-col="3">&times;</button>
+                            <div class="bd-detail-emoji" id="bd-detail-emoji-3"></div>
+                            <div class="bd-detail-name" id="bd-detail-name-3"></div>
+                            <div class="bd-detail-desc" id="bd-detail-desc-3"></div>
+                            <button class="bd-detail-btn" data-col="3">Anwenden</button>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
 
@@ -1619,6 +1664,7 @@
     <script src="js/chords.js"></script>
     <script src="js/shortcuts_settings.js"></script>
     <script src="js/quickwins.js"></script>
+    <script src="js/bottom_tools.js"></script>
     <script src="js/app.js"></script>
 </body>
 

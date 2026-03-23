@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3-Kachel-System — Design-Varianten</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: #0d0d0f;
+            color: #e5e7eb;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 3rem 1.5rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-header .kicker {
+            font-size: 0.75rem;
+            letter-spacing: 0.24em;
+            font-weight: 700;
+            color: rgba(125, 211, 252, 0.9);
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+        }
+
+        .page-header h1 {
+            font-size: clamp(1.75rem, 4vw, 2.75rem);
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            margin-bottom: 0.75rem;
+        }
+
+        .page-header p {
+            font-size: 1rem;
+            color: #9ca3af;
+            max-width: 56ch;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .design-card {
+            position: relative;
+            background: rgba(23, 23, 23, 0.4);
+            border: 1px solid rgba(115, 115, 115, 0.2);
+            border-radius: 24px;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            padding: 1.75rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+            text-decoration: none;
+            color: inherit;
+            overflow: hidden;
+        }
+
+        .design-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 24px;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+        }
+
+        .design-card:nth-child(1)::before { background: radial-gradient(circle at 30% 20%, rgba(6, 182, 212, 0.12), transparent 60%); }
+        .design-card:nth-child(2)::before { background: radial-gradient(circle at 70% 30%, rgba(139, 92, 246, 0.12), transparent 60%); }
+        .design-card:nth-child(3)::before { background: radial-gradient(circle at 40% 80%, rgba(34, 197, 94, 0.12), transparent 60%); }
+        .design-card:nth-child(4)::before { background: radial-gradient(circle at 60% 20%, rgba(251, 191, 36, 0.12), transparent 60%); }
+        .design-card:nth-child(5)::before { background: radial-gradient(circle at 50% 50%, rgba(244, 63, 94, 0.12), transparent 60%); }
+
+        .design-card:hover::before { opacity: 1; }
+
+        .design-card:hover {
+            border-color: rgba(115, 115, 115, 0.4);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .card-number {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            padding: 0.25rem 0.6rem;
+            border-radius: 6px;
+            width: fit-content;
+        }
+
+        .design-card:nth-child(1) .card-number { color: #06b6d4; background: rgba(6, 182, 212, 0.12); }
+        .design-card:nth-child(2) .card-number { color: #8b5cf6; background: rgba(139, 92, 246, 0.12); }
+        .design-card:nth-child(3) .card-number { color: #22c55e; background: rgba(34, 197, 94, 0.12); }
+        .design-card:nth-child(4) .card-number { color: #fbbf24; background: rgba(251, 191, 36, 0.12); }
+        .design-card:nth-child(5) .card-number { color: #f43f5e; background: rgba(244, 63, 94, 0.12); }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #ffffff;
+            line-height: 1.3;
+        }
+
+        .card-desc {
+            font-size: 0.875rem;
+            color: #9ca3af;
+            line-height: 1.5;
+            flex: 1;
+        }
+
+        .card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-top: 0.25rem;
+        }
+
+        .card-tag {
+            font-size: 0.7rem;
+            font-weight: 500;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            background: rgba(115, 115, 115, 0.15);
+            color: #6b7280;
+        }
+
+        .card-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            transition: gap 0.2s ease;
+        }
+
+        .design-card:nth-child(1) .card-link { color: #06b6d4; }
+        .design-card:nth-child(2) .card-link { color: #8b5cf6; }
+        .design-card:nth-child(3) .card-link { color: #22c55e; }
+        .design-card:nth-child(4) .card-link { color: #fbbf24; }
+        .design-card:nth-child(5) .card-link { color: #f43f5e; }
+
+        .design-card:hover .card-link { gap: 0.7rem; }
+    </style>
+</head>
+<body>
+    <header class="page-header">
+        <p class="kicker">Suno Style Architect</p>
+        <h1>3-Kachel-System Design-Varianten</h1>
+        <p>Fünf unterschiedliche Prototypen für die untere Sektion. Jedes Design zeigt alle 29 Tools aus Experten, Klug und Futures Lab.</p>
+    </header>
+
+    <div class="cards-grid">
+        <a href="design-1-tabbed-panel.html" class="design-card">
+            <span class="card-number">Design 1</span>
+            <h2 class="card-title">Tabbed Panel System</h2>
+            <p class="card-desc">Drei Tabs mit horizontaler Slide-Transition, Tool-Grid mit Pagination und Detail-Modals. Keyboard-navigierbar mit Pfeiltasten.</p>
+            <div class="card-tags">
+                <span class="card-tag">Tabs</span>
+                <span class="card-tag">Slide-Animation</span>
+                <span class="card-tag">Modal</span>
+                <span class="card-tag">Keyboard-Nav</span>
+            </div>
+            <span class="card-link">Prototyp öffnen <span>→</span></span>
+        </a>
+
+        <a href="design-2-drei-spalten.html" class="design-card">
+            <span class="card-number">Design 2</span>
+            <h2 class="card-title">Drei-Spalten Dashboard</h2>
+            <p class="card-desc">Drei gleichgroße Spalten mit scrollbaren Tool-Listen, Glass-Card Buttons und In-Column Detail-Overlays.</p>
+            <div class="card-tags">
+                <span class="card-tag">3-Spalten Grid</span>
+                <span class="card-tag">Scrollbar-Styling</span>
+                <span class="card-tag">Glow-Hover</span>
+            </div>
+            <span class="card-link">Prototyp öffnen <span>→</span></span>
+        </a>
+
+        <a href="design-3-compact-flyout.html" class="design-card">
+            <span class="card-number">Design 3</span>
+            <h2 class="card-title">Compact Grid + Flyout</h2>
+            <p class="card-desc">Kompaktes Icon-Grid aller Tools mit adaptivem Flyout-Panel für Details. Smooth open/close Animation.</p>
+            <div class="card-tags">
+                <span class="card-tag">Icon-Grid</span>
+                <span class="card-tag">Flyout</span>
+                <span class="card-tag">Adaptive Position</span>
+            </div>
+            <span class="card-link">Prototyp öffnen <span>→</span></span>
+        </a>
+
+        <a href="design-4-command-palette.html" class="design-card">
+            <span class="card-number">Design 4</span>
+            <h2 class="card-title">Command Palette Style</h2>
+            <p class="card-desc">Suchleiste mit Echtzeit-Filterung, kategorisierte Tool-Liste und Keyboard-Navigation wie VS Code.</p>
+            <div class="card-tags">
+                <span class="card-tag">Fuzzy Search</span>
+                <span class="card-tag">Keyboard-First</span>
+                <span class="card-tag">Kategorien</span>
+            </div>
+            <span class="card-link">Prototyp öffnen <span>→</span></span>
+        </a>
+
+        <a href="design-5-karussell.html" class="design-card">
+            <span class="card-number">Design 5</span>
+            <h2 class="card-title">Horizontaler Karussell</h2>
+            <p class="card-desc">Fullwidth-Karussell mit einem System pro Slide, Pfeil-Navigation, Dots und Touch/Swipe-Support.</p>
+            <div class="card-tags">
+                <span class="card-tag">Karussell</span>
+                <span class="card-tag">Swipe</span>
+                <span class="card-tag">Slide-Animation</span>
+            </div>
+            <span class="card-link">Prototyp öffnen <span>→</span></span>
+        </a>
+    </div>
+</body>
+</html>

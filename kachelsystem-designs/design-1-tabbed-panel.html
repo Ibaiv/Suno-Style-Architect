@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabbed Panel System — Dark Glass-Morphism</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ============================================================
+           DESIGN SYSTEM TOKENS
+           ============================================================ */
+        :root {
+            --bg-deep: #0d0d0f;
+            --glass-bg: rgba(23, 23, 23, 0.4);
+            --glass-border: rgba(115, 115, 115, 0.2);
+            --glass-blur: blur(16px);
+            --elevated-bg: rgba(13, 13, 15, 0.95);
+            --elevated-border: rgba(115, 115, 115, 0.4);
+            --elevated-blur: blur(24px);
+            --cyan-accent: #06b6d4;
+            --cyan-glow: rgba(6, 182, 212, 0.15);
+            --cyan-glow-strong: rgba(6, 182, 212, 0.25);
+            --text-primary: #ffffff;
+            --text-body: #e5e7eb;
+            --text-secondary: #9ca3af;
+            --text-disabled: #6b7280;
+            --radius-container: 24px;
+            --radius-card: 12px;
+            --radius-button: 8px;
+            --ease-major: cubic-bezier(0.23, 1, 0.32, 1);
+            --ease-ui: cubic-bezier(0.4, 0, 0.2, 1);
+            --dur-hover: 200ms;
+            --dur-modal: 300ms;
+            --dur-slide: 400ms;
+            --z-modal: 100;
+            --z-feature: 150;
+        }
+
+        /* ============================================================
+           RESET & BASE
+           ============================================================ */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--bg-deep);
+            color: var(--text-body);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ============================================================
+           CONTEXT AREA (simulates rest of app above the panel)
+           ============================================================ */
+        .app-context {
+            height: 67vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            opacity: 0.4;
+            user-select: none;
+        }
+
+        .app-context-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .app-context-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-disabled);
+        }
+
+        .app-context-sub {
+            font-size: 0.6875rem;
+            color: rgba(107, 114, 128, 0.6);
+        }
+
+        /* ============================================================
+           BOTTOM PANEL SHELL
+           ============================================================ */
+        .bottom-panel {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 33vh;
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border-top: 1px solid var(--glass-border);
+            border-radius: var(--radius-container) var(--radius-container) 0 0;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 50;
+        }
+
+        /* Subtle top glow line */
+        .bottom-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40%;
+            height: 1px;
+            background: linear-gradient(90deg,
+                transparent,
+                rgba(6, 182, 212, 0.3),
+                transparent
+            );
+            z-index: 1;
+        }
+
+        /* ============================================================
+           TAB BAR
+           ============================================================ */
+        .tab-bar {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            padding: 0 1.25rem;
+            flex-shrink: 0;
+            position: relative;
+            border-bottom: 1px solid rgba(115, 115, 115, 0.1);
+        }
+
+        .tab-btn {
+            position: relative;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.75rem 1rem;
+            font-family: inherit;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+            color: var(--text-secondary);
+            transition: color var(--dur-hover) var(--ease-ui);
+            outline: none;
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-body);
+        }
+
+        .tab-btn:focus-visible {
+            color: var(--text-body);
+            box-shadow: inset 0 0 0 1px rgba(6, 182, 212, 0.4);
+            border-radius: var(--radius-button);
+        }
+
+        .tab-btn.active {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* Animated cyan underline indicator */
+        .tab-indicator {
+            position: absolute;
+            bottom: -1px;
+            height: 2px;
+            background: var(--cyan-accent);
+            border-radius: 1px;
+            transition: left var(--dur-slide) var(--ease-major),
+                        width var(--dur-slide) var(--ease-major);
+            box-shadow: 0 0 8px rgba(6, 182, 212, 0.4);
+        }
+
+        /* Tab count badge */
+        .tab-count {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 0.375rem;
+            min-width: 1.125rem;
+            height: 1.125rem;
+            padding: 0 0.3rem;
+            font-size: 0.625rem;
+            font-weight: 600;
+            color: var(--text-disabled);
+            background: rgba(255,255,255,0.04);
+            border-radius: 999px;
+            transition: color var(--dur-hover) var(--ease-ui),
+                        background var(--dur-hover) var(--ease-ui);
+        }
+
+        .tab-btn.active .tab-count {
+            color: var(--cyan-accent);
+            background: var(--cyan-glow);
+        }
+
+        /* ============================================================
+           CONTENT VIEWPORT & SLIDES
+           ============================================================ */
+        .tab-viewport {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+            min-height: 0;
+        }
+
+        .tab-slider {
+            display: flex;
+            height: 100%;
+            transition: transform var(--dur-slide) var(--ease-major);
+            will-change: transform;
+        }
+
+        .tab-pane {
+            flex: 0 0 100%;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* ============================================================
+           TOOL GRID
+           ============================================================ */
+        .tool-grid-wrapper {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+            min-height: 0;
+        }
+
+        .tool-pages-slider {
+            display: flex;
+            height: 100%;
+            transition: transform var(--dur-slide) var(--ease-major);
+            will-change: transform;
+        }
+
+        .tool-page {
+            flex: 0 0 100%;
+            width: 100%;
+            padding: 0.75rem 1.25rem 0;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-auto-rows: min-content;
+            gap: 0.5rem;
+            align-content: start;
+        }
+
+        @media (max-width: 900px) {
+            .tool-page {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 560px) {
+            .tool-page {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* ============================================================
+           TOOL CARD
+           ============================================================ */
+        .tool-card {
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+            padding: 0.5rem 0.75rem;
+            background: rgba(255, 255, 255, 0.025);
+            border: 1px solid rgba(115, 115, 115, 0.12);
+            border-radius: var(--radius-card);
+            cursor: pointer;
+            transition: background var(--dur-hover) var(--ease-ui),
+                        border-color var(--dur-hover) var(--ease-ui),
+                        transform var(--dur-hover) var(--ease-ui),
+                        box-shadow var(--dur-hover) var(--ease-ui);
+            outline: none;
+            user-select: none;
+        }
+
+        .tool-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(115, 115, 115, 0.3);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .tool-card:focus-visible {
+            border-color: rgba(6, 182, 212, 0.5);
+            box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.2);
+        }
+
+        .tool-card:active {
+            transform: scale(0.98);
+        }
+
+        .tool-emoji {
+            font-size: 1.25rem;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+
+        .tool-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text-body);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* ============================================================
+           PAGINATION DOTS
+           ============================================================ */
+        .pagination {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.375rem;
+            padding: 0.4rem 0 0.5rem;
+            flex-shrink: 0;
+        }
+
+        .pagination.hidden {
+            display: none;
+        }
+
+        .page-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            transition: background var(--dur-hover) var(--ease-ui),
+                        width var(--dur-hover) var(--ease-ui);
+        }
+
+        .page-dot.active {
+            width: 18px;
+            background: var(--cyan-accent);
+        }
+
+        /* ============================================================
+           MODAL OVERLAY
+           ============================================================ */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: var(--z-modal);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity var(--dur-modal) var(--ease-ui);
+        }
+
+        .modal-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-panel {
+            width: min(420px, 90vw);
+            max-height: 70vh;
+            background: var(--elevated-bg);
+            backdrop-filter: var(--elevated-blur);
+            -webkit-backdrop-filter: var(--elevated-blur);
+            border: 1px solid var(--elevated-border);
+            border-radius: var(--radius-container);
+            padding: 2rem;
+            transform: translateY(20px) scale(0.96);
+            transition: transform var(--dur-modal) var(--ease-major),
+                        opacity var(--dur-modal) var(--ease-major);
+            opacity: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            z-index: var(--z-feature);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .modal-overlay.open .modal-panel {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+
+        /* Subtle glow at top of modal */
+        .modal-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: radial-gradient(
+                ellipse 60% 100% at 50% 0%,
+                rgba(6, 182, 212, 0.06),
+                transparent
+            );
+            pointer-events: none;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 2rem;
+            height: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-button);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(115, 115, 115, 0.15);
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1rem;
+            line-height: 1;
+            transition: background var(--dur-hover) var(--ease-ui),
+                        color var(--dur-hover) var(--ease-ui);
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-primary);
+        }
+
+        .modal-emoji {
+            font-size: 3rem;
+            line-height: 1;
+        }
+
+        .modal-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+        }
+
+        .modal-desc {
+            font-size: 0.875rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+
+        .modal-divider {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg,
+                transparent,
+                rgba(115, 115, 115, 0.25),
+                transparent
+            );
+        }
+
+        /* Placeholder interactive elements in modal */
+        .modal-placeholder {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .modal-placeholder-label {
+            font-size: 0.6875rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-disabled);
+        }
+
+        .modal-slider-row {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .modal-slider-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            min-width: 4.5rem;
+        }
+
+        .modal-slider-track {
+            flex: 1;
+            height: 4px;
+            border-radius: 2px;
+            background: rgba(255, 255, 255, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .modal-slider-fill {
+            position: absolute;
+            inset: 0;
+            border-radius: 2px;
+            background: linear-gradient(90deg, var(--cyan-accent), rgba(6, 182, 212, 0.4));
+            transform-origin: left;
+        }
+
+        .modal-slider-value {
+            font-size: 0.6875rem;
+            font-weight: 600;
+            color: var(--cyan-accent);
+            min-width: 2rem;
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .modal-apply-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            padding: 0.75rem;
+            border: none;
+            border-radius: var(--radius-button);
+            background: linear-gradient(135deg,
+                rgba(6, 182, 212, 0.2),
+                rgba(6, 182, 212, 0.1)
+            );
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            color: var(--cyan-accent);
+            font-family: inherit;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background var(--dur-hover) var(--ease-ui),
+                        border-color var(--dur-hover) var(--ease-ui),
+                        box-shadow var(--dur-hover) var(--ease-ui);
+        }
+
+        .modal-apply-btn:hover {
+            background: linear-gradient(135deg,
+                rgba(6, 182, 212, 0.3),
+                rgba(6, 182, 212, 0.15)
+            );
+            border-color: rgba(6, 182, 212, 0.5);
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.15);
+        }
+
+        .modal-apply-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Keyboard hint */
+        .keyboard-hint {
+            position: fixed;
+            bottom: calc(33vh + 0.75rem);
+            right: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.625rem;
+            color: var(--text-disabled);
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .kbd {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 1.25rem;
+            height: 1.25rem;
+            padding: 0 0.25rem;
+            font-size: 0.5625rem;
+            font-family: inherit;
+            font-weight: 600;
+            color: var(--text-disabled);
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(115,115,115,0.2);
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Simulated app area above the panel -->
+    <div class="app-context">
+        <div class="app-context-icon">🎶</div>
+        <div class="app-context-label">Klang Studio</div>
+        <div class="app-context-sub">Main workspace area</div>
+    </div>
+
+    <!-- Keyboard navigation hint -->
+    <div class="keyboard-hint">
+        <kbd class="kbd">←→</kbd> Tabs
+        <kbd class="kbd">↑↓</kbd> Tools
+        <kbd class="kbd">Enter</kbd> Open
+        <kbd class="kbd">Esc</kbd> Close
+    </div>
+
+    <!-- ============================================================
+         BOTTOM PANEL
+         ============================================================ -->
+    <div class="bottom-panel" id="bottomPanel">
+
+        <!-- TAB BAR -->
+        <nav class="tab-bar" role="tablist" id="tabBar">
+            <button class="tab-btn active"
+                    role="tab"
+                    aria-selected="true"
+                    aria-controls="pane-experten"
+                    id="tab-experten"
+                    data-tab="0"
+                    tabindex="0">
+                Experten-Tools <span class="tab-count">9</span>
+            </button>
+            <button class="tab-btn"
+                    role="tab"
+                    aria-selected="false"
+                    aria-controls="pane-klug"
+                    id="tab-klug"
+                    data-tab="1"
+                    tabindex="-1">
+                Klug-Tools <span class="tab-count">13</span>
+            </button>
+            <button class="tab-btn"
+                    role="tab"
+                    aria-selected="false"
+                    aria-controls="pane-futures"
+                    id="tab-futures"
+                    data-tab="2"
+                    tabindex="-1">
+                Futures Lab <span class="tab-count">7</span>
+            </button>
+            <div class="tab-indicator" id="tabIndicator"></div>
+        </nav>
+
+        <!-- TAB CONTENT SLIDER -->
+        <div class="tab-viewport">
+            <div class="tab-slider" id="tabSlider">
+
+                <!-- PANE: Experten-Tools -->
+                <div class="tab-pane" id="pane-experten" role="tabpanel" aria-labelledby="tab-experten">
+                    <div class="tool-grid-wrapper" id="grid-experten"></div>
+                    <div class="pagination" id="dots-experten"></div>
+                </div>
+
+                <!-- PANE: Klug-Tools -->
+                <div class="tab-pane" id="pane-klug" role="tabpanel" aria-labelledby="tab-klug">
+                    <div class="tool-grid-wrapper" id="grid-klug"></div>
+                    <div class="pagination" id="dots-klug"></div>
+                </div>
+
+                <!-- PANE: Futures Lab -->
+                <div class="tab-pane" id="pane-futures" role="tabpanel" aria-labelledby="tab-futures">
+                    <div class="tool-grid-wrapper" id="grid-futures"></div>
+                    <div class="pagination" id="dots-futures"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         MODAL
+         ============================================================ -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-panel" id="modalPanel">
+            <button class="modal-close" id="modalClose" aria-label="Schließen">✕</button>
+            <div class="modal-emoji" id="modalEmoji"></div>
+            <div class="modal-name" id="modalName"></div>
+            <div class="modal-desc" id="modalDesc"></div>
+            <div class="modal-divider"></div>
+            <div class="modal-placeholder">
+                <div class="modal-placeholder-label">Parameter</div>
+                <div class="modal-slider-row">
+                    <span class="modal-slider-label">Intensität</span>
+                    <div class="modal-slider-track"><div class="modal-slider-fill" style="transform: scaleX(0.7)"></div></div>
+                    <span class="modal-slider-value">70%</span>
+                </div>
+                <div class="modal-slider-row">
+                    <span class="modal-slider-label">Kreativität</span>
+                    <div class="modal-slider-track"><div class="modal-slider-fill" style="transform: scaleX(0.5)"></div></div>
+                    <span class="modal-slider-value">50%</span>
+                </div>
+                <div class="modal-slider-row">
+                    <span class="modal-slider-label">Komplexität</span>
+                    <div class="modal-slider-track"><div class="modal-slider-fill" style="transform: scaleX(0.3)"></div></div>
+                    <span class="modal-slider-value">30%</span>
+                </div>
+            </div>
+            <button class="modal-apply-btn" id="modalApply">
+                <span>Anwenden</span>
+                <span style="font-size:0.75rem; opacity:0.7;">↵</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         JAVASCRIPT
+         ============================================================ -->
+    <script>
+    (() => {
+        'use strict';
+
+        /* -------------------------------------------------------
+           DATA
+           ------------------------------------------------------- */
+        const TABS = [
+            {
+                key: 'experten',
+                tools: [
+                    { emoji: '🎤', name: 'Produzent', desc: 'Professionelle Produktions-Perspektive auf deinen Prompt' },
+                    { emoji: '🎹', name: 'Musiker', desc: 'Musikalische Tiefe und Arrangement-Expertise' },
+                    { emoji: '🎬', name: 'Filmkomponist', desc: 'Cinematic Scoring und emotionale Klanglandschaften' },
+                    { emoji: '🎧', name: 'DJ/Remixer', desc: 'Club-taugliche Beats und Remix-Techniken' },
+                    { emoji: '🎨', name: 'Avantgarde', desc: 'Experimentelle und grenzüberschreitende Klangwelten' },
+                    { emoji: '🔲', name: 'Minimalist', desc: 'Reduktion auf das Wesentliche, klare Strukturen' },
+                    { emoji: '🎵', name: 'Vocal-Harmony', desc: 'Mehrstimmige Arrangements und Vocal-Texturen' },
+                    { emoji: '🌍', name: 'Ethno', desc: 'Weltmusik-Einflüsse und kulturelle Klangfarben' },
+                    { emoji: '🔧', name: 'Sound-Ingenieur', desc: 'Technische Klangoptimierung und Mixing-Expertise' },
+                ]
+            },
+            {
+                key: 'klug',
+                tools: [
+                    { emoji: '🎛️', name: 'Synth-Designer Lab', desc: 'Synthesizer-Sounds und Klangdesign-Werkstatt' },
+                    { emoji: '🧬', name: 'Genre-Mixer', desc: 'Kreative Genre-Kreuzungen und Hybrid-Stile' },
+                    { emoji: '🪝', name: 'Hook-Generator', desc: 'Eingängige Melodien und Ohrwurm-Formeln' },
+                    { emoji: '🏗️', name: 'Song-Struktur', desc: 'Professioneller Song-Aufbau und Arrangements' },
+                    { emoji: '✨', name: 'Vibe-Veredler', desc: 'Atmosphärische Verfeinerung und Stimmungs-Tuning' },
+                    { emoji: '🧑‍🎤', name: 'Künstler-Kompass', desc: 'Stilistische Orientierung an bekannten Künstlern' },
+                    { emoji: '⏱️', name: 'Tempo-Finder', desc: 'Optimales BPM und rhythmische Grundlage' },
+                    { emoji: '🧭', name: 'Mood-Analyzer', desc: 'Stimmungsanalyse und emotionale Feinabstimmung' },
+                    { emoji: '💎', name: 'Production-Finish', desc: 'Finaler Feinschliff für Produktionsqualität' },
+                    { emoji: '🗣️', name: 'Vocal-Stylist', desc: 'Gesangsstil und Vocal-Charakter-Design' },
+                    { emoji: '🥁', name: 'Groove-Meister', desc: 'Rhythmus-Patterns und Groove-Entwicklung' },
+                    { emoji: '🏋️', name: 'Performance-Coach', desc: 'Live-Performance und Energie-Optimierung' },
+                    { emoji: '🔗', name: 'Effect-Chain', desc: 'Effektketten und Signal-Processing' },
+                ]
+            },
+            {
+                key: 'futures',
+                tools: [
+                    { emoji: '🌊', name: 'Adaptive Flow', desc: 'Dynamische Prompt-Anpassung in Echtzeit' },
+                    { emoji: '🤖', name: 'AI Collaboration', desc: 'KI-gestützte kreative Zusammenarbeit' },
+                    { emoji: '📖', name: 'Story Arc Designer', desc: 'Narrative Spannungsbögen für Songs' },
+                    { emoji: '📚', name: 'Narrative Chapters', desc: 'Kapitelbasierte Song-Erzählungen' },
+                    { emoji: '🌌', name: 'Immersive Space', desc: 'Räumliche Klanglandschaften und 3D-Audio' },
+                    { emoji: '🫀', name: 'Human Touch', desc: 'Menschliche Wärme und organische Elemente' },
+                    { emoji: '📊', name: 'Release Forecast', desc: 'Veröffentlichungs-Timing und Trend-Analyse' },
+                ]
+            }
+        ];
+
+        /* -------------------------------------------------------
+           STATE
+           ------------------------------------------------------- */
+        let activeTabIndex = 0;
+        const pageIndices = [0, 0, 0]; // current page per tab
+        let focusedCardIndex = -1;
+
+        /* -------------------------------------------------------
+           DOM REFS
+           ------------------------------------------------------- */
+        const tabBar       = document.getElementById('tabBar');
+        const tabBtns      = Array.from(tabBar.querySelectorAll('.tab-btn'));
+        const tabIndicator = document.getElementById('tabIndicator');
+        const tabSlider    = document.getElementById('tabSlider');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalClose   = document.getElementById('modalClose');
+        const modalApply   = document.getElementById('modalApply');
+
+        /* -------------------------------------------------------
+           PAGINATION — Compute items per page
+           ------------------------------------------------------- */
+        function getColumnsCount() {
+            const w = window.innerWidth;
+            if (w <= 560) return 2;
+            if (w <= 900) return 3;
+            return 4;
+        }
+
+        function getRowsCount() {
+            // Approximate available height for tool grid
+            // 33vh total - tab bar (~40px) - pagination (~28px) - padding
+            const panelH = window.innerHeight * 0.33;
+            const available = panelH - 40 - 28 - 16;
+            const rowH = 44; // card height + gap
+            return Math.max(1, Math.floor(available / rowH));
+        }
+
+        function getItemsPerPage() {
+            return getColumnsCount() * getRowsCount();
+        }
+
+        /* -------------------------------------------------------
+           BUILD TOOL GRIDS
+           ------------------------------------------------------- */
+        function buildGrid(tabIdx) {
+            const tab = TABS[tabIdx];
+            const gridEl = document.getElementById(`grid-${tab.key}`);
+            const dotsEl = document.getElementById(`dots-${tab.key}`);
+            const ipp = getItemsPerPage();
+            const pageCount = Math.ceil(tab.tools.length / ipp);
+
+            // Build pages slider
+            let html = '<div class="tool-pages-slider" id="pages-' + tab.key + '">';
+            for (let p = 0; p < pageCount; p++) {
+                const start = p * ipp;
+                const end = Math.min(start + ipp, tab.tools.length);
+                html += '<div class="tool-page">';
+                for (let i = start; i < end; i++) {
+                    const t = tab.tools[i];
+                    html += `<div class="tool-card" role="button" tabindex="0"
+                                  data-tab="${tabIdx}" data-tool="${i}"
+                                  aria-label="${t.name}: ${t.desc}">
+                        <span class="tool-emoji">${t.emoji}</span>
+                        <span class="tool-label">${t.name}</span>
+                    </div>`;
+                }
+                html += '</div>';
+            }
+            html += '</div>';
+            gridEl.innerHTML = html;
+
+            // Build dots
+            if (pageCount <= 1) {
+                dotsEl.classList.add('hidden');
+                dotsEl.innerHTML = '';
+            } else {
+                dotsEl.classList.remove('hidden');
+                let dots = '';
+                for (let d = 0; d < pageCount; d++) {
+                    dots += `<button class="page-dot${d === pageIndices[tabIdx] ? ' active' : ''}"
+                                     data-tab="${tabIdx}" data-page="${d}"
+                                     aria-label="Seite ${d + 1}"></button>`;
+                }
+                dotsEl.innerHTML = dots;
+            }
+
+            // Set initial page position
+            setPage(tabIdx, pageIndices[tabIdx], false);
+        }
+
+        function buildAllGrids() {
+            TABS.forEach((_, i) => buildGrid(i));
+        }
+
+        /* -------------------------------------------------------
+           PAGE NAVIGATION
+           ------------------------------------------------------- */
+        function setPage(tabIdx, pageIdx, animate = true) {
+            const tab = TABS[tabIdx];
+            const slider = document.getElementById(`pages-${tab.key}`);
+            if (!slider) return;
+
+            const ipp = getItemsPerPage();
+            const pageCount = Math.ceil(tab.tools.length / ipp);
+            pageIdx = Math.max(0, Math.min(pageIdx, pageCount - 1));
+            pageIndices[tabIdx] = pageIdx;
+
+            if (!animate) slider.style.transition = 'none';
+            slider.style.transform = `translateX(-${pageIdx * 100}%)`;
+            if (!animate) {
+                // Force reflow then restore transition
+                slider.offsetHeight;
+                slider.style.transition = '';
+            }
+
+            // Update dots
+            const dotsEl = document.getElementById(`dots-${tab.key}`);
+            dotsEl.querySelectorAll('.page-dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === pageIdx);
+            });
+        }
+
+        /* -------------------------------------------------------
+           TAB INDICATOR
+           ------------------------------------------------------- */
+        function updateIndicator(animate = true) {
+            const btn = tabBtns[activeTabIndex];
+            const barRect = tabBar.getBoundingClientRect();
+            const btnRect = btn.getBoundingClientRect();
+            if (!animate) tabIndicator.style.transition = 'none';
+            tabIndicator.style.left = (btnRect.left - barRect.left) + 'px';
+            tabIndicator.style.width = btnRect.width + 'px';
+            if (!animate) {
+                tabIndicator.offsetHeight;
+                tabIndicator.style.transition = '';
+            }
+        }
+
+        /* -------------------------------------------------------
+           TAB SWITCHING
+           ------------------------------------------------------- */
+        function switchTab(index, focus = false) {
+            if (index < 0 || index >= TABS.length) return;
+            activeTabIndex = index;
+            focusedCardIndex = -1;
+
+            tabBtns.forEach((btn, i) => {
+                const isActive = i === index;
+                btn.classList.toggle('active', isActive);
+                btn.setAttribute('aria-selected', isActive);
+                btn.tabIndex = isActive ? 0 : -1;
+            });
+
+            tabSlider.style.transform = `translateX(-${index * 100}%)`;
+            updateIndicator();
+            if (focus) tabBtns[index].focus();
+        }
+
+        /* -------------------------------------------------------
+           MODAL
+           ------------------------------------------------------- */
+        function openModal(tabIdx, toolIdx) {
+            const tool = TABS[tabIdx].tools[toolIdx];
+            document.getElementById('modalEmoji').textContent = tool.emoji;
+            document.getElementById('modalName').textContent = tool.name;
+            document.getElementById('modalDesc').textContent = tool.desc;
+
+            // Randomize slider fills for visual interest
+            const fills = modalOverlay.querySelectorAll('.modal-slider-fill');
+            const values = modalOverlay.querySelectorAll('.modal-slider-value');
+            fills.forEach((fill, i) => {
+                const v = Math.round(30 + Math.random() * 50);
+                fill.style.transform = `scaleX(${v / 100})`;
+                if (values[i]) values[i].textContent = v + '%';
+            });
+
+            modalOverlay.classList.add('open');
+        }
+
+        function closeModal() {
+            modalOverlay.classList.remove('open');
+        }
+
+        /* -------------------------------------------------------
+           EVENT: Tab clicks
+           ------------------------------------------------------- */
+        tabBtns.forEach((btn, i) => {
+            btn.addEventListener('click', () => switchTab(i, true));
+        });
+
+        /* -------------------------------------------------------
+           EVENT: Pagination dot clicks
+           ------------------------------------------------------- */
+        document.addEventListener('click', (e) => {
+            const dot = e.target.closest('.page-dot');
+            if (dot) {
+                const tabIdx = parseInt(dot.dataset.tab);
+                const pageIdx = parseInt(dot.dataset.page);
+                setPage(tabIdx, pageIdx);
+            }
+        });
+
+        /* -------------------------------------------------------
+           EVENT: Tool card clicks
+           ------------------------------------------------------- */
+        document.addEventListener('click', (e) => {
+            const card = e.target.closest('.tool-card');
+            if (card) {
+                openModal(parseInt(card.dataset.tab), parseInt(card.dataset.tool));
+            }
+        });
+
+        /* -------------------------------------------------------
+           EVENT: Tool card Enter key
+           ------------------------------------------------------- */
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const card = document.activeElement;
+                if (card && card.classList.contains('tool-card')) {
+                    openModal(parseInt(card.dataset.tab), parseInt(card.dataset.tool));
+                }
+            }
+        });
+
+        /* -------------------------------------------------------
+           EVENT: Modal close
+           ------------------------------------------------------- */
+        modalClose.addEventListener('click', closeModal);
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) closeModal();
+        });
+        modalApply.addEventListener('click', () => {
+            closeModal();
+        });
+
+        /* -------------------------------------------------------
+           EVENT: Keyboard navigation
+           ------------------------------------------------------- */
+        document.addEventListener('keydown', (e) => {
+            // ESC closes modal
+            if (e.key === 'Escape') {
+                if (modalOverlay.classList.contains('open')) {
+                    closeModal();
+                    return;
+                }
+            }
+
+            // Don't handle arrows if modal is open
+            if (modalOverlay.classList.contains('open')) return;
+
+            // Left/Right arrow: switch tabs (when tab or card has focus)
+            const inPanel = document.activeElement &&
+                (document.activeElement.classList.contains('tab-btn') ||
+                 document.activeElement.classList.contains('tool-card'));
+
+            if (e.key === 'ArrowLeft' && document.activeElement?.classList.contains('tab-btn')) {
+                e.preventDefault();
+                switchTab(Math.max(0, activeTabIndex - 1), true);
+            }
+            if (e.key === 'ArrowRight' && document.activeElement?.classList.contains('tab-btn')) {
+                e.preventDefault();
+                switchTab(Math.min(TABS.length - 1, activeTabIndex + 1), true);
+            }
+
+            // Arrow Down from tab → focus first card
+            if (e.key === 'ArrowDown' && document.activeElement?.classList.contains('tab-btn')) {
+                e.preventDefault();
+                const cards = getCurrentCards();
+                if (cards.length > 0) {
+                    focusedCardIndex = 0;
+                    cards[0].focus();
+                }
+            }
+
+            // Arrow Up from first card → focus tab
+            if (e.key === 'ArrowUp' && document.activeElement?.classList.contains('tool-card')) {
+                e.preventDefault();
+                const cards = getCurrentCards();
+                const idx = cards.indexOf(document.activeElement);
+                const cols = getColumnsCount();
+                if (idx < cols) {
+                    // First row → go to tab
+                    tabBtns[activeTabIndex].focus();
+                    focusedCardIndex = -1;
+                } else {
+                    // Move up one row
+                    const newIdx = idx - cols;
+                    if (newIdx >= 0) {
+                        cards[newIdx].focus();
+                        focusedCardIndex = newIdx;
+                    }
+                }
+            }
+
+            if (e.key === 'ArrowDown' && document.activeElement?.classList.contains('tool-card')) {
+                e.preventDefault();
+                const cards = getCurrentCards();
+                const idx = cards.indexOf(document.activeElement);
+                const cols = getColumnsCount();
+                const newIdx = idx + cols;
+                if (newIdx < cards.length) {
+                    cards[newIdx].focus();
+                    focusedCardIndex = newIdx;
+                }
+            }
+
+            if (e.key === 'ArrowLeft' && document.activeElement?.classList.contains('tool-card')) {
+                e.preventDefault();
+                const cards = getCurrentCards();
+                const idx = cards.indexOf(document.activeElement);
+                if (idx > 0) {
+                    cards[idx - 1].focus();
+                    focusedCardIndex = idx - 1;
+                }
+            }
+
+            if (e.key === 'ArrowRight' && document.activeElement?.classList.contains('tool-card')) {
+                e.preventDefault();
+                const cards = getCurrentCards();
+                const idx = cards.indexOf(document.activeElement);
+                if (idx < cards.length - 1) {
+                    cards[idx + 1].focus();
+                    focusedCardIndex = idx + 1;
+                }
+            }
+        });
+
+        function getCurrentCards() {
+            const tab = TABS[activeTabIndex];
+            const pane = document.getElementById(`pane-${tab.key}`);
+            return Array.from(pane.querySelectorAll('.tool-card'));
+        }
+
+        /* -------------------------------------------------------
+           INIT & RESIZE
+           ------------------------------------------------------- */
+        function init() {
+            buildAllGrids();
+            updateIndicator(false);
+        }
+
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                buildAllGrids();
+                updateIndicator(false);
+            }, 150);
+        });
+
+        init();
+    })();
+    </script>
+</body>
+</html>

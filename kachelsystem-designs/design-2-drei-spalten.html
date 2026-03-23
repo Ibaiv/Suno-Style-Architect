@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drei-Spalten Dashboard — Klang Studio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* ───────── RESET & BASE ───────── */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg-root: #0d0d0f;
+            --glass: rgba(23, 23, 23, 0.4);
+            --glass-border: rgba(115, 115, 115, 0.2);
+            --glass-elevated: rgba(13, 13, 15, 0.95);
+            --glass-elevated-border: rgba(115, 115, 115, 0.4);
+            --text-primary: #ffffff;
+            --text-body: #e5e7eb;
+            --text-secondary: #9ca3af;
+            --text-disabled: #6b7280;
+            --radius-container: 24px;
+            --radius-card: 12px;
+            --radius-button: 8px;
+            --ease-major: cubic-bezier(0.23, 1, 0.32, 1);
+            --ease-ui: cubic-bezier(0.4, 0, 0.2, 1);
+            --accent-purple: #a78bfa;
+            --accent-purple-glow: rgba(167, 139, 250, 0.15);
+            --accent-purple-border: rgba(167, 139, 250, 0.3);
+            --accent-cyan: #67e8f9;
+            --accent-cyan-glow: rgba(103, 232, 249, 0.15);
+            --accent-cyan-border: rgba(103, 232, 249, 0.3);
+            --accent-emerald: #6ee7b7;
+            --accent-emerald-glow: rgba(110, 231, 183, 0.15);
+            --accent-emerald-border: rgba(110, 231, 183, 0.3);
+            --scrollbar-thumb: rgba(115, 115, 115, 0.3);
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--bg-root);
+            color: var(--text-body);
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* ───────── CONTEXT AREA (top 67vh) ───────── */
+        .context-area {
+            height: 67vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .context-area::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(167, 139, 250, 0.04) 0%, rgba(103, 232, 249, 0.02) 40%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .context-label {
+            font-size: 0.7rem;
+            letter-spacing: 0.28em;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-disabled);
+            margin-bottom: 0.75rem;
+        }
+
+        .context-title {
+            font-size: clamp(1.5rem, 3vw, 2.25rem);
+            font-weight: 800;
+            color: var(--text-primary);
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            margin-bottom: 0.5rem;
+        }
+
+        .context-sub {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            max-width: 42ch;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        /* ───────── BOTTOM PANEL (33vh) ───────── */
+        .bottom-panel {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 33vh;
+            padding: 10px 12px 12px 12px;
+            z-index: 50;
+        }
+
+        .panel-inner {
+            width: 100%;
+            height: 100%;
+            background: var(--glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-container);
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            padding: 10px;
+            overflow: hidden;
+        }
+
+        /* ───────── COLUMN ───────── */
+        .column {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            background: rgba(18, 18, 20, 0.5);
+            border: 1px solid var(--glass-border);
+            border-radius: 18px;
+            overflow: hidden;
+        }
+
+        .column-header {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px 8px 14px;
+            border-bottom: 1px solid rgba(115, 115, 115, 0.1);
+        }
+
+        .column-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+
+        .col-purple .column-icon { background: var(--accent-purple-glow); border: 1px solid var(--accent-purple-border); }
+        .col-cyan .column-icon   { background: var(--accent-cyan-glow);   border: 1px solid var(--accent-cyan-border); }
+        .col-emerald .column-icon { background: var(--accent-emerald-glow); border: 1px solid var(--accent-emerald-border); }
+
+        .column-name {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+            white-space: nowrap;
+        }
+
+        .col-purple .column-name  { color: var(--accent-purple); }
+        .col-cyan .column-name    { color: var(--accent-cyan); }
+        .col-emerald .column-name { color: var(--accent-emerald); }
+
+        .column-count {
+            font-size: 0.6rem;
+            font-weight: 600;
+            padding: 1px 6px;
+            border-radius: 20px;
+            color: var(--text-secondary);
+            background: rgba(115, 115, 115, 0.12);
+            border: 1px solid rgba(115, 115, 115, 0.15);
+        }
+
+        /* ───────── SCROLLABLE TOOL LIST ───────── */
+        .tool-list {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 6px 8px 8px 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        /* Custom scrollbar */
+        .tool-list::-webkit-scrollbar {
+            width: 4px;
+        }
+        .tool-list::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .tool-list::-webkit-scrollbar-thumb {
+            background: var(--scrollbar-thumb);
+            border-radius: 4px;
+        }
+        .tool-list::-webkit-scrollbar-thumb:hover {
+            background: rgba(115, 115, 115, 0.5);
+        }
+        /* Firefox */
+        .tool-list {
+            scrollbar-width: thin;
+            scrollbar-color: var(--scrollbar-thumb) transparent;
+        }
+
+        /* ───────── TOOL CARD ───────── */
+        .tool-card {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px;
+            border-radius: var(--radius-card);
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(115, 115, 115, 0.08);
+            cursor: pointer;
+            transition: all 200ms var(--ease-ui);
+            flex-shrink: 0;
+            user-select: none;
+            position: relative;
+        }
+
+        .tool-card .tool-emoji {
+            font-size: 1rem;
+            line-height: 1;
+            flex-shrink: 0;
+            width: 22px;
+            text-align: center;
+        }
+
+        .tool-card .tool-name {
+            font-size: 0.72rem;
+            font-weight: 500;
+            color: var(--text-body);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.2;
+        }
+
+        /* Hover per column accent */
+        .col-purple .tool-card:hover {
+            background: var(--accent-purple-glow);
+            border-color: var(--accent-purple-border);
+            transform: scale(1.02);
+            box-shadow: 0 0 16px rgba(167, 139, 250, 0.08);
+        }
+        .col-purple .tool-card:hover .tool-name { color: var(--accent-purple); }
+
+        .col-cyan .tool-card:hover {
+            background: var(--accent-cyan-glow);
+            border-color: var(--accent-cyan-border);
+            transform: scale(1.02);
+            box-shadow: 0 0 16px rgba(103, 232, 249, 0.08);
+        }
+        .col-cyan .tool-card:hover .tool-name { color: var(--accent-cyan); }
+
+        .col-emerald .tool-card:hover {
+            background: var(--accent-emerald-glow);
+            border-color: var(--accent-emerald-border);
+            transform: scale(1.02);
+            box-shadow: 0 0 16px rgba(110, 231, 183, 0.08);
+        }
+        .col-emerald .tool-card:hover .tool-name { color: var(--accent-emerald); }
+
+        .tool-card:active {
+            transform: scale(0.98);
+        }
+
+        /* ───────── DETAIL OVERLAY (inside column) ───────── */
+        .detail-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 10;
+            background: var(--glass-elevated);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--glass-elevated-border);
+            border-radius: 18px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 20px;
+            gap: 8px;
+            opacity: 0;
+            transform: translateY(8px) scale(0.97);
+            pointer-events: none;
+            transition: opacity 300ms var(--ease-major), transform 300ms var(--ease-major);
+        }
+
+        .detail-overlay.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+
+        .detail-close {
+            position: absolute;
+            top: 8px;
+            right: 10px;
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            border: 1px solid rgba(115, 115, 115, 0.2);
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-secondary);
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 200ms var(--ease-ui);
+            line-height: 1;
+        }
+
+        .detail-close:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-primary);
+            border-color: rgba(115, 115, 115, 0.4);
+        }
+
+        .detail-emoji {
+            font-size: 2rem;
+            line-height: 1;
+            margin-bottom: 2px;
+        }
+
+        .detail-name {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        .detail-desc {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            text-align: center;
+            line-height: 1.45;
+            max-width: 28ch;
+        }
+
+        .detail-btn {
+            margin-top: 4px;
+            padding: 6px 20px;
+            border-radius: var(--radius-button);
+            border: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 200ms var(--ease-ui);
+            letter-spacing: 0.01em;
+        }
+
+        .col-purple .detail-btn {
+            background: linear-gradient(135deg, rgba(167, 139, 250, 0.25), rgba(167, 139, 250, 0.12));
+            color: var(--accent-purple);
+            box-shadow: 0 0 20px rgba(167, 139, 250, 0.08);
+            border: 1px solid var(--accent-purple-border);
+        }
+        .col-purple .detail-btn:hover {
+            background: linear-gradient(135deg, rgba(167, 139, 250, 0.35), rgba(167, 139, 250, 0.2));
+            box-shadow: 0 0 28px rgba(167, 139, 250, 0.15);
+        }
+        .col-purple .detail-name { color: var(--accent-purple); }
+
+        .col-cyan .detail-btn {
+            background: linear-gradient(135deg, rgba(103, 232, 249, 0.25), rgba(103, 232, 249, 0.12));
+            color: var(--accent-cyan);
+            box-shadow: 0 0 20px rgba(103, 232, 249, 0.08);
+            border: 1px solid var(--accent-cyan-border);
+        }
+        .col-cyan .detail-btn:hover {
+            background: linear-gradient(135deg, rgba(103, 232, 249, 0.35), rgba(103, 232, 249, 0.2));
+            box-shadow: 0 0 28px rgba(103, 232, 249, 0.15);
+        }
+        .col-cyan .detail-name { color: var(--accent-cyan); }
+
+        .col-emerald .detail-btn {
+            background: linear-gradient(135deg, rgba(110, 231, 183, 0.25), rgba(110, 231, 183, 0.12));
+            color: var(--accent-emerald);
+            box-shadow: 0 0 20px rgba(110, 231, 183, 0.08);
+            border: 1px solid var(--accent-emerald-border);
+        }
+        .col-emerald .detail-btn:hover {
+            background: linear-gradient(135deg, rgba(110, 231, 183, 0.35), rgba(110, 231, 183, 0.2));
+            box-shadow: 0 0 28px rgba(110, 231, 183, 0.15);
+        }
+        .col-emerald .detail-name { color: var(--accent-emerald); }
+
+        /* ───────── ENTRANCE ANIMATIONS ───────── */
+        @keyframes panelSlideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes columnFadeIn {
+            from { opacity: 0; transform: translateY(12px) scale(0.98); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes cardStagger {
+            from { opacity: 0; transform: translateX(-8px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+
+        .panel-inner {
+            animation: panelSlideUp 400ms var(--ease-major) both;
+        }
+
+        .column:nth-child(1) { animation: columnFadeIn 400ms var(--ease-major) 80ms both; }
+        .column:nth-child(2) { animation: columnFadeIn 400ms var(--ease-major) 160ms both; }
+        .column:nth-child(3) { animation: columnFadeIn 400ms var(--ease-major) 240ms both; }
+
+        .tool-card {
+            animation: cardStagger 300ms var(--ease-major) both;
+        }
+
+        /* ───────── SUBTLE TOP EDGE GLOW ───────── */
+        .panel-inner::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 40px;
+            right: 40px;
+            height: 1px;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(167, 139, 250, 0.3) 20%,
+                rgba(103, 232, 249, 0.3) 50%,
+                rgba(110, 231, 183, 0.3) 80%,
+                transparent
+            );
+            border-radius: 1px;
+            pointer-events: none;
+        }
+
+        .panel-inner {
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Context preview area (top 67vh) -->
+    <div class="context-area">
+        <div class="context-label">Klang Studio</div>
+        <div class="context-title">Musik-Produktion</div>
+        <p class="context-sub">Dein kreatives Werkzeug-Arsenal. Wähle ein Tool aus dem Dashboard unten.</p>
+    </div>
+
+    <!-- Bottom dashboard panel -->
+    <div class="bottom-panel">
+        <div class="panel-inner">
+
+            <!-- ━━━ Column 1: Experten-Tools ━━━ -->
+            <div class="column col-purple" id="col-1">
+                <div class="column-header">
+                    <div class="column-icon">🎯</div>
+                    <span class="column-name">Experten-Tools</span>
+                    <span class="column-count">9</span>
+                </div>
+                <div class="tool-list" id="list-1"></div>
+                <div class="detail-overlay" id="detail-1">
+                    <button class="detail-close" onclick="closeDetail(1)">&times;</button>
+                    <div class="detail-emoji" id="detail-emoji-1"></div>
+                    <div class="detail-name" id="detail-name-1"></div>
+                    <div class="detail-desc" id="detail-desc-1"></div>
+                    <button class="detail-btn" onclick="closeDetail(1)">Anwenden</button>
+                </div>
+            </div>
+
+            <!-- ━━━ Column 2: Klug-Tools ━━━ -->
+            <div class="column col-cyan" id="col-2">
+                <div class="column-header">
+                    <div class="column-icon">🧠</div>
+                    <span class="column-name">Klug-Tools</span>
+                    <span class="column-count">13</span>
+                </div>
+                <div class="tool-list" id="list-2"></div>
+                <div class="detail-overlay" id="detail-2">
+                    <button class="detail-close" onclick="closeDetail(2)">&times;</button>
+                    <div class="detail-emoji" id="detail-emoji-2"></div>
+                    <div class="detail-name" id="detail-name-2"></div>
+                    <div class="detail-desc" id="detail-desc-2"></div>
+                    <button class="detail-btn" onclick="closeDetail(2)">Anwenden</button>
+                </div>
+            </div>
+
+            <!-- ━━━ Column 3: Futures Lab ━━━ -->
+            <div class="column col-emerald" id="col-3">
+                <div class="column-header">
+                    <div class="column-icon">🔮</div>
+                    <span class="column-name">Futures Lab</span>
+                    <span class="column-count">7</span>
+                </div>
+                <div class="tool-list" id="list-3"></div>
+                <div class="detail-overlay" id="detail-3">
+                    <button class="detail-close" onclick="closeDetail(3)">&times;</button>
+                    <div class="detail-emoji" id="detail-emoji-3"></div>
+                    <div class="detail-name" id="detail-name-3"></div>
+                    <div class="detail-desc" id="detail-desc-3"></div>
+                    <button class="detail-btn" onclick="closeDetail(3)">Anwenden</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+<script>
+    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    //  TOOL DATA
+    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+    const tools = {
+        1: [
+            { emoji: '🎤', name: 'Produzent', desc: 'Professionelle Produktions-Perspektive auf deinen Prompt' },
+            { emoji: '🎹', name: 'Musiker', desc: 'Musikalische Tiefe und Arrangement-Expertise' },
+            { emoji: '🎬', name: 'Filmkomponist', desc: 'Cinematic Scoring und emotionale Klanglandschaften' },
+            { emoji: '🎧', name: 'DJ/Remixer', desc: 'Club-taugliche Beats und Remix-Techniken' },
+            { emoji: '🎨', name: 'Avantgarde', desc: 'Experimentelle und grenzüberschreitende Klangwelten' },
+            { emoji: '🔲', name: 'Minimalist', desc: 'Reduktion auf das Wesentliche, klare Strukturen' },
+            { emoji: '🎵', name: 'Vocal-Harmony', desc: 'Mehrstimmige Arrangements und Vocal-Texturen' },
+            { emoji: '🌍', name: 'Ethno', desc: 'Weltmusik-Einflüsse und kulturelle Klangfarben' },
+            { emoji: '🔧', name: 'Sound-Ingenieur', desc: 'Technische Klangoptimierung und Mixing-Expertise' },
+        ],
+        2: [
+            { emoji: '🎛️', name: 'Synth-Designer Lab', desc: 'Synthesizer-Sounds und Klangdesign-Werkstatt' },
+            { emoji: '🧬', name: 'Genre-Mixer', desc: 'Kreative Genre-Kreuzungen und Hybrid-Stile' },
+            { emoji: '🪝', name: 'Hook-Generator', desc: 'Eingängige Melodien und Ohrwurm-Formeln' },
+            { emoji: '🏗️', name: 'Song-Struktur', desc: 'Professioneller Song-Aufbau und Arrangements' },
+            { emoji: '✨', name: 'Vibe-Veredler', desc: 'Atmosphärische Verfeinerung und Stimmungs-Tuning' },
+            { emoji: '🧑‍🎤', name: 'Künstler-Kompass', desc: 'Stilistische Orientierung an bekannten Künstlern' },
+            { emoji: '⏱️', name: 'Tempo-Finder', desc: 'Optimales BPM und rhythmische Grundlage' },
+            { emoji: '🧭', name: 'Mood-Analyzer', desc: 'Stimmungsanalyse und emotionale Feinabstimmung' },
+            { emoji: '💎', name: 'Production-Finish', desc: 'Finaler Feinschliff für Produktionsqualität' },
+            { emoji: '🗣️', name: 'Vocal-Stylist', desc: 'Gesangsstil und Vocal-Charakter-Design' },
+            { emoji: '🥁', name: 'Groove-Meister', desc: 'Rhythmus-Patterns und Groove-Entwicklung' },
+            { emoji: '🏋️', name: 'Performance-Coach', desc: 'Live-Performance und Energie-Optimierung' },
+            { emoji: '🔗', name: 'Effect-Chain', desc: 'Effektketten und Signal-Processing' },
+        ],
+        3: [
+            { emoji: '🌊', name: 'Adaptive Flow', desc: 'Dynamische Prompt-Anpassung in Echtzeit' },
+            { emoji: '🤖', name: 'AI Collaboration', desc: 'KI-gestützte kreative Zusammenarbeit' },
+            { emoji: '📖', name: 'Story Arc Designer', desc: 'Narrative Spannungsbögen für Songs' },
+            { emoji: '📚', name: 'Narrative Chapters', desc: 'Kapitelbasierte Song-Erzählungen' },
+            { emoji: '🌌', name: 'Immersive Space', desc: 'Räumliche Klanglandschaften und 3D-Audio' },
+            { emoji: '🫀', name: 'Human Touch', desc: 'Menschliche Wärme und organische Elemente' },
+            { emoji: '📊', name: 'Release Forecast', desc: 'Veröffentlichungs-Timing und Trend-Analyse' },
+        ],
+    };
+
+    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    //  RENDER TOOL CARDS
+    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+    Object.keys(tools).forEach(colId => {
+        const list = document.getElementById(`list-${colId}`);
+        tools[colId].forEach((tool, i) => {
+            const card = document.createElement('div');
+            card.className = 'tool-card';
+            card.style.animationDelay = `${(parseInt(colId) - 1) * 80 + i * 35}ms`;
+            card.innerHTML = `
+                <span class="tool-emoji">${tool.emoji}</span>
+                <span class="tool-name">${tool.name}</span>
+            `;
+            card.addEventListener('click', () => openDetail(colId, tool));
+            list.appendChild(card);
+        });
+    });
+
+    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    //  DETAIL OVERLAY
+    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+    function openDetail(colId, tool) {
+        const overlay = document.getElementById(`detail-${colId}`);
+        document.getElementById(`detail-emoji-${colId}`).textContent = tool.emoji;
+        document.getElementById(`detail-name-${colId}`).textContent = tool.name;
+        document.getElementById(`detail-desc-${colId}`).textContent = tool.desc;
+        overlay.classList.add('active');
+    }
+
+    function closeDetail(colId) {
+        const overlay = document.getElementById(`detail-${colId}`);
+        overlay.classList.remove('active');
+    }
+
+    // Close overlay on Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            [1, 2, 3].forEach(id => closeDetail(id));
+        }
+    });
+</script>
+
+</body>
+</html>

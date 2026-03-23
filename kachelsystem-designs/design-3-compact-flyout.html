@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compact Grid + Flyout — Klang Studio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-deep: #0d0d0f;
+            --glass-bg: rgba(23, 23, 23, 0.4);
+            --glass-blur: blur(16px);
+            --glass-border: 1px solid rgba(115, 115, 115, 0.2);
+            --elevated-bg: rgba(13, 13, 15, 0.95);
+            --elevated-blur: blur(24px);
+            --elevated-border: 1px solid rgba(115, 115, 115, 0.4);
+            --radius-container: 24px;
+            --radius-card: 12px;
+            --radius-button: 8px;
+            --text-primary: #ffffff;
+            --text-body: #e5e7eb;
+            --text-secondary: #9ca3af;
+            --text-disabled: #6b7280;
+            --ease-major: cubic-bezier(0.23, 1, 0.32, 1);
+            --ease-ui: cubic-bezier(0.4, 0, 0.2, 1);
+            --dur-hover: 200ms;
+            --dur-open: 300ms;
+            --accent-purple: #a78bfa;
+            --accent-cyan: #67e8f9;
+            --accent-green: #4ade80;
+            --dot-purple: #8b5cf6;
+            --dot-cyan: #22d3ee;
+            --dot-green: #22c55e;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--bg-deep);
+            color: var(--text-body);
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* ── Simulated app background ── */
+        .app-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background:
+                radial-gradient(ellipse 80% 50% at 50% 20%, rgba(139, 92, 246, 0.04) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 40% at 70% 60%, rgba(34, 211, 238, 0.03) 0%, transparent 50%),
+                var(--bg-deep);
+        }
+
+        .app-backdrop::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+            background-size: 256px 256px;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        /* ── Fake waveform placeholder ── */
+        .waveform-placeholder {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 33vh;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            pointer-events: none;
+        }
+
+        .waveform-bars {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            height: 80px;
+            opacity: 0.15;
+        }
+
+        .waveform-bars span {
+            display: block;
+            width: 3px;
+            border-radius: 2px;
+            background: linear-gradient(to top, var(--accent-cyan), var(--accent-purple));
+        }
+
+        .placeholder-label {
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text-disabled);
+            font-weight: 600;
+        }
+
+        /* ── Bottom Panel (33vh) ── */
+        .bottom-panel {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 33vh;
+            min-height: 240px;
+            z-index: 10;
+            padding: 0 16px 12px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel-glass {
+            flex: 1;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: var(--glass-border);
+            border-radius: var(--radius-container);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Top edge glow */
+        .panel-glass::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 24px;
+            right: 24px;
+            height: 1px;
+            background: linear-gradient(
+                90deg,
+                transparent 0%,
+                rgba(139, 92, 246, 0.3) 20%,
+                rgba(34, 211, 238, 0.4) 50%,
+                rgba(34, 197, 94, 0.3) 80%,
+                transparent 100%
+            );
+            z-index: 1;
+        }
+
+        /* ── Category Header Row ── */
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding: 14px 24px 8px;
+            flex-shrink: 0;
+        }
+
+        .category-label {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            transition: color var(--dur-hover) var(--ease-ui);
+            cursor: default;
+            user-select: none;
+        }
+
+        .category-label:hover {
+            color: var(--text-primary);
+        }
+
+        .category-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .category-dot.purple { background: var(--dot-purple); box-shadow: 0 0 8px rgba(139, 92, 246, 0.4); }
+        .category-dot.cyan { background: var(--dot-cyan); box-shadow: 0 0 8px rgba(34, 211, 238, 0.4); }
+        .category-dot.green { background: var(--dot-green); box-shadow: 0 0 8px rgba(34, 197, 94, 0.4); }
+
+        .category-count {
+            font-size: 0.6rem;
+            font-weight: 500;
+            color: var(--text-disabled);
+            margin-left: -2px;
+        }
+
+        /* ── Tile Grid Area ── */
+        .tile-grid-area {
+            flex: 1;
+            padding: 4px 20px 16px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Scrollbar */
+        .tile-grid-area::-webkit-scrollbar {
+            width: 4px;
+        }
+        .tile-grid-area::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .tile-grid-area::-webkit-scrollbar-thumb {
+            background: rgba(115, 115, 115, 0.25);
+            border-radius: 2px;
+        }
+
+        .tile-grid-wrapper {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .tile-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            position: relative;
+        }
+
+        .tile-group.experten { flex: 0 0 auto; }
+        .tile-group.klug { flex: 1 1 auto; }
+        .tile-group.futures { flex: 0 0 auto; }
+
+        /* Subtle vertical divider between groups */
+        .tile-divider {
+            width: 1px;
+            align-self: stretch;
+            min-height: 40px;
+            background: linear-gradient(
+                to bottom,
+                transparent,
+                rgba(115, 115, 115, 0.15) 30%,
+                rgba(115, 115, 115, 0.15) 70%,
+                transparent
+            );
+            flex-shrink: 0;
+        }
+
+        /* ── Individual Tile ── */
+        .tool-tile {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(30, 30, 34, 0.5);
+            border: 1px solid rgba(115, 115, 115, 0.1);
+            border-radius: var(--radius-button);
+            cursor: pointer;
+            font-size: 1.2rem;
+            line-height: 1;
+            transition:
+                transform var(--dur-hover) var(--ease-ui),
+                background var(--dur-hover) var(--ease-ui),
+                border-color var(--dur-hover) var(--ease-ui),
+                box-shadow var(--dur-hover) var(--ease-ui);
+            position: relative;
+            user-select: none;
+            -webkit-user-select: none;
+            flex-shrink: 0;
+        }
+
+        .tool-tile:hover {
+            transform: scale(1.12);
+            background: rgba(40, 40, 48, 0.7);
+            border-color: rgba(115, 115, 115, 0.3);
+            z-index: 2;
+        }
+
+        .tool-tile.experten:hover {
+            box-shadow: 0 0 16px rgba(139, 92, 246, 0.2), 0 0 4px rgba(139, 92, 246, 0.1);
+            border-color: rgba(139, 92, 246, 0.3);
+        }
+        .tool-tile.klug:hover {
+            box-shadow: 0 0 16px rgba(34, 211, 238, 0.2), 0 0 4px rgba(34, 211, 238, 0.1);
+            border-color: rgba(34, 211, 238, 0.3);
+        }
+        .tool-tile.futures:hover {
+            box-shadow: 0 0 16px rgba(34, 197, 94, 0.2), 0 0 4px rgba(34, 197, 94, 0.1);
+            border-color: rgba(34, 197, 94, 0.3);
+        }
+
+        .tool-tile.active {
+            transform: scale(1.08);
+            z-index: 5;
+        }
+        .tool-tile.active.experten {
+            background: rgba(139, 92, 246, 0.12);
+            border-color: rgba(139, 92, 246, 0.4);
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.25);
+        }
+        .tool-tile.active.klug {
+            background: rgba(34, 211, 238, 0.12);
+            border-color: rgba(34, 211, 238, 0.4);
+            box-shadow: 0 0 20px rgba(34, 211, 238, 0.25);
+        }
+        .tool-tile.active.futures {
+            background: rgba(34, 197, 94, 0.12);
+            border-color: rgba(34, 197, 94, 0.4);
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.25);
+        }
+
+        /* ── Flyout Panel ── */
+        .flyout-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 90;
+            display: none;
+        }
+        .flyout-overlay.visible {
+            display: block;
+        }
+
+        .flyout {
+            position: absolute;
+            z-index: 100;
+            width: 280px;
+            background: var(--elevated-bg);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: var(--elevated-border);
+            border-radius: var(--radius-card);
+            padding: 18px;
+            pointer-events: auto;
+            opacity: 0;
+            transform: scale(0.92) translateY(8px);
+            transition:
+                opacity var(--dur-open) var(--ease-major),
+                transform var(--dur-open) var(--ease-major);
+            box-shadow:
+                0 24px 48px rgba(0, 0, 0, 0.5),
+                0 8px 16px rgba(0, 0, 0, 0.3),
+                0 0 1px rgba(255, 255, 255, 0.05) inset;
+        }
+
+        .flyout.open {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+
+        .flyout.above {
+            transform-origin: bottom center;
+        }
+        .flyout.above:not(.open) {
+            transform: scale(0.92) translateY(8px);
+        }
+        .flyout.below {
+            transform-origin: top center;
+        }
+        .flyout.below:not(.open) {
+            transform: scale(0.92) translateY(-8px);
+        }
+
+        /* Arrow / nub */
+        .flyout-arrow {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: var(--elevated-bg);
+            border: var(--elevated-border);
+            transform: rotate(45deg);
+            z-index: -1;
+        }
+
+        .flyout.above .flyout-arrow {
+            bottom: -6px;
+            border-top: none;
+            border-left: none;
+        }
+
+        .flyout.below .flyout-arrow {
+            top: -6px;
+            border-bottom: none;
+            border-right: none;
+        }
+
+        /* Flyout inner content */
+        .flyout-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .flyout-emoji {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            border-radius: var(--radius-button);
+            flex-shrink: 0;
+        }
+
+        .flyout-emoji.experten {
+            background: rgba(139, 92, 246, 0.12);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+        }
+        .flyout-emoji.klug {
+            background: rgba(34, 211, 238, 0.12);
+            border: 1px solid rgba(34, 211, 238, 0.2);
+        }
+        .flyout-emoji.futures {
+            background: rgba(34, 197, 94, 0.12);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+
+        .flyout-title {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.2;
+        }
+
+        .flyout-category-tag {
+            font-size: 0.58rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
+
+        .flyout-category-tag.experten { color: var(--accent-purple); }
+        .flyout-category-tag.klug { color: var(--accent-cyan); }
+        .flyout-category-tag.futures { color: var(--accent-green); }
+
+        .flyout-desc {
+            font-size: 0.78rem;
+            line-height: 1.5;
+            color: var(--text-secondary);
+            margin-bottom: 14px;
+        }
+
+        .flyout-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-apply {
+            flex: 1;
+            padding: 9px 16px;
+            border: none;
+            border-radius: var(--radius-button);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            cursor: pointer;
+            transition:
+                background var(--dur-hover) var(--ease-ui),
+                transform var(--dur-hover) var(--ease-ui),
+                box-shadow var(--dur-hover) var(--ease-ui);
+            color: var(--bg-deep);
+        }
+
+        .btn-apply.experten {
+            background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+        }
+        .btn-apply.experten:hover {
+            background: linear-gradient(135deg, #7c3aed, #8b5cf6);
+            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .btn-apply.klug {
+            background: linear-gradient(135deg, #06b6d4, #22d3ee);
+        }
+        .btn-apply.klug:hover {
+            background: linear-gradient(135deg, #0891b2, #06b6d4);
+            box-shadow: 0 4px 16px rgba(34, 211, 238, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .btn-apply.futures {
+            background: linear-gradient(135deg, #16a34a, #22c55e);
+        }
+        .btn-apply.futures:hover {
+            background: linear-gradient(135deg, #15803d, #16a34a);
+            box-shadow: 0 4px 16px rgba(34, 197, 94, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .btn-apply:active {
+            transform: scale(0.97) !important;
+        }
+
+        .btn-dismiss {
+            padding: 9px 14px;
+            border: 1px solid rgba(115, 115, 115, 0.2);
+            border-radius: var(--radius-button);
+            background: rgba(40, 40, 48, 0.5);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition:
+                background var(--dur-hover) var(--ease-ui),
+                border-color var(--dur-hover) var(--ease-ui),
+                color var(--dur-hover) var(--ease-ui);
+        }
+        .btn-dismiss:hover {
+            background: rgba(50, 50, 58, 0.7);
+            border-color: rgba(115, 115, 115, 0.3);
+            color: var(--text-body);
+        }
+
+        /* ── Subtle entrance animation for tiles ── */
+        @keyframes tileIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .tool-tile {
+            animation: tileIn 400ms var(--ease-major) both;
+        }
+
+        /* ── Panel slide-up entrance ── */
+        @keyframes panelSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .panel-glass {
+            animation: panelSlideUp 500ms var(--ease-major) both;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 640px) {
+            .bottom-panel {
+                padding: 0 8px 8px;
+            }
+            .category-header {
+                padding: 12px 16px 6px;
+                gap: 14px;
+            }
+            .category-label {
+                font-size: 0.6rem;
+            }
+            .tile-grid-area {
+                padding: 4px 12px 12px;
+            }
+            .tool-tile {
+                width: 38px;
+                height: 38px;
+                font-size: 1.05rem;
+            }
+            .tile-group {
+                gap: 5px;
+            }
+            .flyout {
+                width: 250px;
+                padding: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background atmosphere -->
+    <div class="app-backdrop"></div>
+
+    <!-- Simulated waveform area (top 67vh) -->
+    <div class="waveform-placeholder">
+        <div class="waveform-bars" id="waveformBars"></div>
+        <span class="placeholder-label">Klang Studio &mdash; Waveform Editor</span>
+    </div>
+
+    <!-- Bottom Panel (33vh) -->
+    <div class="bottom-panel">
+        <div class="panel-glass">
+
+            <!-- Category Labels -->
+            <div class="category-header">
+                <div class="category-label">
+                    <span class="category-dot purple"></span>
+                    Experten
+                    <span class="category-count">9</span>
+                </div>
+                <div class="category-label">
+                    <span class="category-dot cyan"></span>
+                    Klug
+                    <span class="category-count">13</span>
+                </div>
+                <div class="category-label">
+                    <span class="category-dot green"></span>
+                    Futures
+                    <span class="category-count">7</span>
+                </div>
+            </div>
+
+            <!-- Tile Grid -->
+            <div class="tile-grid-area" id="tileGridArea">
+                <div class="tile-grid-wrapper" id="tileGrid">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Flyout overlay (click-outside catcher) -->
+    <div class="flyout-overlay" id="flyoutOverlay"></div>
+
+    <!-- Flyout element -->
+    <div class="flyout" id="flyout">
+        <div class="flyout-arrow" id="flyoutArrow"></div>
+        <div class="flyout-header">
+            <div class="flyout-emoji" id="flyoutEmoji"></div>
+            <div>
+                <div class="flyout-title" id="flyoutTitle"></div>
+                <div class="flyout-category-tag" id="flyoutCatTag"></div>
+            </div>
+        </div>
+        <div class="flyout-desc" id="flyoutDesc"></div>
+        <div class="flyout-actions">
+            <button class="btn-apply" id="btnApply">Anwenden</button>
+            <button class="btn-dismiss" id="btnDismiss">Schließen</button>
+        </div>
+    </div>
+
+    <script>
+        // ── Tool data ──
+        const tools = [
+            // Experten (9)
+            { emoji: '🎤', name: 'Produzent', desc: 'Professionelle Produktions-Perspektive auf deinen Prompt', cat: 'experten' },
+            { emoji: '🎹', name: 'Musiker', desc: 'Musikalische Tiefe und Arrangement-Expertise', cat: 'experten' },
+            { emoji: '🎬', name: 'Filmkomponist', desc: 'Cinematic Scoring und emotionale Klanglandschaften', cat: 'experten' },
+            { emoji: '🎧', name: 'DJ/Remixer', desc: 'Club-taugliche Beats und Remix-Techniken', cat: 'experten' },
+            { emoji: '🎨', name: 'Avantgarde', desc: 'Experimentelle und grenzüberschreitende Klangwelten', cat: 'experten' },
+            { emoji: '🔲', name: 'Minimalist', desc: 'Reduktion auf das Wesentliche, klare Strukturen', cat: 'experten' },
+            { emoji: '🎵', name: 'Vocal-Harmony', desc: 'Mehrstimmige Arrangements und Vocal-Texturen', cat: 'experten' },
+            { emoji: '🌍', name: 'Ethno', desc: 'Weltmusik-Einflüsse und kulturelle Klangfarben', cat: 'experten' },
+            { emoji: '🔧', name: 'Sound-Ingenieur', desc: 'Technische Klangoptimierung und Mixing-Expertise', cat: 'experten' },
+            // Klug (13)
+            { emoji: '🎛️', name: 'Synth-Designer Lab', desc: 'Synthesizer-Sounds und Klangdesign-Werkstatt', cat: 'klug' },
+            { emoji: '🧬', name: 'Genre-Mixer', desc: 'Kreative Genre-Kreuzungen und Hybrid-Stile', cat: 'klug' },
+            { emoji: '🪝', name: 'Hook-Generator', desc: 'Eingängige Melodien und Ohrwurm-Formeln', cat: 'klug' },
+            { emoji: '🏗️', name: 'Song-Struktur', desc: 'Professioneller Song-Aufbau und Arrangements', cat: 'klug' },
+            { emoji: '✨', name: 'Vibe-Veredler', desc: 'Atmosphärische Verfeinerung und Stimmungs-Tuning', cat: 'klug' },
+            { emoji: '🧑‍🎤', name: 'Künstler-Kompass', desc: 'Stilistische Orientierung an bekannten Künstlern', cat: 'klug' },
+            { emoji: '⏱️', name: 'Tempo-Finder', desc: 'Optimales BPM und rhythmische Grundlage', cat: 'klug' },
+            { emoji: '🧭', name: 'Mood-Analyzer', desc: 'Stimmungsanalyse und emotionale Feinabstimmung', cat: 'klug' },
+            { emoji: '💎', name: 'Production-Finish', desc: 'Finaler Feinschliff für Produktionsqualität', cat: 'klug' },
+            { emoji: '🗣️', name: 'Vocal-Stylist', desc: 'Gesangsstil und Vocal-Charakter-Design', cat: 'klug' },
+            { emoji: '🥁', name: 'Groove-Meister', desc: 'Rhythmus-Patterns und Groove-Entwicklung', cat: 'klug' },
+            { emoji: '🏋️', name: 'Performance-Coach', desc: 'Live-Performance und Energie-Optimierung', cat: 'klug' },
+            { emoji: '🔗', name: 'Effect-Chain', desc: 'Effektketten und Signal-Processing', cat: 'klug' },
+            // Futures (7)
+            { emoji: '🌊', name: 'Adaptive Flow', desc: 'Dynamische Prompt-Anpassung in Echtzeit', cat: 'futures' },
+            { emoji: '🤖', name: 'AI Collaboration', desc: 'KI-gestützte kreative Zusammenarbeit', cat: 'futures' },
+            { emoji: '📖', name: 'Story Arc Designer', desc: 'Narrative Spannungsbögen für Songs', cat: 'futures' },
+            { emoji: '📚', name: 'Narrative Chapters', desc: 'Kapitelbasierte Song-Erzählungen', cat: 'futures' },
+            { emoji: '🌌', name: 'Immersive Space', desc: 'Räumliche Klanglandschaften und 3D-Audio', cat: 'futures' },
+            { emoji: '🫀', name: 'Human Touch', desc: 'Menschliche Wärme und organische Elemente', cat: 'futures' },
+            { emoji: '📊', name: 'Release Forecast', desc: 'Veröffentlichungs-Timing und Trend-Analyse', cat: 'futures' },
+        ];
+
+        const catLabels = {
+            experten: 'Experten',
+            klug: 'Klug',
+            futures: 'Futures'
+        };
+
+        // ── Build waveform bars ──
+        (function buildWaveform() {
+            const container = document.getElementById('waveformBars');
+            const barCount = 80;
+            for (let i = 0; i < barCount; i++) {
+                const bar = document.createElement('span');
+                const h = Math.random() * 60 + 10;
+                bar.style.height = h + 'px';
+                bar.style.opacity = (0.3 + Math.random() * 0.7).toFixed(2);
+                container.appendChild(bar);
+            }
+        })();
+
+        // ── Build tile grid ──
+        const tileGrid = document.getElementById('tileGrid');
+        const categories = ['experten', 'klug', 'futures'];
+
+        categories.forEach((cat, catIdx) => {
+            if (catIdx > 0) {
+                const divider = document.createElement('div');
+                divider.className = 'tile-divider';
+                tileGrid.appendChild(divider);
+            }
+
+            const group = document.createElement('div');
+            group.className = `tile-group ${cat}`;
+
+            const catTools = tools.filter(t => t.cat === cat);
+            catTools.forEach((tool, i) => {
+                const tile = document.createElement('div');
+                tile.className = `tool-tile ${cat}`;
+                tile.textContent = tool.emoji;
+                tile.dataset.idx = tools.indexOf(tool);
+                tile.style.animationDelay = `${(catIdx * 80) + (i * 30)}ms`;
+                tile.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    openFlyout(tools.indexOf(tool), tile);
+                });
+                group.appendChild(tile);
+            });
+
+            tileGrid.appendChild(group);
+        });
+
+        // ── Flyout Logic ──
+        const flyout = document.getElementById('flyout');
+        const flyoutOverlay = document.getElementById('flyoutOverlay');
+        const flyoutArrow = document.getElementById('flyoutArrow');
+        const flyoutEmoji = document.getElementById('flyoutEmoji');
+        const flyoutTitle = document.getElementById('flyoutTitle');
+        const flyoutCatTag = document.getElementById('flyoutCatTag');
+        const flyoutDesc = document.getElementById('flyoutDesc');
+        const btnApply = document.getElementById('btnApply');
+        const btnDismiss = document.getElementById('btnDismiss');
+
+        let activeTile = null;
+        let flyoutOpen = false;
+
+        function openFlyout(toolIdx, tileEl) {
+            const tool = tools[toolIdx];
+
+            // If clicking same tile, close it
+            if (activeTile === tileEl && flyoutOpen) {
+                closeFlyout();
+                return;
+            }
+
+            // Clear previous active
+            if (activeTile) {
+                activeTile.classList.remove('active');
+            }
+
+            activeTile = tileEl;
+            tileEl.classList.add('active');
+
+            // Populate flyout
+            flyoutEmoji.textContent = tool.emoji;
+            flyoutEmoji.className = `flyout-emoji ${tool.cat}`;
+            flyoutTitle.textContent = tool.name;
+            flyoutCatTag.textContent = catLabels[tool.cat];
+            flyoutCatTag.className = `flyout-category-tag ${tool.cat}`;
+            flyoutDesc.textContent = tool.desc;
+            btnApply.className = `btn-apply ${tool.cat}`;
+
+            // Position flyout
+            positionFlyout(tileEl);
+
+            // Show overlay
+            flyoutOverlay.classList.add('visible');
+
+            // Animate in
+            flyout.style.display = 'block';
+            // Force reflow
+            flyout.offsetHeight;
+            flyout.classList.add('open');
+            flyoutOpen = true;
+        }
+
+        function positionFlyout(tileEl) {
+            const tileRect = tileEl.getBoundingClientRect();
+            const viewH = window.innerHeight;
+            const viewW = window.innerWidth;
+            const flyoutW = 280;
+            const flyoutH = 200; // approximate height
+            const gap = 10;
+
+            // Determine vertical: above or below
+            const spaceAbove = tileRect.top;
+            const spaceBelow = viewH - tileRect.bottom;
+
+            let direction;
+            if (spaceAbove > flyoutH + gap + 40) {
+                direction = 'above';
+            } else if (spaceBelow > flyoutH + gap + 40) {
+                direction = 'below';
+            } else {
+                // Default to whichever has more space
+                direction = spaceAbove > spaceBelow ? 'above' : 'below';
+            }
+
+            flyout.classList.remove('above', 'below');
+            flyout.classList.add(direction);
+
+            // Horizontal: center on tile, clamp to viewport
+            let left = tileRect.left + tileRect.width / 2 - flyoutW / 2;
+            left = Math.max(12, Math.min(left, viewW - flyoutW - 12));
+
+            // Vertical position
+            let top;
+            if (direction === 'above') {
+                top = tileRect.top - flyoutH - gap;
+                // Adjust if it goes off-screen top
+                if (top < 8) top = 8;
+            } else {
+                top = tileRect.bottom + gap;
+            }
+
+            flyout.style.left = left + 'px';
+            flyout.style.top = top + 'px';
+
+            // Position arrow
+            const arrowLeft = tileRect.left + tileRect.width / 2 - left - 6;
+            flyoutArrow.style.left = Math.max(16, Math.min(arrowLeft, flyoutW - 28)) + 'px';
+        }
+
+        function closeFlyout() {
+            if (!flyoutOpen) return;
+            flyout.classList.remove('open');
+            flyoutOverlay.classList.remove('visible');
+
+            if (activeTile) {
+                activeTile.classList.remove('active');
+                activeTile = null;
+            }
+
+            flyoutOpen = false;
+
+            // Hide after transition
+            setTimeout(() => {
+                if (!flyoutOpen) {
+                    flyout.style.display = 'none';
+                }
+            }, 300);
+        }
+
+        // Close handlers
+        flyoutOverlay.addEventListener('click', closeFlyout);
+        btnDismiss.addEventListener('click', closeFlyout);
+        btnApply.addEventListener('click', () => {
+            // Visual feedback
+            btnApply.textContent = '✓ Angewendet';
+            btnApply.style.pointerEvents = 'none';
+            setTimeout(() => {
+                closeFlyout();
+                // Reset button
+                setTimeout(() => {
+                    btnApply.textContent = 'Anwenden';
+                    btnApply.style.pointerEvents = '';
+                }, 300);
+            }, 600);
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeFlyout();
+        });
+
+        // Reposition on resize
+        window.addEventListener('resize', () => {
+            if (flyoutOpen && activeTile) {
+                positionFlyout(activeTile);
+            }
+        });
+
+        // Hide flyout initially
+        flyout.style.display = 'none';
+    </script>
+
+</body>
+</html>
