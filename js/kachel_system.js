@@ -452,13 +452,132 @@
     }
 
     /* ------------------------------------------------------------------ */
+    /*  Feature: Undo Stack for Tool Applications (#100)                 */
+    /* ------------------------------------------------------------------ */
+
+    var undoStack = [];  // [{text, toolName, ts}]
+    var redoStack = [];
+    var UNDO_MAX = 20;
+
+    function undoCaptureBeforeApply(toolName) {
+        var resultEl = document.getElementById('result-text');
+        if (!resultEl) return;
+        var text = resultEl.textContent || resultEl.innerText || '';
+        undoStack.push({ text: text, toolName: toolName || 'Tool', ts: Date.now() });
+        if (undoStack.length > UNDO_MAX) undoStack.shift();
+        redoStack = []; // clear redo on new action
+        undoUpdateUI();
+    }
+
+    function undoPerform() {
+        if (undoStack.length === 0) return;
+        var entry = undoStack.pop();
+        var resultEl = document.getElementById('result-text');
+        if (!resultEl) return;
+        // Save current state to redo
+        redoStack.push({ text: resultEl.textContent || '', toolName: entry.toolName, ts: Date.now() });
+        resultEl.textContent = entry.text;
+        undoUpdateUI();
+    }
+
+    function redoPerform() {
+        if (redoStack.length === 0) return;
+        var entry = redoStack.pop();
+        var resultEl = document.getElementById('result-text');
+        if (!resultEl) return;
+        // Save current state to undo
+        undoStack.push({ text: resultEl.textContent || '', toolName: entry.toolName, ts: Date.now() });
+        resultEl.textContent = entry.text;
+        undoUpdateUI();
+    }
+
+    function undoUpdateUI() {
+        var undoBtn = document.getElementById('bd-undo-btn');
+        var redoBtn = document.getElementById('bd-redo-btn');
+        var countEl = document.getElementById('bd-undo-count');
+
+        if (undoBtn) {
+            undoBtn.disabled = undoStack.length === 0;
+            if (undoStack.length > 0) {
+                var top = undoStack[undoStack.length - 1];
+                undoBtn.title = 'R\u00fcckg\u00e4ngig: ' + top.toolName;
+            } else {
+                undoBtn.title = 'R\u00fcckg\u00e4ngig';
+            }
+        }
+        if (redoBtn) {
+            redoBtn.disabled = redoStack.length === 0;
+            if (redoStack.length > 0) {
+                var topRedo = redoStack[redoStack.length - 1];
+                redoBtn.title = 'Wiederholen: ' + topRedo.toolName;
+            } else {
+                redoBtn.title = 'Wiederholen';
+            }
+        }
+        if (countEl) {
+            countEl.textContent = undoStack.length > 0 ? ('\u21a9 ' + undoStack.length) : '';
+        }
+    }
+
+    function initUndo() {
+        var undoBtn = document.getElementById('bd-undo-btn');
+        var redoBtn = document.getElementById('bd-redo-btn');
+
+        if (undoBtn) {
+            undoBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                undoPerform();
+            });
+        }
+        if (redoBtn) {
+            redoBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                redoPerform();
+            });
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function (e) {
+            // Skip if focus is in an input, textarea, or contenteditable
+            var tag = (e.target.tagName || '').toLowerCase();
+            if (tag === 'input' || tag === 'textarea' || e.target.isContentEditable) return;
+
+            var isUndo = (e.key === 'z' || e.key === 'Z') && (e.ctrlKey || e.metaKey) && !e.shiftKey;
+            var isRedo = (e.key === 'z' || e.key === 'Z') && (e.ctrlKey || e.metaKey) && e.shiftKey;
+
+            if (isRedo) {
+                e.preventDefault();
+                redoPerform();
+            } else if (isUndo) {
+                e.preventDefault();
+                undoPerform();
+            }
+        });
+
+        // Expose globally
+        window.BdUndo = {
+            captureBeforeApply: undoCaptureBeforeApply
+        };
+
+        undoUpdateUI();
+    }
+
+    /* ------------------------------------------------------------------ */
     /*  Bootstrap: warten auf bottomtools:ready                           */
     /* ------------------------------------------------------------------ */
+
+    var undoInitialized = false;
 
     document.addEventListener('bottomtools:ready', function () {
         initTooltips();
         initSearch();
         initPinning();
+        if (!undoInitialized) { initUndo(); undoInitialized = true; }
+    });
+
+    // Fallback: init undo on DOMContentLoaded in case dashboard is not present
+    document.addEventListener('DOMContentLoaded', function () {
+        if (!undoInitialized) { initUndo(); undoInitialized = true; }
     });
 
 })();

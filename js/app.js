@@ -177,6 +177,7 @@ const generatePrompt = async () => {
 
     try {
         const generatedText = await callOpenRouterAPI(userMessage, BASE_SYSTEM_PROMPT);
+        if (window.BdUndo && resultText.textContent.trim()) window.BdUndo.captureBeforeApply('Prompt generiert');
         resultText.textContent = generatedText;
         resultContainer.classList.remove('hidden');
         resultContainer.classList.add('fade-in');
@@ -209,6 +210,7 @@ const refinePro = async () => {
     customInstructionButton.disabled = true;
     try {
         const refined = await callOpenRouterAPI(currentPrompt, SUNO_PRO_REFINER_PROMPT);
+        if (window.BdUndo) window.BdUndo.captureBeforeApply('Suno Pro');
         // Hard clip to 1000 as an extra safeguard
         resultText.textContent = refined.slice(0, 1000);
     } catch (error) {

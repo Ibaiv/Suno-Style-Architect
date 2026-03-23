@@ -207,6 +207,15 @@
                         <!-- Result Container -->
                         <div id="result-container" class="hidden flex-grow flex flex-col">
                             <div class="relative bg-neutral-900/70 rounded-xl border border-neutral-700 flex-grow">
+                                <div class="bd-undo-controls absolute top-2.5 right-12 z-10" id="bd-undo-controls">
+                                    <button id="bd-undo-btn" class="bd-undo-btn" disabled title="Rückgängig">
+                                        <span class="bd-undo-icon">↶</span>
+                                        <span class="bd-undo-count" id="bd-undo-count"></span>
+                                    </button>
+                                    <button id="bd-redo-btn" class="bd-undo-btn" disabled title="Wiederholen">
+                                        <span class="bd-undo-icon">↷</span>
+                                    </button>
+                                </div>
                                 <button id="copy-button"
                                     class="absolute top-2.5 right-2.5 p-1.5 bg-neutral-700/50 hover:bg-neutral-700 rounded-md text-neutral-400 hover:text-white transition-all duration-200 z-10 btn-transition btn-press"
                                     title="Kopieren">

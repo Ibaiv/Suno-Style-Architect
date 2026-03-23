@@ -3917,3 +3917,42 @@ input:checked+.ks-preset-card,
 }
 /* Ensure card is position:relative for absolute pin button */
 .bd-tool-card { position: relative; }
+
+/* === Kachel-System: Undo Stack (#100) === */
+.bd-undo-controls {
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
+}
+.bd-undo-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(115, 115, 115, 0.2);
+    border-radius: 6px;
+    color: rgba(156, 163, 175, 0.6);
+    cursor: pointer;
+    padding: 4px 8px;
+    font-size: 0.75rem;
+    line-height: 1;
+    transition: all 150ms ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+}
+.bd-undo-btn:hover:not(:disabled) {
+    color: #e5e7eb;
+    border-color: rgba(115, 115, 115, 0.4);
+    background: rgba(255, 255, 255, 0.08);
+}
+.bd-undo-btn:disabled {
+    opacity: 0.3;
+    cursor: default;
+}
+.bd-undo-icon {
+    font-size: 0.85rem;
+}
+.bd-undo-count {
+    font-size: 0.65rem;
+    color: rgba(34, 211, 238, 0.7);
+    min-width: 12px;
+    text-align: center;
+}

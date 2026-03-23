@@ -107,7 +107,7 @@
     reader.onload = () => {
       const data = safeJSONParse(reader.result);
       if(data && data.content){
-        setCurrentPrompt(data.content);
+        setCurrentPrompt(data.content, 'Import JSON');
         if(data.idea) setCurrentIdea(data.idea);
         onPromptUpdated({source:'import'});
       } else {
@@ -142,7 +142,7 @@
 
   // Accessors to current prompt/idea
   function getCurrentPrompt(){ const el = $('result-text'); return el ? el.textContent.trim() : ''; }
-  function setCurrentPrompt(t){ const el = $('result-text'); if(el){ el.textContent = t||''; } }
+  function setCurrentPrompt(t, toolName){ const el = $('result-text'); if(el){ if(window.BdUndo && el.textContent.trim()) window.BdUndo.captureBeforeApply(toolName || 'Quick Action'); el.textContent = t||''; } }
   function getCurrentIdea(){ const el = $('idea-input'); return el ? el.value.trim() : ''; }
   function setCurrentIdea(t){ const el = $('idea-input'); if(el){ el.value = t||''; el.dispatchEvent(new Event('input')); } }
 
@@ -168,7 +168,7 @@
          .replace(/\s*,\s*,+/g, ',')
          .trim();
     if(t.length > 200){ t = t.slice(0, 200).replace(/\s+\S*$/, '').trim(); }
-    setCurrentPrompt(t);
+    setCurrentPrompt(t, 'Auto-Trim');
     updateCharStats();
     runLint();
   }
@@ -311,7 +311,7 @@
       // wire
       div.querySelector('.favorite-btn').addEventListener('click', ()=> setFavorite(item.id, !item.favorite));
       div.querySelector('[data-act="restore"]').addEventListener('click', ()=>{
-        setCurrentPrompt(item.content);
+        setCurrentPrompt(item.content, 'Verlauf wiederherstellen');
         setCurrentIdea(item.idea || '');
         // Ensure UI reflects restored state
         const initial = $('initial-state'); const resultC = $('result-container'); const ref = $('refinement-controls');

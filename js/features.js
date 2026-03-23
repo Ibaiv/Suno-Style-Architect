@@ -131,6 +131,7 @@ function setupExpertRefinement(type, systemPrompt) {
         const userQuery = `Prompt: "${currentPrompt}"\nInfluence Level: ${influence}`;
         try {
             const refined = await callOpenRouterAPI(userQuery, systemPrompt);
+            if (window.BdUndo) window.BdUndo.captureBeforeApply(type);
             document.getElementById('result-text').textContent = refined;
             if (window.QW) { window.QW.onPromptUpdated({ source: `expert:${type}` }); }
             modalLogic.close();
@@ -176,6 +177,7 @@ function setupSoundEngineer() {
 
         try {
             const refined = await callOpenRouterAPI(userQuery, SOUND_ENGINEER_PROMPT);
+            if (window.BdUndo) window.BdUndo.captureBeforeApply('Sound Engineer');
             document.getElementById('result-text').textContent = refined;
             if (window.QW) { window.QW.onPromptUpdated({ source: 'sound-engineer' }); }
             modalLogic.close();
@@ -346,6 +348,7 @@ Sound Design Choices:
             const translated = await callOpenRouterAPI(userQuery, SYNTH_DESIGN_TRANSLATOR_PROMPT);
             const updatedPrompt = appendPromptSentence(trimmedPrompt, translated);
             if (resultTextEl) {
+                if (window.BdUndo) window.BdUndo.captureBeforeApply('Synth Designer');
                 resultTextEl.textContent = updatedPrompt;
             }
             if (window.QW) {
@@ -483,7 +486,10 @@ function setupVisualEngine() {
             const resultText = document.getElementById('result-text');
             const initialState = document.getElementById('initial-state');
             const resultContainer = document.getElementById('result-container');
-            if (resultText) resultText.textContent = generatedText;
+            if (resultText) {
+                if (window.BdUndo) window.BdUndo.captureBeforeApply('Visual Engine');
+                resultText.textContent = generatedText;
+            }
             if (initialState) initialState.classList.add('hidden');
             if (resultContainer) {
                 resultContainer.classList.remove('hidden');
@@ -578,6 +584,7 @@ function setupAdaptiveFlow() {
 
             const applyButton = output.querySelector('#apply-adaptive-flow-button');
             applyButton?.addEventListener('click', () => {
+                if (window.BdUndo) window.BdUndo.captureBeforeApply('Adaptive Flow');
                 document.getElementById('result-text').textContent = cleanPrompt;
                 if (window.QW) { window.QW.onPromptUpdated({ source: 'future-lab:adaptive-flow' }); }
                 modalLogic.close();
@@ -685,6 +692,7 @@ function setupAiCollaboration() {
 
             const applyButton = output.querySelector('#apply-ai-collab-button');
             applyButton?.addEventListener('click', () => {
+                if (window.BdUndo) window.BdUndo.captureBeforeApply('AI Collab');
                 document.getElementById('result-text').textContent = cleanPrompt;
                 if (window.QW) { window.QW.onPromptUpdated({ source: 'future-lab:ai-collab' }); }
                 modalLogic.close();
@@ -748,6 +756,7 @@ function setupStoryArcDesigner() {
 
             const applyButton = output.querySelector('#apply-story-arc-button');
             applyButton?.addEventListener('click', () => {
+                if (window.BdUndo) window.BdUndo.captureBeforeApply('Story Arc');
                 document.getElementById('result-text').textContent = cleanPrompt;
                 if (window.QW) { window.QW.onPromptUpdated({ source: 'future-lab:story-arc' }); }
                 modalLogic.close();
@@ -1010,6 +1019,7 @@ function setupNarrativeChapters() {
                 const selected = data.chapters[index];
                 if (!selected) return;
 
+                if (window.BdUndo) window.BdUndo.captureBeforeApply('Narrative Chapters');
                 document.getElementById('result-text').textContent = selected.prompt;
                 if (window.QW) {
                     window.QW.onPromptUpdated({ source: `future-lab:narrative-chapters:chapter-${selected.index}` });
@@ -1164,6 +1174,7 @@ function setupImmersiveSpace() {
 
             const applyButton = output.querySelector('#apply-immersive-space-button');
             applyButton?.addEventListener('click', () => {
+                if (window.BdUndo) window.BdUndo.captureBeforeApply('Immersive Space');
                 document.getElementById('result-text').textContent = cleanPrompt;
                 if (window.QW) { window.QW.onPromptUpdated({ source: 'future-lab:immersive-space' }); }
                 modalLogic.close();
@@ -1273,6 +1284,7 @@ function setupHumanTouch() {
 
             const applyButton = output.querySelector('#apply-human-touch-result');
             applyButton?.addEventListener('click', () => {
+                if (window.BdUndo) window.BdUndo.captureBeforeApply('Human Touch');
                 document.getElementById('result-text').textContent = cleanPrompt;
                 if (window.QW) { window.QW.onPromptUpdated({ source: 'future-lab:human-touch' }); }
                 modalLogic.close();
@@ -1451,6 +1463,7 @@ function setupGenreMixer() {
             const prompt = `Rewrite this prompt: "${document.getElementById('result-text').textContent}" to also incorporate a mix of the following genres: ${selectedGenres.join(', ')}`;
             try {
                 const response = await callOpenRouterAPI(prompt, GENRE_MIXER_PROMPT);
+                if (window.BdUndo) window.BdUndo.captureBeforeApply('Genre Mixer');
                 document.getElementById('result-text').textContent = response;
                 if (window.QW) { window.QW.onPromptUpdated({ source: 'genre-mixer' }); }
                 modalLogic.close();
@@ -1541,6 +1554,7 @@ function setupKlugTagger(toolId, systemPrompt) {
         const prompt = `Original prompt: "${document.getElementById('result-text').textContent}". Integrate these elements: "${selectedKlugItems.join(', ')}".`;
         try {
             const refinedPrompt = await callOpenRouterAPI(prompt, PROMPT_REFINER_PROMPT);
+            if (window.BdUndo) window.BdUndo.captureBeforeApply('Klug: ' + toolId);
             document.getElementById('result-text').textContent = refinedPrompt;
             if (window.QW) { window.QW.onPromptUpdated({ source: `klug:${toolId}` }); }
             modalLogic.close();
@@ -1574,6 +1588,7 @@ function setupHookGenerator() {
                 div.className = 'p-3 bg-neutral-800/20 border border-white/5 rounded-xl cursor-pointer hover:bg-white/10 transition-colors';
                 div.textContent = text.replace(/^- /, '');
                 div.onclick = () => {
+                    if (window.BdUndo) window.BdUndo.captureBeforeApply('Hook Generator');
                     const resultText = document.getElementById('result-text');
                     resultText.textContent += (type === 'title' ? ` with the title "${div.textContent}"` : `, ${div.textContent}`);
                     modalLogic.close();
@@ -1631,6 +1646,7 @@ function setupSongStructure() {
                 btn.textContent = '...'; btn.disabled = true;
                 try {
                     const integratedPrompt = await callOpenRouterAPI(`Original prompt: "${document.getElementById('result-text').textContent}". Integrate this structure: "${structure}".`, STRUCTURE_INTEGRATOR_PROMPT);
+                    if (window.BdUndo) window.BdUndo.captureBeforeApply('Song Structure');
                     document.getElementById('result-text').textContent = integratedPrompt;
                     if (window.QW) { window.QW.onPromptUpdated({ source: 'song-structure' }); }
                     modalLogic.close();
@@ -1670,6 +1686,7 @@ function setupVibeEnhancer() {
                 </div>
             `;
             output.querySelector('#apply-vibe-button').onclick = () => {
+                if (window.BdUndo) window.BdUndo.captureBeforeApply('Vibe Enhancer');
                 document.getElementById('result-text').textContent = enhancedText;
                 if (window.QW) { window.QW.onPromptUpdated({ source: 'vibe-enhancer' }); }
                 modalLogic.close();
@@ -1702,6 +1719,7 @@ function setupArtistSuggester() {
                 el.className = 'p-3 bg-neutral-800/20 border border-white/5 rounded-xl cursor-pointer hover:bg-white/10 transition-colors';
                 el.innerHTML = `<strong class="text-blue-400">${artist}</strong><p class="text-xs text-neutral-400">${justification}</p>`;
                 el.onclick = () => {
+                    if (window.BdUndo) window.BdUndo.captureBeforeApply('Artist Suggester');
                     document.getElementById('result-text').textContent += `, in the style of ${artist}`;
                     if (window.QW) { window.QW.onPromptUpdated({ source: 'artist-suggester' }); }
                     modalLogic.close();
@@ -1737,6 +1755,7 @@ function setupTempoFinder() {
                 </div>
             `;
             output.querySelector('.add-bpm-button').onclick = () => {
+                if (window.BdUndo) window.BdUndo.captureBeforeApply('Tempo Finder');
                 document.getElementById('result-text').textContent += `, ${bpmValue} bpm`;
                 if (window.QW) { window.QW.onPromptUpdated({ source: 'tempo-finder' }); }
                 modalLogic.close();
@@ -1772,6 +1791,7 @@ function setupCustomInstruction() {
         const userQuery = `Base prompt: "${currentPrompt}"\nInstruction: "${instruction}"`;
         try {
             const refined = await callOpenRouterAPI(userQuery, CUSTOM_INSTRUCTION_PROMPT);
+            if (window.BdUndo) window.BdUndo.captureBeforeApply('Custom Instruction');
             document.getElementById('result-text').textContent = refined;
             if (window.QW) { window.QW.onPromptUpdated({ source: 'custom-instruction' }); }
             modalLogic.close();
@@ -1877,6 +1897,7 @@ function setupGenreEvolution() {
 
         try {
             const refined = await callOpenRouterAPI(userQuery, GENRE_EVOLUTION_PROMPT);
+            if (window.BdUndo) window.BdUndo.captureBeforeApply('Genre Evolution');
             document.getElementById('result-text').textContent = refined;
             if (window.QW) { window.QW.onPromptUpdated({ source: 'get:timeline' }); }
             modalLogic.close();
@@ -3137,6 +3158,7 @@ function setupKlangStudio() {
         const resultText = document.getElementById('result-text');
 
         if (resultText && token) {
+            if (window.BdUndo) window.BdUndo.captureBeforeApply('Klang Studio');
             const currentPrompt = resultText.textContent.trim();
             const updatedPrompt = currentPrompt
                 ? `${currentPrompt}, ${token}`
@@ -3250,6 +3272,7 @@ Character: ${context.effects.character}`;
 
             // ALWAYS replace Meisterstück content entirely
             if (resultText && finalPrompt) {
+                if (window.BdUndo) window.BdUndo.captureBeforeApply('Klang Studio Orchestra');
                 resultText.textContent = finalPrompt;
 
                 // Show the result container properly (same as generatePrompt)
@@ -3276,6 +3299,7 @@ Character: ${context.effects.character}`;
             // Fallback to non-AI token
             const fallbackToken = generateOrchestraToken();
             if (resultText && fallbackToken) {
+                if (window.BdUndo) window.BdUndo.captureBeforeApply('Klang Studio Orchestra');
                 resultText.textContent = fallbackToken;
 
                 // Show the result container properly
