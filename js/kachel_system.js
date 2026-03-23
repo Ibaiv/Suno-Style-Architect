@@ -926,7 +926,8 @@
         isPinnedZone: false,
         longPressTimer: null,
         scrollInterval: null,
-        handled: false
+        handled: false,
+        overChainPopup: false
     };
 
     var dragGeneration = 0;
@@ -1088,8 +1089,29 @@
 
         // Check if pointer is still within the column
         var listRect = list.getBoundingClientRect();
-        if (e.clientX < listRect.left - 50 || e.clientX > listRect.right + 50) {
-            return; // Don't update insertion point if too far outside column
+        var outsideColumn = e.clientX < listRect.left - 50 || e.clientX > listRect.right + 50 ||
+                            e.clientY < listRect.top - 30;
+
+        // Detect drag-out-of-column: show chain popup as drop target
+        var chainPopup = document.getElementById('bd-chain-popup');
+        if (outsideColumn && chainPopup) {
+            showChainPopup();
+
+            // Check if ghost hovers over the chain popup
+            var popupRect = chainPopup.getBoundingClientRect();
+            var overPopup = e.clientX >= popupRect.left && e.clientX <= popupRect.right &&
+                            e.clientY >= popupRect.top && e.clientY <= popupRect.bottom;
+            if (overPopup) {
+                chainPopup.classList.add('bd-chain-drop-active');
+                dragState.overChainPopup = true;
+            } else {
+                chainPopup.classList.remove('bd-chain-drop-active');
+                dragState.overChainPopup = false;
+            }
+            return; // Don't update insertion point when outside column
+        } else if (chainPopup) {
+            chainPopup.classList.remove('bd-chain-drop-active');
+            dragState.overChainPopup = false;
         }
 
         // Get sibling cards in same zone (exclude source card)
@@ -1150,6 +1172,29 @@
         var placeholder = dragState.placeholder;
         var ghost = dragState.ghost;
         var list = document.getElementById('bd-list-' + dragState.colId);
+        var droppedOnChain = dragState.overChainPopup;
+
+        if (droppedOnChain) {
+            // Add tool to chain from card data attributes
+            var buttonId = card.getAttribute('data-button-id');
+            var toolName = card.getAttribute('data-tool-name');
+            var emoji = card.getAttribute('data-tool-emoji');
+            if (buttonId && toolName) {
+                addToChain(buttonId, toolName, emoji);
+            }
+            // Card returns to original position (cancelled reorder)
+            cancelled = true;
+
+            // Remove drop-active highlight
+            var chainPopup = document.getElementById('bd-chain-popup');
+            if (chainPopup) chainPopup.classList.remove('bd-chain-drop-active');
+
+            // Auto-close popup after 800ms
+            clearTimeout(chainPopupAutoCloseTimer);
+            chainPopupAutoCloseTimer = setTimeout(function () {
+                hideChainPopup();
+            }, 800);
+        }
 
         if (!cancelled && placeholder && placeholder.parentNode && list) {
             // Insert source card at placeholder position
@@ -1176,6 +1221,7 @@
         dragState.placeholder = null;
         dragState.isPinnedZone = false;
         dragState.handled = false;
+        dragState.overChainPopup = false;
         clearTimeout(dragState.longPressTimer);
         dragState.longPressTimer = null;
 
@@ -1253,13 +1299,16 @@
             dragGeneration++;
 
             if (dragState.active) {
-                // Check if pointer is still within the column
-                var list = document.getElementById('bd-list-' + dragState.colId);
+                // If dropped on chain popup, endDrag handles it via overChainPopup flag
                 var cancelled = false;
-                if (list) {
-                    var listRect = list.getBoundingClientRect();
-                    if (e.clientX < listRect.left - 50 || e.clientX > listRect.right + 50) {
-                        cancelled = true;
+                if (!dragState.overChainPopup) {
+                    // Check if pointer is still within the column
+                    var list = document.getElementById('bd-list-' + dragState.colId);
+                    if (list) {
+                        var listRect = list.getBoundingClientRect();
+                        if (e.clientX < listRect.left - 50 || e.clientX > listRect.right + 50) {
+                            cancelled = true;
+                        }
                     }
                 }
                 dragState.handled = true;
@@ -1282,7 +1331,12 @@
         document.addEventListener('pointerup', function (e) {
             if (!dragState.active) return;
             if (dragState.handled) { dragState.handled = false; return; }
-            endDrag(true); // Cancel if dropped outside dashboard
+            // If over chain popup, endDrag will handle adding to chain
+            if (dragState.overChainPopup) {
+                endDrag(false);
+            } else {
+                endDrag(true); // Cancel if dropped outside dashboard
+            }
         });
 
         // Prevent context menu during drag on touch
@@ -1320,7 +1374,8 @@
         }
     ];
 
-    var CHAIN_EMPTY_TEXT = 'Klicke \u2295 auf einer Tool-Karte, um sie zur Kette hinzuzuf\u00fcgen';
+    var CHAIN_EMPTY_TEXT = 'Tools hierher ziehen oder aus dem Men\u00fc hinzuf\u00fcgen';
+    var chainPopupAutoCloseTimer = null;
 
     function renderChain() {
         var slots = document.getElementById('bd-chain-slots');
@@ -1357,23 +1412,27 @@
                 '<button class="bd-chain-item-remove" data-idx="' + i + '" title="Entfernen">\u2715</button>';
             slots.appendChild(chip);
         });
+        updateChainBadges();
     }
 
     function addToChain(buttonId, toolName, emoji) {
         chainItems.push({ buttonId: buttonId, toolName: toolName, emoji: emoji });
         renderChain();
+        updateChainBadges();
     }
 
     function removeFromChain(idx) {
         if (idx >= 0 && idx < chainItems.length) {
             chainItems.splice(idx, 1);
             renderChain();
+            updateChainBadges();
         }
     }
 
     function clearChain() {
         chainItems = [];
         renderChain();
+        updateChainBadges();
     }
 
     function runChain() {
@@ -1604,10 +1663,10 @@
         });
 
         // Position popup near the load button
-        var strip = document.getElementById('bd-chain-strip');
-        if (strip) {
-            strip.style.position = 'relative';
-            strip.appendChild(popup);
+        var chainPopup = document.getElementById('bd-chain-popup');
+        if (chainPopup) {
+            chainPopup.style.position = 'relative';
+            chainPopup.appendChild(popup);
         }
 
         // Close on outside click
@@ -1622,9 +1681,74 @@
         }, 50);
     }
 
+    function showChainPopup() {
+        var popup = document.getElementById('bd-chain-popup');
+        if (popup) {
+            clearTimeout(chainPopupAutoCloseTimer);
+            popup.classList.add('bd-chain-popup-visible');
+        }
+    }
+
+    function hideChainPopup() {
+        var popup = document.getElementById('bd-chain-popup');
+        if (popup) {
+            popup.classList.remove('bd-chain-popup-visible', 'bd-chain-drop-active');
+            clearTimeout(chainPopupAutoCloseTimer);
+        }
+    }
+
+    function toggleChainPopup() {
+        var popup = document.getElementById('bd-chain-popup');
+        if (popup && popup.classList.contains('bd-chain-popup-visible')) {
+            hideChainPopup();
+        } else {
+            showChainPopup();
+        }
+    }
+
+    function updateChainBadges() {
+        var count = chainItems.length;
+        document.querySelectorAll('.bd-chain-toggle').forEach(function (btn) {
+            var badge = btn.querySelector('.bd-chain-badge');
+            if (!badge) {
+                badge = document.createElement('span');
+                badge.className = 'bd-chain-badge';
+                btn.appendChild(badge);
+            }
+            badge.textContent = count > 0 ? count : '';
+        });
+    }
+
     function initChainBuilder() {
-        var strip = document.getElementById('bd-chain-strip');
-        if (!strip) return;
+        // Create the chain popup dynamically
+        var chainPopup = document.createElement('div');
+        chainPopup.id = 'bd-chain-popup';
+        chainPopup.className = 'bd-chain-popup';
+        chainPopup.innerHTML =
+            '<div class="bd-chain-popup-header">' +
+                '<span class="bd-chain-title">\uD83D\uDD17 Tool-Kette</span>' +
+                '<span class="bd-chain-count" id="bd-chain-count">0 Tools</span>' +
+                '<div class="bd-chain-actions">' +
+                    '<button id="bd-chain-run" class="bd-chain-action-btn bd-chain-run-btn" disabled title="Kette ausf\u00fchren">\u25B6 Ausf\u00fchren</button>' +
+                    '<button id="bd-chain-save" class="bd-chain-action-btn" title="Speichern">\uD83D\uDCBE</button>' +
+                    '<button id="bd-chain-load" class="bd-chain-action-btn" title="Laden">\uD83D\uDCC2</button>' +
+                    '<button id="bd-chain-clear" class="bd-chain-action-btn" title="Leeren">\u2715</button>' +
+                '</div>' +
+                '<button class="bd-chain-popup-close" id="bd-chain-popup-close">\u2715</button>' +
+            '</div>' +
+            '<div class="bd-chain-slots" id="bd-chain-slots">' +
+                '<div class="bd-chain-empty">Tools hierher ziehen oder aus dem Men\u00fc hinzuf\u00fcgen</div>' +
+            '</div>' +
+            '<div class="bd-chain-progress" id="bd-chain-progress">' +
+                '<div class="bd-chain-progress-bar" id="bd-chain-progress-bar"></div>' +
+            '</div>';
+        document.body.appendChild(chainPopup);
+
+        // Close button
+        document.getElementById('bd-chain-popup-close').addEventListener('click', function (e) {
+            e.preventDefault();
+            hideChainPopup();
+        });
 
         // Run button
         var runBtn = document.getElementById('bd-chain-run');
@@ -1674,31 +1798,24 @@
             });
         }
 
-        // Event delegation for chain-add buttons on each tool list
-        var dashboard = document.querySelector('.bottom-dashboard');
-        if (dashboard) {
-            var lists = dashboard.querySelectorAll('.bd-tool-list');
-            lists.forEach(function (list) {
-                list.addEventListener('click', function (e) {
-                    var addBtn = e.target.closest('.bd-chain-add');
-                    if (!addBtn) return;
-
-                    e.stopPropagation();
-                    e.preventDefault();
-
-                    var buttonId = addBtn.getAttribute('data-button-id');
-                    var toolName = addBtn.getAttribute('data-tool-name');
-                    var emoji = addBtn.getAttribute('data-tool-emoji');
-                    if (!buttonId) return;
-
-                    addToChain(buttonId, toolName, emoji);
-
-                    // Brief visual feedback
-                    addBtn.classList.add('bd-chain-add-flash');
-                    setTimeout(function () { addBtn.classList.remove('bd-chain-add-flash'); }, 400);
-                });
+        // Chain toggle buttons in column headers
+        document.querySelectorAll('.bd-chain-toggle').forEach(function (btn) {
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleChainPopup();
             });
-        }
+        });
+
+        // ESC to close chain popup
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                hideChainPopup();
+            }
+        });
+
+        // Initialize badges
+        updateChainBadges();
 
         // Expose API
         window.BdChain = {
@@ -1706,7 +1823,10 @@
             remove: removeFromChain,
             clear: clearChain,
             run: runChain,
-            getItems: function () { return chainItems.slice(); }
+            getItems: function () { return chainItems.slice(); },
+            show: showChainPopup,
+            hide: hideChainPopup,
+            toggle: toggleChainPopup
         };
     }
 
