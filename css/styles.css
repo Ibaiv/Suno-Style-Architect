@@ -3796,3 +3796,107 @@ input:checked+.ks-preset-card,
 .bd-tooltip-col-3 {
     border-color: rgba(52, 211, 153, 0.4);
 }
+
+/* === Kachel-System: Search/Filter (#97) === */
+.bd-search-toggle {
+    margin-left: auto;
+    background: none;
+    border: none;
+    color: rgba(156, 163, 175, 0.6);
+    cursor: pointer;
+    padding: 2px;
+    border-radius: 4px;
+    transition: color 200ms ease, opacity 200ms ease;
+    display: flex;
+    align-items: center;
+}
+
+.bd-search-toggle:hover {
+    color: #e5e7eb;
+}
+
+/* Column-specific accent on hover */
+.bd-col-purple .bd-search-toggle:hover {
+    color: rgba(168, 85, 247, 0.8);
+}
+
+.bd-col-cyan .bd-search-toggle:hover {
+    color: rgba(34, 211, 238, 0.8);
+}
+
+.bd-col-emerald .bd-search-toggle:hover {
+    color: rgba(52, 211, 153, 0.8);
+}
+
+.bd-search-bar {
+    padding: 4px 8px;
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 200ms ease, opacity 200ms ease, padding 200ms ease;
+}
+
+.bd-search-bar.bd-search-open {
+    max-height: 40px;
+    opacity: 1;
+    padding: 6px 8px;
+}
+
+.bd-search-bar-inner {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.bd-search-input {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(115, 115, 115, 0.2);
+    border-radius: 6px;
+    padding: 4px 24px 4px 8px;
+    font-size: 0.72rem;
+    color: #e5e7eb;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    transition: border-color 200ms ease;
+}
+
+.bd-search-input:focus {
+    border-color: rgba(115, 115, 115, 0.4);
+}
+
+.bd-search-input::placeholder {
+    color: rgba(156, 163, 175, 0.4);
+}
+
+.bd-search-close {
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: rgba(156, 163, 175, 0.5);
+    cursor: pointer;
+    font-size: 0.7rem;
+    padding: 2px 4px;
+    line-height: 1;
+    border-radius: 3px;
+    transition: color 150ms ease;
+}
+
+.bd-search-close:hover {
+    color: #e5e7eb;
+}
+
+.bd-card-hidden {
+    display: none !important;
+}
+
+.bd-empty-state {
+    padding: 12px;
+    text-align: center;
+    color: rgba(156, 163, 175, 0.4);
+    font-size: 0.7rem;
+    font-style: italic;
+}

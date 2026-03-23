@@ -168,11 +168,132 @@
     }
 
     /* ------------------------------------------------------------------ */
+    /*  Feature: Per-Column Search/Filter (#97)                          */
+    /* ------------------------------------------------------------------ */
+
+    function initSearch() {
+        var dashboard = document.querySelector('.bottom-dashboard');
+        if (!dashboard) return;
+
+        [1, 2, 3].forEach(function (colNum) {
+            var column = document.getElementById('bd-col-' + colNum);
+            if (!column) return;
+
+            var header = column.querySelector('.bd-column-header');
+            var toolList = column.querySelector('.bd-tool-list');
+            var toggle = column.querySelector('.bd-search-toggle');
+            if (!header || !toolList || !toggle) return;
+
+            // Create search bar element between header and tool-list
+            var searchBar = document.createElement('div');
+            searchBar.className = 'bd-search-bar';
+            searchBar.innerHTML =
+                '<div class="bd-search-bar-inner">' +
+                    '<input type="text" class="bd-search-input" placeholder="Tools durchsuchen\u2026" aria-label="Tools in Spalte ' + colNum + ' durchsuchen">' +
+                    '<button class="bd-search-close" aria-label="Suche schlie\u00dfen">\u2715</button>' +
+                '</div>';
+
+            // Insert between header and tool-list
+            column.insertBefore(searchBar, toolList);
+
+            var input = searchBar.querySelector('.bd-search-input');
+            var closeBtn = searchBar.querySelector('.bd-search-close');
+
+            // Empty state element (created once, appended/removed as needed)
+            var emptyState = document.createElement('div');
+            emptyState.className = 'bd-empty-state';
+            emptyState.textContent = 'Keine Tools gefunden';
+
+            function openSearch() {
+                searchBar.classList.add('bd-search-open');
+                // Focus after transition
+                setTimeout(function () { input.focus(); }, 210);
+            }
+
+            function closeSearch() {
+                searchBar.classList.remove('bd-search-open');
+                input.value = '';
+                clearFilter();
+            }
+
+            function clearFilter() {
+                var cards = toolList.querySelectorAll('.bd-tool-card');
+                cards.forEach(function (card) {
+                    card.classList.remove('bd-card-hidden');
+                });
+                // Remove empty state if present
+                var existing = toolList.querySelector('.bd-empty-state');
+                if (existing) existing.remove();
+            }
+
+            function filterCards() {
+                var query = input.value.toLowerCase().trim();
+                var cards = toolList.querySelectorAll('.bd-tool-card');
+                var visibleCount = 0;
+
+                cards.forEach(function (card) {
+                    if (!query) {
+                        card.classList.remove('bd-card-hidden');
+                        visibleCount++;
+                        return;
+                    }
+
+                    var name = (card.querySelector('.bd-tool-name') ?
+                        card.querySelector('.bd-tool-name').textContent : '').toLowerCase();
+                    var desc = (card.getAttribute('data-desc') || '').toLowerCase();
+
+                    if (name.indexOf(query) !== -1 || desc.indexOf(query) !== -1) {
+                        card.classList.remove('bd-card-hidden');
+                        visibleCount++;
+                    } else {
+                        card.classList.add('bd-card-hidden');
+                    }
+                });
+
+                // Empty state handling
+                var existing = toolList.querySelector('.bd-empty-state');
+                if (visibleCount === 0 && query) {
+                    if (!existing) toolList.appendChild(emptyState);
+                } else {
+                    if (existing) existing.remove();
+                }
+            }
+
+            // Toggle search on icon click
+            toggle.addEventListener('click', function (e) {
+                e.stopPropagation();
+                if (searchBar.classList.contains('bd-search-open')) {
+                    closeSearch();
+                } else {
+                    openSearch();
+                }
+            });
+
+            // Close button
+            closeBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                closeSearch();
+            });
+
+            // Real-time filtering
+            input.addEventListener('input', filterCards);
+
+            // Escape key closes search
+            input.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') {
+                    closeSearch();
+                }
+            });
+        });
+    }
+
+    /* ------------------------------------------------------------------ */
     /*  Bootstrap: warten auf bottomtools:ready                           */
     /* ------------------------------------------------------------------ */
 
     document.addEventListener('bottomtools:ready', function () {
         initTooltips();
+        initSearch();
     });
 
 })();
