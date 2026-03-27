@@ -146,15 +146,17 @@
   function getCurrentIdea(){ const el = $('idea-input'); return el ? el.value.trim() : ''; }
   function setCurrentIdea(t){ const el = $('idea-input'); if(el){ el.value = t||''; el.dispatchEvent(new Event('input')); } }
 
-  // Character stats and compliance
+  // Character stats and compliance (overlay format)
   function updateCharStats(){
     const prompt = getCurrentPrompt();
     const n = prompt.length;
-    const pro = n <= 1000;
     const stats = $('char-stats');
     if(!stats) return;
-    const proCls = pro ? 'ok' : 'err';
-    stats.innerHTML = `Chars: <span class=\"badge ${pro? 'ok':'err'}\">${n}</span> · Pro <1000: <span class=\"badge ${proCls}\">${pro? 'OK':'OVER'}</span>`;
+    let color;
+    if(n <= 800) color = '#86efac';       // green
+    else if(n <= 1000) color = '#fde047'; // yellow
+    else color = '#fca5a5';              // red
+    stats.innerHTML = `<span style="color:${color}">${n}</span> / 1000`;
   }
 
   // Store original text before auto-trim for undo capability
