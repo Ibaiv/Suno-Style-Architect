@@ -227,107 +227,154 @@ function getModalsHTML() {
        </div>
     </div>
     
-    <!-- KLUG MODALS -->
+    <!-- KLUG MODALS (Unified List Layout) -->
     <div id="genre-mixer-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden modal-enter-from">
         <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-2xl">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-bold text-white">🎶 Genre-Mixer</h2>
+                <h2 class="text-xl font-bold text-white">🧬 Genre-Mixer</h2>
                 <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none" aria-label="Schließen">&times;</button>
             </div>
-            <p class="text-neutral-400 mb-4 text-sm">Kombiniere bis zu 3 Genres, um einen einzigartigen Sound zu kreieren.</p>
-            <div id="genre-selectors" class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4"></div>
-            <button id="mix-genres-button" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg btn-transition btn-press">
-                <span id="mix-genres-button-text">Mischen & Anwenden</span>
-                <svg aria-hidden="true" focusable="false" id="mix-genres-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-            </button>
-            <div id="genre-mixer-output" class="mt-4 text-sm"></div>
+            <p class="text-neutral-400 mb-4 text-sm">Kreative Genre-Kreuzungen und Hybrid-Ideen für deinen Sound.</p>
+            <div class="klug-legend"><div class="klug-legend-item"><div class="klug-legend-swatch" style="background:linear-gradient(90deg,#22c55e,#4ade80)"></div>Relevanz</div><div class="klug-legend-item"><div class="klug-legend-swatch" style="background:linear-gradient(90deg,#f97316,#fb923c)"></div>Kreativität</div></div>
+            <div id="genre-mixer-list-container" class="klug-list-container"></div>
+            <div class="mt-4 border-t border-neutral-700/60 pt-4 flex justify-between items-center">
+                <span id="genre-mixer-selection-count" class="klug-selection-count">0 ausgewählt</span>
+                <button id="genre-mixer-apply-button" class="w-40 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-lg btn-transition btn-press flex justify-center items-center">
+                    <span id="genre-mixer-apply-text">Übernehmen</span>
+                    <svg aria-hidden="true" focusable="false" id="genre-mixer-apply-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                </button>
+            </div>
         </div>
     </div>
 
     <div id="hook-generator-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden modal-enter-from">
-         <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-2xl">
+        <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-2xl">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-bold text-white">🎣 Titel- & Hook-Generator</h2>
+                <h2 class="text-xl font-bold text-white">🪝 Hook-Generator</h2>
                 <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none" aria-label="Schließen">&times;</button>
             </div>
-            <p class="text-neutral-400 mb-4 text-sm">Die KI schlägt Titel und Refrain-Ideen vor. Klicke, um sie dem Meisterstück hinzuzufügen.</p>
-            <div id="hook-generator-output" class="space-y-4 text-sm min-h-[150px]"></div>
+            <p class="text-neutral-400 mb-4 text-sm">Eingängige Melodien, Titel und Ohrwurm-Formeln.</p>
+            <div class="klug-legend"><div class="klug-legend-item"><div class="klug-legend-swatch" style="background:linear-gradient(90deg,#22c55e,#4ade80)"></div>Relevanz</div><div class="klug-legend-item"><div class="klug-legend-swatch" style="background:linear-gradient(90deg,#f97316,#fb923c)"></div>Kreativität</div></div>
+            <div id="hook-generator-list-container" class="klug-list-container"></div>
+            <div class="mt-4 border-t border-neutral-700/60 pt-4 flex justify-between items-center">
+                <span id="hook-generator-selection-count" class="klug-selection-count">0 ausgewählt</span>
+                <button id="hook-generator-apply-button" class="w-40 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-lg btn-transition btn-press flex justify-center items-center">
+                    <span id="hook-generator-apply-text">Übernehmen</span>
+                    <svg aria-hidden="true" focusable="false" id="hook-generator-apply-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                </button>
+            </div>
         </div>
     </div>
 
     <div id="song-structure-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden modal-enter-from">
         <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-2xl">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-bold text-white">📑 Song-Struktur-Assistent</h2>
+                <h2 class="text-xl font-bold text-white">🏗️ Song-Struktur-Assistent</h2>
                 <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none" aria-label="Schließen">&times;</button>
             </div>
-             <p class="text-neutral-400 mb-4 text-sm">Hier ist ein Vorschlag für die Struktur deines Songs.</p>
-            <div id="song-structure-output" class="space-y-3 text-sm min-h-[100px]"></div>
+            <p class="text-neutral-400 mb-4 text-sm">Professioneller Song-Aufbau und Arrangement-Vorschläge.</p>
+            <div class="klug-legend"><div class="klug-legend-item"><div class="klug-legend-swatch" style="background:linear-gradient(90deg,#22c55e,#4ade80)"></div>Relevanz</div><div class="klug-legend-item"><div class="klug-legend-swatch" style="background:linear-gradient(90deg,#f97316,#fb923c)"></div>Kreativität</div></div>
+            <div id="song-structure-list-container" class="klug-list-container"></div>
+            <div class="mt-4 border-t border-neutral-700/60 pt-4 flex justify-between items-center">
+                <span id="song-structure-selection-count" class="klug-selection-count">0 ausgewählt</span>
+                <button id="song-structure-apply-button" class="w-40 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-lg btn-transition btn-press flex justify-center items-center">
+                    <span id="song-structure-apply-text">Übernehmen</span>
+                    <svg aria-hidden="true" focusable="false" id="song-structure-apply-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                </button>
+            </div>
         </div>
     </div>
 
     <div id="mood-analyzer-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden modal-enter-from">
-         <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-2xl">
+        <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-2xl">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-bold text-white">🔬 Stimmungs-Analysator</h2>
+                <h2 class="text-xl font-bold text-white">🧭 Mood-Analyzer</h2>
                 <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none" aria-label="Schließen">&times;</button>
             </div>
-            <p class="text-neutral-400 mb-4 text-sm">Wähle passende Instrumente aus und klicke auf "Übernehmen".</p>
-            <div id="mood-analyzer-suggestions" class="flex flex-wrap gap-2 text-sm min-h-[50px]"></div>
-            <div class="mt-6 border-t border-neutral-700/60 pt-4 flex justify-end">
-                <button id="apply-mood-button" class="w-36 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-lg btn-transition btn-press flex justify-center items-center">
-                    <span id="apply-mood-button-text">Übernehmen</span>
-                    <svg aria-hidden="true" focusable="false" id="apply-mood-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+            <p class="text-neutral-400 mb-4 text-sm">Stimmungsanalyse und passende Instrumente/Techniken.</p>
+            <div class="klug-legend"><div class="klug-legend-item"><div class="klug-legend-swatch" style="background:linear-gradient(90deg,#22c55e,#4ade80)"></div>Relevanz</div><div class="klug-legend-item"><div class="klug-legend-swatch" style="background:linear-gradient(90deg,#f97316,#fb923c)"></div>Kreativität</div></div>
+            <div id="mood-analyzer-list-container" class="klug-list-container"></div>
+            <div class="mt-4 border-t border-neutral-700/60 pt-4 flex justify-between items-center">
+                <span id="mood-analyzer-selection-count" class="klug-selection-count">0 ausgewählt</span>
+                <button id="mood-analyzer-apply-button" class="w-40 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-lg btn-transition btn-press flex justify-center items-center">
+                    <span id="mood-analyzer-apply-text">Übernehmen</span>
+                    <svg aria-hidden="true" focusable="false" id="mood-analyzer-apply-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                 </button>
             </div>
         </div>
     </div>
 
     <div id="vibe-enhancer-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden modal-enter-from">
-        <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-4xl">
-             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-bold text-white">🎨 Vibe-Veredler</h2>
+        <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-2xl">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-white">✨ Vibe-Veredler</h2>
                 <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none" aria-label="Schließen">&times;</button>
             </div>
-            <p class="text-neutral-400 mb-4 text-sm">Die KI hat deinen Prompt mit mehr atmosphärischen Details angereichert. Vergleiche und übernehme den Vorschlag.</p>
-            <div id="vibe-enhancer-output" class="grid md:grid-cols-2 gap-4 max-h-[60vh] overflow-auto"></div>
+            <p class="text-neutral-400 mb-4 text-sm">Atmosphärische Verfeinerung und Stimmungs-Ideen.</p>
+            <div class="klug-legend"><div class="klug-legend-item"><div class="klug-legend-swatch" style="background:linear-gradient(90deg,#22c55e,#4ade80)"></div>Relevanz</div><div class="klug-legend-item"><div class="klug-legend-swatch" style="background:linear-gradient(90deg,#f97316,#fb923c)"></div>Kreativität</div></div>
+            <div id="vibe-enhancer-list-container" class="klug-list-container"></div>
+            <div class="mt-4 border-t border-neutral-700/60 pt-4 flex justify-between items-center">
+                <span id="vibe-enhancer-selection-count" class="klug-selection-count">0 ausgewählt</span>
+                <button id="vibe-enhancer-apply-button" class="w-40 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-lg btn-transition btn-press flex justify-center items-center">
+                    <span id="vibe-enhancer-apply-text">Übernehmen</span>
+                    <svg aria-hidden="true" focusable="false" id="vibe-enhancer-apply-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                </button>
+            </div>
         </div>
     </div>
 
     <div id="artist-suggester-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden modal-enter-from">
-         <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-2xl">
+        <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-2xl">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-bold text-white">🧭 Künstler-Kompass</h2>
+                <h2 class="text-xl font-bold text-white">🧑‍🎤 Künstler-Kompass</h2>
                 <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none" aria-label="Schließen">&times;</button>
             </div>
-            <p class="text-neutral-400 mb-4 text-sm">Hier sind Künstler mit einem ähnlichen Stil. Klicke einen Namen an, um ihn deinem Prompt hinzuzufügen.</p>
-            <div id="artist-suggester-output" class="space-y-3 text-sm min-h-[150px]"></div>
+            <p class="text-neutral-400 mb-4 text-sm">Stilistische Orientierung an bekannten Künstlern.</p>
+            <div class="klug-legend"><div class="klug-legend-item"><div class="klug-legend-swatch" style="background:linear-gradient(90deg,#22c55e,#4ade80)"></div>Relevanz</div><div class="klug-legend-item"><div class="klug-legend-swatch" style="background:linear-gradient(90deg,#f97316,#fb923c)"></div>Kreativität</div></div>
+            <div id="artist-suggester-list-container" class="klug-list-container"></div>
+            <div class="mt-4 border-t border-neutral-700/60 pt-4 flex justify-between items-center">
+                <span id="artist-suggester-selection-count" class="klug-selection-count">0 ausgewählt</span>
+                <button id="artist-suggester-apply-button" class="w-40 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-lg btn-transition btn-press flex justify-center items-center">
+                    <span id="artist-suggester-apply-text">Übernehmen</span>
+                    <svg aria-hidden="true" focusable="false" id="artist-suggester-apply-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                </button>
+            </div>
         </div>
     </div>
 
     <div id="tempo-finder-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden modal-enter-from">
-        <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-md">
+        <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-2xl">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-bold text-white">⏱️ Tempo & BPM-Finder</h2>
+                <h2 class="text-xl font-bold text-white">⏱️ Tempo-Finder</h2>
                 <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none" aria-label="Schließen">&times;</button>
             </div>
-            <p class="text-neutral-400 mb-4 text-sm">Hier ist ein Tempo-Vorschlag für deinen Song.</p>
-            <div id="tempo-finder-output" class="space-y-3 text-sm min-h-[100px]"></div>
+            <p class="text-neutral-400 mb-4 text-sm">Optimales BPM und rhythmische Grundlage.</p>
+            <div class="klug-legend"><div class="klug-legend-item"><div class="klug-legend-swatch" style="background:linear-gradient(90deg,#22c55e,#4ade80)"></div>Relevanz</div><div class="klug-legend-item"><div class="klug-legend-swatch" style="background:linear-gradient(90deg,#f97316,#fb923c)"></div>Kreativität</div></div>
+            <div id="tempo-finder-list-container" class="klug-list-container"></div>
+            <div class="mt-4 border-t border-neutral-700/60 pt-4 flex justify-between items-center">
+                <span id="tempo-finder-selection-count" class="klug-selection-count">0 ausgewählt</span>
+                <button id="tempo-finder-apply-button" class="w-40 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-lg btn-transition btn-press flex justify-center items-center">
+                    <span id="tempo-finder-apply-text">Übernehmen</span>
+                    <svg aria-hidden="true" focusable="false" id="tempo-finder-apply-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                </button>
+            </div>
         </div>
     </div>
 
     <div id="production-finish-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden modal-enter-from">
         <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-2xl">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-bold text-white">🎚️ Produktions-Finish</h2>
+                <h2 class="text-xl font-bold text-white">💎 Produktions-Finish</h2>
                 <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none" aria-label="Schließen">&times;</button>
             </div>
-            <p class="text-neutral-400 mb-4 text-sm">Wähle passende Produktions-Techniken aus, um deinem Song den letzten Schliff zu geben.</p>
-            <div id="production-finish-suggestions" class="flex flex-wrap gap-2 text-sm min-h-[50px]"></div>
-            <div class="mt-6 border-t border-neutral-700/60 pt-4 flex justify-end">
-                <button id="apply-production-button" class="w-36 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-lg btn-transition btn-press flex justify-center items-center">
-                    <span id="apply-production-text">Übernehmen</span>
-                    <svg aria-hidden="true" focusable="false" id="apply-production-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+            <p class="text-neutral-400 mb-4 text-sm">Finaler Feinschliff für Produktionsqualität.</p>
+            <div class="klug-legend"><div class="klug-legend-item"><div class="klug-legend-swatch" style="background:linear-gradient(90deg,#22c55e,#4ade80)"></div>Relevanz</div><div class="klug-legend-item"><div class="klug-legend-swatch" style="background:linear-gradient(90deg,#f97316,#fb923c)"></div>Kreativität</div></div>
+            <div id="production-finish-list-container" class="klug-list-container"></div>
+            <div class="mt-4 border-t border-neutral-700/60 pt-4 flex justify-between items-center">
+                <span id="production-finish-selection-count" class="klug-selection-count">0 ausgewählt</span>
+                <button id="production-finish-apply-button" class="w-40 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-lg btn-transition btn-press flex justify-center items-center">
+                    <span id="production-finish-apply-text">Übernehmen</span>
+                    <svg aria-hidden="true" focusable="false" id="production-finish-apply-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                 </button>
             </div>
         </div>
@@ -336,15 +383,74 @@ function getModalsHTML() {
     <div id="vocal-stylist-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden modal-enter-from">
         <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-2xl">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-bold text-white">🎤 Gesangs-Stilist</h2>
+                <h2 class="text-xl font-bold text-white">🗣️ Vocal-Stylist</h2>
                 <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none" aria-label="Schließen">&times;</button>
             </div>
-            <p class="text-neutral-400 mb-4 text-sm">Wähle passende Gesangs-Stile aus und übernehme sie in dein Meisterstück.</p>
-            <div id="vocal-stylist-suggestions" class="flex flex-wrap gap-2 text-sm min-h-[50px]"></div>
-            <div class="mt-6 border-t border-neutral-700/60 pt-4 flex justify-end">
-                <button id="apply-vocal-style-button" class="w-36 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-lg btn-transition btn-press flex justify-center items-center">
-                    <span id="apply-vocal-style-text">Übernehmen</span>
-                    <svg aria-hidden="true" focusable="false" id="apply-vocal-style-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+            <p class="text-neutral-400 mb-4 text-sm">Gesangsstil und Vocal-Charakter-Design.</p>
+            <div class="klug-legend"><div class="klug-legend-item"><div class="klug-legend-swatch" style="background:linear-gradient(90deg,#22c55e,#4ade80)"></div>Relevanz</div><div class="klug-legend-item"><div class="klug-legend-swatch" style="background:linear-gradient(90deg,#f97316,#fb923c)"></div>Kreativität</div></div>
+            <div id="vocal-stylist-list-container" class="klug-list-container"></div>
+            <div class="mt-4 border-t border-neutral-700/60 pt-4 flex justify-between items-center">
+                <span id="vocal-stylist-selection-count" class="klug-selection-count">0 ausgewählt</span>
+                <button id="vocal-stylist-apply-button" class="w-40 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-lg btn-transition btn-press flex justify-center items-center">
+                    <span id="vocal-stylist-apply-text">Übernehmen</span>
+                    <svg aria-hidden="true" focusable="false" id="vocal-stylist-apply-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="groove-meister-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden modal-enter-from">
+        <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-2xl">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-white">🥁 Groove-Meister</h2>
+                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none" aria-label="Schließen">&times;</button>
+            </div>
+            <p class="text-neutral-400 mb-4 text-sm">Rhythmus-Patterns und Groove-Entwicklung.</p>
+            <div class="klug-legend"><div class="klug-legend-item"><div class="klug-legend-swatch" style="background:linear-gradient(90deg,#22c55e,#4ade80)"></div>Relevanz</div><div class="klug-legend-item"><div class="klug-legend-swatch" style="background:linear-gradient(90deg,#f97316,#fb923c)"></div>Kreativität</div></div>
+            <div id="groove-meister-list-container" class="klug-list-container"></div>
+            <div class="mt-4 border-t border-neutral-700/60 pt-4 flex justify-between items-center">
+                <span id="groove-meister-selection-count" class="klug-selection-count">0 ausgewählt</span>
+                <button id="groove-meister-apply-button" class="w-40 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-lg btn-transition btn-press flex justify-center items-center">
+                    <span id="groove-meister-apply-text">Übernehmen</span>
+                    <svg aria-hidden="true" focusable="false" id="groove-meister-apply-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="performance-coach-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden modal-enter-from">
+        <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-2xl">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-white">🏋️ Performance-Coach</h2>
+                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none" aria-label="Schließen">&times;</button>
+            </div>
+            <p class="text-neutral-400 mb-4 text-sm">Live-Performance und Energie-Optimierung.</p>
+            <div class="klug-legend"><div class="klug-legend-item"><div class="klug-legend-swatch" style="background:linear-gradient(90deg,#22c55e,#4ade80)"></div>Relevanz</div><div class="klug-legend-item"><div class="klug-legend-swatch" style="background:linear-gradient(90deg,#f97316,#fb923c)"></div>Kreativität</div></div>
+            <div id="performance-coach-list-container" class="klug-list-container"></div>
+            <div class="mt-4 border-t border-neutral-700/60 pt-4 flex justify-between items-center">
+                <span id="performance-coach-selection-count" class="klug-selection-count">0 ausgewählt</span>
+                <button id="performance-coach-apply-button" class="w-40 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-lg btn-transition btn-press flex justify-center items-center">
+                    <span id="performance-coach-apply-text">Übernehmen</span>
+                    <svg aria-hidden="true" focusable="false" id="performance-coach-apply-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="effect-chain-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden modal-enter-from">
+        <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-2xl">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-white">🔗 Effektketten-Designer</h2>
+                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none" aria-label="Schließen">&times;</button>
+            </div>
+            <p class="text-neutral-400 mb-4 text-sm">Effektketten und Signal-Processing.</p>
+            <div class="klug-legend"><div class="klug-legend-item"><div class="klug-legend-swatch" style="background:linear-gradient(90deg,#22c55e,#4ade80)"></div>Relevanz</div><div class="klug-legend-item"><div class="klug-legend-swatch" style="background:linear-gradient(90deg,#f97316,#fb923c)"></div>Kreativität</div></div>
+            <div id="effect-chain-list-container" class="klug-list-container"></div>
+            <div class="mt-4 border-t border-neutral-700/60 pt-4 flex justify-between items-center">
+                <span id="effect-chain-selection-count" class="klug-selection-count">0 ausgewählt</span>
+                <button id="effect-chain-apply-button" class="w-40 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-lg btn-transition btn-press flex justify-center items-center">
+                    <span id="effect-chain-apply-text">Übernehmen</span>
+                    <svg aria-hidden="true" focusable="false" id="effect-chain-apply-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                 </button>
             </div>
         </div>
@@ -365,58 +471,6 @@ function getModalsHTML() {
            </button>
        </div>
    </div>
-
-    <!-- NEW KLUG MODALS -->
-    <div id="groove-meister-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden modal-enter-from">
-        <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-2xl">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-bold text-white">KLUG: Groove-Meister</h2>
-                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none" aria-label="Schließen">&times;</button>
-            </div>
-            <p class="text-neutral-400 mb-4 text-sm">Wähle passende rhythmische Konzepte aus, um den Groove deines Songs zu definieren.</p>
-            <div id="groove-meister-suggestions" class="flex flex-wrap gap-2 text-sm min-h-[50px]"></div>
-            <div class="mt-6 border-t border-neutral-700/60 pt-4 flex justify-end">
-                <button id="apply-groove-meister-button" class="w-36 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-lg btn-transition btn-press flex justify-center items-center">
-                    <span id="apply-groove-meister-text">Übernehmen</span>
-                    <svg aria-hidden="true" focusable="false" id="apply-groove-meister-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <div id="performance-coach-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden modal-enter-from">
-        <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-2xl">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-bold text-white">KLUG: Performance-Coach</h2>
-                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none" aria-label="Schließen">&times;</button>
-            </div>
-            <p class="text-neutral-400 mb-4 text-sm">Wähle spezifische Spielweisen aus, um der Performance mehr Charakter zu verleihen.</p>
-            <div id="performance-coach-suggestions" class="flex flex-wrap gap-2 text-sm min-h-[50px]"></div>
-            <div class="mt-6 border-t border-neutral-700/60 pt-4 flex justify-end">
-                <button id="apply-performance-coach-button" class="w-36 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-lg btn-transition btn-press flex justify-center items-center">
-                    <span id="apply-performance-coach-text">Übernehmen</span>
-                    <svg aria-hidden="true" focusable="false" id="apply-performance-coach-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <div id="effect-chain-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden modal-enter-from">
-        <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-2xl">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-xl font-bold text-white">KLUG: Effektketten-Designer</h2>
-                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none" aria-label="Schließen">&times;</button>
-            </div>
-            <p class="text-neutral-400 mb-4 text-sm">Wähle passende Audio-Effekte aus, um den Sound zu formen.</p>
-            <div id="effect-chain-suggestions" class="flex flex-wrap gap-2 text-sm min-h-[50px]"></div>
-            <div class="mt-6 border-t border-neutral-700/60 pt-4 flex justify-end">
-                <button id="apply-effect-chain-button" class="w-36 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-lg btn-transition btn-press flex justify-center items-center">
-                    <span id="apply-effect-chain-text">Übernehmen</span>
-                    <svg aria-hidden="true" focusable="false" id="apply-effect-chain-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                </button>
-            </div>
-        </div>
-    </div>
 
     <!-- FUTURE LAB MODALS -->
     <div id="adaptive-flow-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden modal-enter-from">

@@ -184,60 +184,76 @@ RULES:
 - Keep a coherent flow from core style to instrumentation, production, vocals, dynamics, and tempo.
 `;
 
-const GENRE_MIXER_PROMPT = `You are a creative music expert and Suno V5 specialist. Your task is to rewrite the user's current prompt to create an innovative **genre hybrid**. Instead of just listing the genres, describe the resulting sound by fusing their core characteristics. Detail the specific instrumentation, rhythm, and production styles that would emerge from this fusion. For example, for 'Synthwave' and 'Orchestral', you might suggest 'Epic Orchestral Synthwave with soaring string sections over a classic driving retro synth bassline and gated reverb drums'.
+const GENRE_MIXER_PROMPT = `You are a creative music expert and Suno V5 specialist. Analyze the user's current prompt and suggest creative genre fusion ideas that would enhance it. Think about innovative genre combinations, hybrid sounds, and unexpected musical crossovers.
 
 **Output Rules:**
-- The output must be ONLY the new, refined prompt.
-- The prompt must be a single, coherent paragraph.
-- The final output must be strictly under 800 characters and in English.`;
+- Respond with ONLY valid JSON matching this schema: {"categories":[{"name":"string","ideas":[{"title":"string (max 5 words)","relevance":number 0-100,"creativity":number 0-100}]}]}
+- Generate 2-3 categories with 2-3 ideas each (5-8 total ideas)
+- Category names: descriptive (2-3 words), e.g. "Hybrid Genres", "Fusion Styles", "Crossover Sounds"
+- Idea titles: max 5 words, e.g. "Dark Orchestral Trap Fusion"
+- "relevance" = how well it fits the current prompt (0-100)
+- "creativity" = how original/unexpected the suggestion is (0-100)
+- All text in English
+- No markdown, no code blocks, ONLY raw JSON`;
 
 const PROMPT_REFINER_PROMPT = `You are a prompt refiner. The user provides an original prompt and a list of musical elements. Your task is to seamlessly integrate these elements into the original prompt to create a richer, more detailed prompt for a music AI. The result should only be the new, refined prompt. Maintain the core of the original idea and expand it with the given elements. The output must always be in English.`;
 
-const HOOK_GENERATOR_PROMPT = `You are a creative concept artist and hit songwriter. Analyze the user's prompt to understand its core theme. Your task is to generate:
-1.  Three song titles. One should be catchy and direct. The other two should be more abstract, conceptual, or evocative, designed to act as a unique "seed" for the AI's composition.
-2.  Three potential lyrical hook lines that capture the essence of the prompt.
+const HOOK_GENERATOR_PROMPT = `You are a creative concept artist and hit songwriter. Analyze the user's prompt to understand its core theme and generate catchy title ideas and hook line concepts.
 
 **Output Rules:**
-- The output must be in English.
-- Structure your response exactly as follows:
-TITLES:
-- [Title 1]
-- [Title 2]
-- [Title 3]
----
-HOOKS:
-- [Hook 1]
-- [Hook 2]
-- [Hook 3]`;
+- Respond with ONLY valid JSON matching this schema: {"categories":[{"name":"string","ideas":[{"title":"string (max 5 words)","relevance":number 0-100,"creativity":number 0-100}]}]}
+- Generate 2-3 categories (e.g. "Title Ideas", "Hook Lines", "Conceptual Seeds") with 2-3 ideas each
+- Idea titles: max 5 words, catchy and memorable
+- "relevance" = how well it fits the prompt's theme (0-100)
+- "creativity" = how original the idea is (0-100)
+- All text in English
+- No markdown, no code blocks, ONLY raw JSON`;
 
-const SONG_STRUCTURE_PROMPT = `You are a song structure expert. Analyze the user's prompt and suggest a dynamic and effective song structure. Include not just standard tags ([Verse], [Chorus]) but also dynamic tags like [Pre-Chorus], [Post-Chorus], [Instrumental], or [Guitar Solo] where they would build tension and emotional impact.
+const SONG_STRUCTURE_PROMPT = `You are a song structure expert. Analyze the user's prompt and suggest dynamic, effective song structure ideas using Suno tags and arrangement concepts.
 
 **Output Rules:**
-- On the first line, provide only the structure using tags separated by hyphens.
-- On a new line, write "---".
-- After the separator, provide a brief explanation in GERMAN about why this dynamic structure enhances the song's story.`;
+- Respond with ONLY valid JSON matching this schema: {"categories":[{"name":"string","ideas":[{"title":"string (max 5 words)","relevance":number 0-100,"creativity":number 0-100}]}]}
+- Generate 2-3 categories (e.g. "Classic Structures", "Dynamic Transitions", "Experimental Formats") with 2-3 ideas each
+- Idea titles: max 5 words, e.g. "Verse-Chorus-Bridge-Outro Flow"
+- "relevance" = how well the structure fits the prompt (0-100)
+- "creativity" = how innovative the arrangement is (0-100)
+- All text in English
+- No markdown, no code blocks, ONLY raw JSON`;
 
 const STRUCTURE_INTEGRATOR_PROMPT = `You are a prompt assistant. Your task is to integrate a given song structure into an existing music style prompt. Rewrite the original prompt to include the song structure naturally. The output must only be the newly combined prompt. The output must always be in English.`;
 
-const VIBE_ENHANCER_PROMPT = `You are a creative writer and expert in musical storytelling. Your task is to enhance the user's prompt by transforming it into a more evocative and atmospheric description. Focus on creating an **emotional arc** or a sense of journey. Instead of just adding adjectives, describe the sonic evolution. For example, 'starts with a lonely piano, builds with orchestral swells to a triumphant, cinematic climax'. Do not change the core musical elements, but make them part of a story.
+const VIBE_ENHANCER_PROMPT = `You are a creative writer and expert in musical storytelling. Analyze the user's prompt and suggest atmospheric and mood-enhancing ideas that would enrich the sonic experience.
 
 **Output Rules:**
-- The output must be ONLY the enhanced prompt.
-- The final output must be strictly under 800 characters and in English.`;
+- Respond with ONLY valid JSON matching this schema: {"categories":[{"name":"string","ideas":[{"title":"string (max 5 words)","relevance":number 0-100,"creativity":number 0-100}]}]}
+- Generate 2-3 categories (e.g. "Emotional Arc", "Atmosphere Layers", "Sonic Imagery") with 2-3 ideas each
+- Idea titles: max 5 words, evocative and atmospheric
+- "relevance" = how well it enhances the existing mood (0-100)
+- "creativity" = how unique/unexpected the idea is (0-100)
+- All text in English
+- No markdown, no code blocks, ONLY raw JSON`;
 
-const ARTIST_SUGGESTER_PROMPT = `You are a musicologist with encyclopedic knowledge of artists. Analyze the user's prompt. Suggest 3-4 real, well-known artists whose style is similar. For each artist, provide a very brief (5-10 words) justification that is useful for prompting, referencing a specific era, album, or sound characteristic. Example: "David Bowie: For his experimental 'Berlin Era' art-rock sound."
+const ARTIST_SUGGESTER_PROMPT = `You are a musicologist with encyclopedic knowledge of artists. Analyze the user's prompt and suggest artists and stylistic influences that could inspire the sound.
 
 **Output Rules:**
-- Format your response with each artist on a new line, like this: "Artist Name: Justification".
-- The output must always be in English.`;
+- Respond with ONLY valid JSON matching this schema: {"categories":[{"name":"string","ideas":[{"title":"string (max 5 words)","relevance":number 0-100,"creativity":number 0-100}]}]}
+- Generate 2-3 categories (e.g. "Direct Influences", "Unexpected Parallels", "Era References") with 2-3 ideas each
+- Idea titles: max 5 words, include artist name or era, e.g. "Bowie Berlin Era Sound"
+- "relevance" = how closely the artist matches the prompt (0-100)
+- "creativity" = how unexpected/surprising the suggestion is (0-100)
+- All text in English
+- No markdown, no code blocks, ONLY raw JSON`;
 
-const TEMPO_FINDER_PROMPT = `You are a music tempo expert. Analyze the user's prompt's mood and genre. Suggest an appropriate tempo. Your response must include both a descriptive term (which Suno often prefers) and a specific BPM value for maximum control.
+const TEMPO_FINDER_PROMPT = `You are a music tempo and rhythm expert. Analyze the user's prompt's mood and genre and suggest tempo, BPM, and rhythmic feel ideas.
 
 **Output Rules:**
-- On the first line: "Tempo: [e.g., Slow, driving, energetic, mid-tempo]".
-- On the second line: "BPM: [e.g., 120]".
-- On the third line: "---".
-- After the separator, provide a brief explanation in GERMAN.`;
+- Respond with ONLY valid JSON matching this schema: {"categories":[{"name":"string","ideas":[{"title":"string (max 5 words)","relevance":number 0-100,"creativity":number 0-100}]}]}
+- Generate 2-3 categories (e.g. "Tempo Suggestions", "Rhythmic Feel", "BPM Variations") with 2-3 ideas each
+- Idea titles: max 5 words, include BPM or tempo terms, e.g. "Slow 72 BPM Groove"
+- "relevance" = how well the tempo fits the prompt (0-100)
+- "creativity" = how interesting the rhythmic approach is (0-100)
+- All text in English
+- No markdown, no code blocks, ONLY raw JSON`;
 
 const ADAPTIVE_FLOW_PROMPT = `You are a master of dynamic arrangement for Suno V5. The user provides a base prompt and a target intensity between 0 and 100. Rewrite the prompt so that it emphasises evolving dynamics, sectional energy, and transitions tailored to that intensity level. Translate the intensity into how bold the contrasts between sections should feel, from subtle swells (low values) to dramatic peaks (high values).
 
@@ -418,41 +434,71 @@ TACTICS:
 - [channel-specific action]
 - [channel-specific action]`;
 
-const PRODUCTION_FINISH_PROMPT = `You are a mixing and mastering engineer with a deep understanding of Suno V5. Analyze the user's prompt and suggest 5-7 specific, professional production and mastering terms that will give the song a polished, finished quality. Focus on sonic texture and final mix characteristics. Examples: 'lo-fi tape hiss', 'heavy sidechain compression', 'vintage analog warmth', 'wide stereo image', 'modern mastering', 'crisp highs', 'no harsh frequencies'.
+const PRODUCTION_FINISH_PROMPT = `You are a mixing and mastering engineer with deep understanding of Suno V5. Analyze the user's prompt and suggest professional production and mastering techniques for a polished, finished quality.
 
 **Output Rules:**
-- Output ONLY a comma-separated list of these techniques.
-- The list must be in English.`;
+- Respond with ONLY valid JSON matching this schema: {"categories":[{"name":"string","ideas":[{"title":"string (max 5 words)","relevance":number 0-100,"creativity":number 0-100}]}]}
+- Generate 2-3 categories (e.g. "Mix Techniques", "Mastering Polish", "Sonic Texture") with 2-3 ideas each
+- Idea titles: max 5 words, use professional terms, e.g. "Heavy Sidechain Compression"
+- "relevance" = how well the technique fits the prompt (0-100)
+- "creativity" = how distinctive the production choice is (0-100)
+- All text in English
+- No markdown, no code blocks, ONLY raw JSON`;
 
-const VOCAL_STYLIST_PROMPT = `You are a professional vocal coach and stylist. Analyze the user's prompt and suggest 4-6 specific, nuanced vocal performance characteristics that go beyond simple descriptions. Include details about delivery, emotion, and vocal texture. Examples: 'breathy and intimate female vocals', 'powerful, belted baritone with a slight rasp', 'layered, ethereal harmonies', 'whispered ad-libs in the background', 'spoken word interlude', 'choir with overemphasized consonants'.
-
-**Output Rules:**
-- Output ONLY a comma-separated list of these vocal styles.
-- The list must be in English.`;
-
-const MOOD_ANALYZER_PROMPT = `You are a musical mood analyst and sound designer. Analyze the user's prompt to identify its core emotion and atmosphere. Your task is to suggest a comma-separated list of 5-7 highly specific **instruments AND production techniques** that will amplify this mood. Go beyond simple instrument names. Suggest sonic textures and professional terms. For a 'melancholic' prompt, instead of 'piano', suggest 'reverb-drenched felt piano' or 'subtle vinyl crackle'. For an 'energetic' prompt, suggest 'driving four-on-the-floor kick' or 'crisp snare'.
-
-**Output Rules:**
-- Output ONLY the comma-separated list.
-- The list must be in English.`;
-
-const GROOVE_MEISTER_PROMPT = `You are a world-class rhythm section specialist and music theorist. Analyze the user's prompt and suggest 5-7 specific, complex rhythmic feels and grooves that go beyond a simple BPM. Think about the subdivision and feel. Examples: 'laid-back shuffle groove', 'syncopated 16th-note hi-hats', 'polyrhythmic latin percussion', 'driving four-on-the-floor beat', 'off-kilter drum machine rhythm', 'tight, funky bassline'.
+const VOCAL_STYLIST_PROMPT = `You are a professional vocal coach and stylist. Analyze the user's prompt and suggest specific, nuanced vocal performance characteristics including delivery, emotion, and vocal texture.
 
 **Output Rules:**
-- Output ONLY a comma-separated list of these rhythmic concepts.
-- The list must be in English.`;
+- Respond with ONLY valid JSON matching this schema: {"categories":[{"name":"string","ideas":[{"title":"string (max 5 words)","relevance":number 0-100,"creativity":number 0-100}]}]}
+- Generate 2-3 categories (e.g. "Delivery Style", "Vocal Texture", "Backing Vocals") with 2-3 ideas each
+- Idea titles: max 5 words, descriptive, e.g. "Breathy Intimate Female Vocals"
+- "relevance" = how well the vocal style fits the prompt (0-100)
+- "creativity" = how unique the vocal suggestion is (0-100)
+- All text in English
+- No markdown, no code blocks, ONLY raw JSON`;
 
-const PERFORMANCE_COACH_PROMPT = `You are a master performance coach and instrumentalist. Analyze the user's prompt and suggest 5-7 specific playing nuances for instruments to make them sound more human and expressive. Examples: 'aggressive down-stroked guitar riff', 'gentle, breathy flute melody', 'subtle vibrato on synth lead', 'staccato piano chords', 'legato string section', 'imperfect, slightly behind-the-beat drums'.
+const MOOD_ANALYZER_PROMPT = `You are an expert music psychologist and sound designer. Analyze the user's prompt and suggest instruments, textures, and sonic elements that would enhance and deepen the mood.
 
 **Output Rules:**
-- Output ONLY a comma-separated list of these performance details.
-- The list must be in English.`;
+- Respond with ONLY valid JSON matching this schema: {"categories":[{"name":"string","ideas":[{"title":"string (max 5 words)","relevance":number 0-100,"creativity":number 0-100}]}]}
+- Generate 2-3 categories (e.g. "Tonal Color", "Ambient Textures", "Percussion Feel") with 2-3 ideas each
+- Idea titles: max 5 words, instrument/texture names, e.g. "Warm Rhodes Piano Chords"
+- "relevance" = how well the element fits the mood (0-100)
+- "creativity" = how unique/unexpected the choice is (0-100)
+- All text in English
+- No markdown, no code blocks, ONLY raw JSON`;
 
-const EFFECT_CHAIN_PROMPT = `You are a creative audio engineer and effects specialist. Analyze the user's prompt and suggest 5-7 specific effect chains for instruments or the overall mix to create a unique sonic character. Examples: 'vocals with heavy reverb and a slapback delay', 'guitar through a saturated tape echo and a spring reverb', 'synth pads with a slow, sweeping phaser effect', 'drums processed with parallel compression', 'master bus with light glue compression'.
+const GROOVE_MEISTER_PROMPT = `You are a world-class rhythm section specialist. Analyze the user's prompt and suggest specific rhythmic feels, grooves, and percussion patterns that go beyond simple BPM.
 
 **Output Rules:**
-- Output ONLY a comma-separated list of these effect chains.
-- The list must be in English.`;
+- Respond with ONLY valid JSON matching this schema: {"categories":[{"name":"string","ideas":[{"title":"string (max 5 words)","relevance":number 0-100,"creativity":number 0-100}]}]}
+- Generate 2-3 categories (e.g. "Rhythmic Feel", "Percussion Patterns", "Bassline Groove") with 2-3 ideas each
+- Idea titles: max 5 words, rhythmic terms, e.g. "Syncopated Sixteenth Note Hi-Hats"
+- "relevance" = how well the groove fits the prompt (0-100)
+- "creativity" = how inventive the rhythmic idea is (0-100)
+- All text in English
+- No markdown, no code blocks, ONLY raw JSON`;
+
+const PERFORMANCE_COACH_PROMPT = `You are a master performance coach and instrumentalist. Analyze the user's prompt and suggest specific playing nuances for instruments to make them sound more human, expressive, and alive.
+
+**Output Rules:**
+- Respond with ONLY valid JSON matching this schema: {"categories":[{"name":"string","ideas":[{"title":"string (max 5 words)","relevance":number 0-100,"creativity":number 0-100}]}]}
+- Generate 2-3 categories (e.g. "String Techniques", "Keyboard Nuances", "Rhythmic Expression") with 2-3 ideas each
+- Idea titles: max 5 words, playing techniques, e.g. "Aggressive Down-Stroked Guitar Riff"
+- "relevance" = how well the technique fits the prompt (0-100)
+- "creativity" = how unique the performance idea is (0-100)
+- All text in English
+- No markdown, no code blocks, ONLY raw JSON`;
+
+const EFFECT_CHAIN_PROMPT = `You are a creative audio engineer and effects specialist. Analyze the user's prompt and suggest specific effect chains and signal processing ideas that create a unique sonic character.
+
+**Output Rules:**
+- Respond with ONLY valid JSON matching this schema: {"categories":[{"name":"string","ideas":[{"title":"string (max 5 words)","relevance":number 0-100,"creativity":number 0-100}]}]}
+- Generate 2-3 categories (e.g. "Reverb & Delay", "Distortion & Saturation", "Modulation Effects") with 2-3 ideas each
+- Idea titles: max 5 words, effect names, e.g. "Tape Saturated Slapback Delay"
+- "relevance" = how well the effect fits the prompt (0-100)
+- "creativity" = how innovative the effect chain is (0-100)
+- All text in English
+- No markdown, no code blocks, ONLY raw JSON`;
 
 // TODO [FUTURE]: HINT_SELECTOR_PROMPT removed — lint hint UI disabled.
 // See quickwins.js for CURATED_HINTS data and git history for full implementation.

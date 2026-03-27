@@ -201,27 +201,254 @@ function setupSoundEngineer() {
 }
 
 // === KLUG TOOLS LOGIC ===
+
+// Category color palette for AI-generated categories
+const KLUG_CATEGORY_COLORS = [
+    '#3b82f6', // blue
+    '#8b5cf6', // violet
+    '#ec4899', // pink
+    '#f97316', // orange
+    '#22c55e', // green
+    '#06b6d4', // cyan
+    '#eab308', // yellow
+    '#ef4444', // red
+];
+
 function setupKlugTools() {
     setupSynthDesignerLab();
-    setupGenreMixer();
-    setupHookGenerator();
-    setupSongStructure();
-    setupVibeEnhancer();
-    setupArtistSuggester();
-    setupTempoFinder();
 
-    // Setup tagger tools
-    const taggerTools = [
+    // All 12 Klug-Tools now use the unified list layout
+    const klugToolConfigs = [
+        { id: 'genre-mixer', prompt: GENRE_MIXER_PROMPT },
+        { id: 'hook-generator', prompt: HOOK_GENERATOR_PROMPT },
+        { id: 'song-structure', prompt: SONG_STRUCTURE_PROMPT },
         { id: 'mood-analyzer', prompt: MOOD_ANALYZER_PROMPT },
+        { id: 'vibe-enhancer', prompt: VIBE_ENHANCER_PROMPT },
+        { id: 'artist-suggester', prompt: ARTIST_SUGGESTER_PROMPT },
+        { id: 'tempo-finder', prompt: TEMPO_FINDER_PROMPT },
         { id: 'production-finish', prompt: PRODUCTION_FINISH_PROMPT },
         { id: 'vocal-stylist', prompt: VOCAL_STYLIST_PROMPT },
         { id: 'groove-meister', prompt: GROOVE_MEISTER_PROMPT },
         { id: 'performance-coach', prompt: PERFORMANCE_COACH_PROMPT },
-        { id: 'effect-chain', prompt: EFFECT_CHAIN_PROMPT }
+        { id: 'effect-chain', prompt: EFFECT_CHAIN_PROMPT },
     ];
 
-    taggerTools.forEach(tool => {
-        setupKlugTagger(tool.id, tool.prompt);
+    klugToolConfigs.forEach(tool => {
+        setupUnifiedKlugTool(tool.id, tool.prompt);
+    });
+}
+
+// --- Unified Klug Tool Setup ---
+function setupUnifiedKlugTool(toolId, systemPrompt) {
+    const modal = document.getElementById(`${toolId}-modal`);
+    const openButton = document.getElementById(`${toolId}-button`);
+    const listContainer = modal?.querySelector(`#${toolId}-list-container`);
+    const applyButton = modal?.querySelector(`#${toolId}-apply-button`);
+    const applyText = modal?.querySelector(`#${toolId}-apply-text`);
+    const applyLoader = modal?.querySelector(`#${toolId}-apply-loader`);
+    const selectionCountEl = modal?.querySelector(`#${toolId}-selection-count`);
+
+    if (!modal || !openButton || !listContainer || !applyButton) return;
+
+    const modalLogic = setupModal(modal, openButton);
+    let selectedItems = [];
+
+    function updateSelectionCount() {
+        if (selectionCountEl) {
+            selectionCountEl.textContent = `${selectedItems.length} ausgewählt`;
+            selectionCountEl.classList.toggle('has-selection', selectedItems.length > 0);
+        }
+    }
+
+    openButton.addEventListener('click', async () => {
+        // 1. Reset state
+        selectedItems = [];
+        updateSelectionCount();
+
+        // 2. Show skeleton loader (5 rows)
+        renderKlugSkeleton(listContainer);
+
+        // 3. Call AI
+        try {
+            const currentPrompt = document.getElementById('result-text').textContent;
+            const response = await callOpenRouterAPI(currentPrompt, systemPrompt);
+            const data = parseKlugResponse(response);
+
+            // 4. Typewriter reveal animation
+            revealKlugRows(listContainer, data, selectedItems, updateSelectionCount);
+        } catch (error) {
+            listContainer.innerHTML = `<p class="text-red-400 p-4 text-sm text-center">${getUserFriendlyErrorMessage(error)}</p>`;
+        }
+    });
+
+    applyButton.onclick = async () => {
+        if (selectedItems.length === 0) {
+            modalLogic.close();
+            return;
+        }
+        applyButton.disabled = true;
+        if (applyText) applyText.classList.add('hidden');
+        if (applyLoader) applyLoader.classList.remove('hidden');
+
+        const prompt = `Original prompt: "${document.getElementById('result-text').textContent}". Integrate these elements: "${selectedItems.join(', ')}".`;
+        try {
+            const refinedPrompt = await callOpenRouterAPI(prompt, PROMPT_REFINER_PROMPT);
+            applyPromptWithUndo(refinedPrompt, 'Klug: ' + toolId);
+            if (window.QW) { window.QW.onPromptUpdated({ source: `klug:${toolId}` }); }
+            modalLogic.close();
+        } catch (error) {
+            console.error("Failed to refine prompt", error);
+        } finally {
+            applyButton.disabled = false;
+            if (applyText) applyText.classList.remove('hidden');
+            if (applyLoader) applyLoader.classList.add('hidden');
+        }
+    };
+}
+
+// --- Skeleton Loader ---
+function renderKlugSkeleton(container) {
+    let html = '';
+    for (let i = 0; i < 5; i++) {
+        html += `<div class="klug-skeleton-row" style="animation-delay:${i * 120}ms">
+            <div class="klug-skel-checkbox"></div>
+            <div class="klug-skel-title" style="max-width:${130 + Math.floor(Math.random() * 80)}px"></div>
+            <div class="klug-skel-bars">
+                <div class="klug-skel-bar"></div>
+                <div class="klug-skel-bar"></div>
+            </div>
+            <div class="klug-skel-border"></div>
+        </div>`;
+    }
+    container.innerHTML = html;
+}
+
+// --- Parse AI Response ---
+function parseKlugResponse(response) {
+    let jsonStr = response;
+
+    // Try to extract from markdown code blocks
+    const jsonMatch = response.match(/```(?:json)?\s*([\s\S]*?)```/);
+    if (jsonMatch) jsonStr = jsonMatch[1].trim();
+
+    // Fallback: find first { to last }
+    const firstBrace = jsonStr.indexOf('{');
+    const lastBrace = jsonStr.lastIndexOf('}');
+    if (firstBrace !== -1 && lastBrace > firstBrace) {
+        jsonStr = jsonStr.substring(firstBrace, lastBrace + 1);
+    }
+
+    try {
+        const parsed = JSON.parse(jsonStr);
+        if (parsed.categories && Array.isArray(parsed.categories)) {
+            return parsed;
+        }
+    } catch (e) {
+        console.warn('[Klug] Failed to parse JSON, falling back to comma-split', e);
+    }
+
+    // Fallback: comma-separated (backward compatibility)
+    const items = response.split(',').map(s => s.trim()).filter(Boolean);
+    return {
+        categories: [{
+            name: 'Vorschläge',
+            ideas: items.slice(0, 8).map(item => ({
+                title: item.substring(0, 40),
+                relevance: 40 + Math.floor(Math.random() * 50),
+                creativity: 30 + Math.floor(Math.random() * 60)
+            }))
+        }]
+    };
+}
+
+// --- Typewriter Reveal ---
+function revealKlugRows(container, data, selectedItems, onSelectionChange) {
+    container.innerHTML = '';
+
+    let delayIndex = 0;
+    const REVEAL_DELAY = 80; // ms between each row
+
+    data.categories.forEach((category, catIdx) => {
+        const color = KLUG_CATEGORY_COLORS[catIdx % KLUG_CATEGORY_COLORS.length];
+
+        // Category header
+        const header = document.createElement('div');
+        header.className = 'klug-category-header revealed';
+        header.style.animationDelay = `${delayIndex * REVEAL_DELAY}ms`;
+        header.innerHTML = `<span class="klug-category-dot" style="background:${color}"></span>${category.name}`;
+        container.appendChild(header);
+        delayIndex++;
+
+        // Idea rows
+        if (category.ideas && Array.isArray(category.ideas)) {
+            category.ideas.forEach(idea => {
+                const row = document.createElement('div');
+                row.className = 'klug-idea-row revealed';
+                row.style.animationDelay = `${delayIndex * REVEAL_DELAY}ms`;
+
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.className = 'klug-row-checkbox';
+
+                const titleSpan = document.createElement('span');
+                titleSpan.className = 'klug-idea-title';
+                titleSpan.textContent = idea.title;
+
+                const relevance = Math.max(0, Math.min(100, idea.relevance || 50));
+                const creativity = Math.max(0, Math.min(100, idea.creativity || 50));
+
+                const barsStack = document.createElement('div');
+                barsStack.className = 'klug-bars-stack';
+                barsStack.innerHTML = `
+                    <div class="klug-bar-row" title="Relevanz: ${relevance}%">
+                        <div class="klug-bar klug-bar-relevance" style="width:0%"></div>
+                    </div>
+                    <div class="klug-bar-row" title="Kreativität: ${creativity}%">
+                        <div class="klug-bar klug-bar-creativity" style="width:0%"></div>
+                    </div>`;
+
+                const stripe = document.createElement('div');
+                stripe.className = 'klug-category-stripe';
+                stripe.style.background = color;
+
+                row.appendChild(checkbox);
+                row.appendChild(titleSpan);
+                row.appendChild(barsStack);
+                row.appendChild(stripe);
+
+                // Click handler: entire row toggles checkbox
+                row.addEventListener('click', (e) => {
+                    if (e.target === checkbox) return;
+                    checkbox.checked = !checkbox.checked;
+                    checkbox.dispatchEvent(new Event('change'));
+                });
+
+                checkbox.addEventListener('change', () => {
+                    const idx = selectedItems.indexOf(idea.title);
+                    if (checkbox.checked && idx === -1) {
+                        selectedItems.push(idea.title);
+                        row.classList.add('selected');
+                    } else if (!checkbox.checked && idx > -1) {
+                        selectedItems.splice(idx, 1);
+                        row.classList.remove('selected');
+                    }
+                    onSelectionChange();
+                });
+
+                container.appendChild(row);
+
+                // Animate progress bars after row reveal
+                const currentDelay = delayIndex;
+                setTimeout(() => {
+                    const relBar = barsStack.querySelector('.klug-bar-relevance');
+                    const creBar = barsStack.querySelector('.klug-bar-creativity');
+                    if (relBar) relBar.style.width = relevance + '%';
+                    if (creBar) creBar.style.width = creativity + '%';
+                }, (currentDelay * REVEAL_DELAY) + 250);
+
+                delayIndex++;
+            });
+        }
     });
 }
 
@@ -1537,345 +1764,11 @@ function setupReleaseForecast() {
     });
 }
 
-function setupGenreMixer() {
-    const modal = document.getElementById('genre-mixer-modal');
-    const openButton = document.getElementById('genre-mixer-button');
-    const container = modal?.querySelector('#genre-selectors');
-    const mixButton = modal?.querySelector('#mix-genres-button');
-    const buttonText = modal?.querySelector('#mix-genres-button-text');
-    const loader = modal?.querySelector('#mix-genres-loader');
-    const output = modal?.querySelector('#genre-mixer-output');
+// [REMOVED] setupGenreMixer - now handled by setupUnifiedKlugTool
 
-    if (!modal || !openButton) return;
-
-    const modalLogic = setupModal(modal, openButton);
-
-    // Populate genre selectors
-    if (container) {
-        container.innerHTML = '';
-        for (let i = 0; i < 3; i++) {
-            const select = document.createElement('select');
-            select.className = "genre-select w-full bg-neutral-900/70 border border-neutral-600 rounded-lg p-2 text-neutral-200 focus:ring-2 focus:ring-blue-500";
-            const defaultOption = new Option(i === 0 ? "Wähle Genre 1" : `Genre ${i + 1} (optional)`, "");
-            select.add(defaultOption);
-            musicGenres.forEach(genre => select.add(new Option(genre, genre)));
-            container.appendChild(select);
-        }
-    }
-
-    if (mixButton) {
-        mixButton.addEventListener('click', async () => {
-            const selectedGenres = Array.from(modal.querySelectorAll('.genre-select')).map(s => s.value).filter(Boolean);
-            if (selectedGenres.length === 0) {
-                output.innerHTML = `<p class="text-red-400">Bitte wähle mindestens ein Genre aus.</p>`;
-                return;
-            }
-            mixButton.disabled = true;
-            buttonText.classList.add('hidden');
-            loader.classList.remove('hidden');
-            const prompt = `Rewrite this prompt: "${document.getElementById('result-text').textContent}" to also incorporate a mix of the following genres: ${selectedGenres.join(', ')}`;
-            try {
-                const response = await callOpenRouterAPI(prompt, GENRE_MIXER_PROMPT);
-                applyPromptWithUndo(response, 'Genre Mixer');
-                if (window.QW) { window.QW.onPromptUpdated({ source: 'genre-mixer' }); }
-                modalLogic.close();
-            } catch (error) {
-                output.innerHTML = `<p class="text-red-400">Fehler beim Mischen der Genres.</p>`;
-            } finally {
-                mixButton.disabled = false;
-                buttonText.classList.remove('hidden');
-                loader.classList.add('hidden');
-            }
-        });
-    }
-}
-
-function setupKlugTagger(toolId, systemPrompt) {
-    const modal = document.getElementById(`${toolId}-modal`);
-    const openButton = document.getElementById(`${toolId}-button`);
-    const suggestions = modal?.querySelector(`#${toolId}-suggestions`);
-
-    // Handle special apply button id cases
-    let applyId, applyTextId, applyLoaderId;
-    switch (toolId) {
-        case 'mood-analyzer':
-            applyId = 'apply-mood-button';
-            applyTextId = 'apply-mood-button-text';
-            applyLoaderId = 'apply-mood-loader';
-            break;
-        case 'production-finish':
-            applyId = 'apply-production-button';
-            applyTextId = 'apply-production-text';
-            applyLoaderId = 'apply-production-loader';
-            break;
-        case 'vocal-stylist':
-            applyId = 'apply-vocal-style-button';
-            applyTextId = 'apply-vocal-style-text';
-            applyLoaderId = 'apply-vocal-style-loader';
-            break;
-        default:
-            applyId = `apply-${toolId}-button`;
-            applyTextId = `apply-${toolId}-text`;
-            applyLoaderId = `apply-${toolId}-loader`;
-    }
-
-    const applyButton = modal?.querySelector(`#${applyId}`);
-    const buttonText = modal?.querySelector(`#${applyTextId}`);
-    const loader = modal?.querySelector(`#${applyLoaderId}`);
-
-    if (!modal || !openButton || !suggestions || !applyButton) return;
-
-    const modalLogic = setupModal(modal, openButton);
-
-    openButton.addEventListener('click', async () => {
-        selectedKlugItems = [];
-        suggestions.innerHTML = `<div class="animate-spin h-6 w-6 text-blue-400 mx-auto"></div>`;
-        try {
-            const response = await callOpenRouterAPI(document.getElementById('result-text').textContent, systemPrompt);
-            const items = response.split(',').map(item => item.trim()).filter(Boolean);
-            suggestions.innerHTML = '';
-            items.forEach(item => {
-                const tag = document.createElement('button');
-                tag.className = 'bg-neutral-800/20 hover:bg-white/10 text-neutral-200 py-2 px-4 rounded-full transition-colors duration-200 border border-white/5';
-                tag.textContent = item;
-                tag.onclick = () => {
-                    const index = selectedKlugItems.indexOf(item);
-                    if (index > -1) {
-                        selectedKlugItems.splice(index, 1);
-                        tag.classList.remove('bg-blue-600', 'text-white');
-                    } else {
-                        selectedKlugItems.push(item);
-                        tag.classList.add('bg-blue-600', 'text-white');
-                    }
-                };
-                suggestions.appendChild(tag);
-            });
-        } catch (error) {
-            suggestions.innerHTML = `<p class="text-red-400">${getUserFriendlyErrorMessage(error)}</p>`;
-        }
-    });
-
-    applyButton.onclick = async () => {
-        if (selectedKlugItems.length === 0) {
-            modalLogic.close();
-            return;
-        }
-        applyButton.disabled = true;
-        buttonText.classList.add('hidden');
-        loader.classList.remove('hidden');
-        const prompt = `Original prompt: "${document.getElementById('result-text').textContent}". Integrate these elements: "${selectedKlugItems.join(', ')}".`;
-        try {
-            const refinedPrompt = await callOpenRouterAPI(prompt, PROMPT_REFINER_PROMPT);
-            applyPromptWithUndo(refinedPrompt, 'Klug: ' + toolId);
-            if (window.QW) { window.QW.onPromptUpdated({ source: `klug:${toolId}` }); }
-            modalLogic.close();
-        } catch (error) {
-            console.error("Failed to refine prompt", error);
-        } finally {
-            applyButton.disabled = false;
-            buttonText.classList.remove('hidden');
-            loader.classList.add('hidden');
-        }
-    };
-}
-
-function setupHookGenerator() {
-    const modal = document.getElementById('hook-generator-modal');
-    const openButton = document.getElementById('hook-generator-button');
-    const output = modal?.querySelector('#hook-generator-output');
-
-    if (!modal || !openButton || !output) return;
-
-    const modalLogic = setupModal(modal, openButton);
-
-    openButton.addEventListener('click', async () => {
-        output.innerHTML = `<div class="animate-spin h-6 w-6 text-blue-400 mx-auto"></div>`;
-        try {
-            const response = await callOpenRouterAPI(document.getElementById('result-text').textContent, HOOK_GENERATOR_PROMPT);
-            const [titlesPart, hooksPart] = response.split('---').map(s => s.trim());
-
-            const createSuggestionElement = (text, type) => {
-                const div = document.createElement('div');
-                div.className = 'p-3 bg-neutral-800/20 border border-white/5 rounded-xl cursor-pointer hover:bg-white/10 transition-colors';
-                div.textContent = text.replace(/^- /, '');
-                div.onclick = () => {
-                    const resultText = document.getElementById('result-text');
-                    const newText = resultText.textContent + (type === 'title' ? ` with the title "${div.textContent}"` : `, ${div.textContent}`);
-                    applyPromptWithUndo(newText, 'Hook Generator');
-                    modalLogic.close();
-                };
-                return div;
-            };
-
-            output.innerHTML = '';
-            if (titlesPart) {
-                const header = document.createElement('h3');
-                header.className = 'text-base font-semibold text-neutral-300 mb-2';
-                header.textContent = 'Titel-Ideen';
-                output.appendChild(header);
-                titlesPart.replace('TITLES:', '').trim().split('\n').forEach(title => output.appendChild(createSuggestionElement(title, 'title')));
-            }
-            if (hooksPart) {
-                const header = document.createElement('h3');
-                header.className = 'text-base font-semibold text-neutral-300 mt-4 mb-2';
-                header.textContent = 'Hook-Ideen';
-                output.appendChild(header);
-                hooksPart.replace('HOOKS:', '').trim().split('\n').forEach(hook => output.appendChild(createSuggestionElement(hook, 'hook')));
-            }
-        } catch (error) {
-            output.innerHTML = `<p class="text-red-400">${getUserFriendlyErrorMessage(error)}</p>`;
-        }
-    });
-}
-
-// Additional KLUG tool setup functions would continue here...
-// (setupSongStructure, setupVibeEnhancer, setupArtistSuggester, setupTempoFinder)
-
-function setupSongStructure() {
-    const modal = document.getElementById('song-structure-modal');
-    const openButton = document.getElementById('song-structure-button');
-    const output = modal?.querySelector('#song-structure-output');
-
-    if (!modal || !openButton || !output) return;
-
-    const modalLogic = setupModal(modal, openButton);
-
-    openButton.addEventListener('click', async () => {
-        output.innerHTML = `<div class="animate-spin h-6 w-6 text-blue-400 mx-auto"></div>`;
-        try {
-            const response = await callOpenRouterAPI(document.getElementById('result-text').textContent, SONG_STRUCTURE_PROMPT);
-            const [structure, explanation] = response.split('---').map(s => s.trim());
-            output.innerHTML = `
-                <p class="font-mono text-blue-300 p-3 bg-neutral-900/70 rounded-lg">${structure}</p>
-                <p class="text-neutral-400 pt-2">${explanation}</p>
-                <div class="mt-4 border-t border-neutral-700/60 pt-4 flex justify-end">
-                    <button id="integrate-structure-button" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-lg btn-transition btn-press">In Prompt integrieren</button>
-                </div>
-            `;
-            output.querySelector('#integrate-structure-button').onclick = async () => {
-                const btn = output.querySelector('#integrate-structure-button');
-                btn.textContent = '...'; btn.disabled = true;
-                try {
-                    const integratedPrompt = await callOpenRouterAPI(`Original prompt: "${document.getElementById('result-text').textContent}". Integrate this structure: "${structure}".`, STRUCTURE_INTEGRATOR_PROMPT);
-                    applyPromptWithUndo(integratedPrompt, 'Song Structure');
-                    if (window.QW) { window.QW.onPromptUpdated({ source: 'song-structure' }); }
-                    modalLogic.close();
-                } catch (error) {
-                    btn.textContent = 'Fehler!';
-                }
-            };
-        } catch (error) {
-            output.innerHTML = `<p class="text-red-400">${getUserFriendlyErrorMessage(error)}</p>`;
-        }
-    });
-}
-
-function setupVibeEnhancer() {
-    const modal = document.getElementById('vibe-enhancer-modal');
-    const openButton = document.getElementById('vibe-enhancer-button');
-    const output = modal?.querySelector('#vibe-enhancer-output');
-
-    if (!modal || !openButton || !output) return;
-
-    const modalLogic = setupModal(modal, openButton);
-
-    openButton.addEventListener('click', async () => {
-        output.innerHTML = `<div class="animate-spin h-6 w-6 text-blue-400 mx-auto col-span-2"></div>`;
-        try {
-            const originalPrompt = document.getElementById('result-text').textContent;
-            const enhancedText = await callOpenRouterAPI(originalPrompt, VIBE_ENHANCER_PROMPT);
-            output.innerHTML = `
-                <div>
-                    <h3 class="font-semibold text-neutral-300 mb-2">Original</h3>
-                    <pre class="whitespace-pre-wrap text-sm text-neutral-400 p-3 bg-neutral-900/70 rounded-lg h-full">${originalPrompt}</pre>
-                </div>
-                <div>
-                     <h3 class="font-semibold text-neutral-300 mb-2">Veredelt ✨</h3>
-                    <pre class="whitespace-pre-wrap text-sm text-neutral-200 p-3 bg-neutral-900/70 rounded-lg border border-blue-500/30 h-full">${enhancedText}</pre>
-                    <button id="apply-vibe-button" class="mt-3 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg btn-transition btn-press">Vorschlag übernehmen</button>
-                </div>
-            `;
-            output.querySelector('#apply-vibe-button').onclick = () => {
-                applyPromptWithUndo(enhancedText, 'Vibe Enhancer');
-                if (window.QW) { window.QW.onPromptUpdated({ source: 'vibe-enhancer' }); }
-                modalLogic.close();
-            };
-        } catch (error) {
-            output.innerHTML = `<p class="text-red-400 text-center col-span-2">${getUserFriendlyErrorMessage(error)}</p>`;
-        }
-    });
-}
-
-function setupArtistSuggester() {
-    const modal = document.getElementById('artist-suggester-modal');
-    const openButton = document.getElementById('artist-suggester-button');
-    const output = modal?.querySelector('#artist-suggester-output');
-
-    if (!modal || !openButton || !output) return;
-
-    const modalLogic = setupModal(modal, openButton);
-
-    openButton.addEventListener('click', async () => {
-        output.innerHTML = `<div class="animate-spin h-6 w-6 text-blue-400 mx-auto"></div>`;
-        try {
-            const response = await callOpenRouterAPI(document.getElementById('result-text').textContent, ARTIST_SUGGESTER_PROMPT);
-            const suggestions = response.split('\n').filter(line => line.trim() !== '');
-            output.innerHTML = '';
-            suggestions.forEach(line => {
-                const [artist, justification] = line.split(':').map(s => s.trim());
-                if (!artist || !justification) return;
-                const el = document.createElement('div');
-                el.className = 'p-3 bg-neutral-800/20 border border-white/5 rounded-xl cursor-pointer hover:bg-white/10 transition-colors';
-                el.innerHTML = `<strong class="text-blue-400">${artist}</strong><p class="text-xs text-neutral-400">${justification}</p>`;
-                el.onclick = () => {
-                    const resultText = document.getElementById('result-text');
-                    const newText = resultText.textContent + `, in the style of ${artist}`;
-                    applyPromptWithUndo(newText, 'Artist Suggester');
-                    if (window.QW) { window.QW.onPromptUpdated({ source: 'artist-suggester' }); }
-                    modalLogic.close();
-                };
-                output.appendChild(el);
-            });
-        } catch (error) {
-            output.innerHTML = `<p class="text-red-400">${getUserFriendlyErrorMessage(error)}</p>`;
-        }
-    });
-}
-
-function setupTempoFinder() {
-    const modal = document.getElementById('tempo-finder-modal');
-    const openButton = document.getElementById('tempo-finder-button');
-    const output = modal?.querySelector('#tempo-finder-output');
-
-    if (!modal || !openButton || !output) return;
-
-    const modalLogic = setupModal(modal, openButton);
-
-    openButton.addEventListener('click', async () => {
-        output.innerHTML = `<div class="animate-spin h-6 w-6 text-blue-400 mx-auto"></div>`;
-        try {
-            const response = await callOpenRouterAPI(document.getElementById('result-text').textContent, TEMPO_FINDER_PROMPT);
-            const [tempo, bpm, _, explanation] = response.split(/---\n|\n/).map(s => s.trim());
-            const bpmValue = bpm.split(': ')[1];
-            output.innerHTML = `
-                <p class="p-3 bg-neutral-900/70 rounded-lg"><span class="text-neutral-400">${tempo}</span> <strong class="text-blue-400 float-right">${bpm}</strong></p>
-                <p class="text-neutral-400 pt-2">${explanation}</p>
-                <div class="mt-4 border-t border-neutral-700/60 pt-4 flex justify-end">
-                    <button class="add-bpm-button bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-lg btn-transition btn-press">BPM hinzufügen</button>
-                </div>
-            `;
-            output.querySelector('.add-bpm-button').onclick = () => {
-                const resultText = document.getElementById('result-text');
-                const newText = resultText.textContent + `, ${bpmValue} bpm`;
-                applyPromptWithUndo(newText, 'Tempo Finder');
-                if (window.QW) { window.QW.onPromptUpdated({ source: 'tempo-finder' }); }
-                modalLogic.close();
-            };
-        } catch (error) {
-            output.innerHTML = `<p class="text-red-400">${getUserFriendlyErrorMessage(error)}</p>`;
-        }
-    });
-}
+// [REMOVED] setupKlugTagger, setupHookGenerator, setupSongStructure,
+// setupVibeEnhancer, setupArtistSuggester, setupTempoFinder
+// — All replaced by setupUnifiedKlugTool above
 
 // === CUSTOM INSTRUCTION LOGIC ===
 function setupCustomInstruction() {
