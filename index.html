@@ -105,7 +105,7 @@
     <main class="w-full max-w-[1900px] 2xl:max-w-[2100px] mx-auto p-3 md:p-5 lg:p-6" id="main-app"
         style="display: none;">
         <!-- ### HEADER ### -->
-        <header class="app-menu-bar mb-4 md:mb-6">
+        <header class="app-menu-bar mb-4 md:mb-6" id="app-menu-bar">
             <div class="app-menu-main">
                 <div class="app-menu-brand">
                     <div class="app-menu-icon">
@@ -133,6 +133,11 @@
                         class="app-menu-chip">⚙️ Ändern</button>
                 </div>
             </div>
+            <button id="topbar-collapse-toggle" class="topbar-collapse-btn" title="Menüleiste ein-/ausklappen (Mod+Shift+T)" aria-label="Menüleiste ein-/ausklappen" aria-expanded="true">
+                <svg class="topbar-collapse-chevron" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="18 15 12 9 6 15"></polyline>
+                </svg>
+            </button>
         </header>
 
         <!-- ### MAIN INTERFACE LAYOUT ### -->
@@ -1713,6 +1718,7 @@
     <script src="js/palette.js"></script>
     <script src="js/chords.js"></script>
     <script src="js/shortcuts_settings.js"></script>
+    <script src="js/topbar_collapse.js"></script>
     <script src="js/tips.js"></script>
     <script src="js/quickwins.js"></script>
     <script src="js/bottom_tools.js"></script>

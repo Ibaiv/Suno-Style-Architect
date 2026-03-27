@@ -1119,6 +1119,102 @@ button.app-menu-chip:hover {
     }
 }
 
+/* === Collapsible Top Bar === */
+.app-menu-bar {
+    position: relative;
+    transition: padding 0.3s ease, max-height 0.3s ease, margin-bottom 0.3s ease, opacity 0.3s ease;
+    max-height: 200px;
+}
+
+.topbar-collapse-btn {
+    position: absolute;
+    bottom: 3px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 32px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s ease, background 0.2s ease;
+    z-index: 5;
+    padding: 0;
+    color: rgba(255, 255, 255, 0.45);
+}
+
+.app-menu-bar:hover .topbar-collapse-btn,
+.app-menu-bar:focus-within .topbar-collapse-btn {
+    opacity: 1;
+}
+
+.topbar-collapse-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.topbar-collapse-btn:focus-visible {
+    opacity: 1;
+    outline: 2px solid rgba(96, 165, 250, 0.6);
+    outline-offset: 1px;
+}
+
+.topbar-collapse-chevron {
+    transition: transform 0.3s ease;
+}
+
+/* Collapsed state */
+.app-menu-bar.top-bar-collapsed {
+    max-height: 20px;
+    overflow: hidden;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-bottom: 0.25rem !important;
+    border-color: rgba(255, 255, 255, 0.06);
+}
+
+.app-menu-bar.top-bar-collapsed .app-menu-main {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.app-menu-bar.top-bar-collapsed .topbar-collapse-btn {
+    opacity: 1;
+    bottom: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    border-radius: 20px;
+    border: none;
+    background: transparent;
+}
+
+.app-menu-bar.top-bar-collapsed .topbar-collapse-chevron {
+    transform: rotate(180deg);
+}
+
+/* Expanded state: ensure app-menu-main is visible */
+.app-menu-bar:not(.top-bar-collapsed) .app-menu-main {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.25s ease 0.05s, visibility 0.25s ease 0.05s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .app-menu-bar,
+    .app-menu-bar .app-menu-main,
+    .topbar-collapse-btn,
+    .topbar-collapse-chevron {
+        transition: none !important;
+    }
+}
+
 /* Glassmorphism Containers */
 .bg-neutral-800\/20,
 .bg-neutral-900\/70,
