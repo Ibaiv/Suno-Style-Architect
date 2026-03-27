@@ -5462,3 +5462,97 @@ input:focus-visible + .synth-effect-pill {
         width: 100% !important;
     }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   Vision Focus Mode  (Issue #112)
+   Hides the left Vision card on Desktop/XL so Masterpiece
+   gains the freed column space.
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Toggle button in Masterpiece header ──────────────── */
+.vision-focus-btn {
+    display: none;           /* hidden below XL */
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    background: rgba(255, 255, 255, 0.04);
+    color: #94a3b8;
+    cursor: pointer;
+    transition: background 200ms ease, color 200ms ease, border-color 200ms ease;
+    margin-left: auto;
+    margin-right: 8px;
+    padding: 0;
+    flex-shrink: 0;
+}
+
+@media (min-width: 1280px) {
+    .vision-focus-btn { display: inline-flex; }
+}
+
+.vision-focus-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #e2e8f0;
+    border-color: rgba(148, 163, 184, 0.4);
+}
+
+.vision-focus-btn.vf-active {
+    background: rgba(99, 102, 241, 0.15);
+    color: #818cf8;
+    border-color: rgba(99, 102, 241, 0.3);
+}
+
+/* Icon swap: split ↔ expand */
+.vision-focus-btn .vf-icon-expand { display: none; }
+.vision-focus-btn.vf-active .vf-icon-expand  { display: block; }
+.vision-focus-btn.vf-active .vf-icon-split   { display: none; }
+
+/* ── Grid transition (Desktop/XL only) ────────────────── */
+@media (min-width: 1280px) {
+
+    /*  Override Tailwind's repeat(3, minmax(0,1fr)) with an explicit
+        3-track list so the browser can interpolate the <flex> values.  */
+    .app-main-layout .app-top-row {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    /* Transition class — applied for the duration of the animation */
+    .app-main-layout.vision-focus-transitioning .app-top-row {
+        transition: grid-template-columns 420ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .app-main-layout.vision-focus-transitioning .app-idea-card {
+        transition: opacity 320ms ease, transform 320ms ease,
+                    padding 420ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* ── Active state: Vision card collapsed to 0 ─────── */
+    .app-main-layout.vision-focus-active .app-top-row {
+        grid-template-columns: 0fr 1fr 1fr;
+    }
+
+    .app-main-layout.vision-focus-active .app-idea-card {
+        opacity: 0;
+        transform: translateX(-24px);
+        overflow: hidden;
+        padding: 0 !important;
+        min-width: 0;
+        pointer-events: none;
+    }
+
+    /* Inner content collapses so the 0fr track truly empties */
+    .app-main-layout.vision-focus-active .app-idea-card > * {
+        opacity: 0;
+        visibility: hidden;
+        height: 0;
+        overflow: hidden;
+    }
+
+    /* ── Reverse animation (showing Vision) ───────────── */
+    .app-main-layout.vision-focus-transitioning:not(.vision-focus-active) .app-idea-card {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
