@@ -241,8 +241,8 @@
                                         <polyline points="20 6 9 17 4 12"></polyline>
                                     </svg>
                                 </button>
-                                <pre id="result-text"
-                                    class="whitespace-pre-wrap text-base text-neutral-300 p-4 h-full overflow-auto"></pre>
+                                <pre id="result-text" contenteditable="true" spellcheck="false"
+                                    class="whitespace-pre-wrap text-base text-neutral-300 p-4 h-full overflow-auto focus:outline-none focus:ring-1 focus:ring-blue-500/40 cursor-text"></pre>
                             </div>
                             <!-- Counters and actions -->
                             <div class="mt-3 flex flex-col gap-2">
@@ -453,6 +453,7 @@
                         <div class="bd-column-header">
                             <div class="bd-column-icon">🎯</div>
                             <span class="bd-column-name">Experten-Tools</span>
+                            <span class="bd-chord-hint" title="Taste E gedrückt halten, dann Ziffer 1-9">E + 1-9</span>
                             <span class="bd-column-count">9</span>
                             <button class="bd-search-toggle" data-col="1" aria-label="Tools durchsuchen">
                                 <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -476,6 +477,7 @@
                         <div class="bd-column-header">
                             <div class="bd-column-icon">🧠</div>
                             <span class="bd-column-name">Klug-Tools</span>
+                            <span class="bd-chord-hint" title="Taste K gedrückt halten, dann Ziffer 1-9">K + 1-9</span>
                             <span class="bd-column-count">13</span>
                             <button class="bd-search-toggle" data-col="2" aria-label="Tools durchsuchen">
                                 <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -499,6 +501,7 @@
                         <div class="bd-column-header">
                             <div class="bd-column-icon">🔮</div>
                             <span class="bd-column-name">Futures Lab</span>
+                            <span class="bd-chord-hint" title="Taste F gedrückt halten, dann Ziffer 1-7">F + 1-7</span>
                             <span class="bd-column-count">7</span>
                             <button class="bd-search-toggle" data-col="3" aria-label="Tools durchsuchen">
                                 <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -633,11 +636,22 @@
                         <li><span class="badge">c</span> Ergebnis kopieren (nur ohne ⌘/Ctrl)</li>
                     </ul>
                 </div>
-                <div class="bg-neutral-800/40 rounded-xl border border-neutral-700 p-4 sm:col-span-2">
+                <div class="bg-neutral-800/40 rounded-xl border border-neutral-700 p-4">
+                    <h4 class="font-medium text-neutral-200 mb-2">Chord-Shortcuts <span class="text-[10px] text-neutral-500 font-normal ml-1">2-Tasten-Kombination</span></h4>
+                    <p class="text-neutral-500 text-xs mb-2">Halte die Taste, dann Ziffer 1-9. Taste 0 = n&auml;chste Seite.</p>
+                    <ul class="space-y-2 text-neutral-300">
+                        <li><span class="badge">E</span> + <span class="badge">1-9</span> Experten-Tools</li>
+                        <li><span class="badge">K</span> + <span class="badge">1-9</span> KLUG-Tools</li>
+                        <li><span class="badge">F</span> + <span class="badge">1-9</span> Future Lab</li>
+                        <li><span class="badge">V</span> + <span class="badge">D/C/S/T</span> Navigation</li>
+                    </ul>
+                </div>
+                <div class="bg-neutral-800/40 rounded-xl border border-neutral-700 p-4">
                     <h4 class="font-medium text-neutral-200 mb-2">Hinweise</h4>
                     <ul class="list-disc list-inside text-neutral-400 space-y-1">
                         <li>System-Kürzel wie ⌘C / ⌘V / ⌘P werden niemals überschrieben.</li>
                         <li>Die meisten Kürzel funktionieren nur, wenn ein Ergebnis vorhanden ist.</li>
+                        <li>Chord-Shortcuts erscheinen als Nummern auf den Tool-Kacheln.</li>
                     </ul>
                 </div>
             </div>
