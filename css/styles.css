@@ -760,6 +760,11 @@ body.bd-body-resizing iframe {
     overflow-x: hidden;
     padding-bottom: 24px !important;  /* space for char-stats overlay (#107) */
 
+    /* Read-only but selectable (#114) */
+    user-select: text;
+    -webkit-user-select: text;
+    cursor: default;
+
     /* Hide scrollbar – WebKit (Chrome, Safari, Edge) */
     scrollbar-width: none;            /* Firefox */
     -ms-overflow-style: none;         /* IE / legacy Edge */
