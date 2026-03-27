@@ -728,7 +728,17 @@
                 e.preventDefault();
 
                 // Guard: prompt must exist
-                if (typeof isPromptGenerated !== 'undefined' && !isPromptGenerated) return;
+                if (typeof isPromptGenerated !== 'undefined' && !isPromptGenerated) {
+                    if (typeof showToast === 'function') {
+                        showToast('Bitte generiere zuerst einen Prompt, um dieses Tool zu nutzen.', 'warning');
+                    }
+                    var cardForShake = btn.closest('.bd-tool-card');
+                    if (cardForShake) {
+                        cardForShake.classList.add('bd-shake');
+                        setTimeout(function () { cardForShake.classList.remove('bd-shake'); }, 500);
+                    }
+                    return;
+                }
 
                 var buttonId = btn.getAttribute('data-button-id');
                 var toolName = btn.getAttribute('data-tool-name');

@@ -308,6 +308,44 @@ body.bd-body-resizing iframe {
     border: 1px solid rgba(148, 163, 184, 0.15);
 }
 
+/* ── Chord Shortcut Hints in Column Headers ── */
+.bd-chord-hint {
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    padding: 1px 6px;
+    border-radius: 4px;
+    color: rgba(148, 163, 184, 0.55);
+    background: rgba(148, 163, 184, 0.07);
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
+    white-space: nowrap;
+    cursor: help;
+    transition: opacity 0.2s;
+}
+.bd-column-header:hover .bd-chord-hint {
+    color: rgba(148, 163, 184, 0.85);
+    background: rgba(148, 163, 184, 0.12);
+    border-color: rgba(148, 163, 184, 0.2);
+}
+
+/* ── Tool Card Shortcut Number Badge ── */
+.bd-shortcut-num {
+    position: absolute;
+    top: 3px;
+    right: 4px;
+    font-size: 0.55rem;
+    font-weight: 600;
+    font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, monospace;
+    color: rgba(148, 163, 184, 0.3);
+    pointer-events: none;
+    line-height: 1;
+    transition: color 0.2s, opacity 0.2s;
+}
+.bd-tool-card:hover .bd-shortcut-num {
+    color: rgba(148, 163, 184, 0.6);
+}
+
 /* ── Scrollable Tool List ── */
 .bd-tool-list {
     flex: 1;
@@ -510,6 +548,7 @@ body.bd-body-resizing iframe {
 .bd-tools-inactive .bd-tool-card {
     opacity: 0.45;
     filter: grayscale(60%);
+    cursor: not-allowed;
 }
 .bd-tools-inactive .bd-tool-card:hover {
     transform: none;
@@ -519,6 +558,20 @@ body.bd-body-resizing iframe {
     opacity: 0.4;
     cursor: not-allowed;
     pointer-events: none;
+}
+
+/* ── Shake animation for disabled tool feedback (#70) ── */
+@keyframes bdShake {
+    0%, 100% { transform: translateX(0); }
+    15% { transform: translateX(-4px); }
+    30% { transform: translateX(4px); }
+    45% { transform: translateX(-3px); }
+    60% { transform: translateX(3px); }
+    75% { transform: translateX(-2px); }
+    90% { transform: translateX(2px); }
+}
+.bd-shake {
+    animation: bdShake 0.5s ease-in-out;
 }
 
 /* ── Inline Modal (portaled into column overlay) ── */

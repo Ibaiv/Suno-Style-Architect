@@ -436,6 +436,17 @@ function setupModal(modal, openButton) {
         // Allow idea-modal and style-sync-modal to open without a generated prompt
         if (!isPromptGenerated && modal.id !== 'idea-modal' && modal.id !== 'style-sync-modal') {
             console.log('Tools are disabled - generate a prompt first!');
+            if (typeof showToast === 'function') {
+                showToast('Bitte generiere zuerst einen Prompt, um dieses Tool zu nutzen.', 'warning');
+            }
+            // Shake the trigger button to give visual feedback
+            if (openButton) {
+                var triggerEl = typeof openButton === 'string' ? document.getElementById(openButton) : openButton;
+                if (triggerEl) {
+                    triggerEl.classList.add('bd-shake');
+                    setTimeout(function () { triggerEl.classList.remove('bd-shake'); }, 500);
+                }
+            }
             return;
         }
         modal.classList.remove('hidden');

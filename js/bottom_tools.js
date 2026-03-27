@@ -42,6 +42,33 @@
         ],
     };
 
+    // Chord shortcut mapping: buttonId -> { key, num }
+    // Must mirror the arrays in chords.js so badge numbers match actual chord behavior.
+    // Tools with num > 9 are on page 2 (press 0 to paginate, then digit).
+    var CHORD_SHORTCUTS = (function () {
+        var map = {};
+        var expert = [
+            'producer-refine-button', 'musician-refine-button', 'composer-refine-button',
+            'dj-refine-button', 'avantgarde-refine-button', 'minimalist-refine-button',
+            'vocal-harmony-refine-button', 'ethno-refine-button', 'sound-engineer-button'
+        ];
+        var klug = [
+            'genre-mixer-button', 'mood-analyzer-button', 'hook-generator-button',
+            'song-structure-button', 'vibe-enhancer-button', 'artist-suggester-button',
+            'tempo-finder-button', 'production-finish-button', 'vocal-stylist-button',
+            'groove-meister-button', 'performance-coach-button', 'effect-chain-button'
+        ];
+        var future = [
+            'adaptive-flow-button', 'ai-collab-button', 'story-arc-button',
+            'narrative-chapters-button', 'immersive-space-button', 'human-touch-button',
+            'release-forecast-button'
+        ];
+        expert.forEach(function (id, i) { map[id] = { key: 'E', num: i + 1 }; });
+        klug.forEach(function (id, i) { map[id] = { key: 'K', num: i + 1 }; });
+        future.forEach(function (id, i) { map[id] = { key: 'F', num: i + 1 }; });
+        return map;
+    })();
+
     function initBottomDashboard() {
         var dashboard = document.querySelector('.bottom-dashboard');
         if (!dashboard) return;
@@ -61,12 +88,22 @@
                 card.setAttribute('data-tool-emoji', tool.emoji);
                 card.setAttribute('data-button-id', tool.buttonId);
                 card.setAttribute('aria-label', tool.name + ' – ' + tool.desc);
+                // Build shortcut badge if this tool has a chord shortcut
+                var chordInfo = CHORD_SHORTCUTS[tool.buttonId];
+                var badgeHtml = '';
+                if (chordInfo) {
+                    var numLabel = chordInfo.num <= 9
+                        ? String(chordInfo.num)
+                        : '0\u2192' + String(chordInfo.num - 9); // e.g. "0->1" for page 2
+                    badgeHtml = '<span class="bd-shortcut-num" aria-hidden="true" title="' + chordInfo.key + ' + ' + numLabel + '">' + numLabel + '</span>';
+                }
                 card.innerHTML =
                     '<span class="bd-drag-handle" aria-hidden="true">\u283F</span>' +
                     '<button class="bd-quick-apply" data-button-id="' + tool.buttonId + '" data-tool-name="' + tool.name + '" aria-label="Schnell anwenden" title="Schnell anwenden">\u25B6</button>' +
                     '<button class="bd-pin-btn" data-button-id="' + tool.buttonId + '" aria-label="Favorit">\u2606</button>' +
                     '<span class="bd-tool-emoji">' + tool.emoji + '</span>' +
-                    '<span class="bd-tool-name">' + tool.name + '</span>';
+                    '<span class="bd-tool-name">' + tool.name + '</span>' +
+                    badgeHtml;
                 card.addEventListener('click', function (e) {
                     // Don't open portal if an action button was clicked
                     if (e.target.closest('.bd-pin-btn') || e.target.closest('.bd-quick-apply') || e.target.closest('.bd-drag-handle')) return;
@@ -109,8 +146,11 @@
         var overlay = document.getElementById('bd-detail-' + colId);
         if (!overlay) return;
 
-        // If no prompt yet, show disabled hint in the preview overlay
+        // If no prompt yet, show disabled hint in the preview overlay + toast
         if (typeof isPromptGenerated !== 'undefined' && !isPromptGenerated) {
+            if (typeof showToast === 'function') {
+                showToast('Bitte generiere zuerst einen Prompt, um dieses Tool zu nutzen.', 'warning');
+            }
             document.getElementById('bd-detail-emoji-' + colId).textContent = tool.emoji;
             document.getElementById('bd-detail-name-' + colId).textContent = tool.name;
             document.getElementById('bd-detail-desc-' + colId).textContent = 'Erst einen Prompt generieren, dann kannst du dieses Tool nutzen.';
