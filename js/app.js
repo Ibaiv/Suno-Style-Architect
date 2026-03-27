@@ -234,7 +234,7 @@ apiKeyInput.addEventListener('keydown', (e)=> { if(e.key === 'Enter'){ e.prevent
 // Main app listeners
 sunoProButton.addEventListener('click', refinePro);
 generateButton.addEventListener('click', function(){ generatePrompt(); if(window.Tips) Tips.show('generate', generateButton); });
-ideaInput.addEventListener('keydown', (e) => e.key === 'Enter' && !e.shiftKey && (e.preventDefault(), generatePrompt()));
+ideaInput.addEventListener('keydown', (e) => e.key === 'Enter' && (e.metaKey || e.ctrlKey) && (e.preventDefault(), generatePrompt()));
 ideaInput.addEventListener('input', () => errorContainer.classList.add('hidden'));
 if (lyricInput) lyricInput.addEventListener('input', () => errorContainer.classList.add('hidden'));
 

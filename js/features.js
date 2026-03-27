@@ -472,7 +472,7 @@ function setupVisualEngine() {
     });
 
     input.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); generateButton.click(); }
+        if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) { e.preventDefault(); generateButton.click(); }
     });
 
     analyzeButton.addEventListener('click', async () => {
