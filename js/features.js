@@ -111,6 +111,7 @@ function setupExpertRefinement(type, systemPrompt) {
     const modal = document.getElementById(`${type}-modal`);
     const openButton = document.getElementById(`${type}-refine-button`);
     const slider = document.getElementById(`${type}-slider`);
+    const sliderValue = document.getElementById(`${type}-slider-value`);
     const applyButton = document.getElementById(`apply-${type}-button`);
     const buttonText = document.getElementById(`apply-${type}-text`);
     const loader = document.getElementById(`apply-${type}-loader`);
@@ -120,6 +121,13 @@ function setupExpertRefinement(type, systemPrompt) {
     const modalLogic = setupModal(modal, openButton);
     // Phase 4 (P4-3): Tip for expert chord on mouse click
     openButton.addEventListener('click', function(){ if(window.Tips) Tips.show('chord.expert', openButton); });
+
+    // Update slider value display in real-time
+    if (slider && sliderValue) {
+        slider.addEventListener('input', () => {
+            sliderValue.textContent = slider.value + '%';
+        });
+    }
 
     applyButton.addEventListener('click', async () => {
         const influence = slider.value;

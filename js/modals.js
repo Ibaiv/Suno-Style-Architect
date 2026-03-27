@@ -40,8 +40,9 @@ function getModalsHTML() {
             <p class="text-neutral-400 mb-4 text-sm">Bestimme, wie stark der Produzent den Prompt mit technischem Wissen (Mix, Sound-Design) beeinflussen soll.</p>
             <div class="mb-4">
                 <input id="producer-slider" type="range" min="0" max="100" value="50" step="10" class="w-full h-1 bg-neutral-700 rounded-lg appearance-none cursor-pointer">
-                <div class="flex justify-between text-xs text-neutral-500 mt-1">
+                <div class="flex justify-between items-center text-xs text-neutral-500 mt-1">
                     <span>Wenig</span>
+                    <span id="producer-slider-value" class="text-sm font-semibold text-blue-300">50%</span>
                     <span>Stark</span>
                 </div>
             </div>
@@ -61,8 +62,9 @@ function getModalsHTML() {
             <p class="text-neutral-400 mb-4 text-sm">Bestimme, wie stark der Musiker den Prompt mit musikalischem Wissen (Emotion, Instrumentierung) beeinflussen soll.</p>
             <div class="mb-4">
                  <input id="musician-slider" type="range" min="0" max="100" value="50" step="10" class="w-full h-1 bg-neutral-700 rounded-lg appearance-none cursor-pointer">
-                <div class="flex justify-between text-xs text-neutral-500 mt-1">
+                <div class="flex justify-between items-center text-xs text-neutral-500 mt-1">
                     <span>Wenig</span>
+                    <span id="musician-slider-value" class="text-sm font-semibold text-blue-300">50%</span>
                     <span>Stark</span>
                 </div>
             </div>
@@ -82,8 +84,9 @@ function getModalsHTML() {
             <p class="text-neutral-400 mb-4 text-sm">Bestimme, wie stark der Komponist den Prompt mit cineastischem Wissen (Story, Spannung) beeinflussen soll.</p>
             <div class="mb-4">
                  <input id="composer-slider" type="range" min="0" max="100" value="50" step="10" class="w-full h-1 bg-neutral-700 rounded-lg appearance-none cursor-pointer">
-                <div class="flex justify-between text-xs text-neutral-500 mt-1">
+                <div class="flex justify-between items-center text-xs text-neutral-500 mt-1">
                     <span>Wenig</span>
+                    <span id="composer-slider-value" class="text-sm font-semibold text-blue-300">50%</span>
                     <span>Stark</span>
                 </div>
             </div>
@@ -103,8 +106,9 @@ function getModalsHTML() {
             <p class="text-neutral-400 mb-4 text-sm">Bestimme, wie stark der DJ den Prompt mit club-tauglichem Wissen (Groove, Energie) beeinflussen soll.</p>
             <div class="mb-4">
                  <input id="dj-slider" type="range" min="0" max="100" value="50" step="10" class="w-full h-1 bg-neutral-700 rounded-lg appearance-none cursor-pointer">
-                <div class="flex justify-between text-xs text-neutral-500 mt-1">
+                <div class="flex justify-between items-center text-xs text-neutral-500 mt-1">
                     <span>Wenig</span>
+                    <span id="dj-slider-value" class="text-sm font-semibold text-blue-300">50%</span>
                     <span>Stark</span>
                 </div>
             </div>
@@ -125,8 +129,9 @@ function getModalsHTML() {
             <p class="text-neutral-400 mb-4 text-sm">Bestimme, wie stark experimentelle und unkonventionelle Elemente den Prompt beeinflussen sollen.</p>
             <div class="mb-4">
                 <input id="avantgarde-slider" type="range" min="0" max="100" value="50" step="10" class="w-full h-1 bg-neutral-700 rounded-lg appearance-none cursor-pointer">
-                <div class="flex justify-between text-xs text-neutral-500 mt-1">
+                <div class="flex justify-between items-center text-xs text-neutral-500 mt-1">
                     <span>Wenig</span>
+                    <span id="avantgarde-slider-value" class="text-sm font-semibold text-blue-300">50%</span>
                     <span>Stark</span>
                 </div>
             </div>
@@ -146,8 +151,9 @@ function getModalsHTML() {
             <p class="text-neutral-400 mb-4 text-sm">Bestimme, wie stark der minimalistische Ansatz den Prompt vereinfachen und auf die Essenz reduzieren soll.</p>
             <div class="mb-4">
                 <input id="minimalist-slider" type="range" min="0" max="100" value="50" step="10" class="w-full h-1 bg-neutral-700 rounded-lg appearance-none cursor-pointer">
-                <div class="flex justify-between text-xs text-neutral-500 mt-1">
+                <div class="flex justify-between items-center text-xs text-neutral-500 mt-1">
                     <span>Wenig</span>
+                    <span id="minimalist-slider-value" class="text-sm font-semibold text-blue-300">50%</span>
                     <span>Stark</span>
                 </div>
             </div>
@@ -167,8 +173,9 @@ function getModalsHTML() {
             <p class="text-neutral-400 mb-4 text-sm">Bestimme, wie stark komplexe Gesangs-Arrangements und Harmonien den Prompt beeinflussen sollen.</p>
             <div class="mb-4">
                 <input id="vocal-harmony-slider" type="range" min="0" max="100" value="50" step="10" class="w-full h-1 bg-neutral-700 rounded-lg appearance-none cursor-pointer">
-                <div class="flex justify-between text-xs text-neutral-500 mt-1">
+                <div class="flex justify-between items-center text-xs text-neutral-500 mt-1">
                     <span>Wenig</span>
+                    <span id="vocal-harmony-slider-value" class="text-sm font-semibold text-blue-300">50%</span>
                     <span>Stark</span>
                 </div>
             </div>
@@ -188,8 +195,9 @@ function getModalsHTML() {
             <p class="text-neutral-400 mb-4 text-sm">Bestimme, wie stark authentische Weltmusik-Elemente den Prompt beeinflussen sollen.</p>
             <div class="mb-4">
                 <input id="ethno-slider" type="range" min="0" max="100" value="50" step="10" class="w-full h-1 bg-neutral-700 rounded-lg appearance-none cursor-pointer">
-                <div class="flex justify-between text-xs text-neutral-500 mt-1">
+                <div class="flex justify-between items-center text-xs text-neutral-500 mt-1">
                     <span>Wenig</span>
+                    <span id="ethno-slider-value" class="text-sm font-semibold text-blue-300">50%</span>
                     <span>Stark</span>
                 </div>
             </div>
