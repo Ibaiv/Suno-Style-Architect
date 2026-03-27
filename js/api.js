@@ -1,3 +1,56 @@
+// === USER-FRIENDLY ERROR MESSAGE MAPPING ===
+// Converts raw API/network errors into German user-facing messages.
+// Used by all API call sites and display points to avoid leaking technical details.
+function getUserFriendlyErrorMessage(error) {
+    const msg = (error && typeof error === 'object') ? (error.message || String(error)) : String(error || '');
+    const statusMatch = msg.match(/\b(4\d{2}|5\d{2})\b/);
+    const statusCode = statusMatch ? parseInt(statusMatch[1], 10) : null;
+
+    // Network / connection errors
+    if (error instanceof TypeError && /fetch|network/i.test(msg)) {
+        return 'Verbindungsfehler. Bitte prüfe deine Internetverbindung.';
+    }
+    if (/netzwerkfehler|network|failed to fetch|net::ERR_|DNS/i.test(msg)) {
+        return 'Verbindungsfehler. Bitte prüfe deine Internetverbindung.';
+    }
+
+    // Timeout
+    if (/timeout|aborted|abort/i.test(msg)) {
+        return 'Die Anfrage hat zu lange gedauert. Bitte prüfe deine Internetverbindung und versuche es erneut.';
+    }
+
+    // Rate limiting (429)
+    if (statusCode === 429 || /rate.?limit|too many requests|429/i.test(msg)) {
+        return 'Zu viele Anfragen. Bitte warte einen Moment.';
+    }
+
+    // Auth errors (401 / 403)
+    if (statusCode === 401 || statusCode === 403 || /unauthorized|forbidden|invalid.*key|api.?key.*invalid/i.test(msg)) {
+        return 'Ungültiger API-Schlüssel. Bitte überprüfe deine Einstellungen.';
+    }
+
+    // Server errors (500+)
+    if (statusCode !== null && statusCode >= 500) {
+        return 'Der Server ist momentan nicht erreichbar. Bitte versuche es später.';
+    }
+    if (/server.?error|internal server|502|503|504|bad gateway|service unavailable/i.test(msg)) {
+        return 'Der Server ist momentan nicht erreichbar. Bitte versuche es später.';
+    }
+
+    // Not found (404) for endpoints
+    if (statusCode === 404 || /not found|endpoint.*not found/i.test(msg)) {
+        return 'Der angeforderte Dienst wurde nicht gefunden. Bitte überprüfe deine Einstellungen.';
+    }
+
+    // Already user-friendly messages (German text that we produced ourselves) — pass through
+    if (/^Bitte konfiguriere|^API-Antwort konnte nicht/i.test(msg)) {
+        return msg;
+    }
+
+    // Generic fallback
+    return 'Ein Fehler ist aufgetreten. Bitte versuche es erneut.';
+}
+
 // === FAL.AI API CALL ===
 async function callFalAPI(prompt, options = {}) {
     if (!FAL_API_KEY) {
@@ -110,7 +163,7 @@ async function callFalAPI(prompt, options = {}) {
 
         // Controller to support timeout and external cancellation per endpoint attempt
         const controller = new AbortController();
-        const timer = setTimeout(() => controller.abort(new Error('Fal.ai timeout')), timeoutMs);
+        const timer = setTimeout(() => controller.abort(new Error('timeout')), timeoutMs);
         const onAbort = () => controller.abort(signal?.reason || new Error('Aborted'));
         if (signal) {
             if (signal.aborted) onAbort(); else signal.addEventListener('abort', onAbort, { once: true });
@@ -155,10 +208,10 @@ async function callFalAPI(prompt, options = {}) {
                             break;
                         }
                         if (status === 404) {
-                            lastErr = new Error(`Fal.ai endpoint not found: ${url} -> ${text}`);
+                            lastErr = new Error(`endpoint not found (${status})`);
                             throw lastErr; // bubble to try next endpoint
                         }
-                        throw new Error(`Fal.ai API request failed (${status}): ${text}`);
+                        throw new Error(`API request failed (${status})`);
                     }
 
                     const result = await response.json();
@@ -209,7 +262,7 @@ async function callOpenRouterAPI(userMessage, systemPrompt, imageUrl = null) {
     // Timeout after 60 seconds to prevent infinite hanging
     const controller = new AbortController();
     const timeoutId = setTimeout(() => {
-        controller.abort(new Error('API Timeout: Die Anfrage hat zu lange gedauert (60s). Bitte versuche es erneut.'));
+        controller.abort(new Error('timeout'));
     }, 60000);
 
     console.log('[SSA] API Request:', { model: SELECTED_MODEL, url: API_URL, messageLength: userMessage.length });
@@ -229,10 +282,10 @@ async function callOpenRouterAPI(userMessage, systemPrompt, imageUrl = null) {
         });
     } catch (fetchErr) {
         clearTimeout(timeoutId);
-        if (fetchErr.name === 'AbortError' || fetchErr.message?.includes('Timeout')) {
-            throw new Error('API Timeout: Die Anfrage hat zu lange gedauert. Bitte prüfe deine Internetverbindung und versuche es erneut.');
+        if (fetchErr.name === 'AbortError' || fetchErr.message?.includes('timeout')) {
+            throw new Error(getUserFriendlyErrorMessage({ message: 'timeout' }));
         }
-        throw new Error(`Netzwerkfehler: ${fetchErr.message}`);
+        throw new Error(getUserFriendlyErrorMessage(fetchErr));
     }
 
     clearTimeout(timeoutId);
@@ -242,7 +295,7 @@ async function callOpenRouterAPI(userMessage, systemPrompt, imageUrl = null) {
     if (!response.ok) {
         const errorData = await response.text();
         console.error('[SSA] API Error:', response.status, errorData);
-        throw new Error(`API request failed (${response.status}): ${errorData}`);
+        throw new Error(getUserFriendlyErrorMessage({ message: `API request failed (${response.status})` }));
     }
 
     // Read response as text first, then parse - avoids hanging on malformed/streamed responses
@@ -260,10 +313,10 @@ async function callOpenRouterAPI(userMessage, systemPrompt, imageUrl = null) {
     if (result.choices?.[0]?.message?.content) {
         return result.choices[0].message.content.trim();
     } else if (result.error) {
-        throw new Error(`API Error: ${result.error.message || 'Unknown error'}`);
+        throw new Error(getUserFriendlyErrorMessage({ message: result.error.message || 'Unknown error' }));
     } else {
         console.error('[SSA] Unexpected API response structure:', JSON.stringify(result).substring(0, 500));
-        throw new Error('Invalid API response structure.');
+        throw new Error('Ein Fehler ist aufgetreten. Bitte versuche es erneut.');
     }
 }
 
@@ -326,6 +379,7 @@ try {
     if (typeof window !== 'undefined') {
         window.callFalAPI = callFalAPI;
         window.callOpenRouterAPI = callOpenRouterAPI;
+        window.getUserFriendlyErrorMessage = getUserFriendlyErrorMessage;
         window.safeCopyText = safeCopyText;
         window.setupCopyButton = setupCopyButton;
         window.setKlugToolsState = setKlugToolsState;
@@ -385,7 +439,7 @@ function setupModal(modal, openButton) {
             return;
         }
         modal.classList.remove('hidden');
-        document.body.style.overflow = 'hidden';
+        if(window.BodyScrollLock) BodyScrollLock.lock();
         modal.classList.remove('modal-leave-to');
         modal.classList.add('modal-enter-to');
         // Phase 3 (P3-3): Linked push — CloseStack + ScopeStack together
@@ -420,7 +474,7 @@ function setupModal(modal, openButton) {
         modal.classList.add('modal-leave-to');
         setTimeout(() => {
             modal.classList.add('hidden');
-            document.body.style.overflow = '';
+            if(window.BodyScrollLock) BodyScrollLock.unlock();
             document.dispatchEvent(new CustomEvent('modal:close', { detail: { id: modal.id } }));
         }, 200);
     };

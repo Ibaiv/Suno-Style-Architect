@@ -92,4 +92,23 @@
     writable: false,
     configurable: false
   });
+
+  // --- BodyScrollLock: nested-modal-safe scroll locking ---
+  // Uses CloseStack.size to determine when it is safe to restore scroll.
+  // lock()   — always sets overflow:hidden on <body>
+  // unlock() — only clears overflow when CloseStack is empty (last modal closed)
+  Object.defineProperty(window, 'BodyScrollLock', {
+    value: {
+      lock: function(){
+        document.body.style.overflow = 'hidden';
+      },
+      unlock: function(){
+        if(stack.length === 0){
+          document.body.style.overflow = '';
+        }
+      }
+    },
+    writable: false,
+    configurable: false
+  });
 })();

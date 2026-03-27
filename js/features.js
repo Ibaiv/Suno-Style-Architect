@@ -76,7 +76,7 @@ function setupIdeaSpark() {
             });
         } catch (error) {
             console.error("Error generating ideas:", error);
-            ideasOutput.innerHTML = `<p class="text-red-400">Ein Fehler ist aufgetreten: ${error.message}</p>`;
+            ideasOutput.innerHTML = `<p class="text-red-400">${getUserFriendlyErrorMessage(error)}</p>`;
         } finally {
             setIdeaLoading(false);
         }
@@ -149,6 +149,7 @@ function setupExpertRefinement(type, systemPrompt) {
             console.error(`Error refining with ${type}:`, error);
             buttonText.textContent = "Fehler";
             setTimeout(() => { buttonText.textContent = "Anwenden"; }, 2000);
+            showToast(getUserFriendlyErrorMessage(error), 'error');
         } finally {
             applyButton.disabled = false;
             buttonText.classList.remove('hidden');
@@ -368,7 +369,7 @@ Sound Design Choices:
         } catch (error) {
             console.error('Synth Designer translation failed', error);
             if (errorEl) {
-                errorEl.textContent = `Fehler: ${error.message || 'Die Übersetzung ist fehlgeschlagen.'}`;
+                errorEl.textContent = getUserFriendlyErrorMessage(error);
             }
         } finally {
             applyButton.disabled = false;
@@ -465,7 +466,7 @@ function setupVisualEngine() {
             analyzeButton.classList.remove('hidden');
         } catch (error) {
             console.error('Fal.ai error', error);
-            output.innerHTML = `<p class="text-red-400 text-sm">Fehler beim Generieren des Bildes: ${error.message}</p>`;
+            output.innerHTML = `<p class="text-red-400 text-sm">${getUserFriendlyErrorMessage(error)}</p>`;
         } finally {
             setGenLoading(false);
         }
@@ -510,7 +511,7 @@ function setupVisualEngine() {
             modalLogic.close();
         } catch (error) {
             console.error('Visual analysis failed', error);
-            output.innerHTML = `<p class="text-red-400 text-sm">Fehler bei der Bildanalyse: ${error.message}</p>` + output.innerHTML;
+            output.innerHTML = `<p class="text-red-400 text-sm">${getUserFriendlyErrorMessage(error)}</p>` + output.innerHTML;
         } finally {
             setAnalyzeLoading(false);
         }
@@ -603,7 +604,7 @@ function setupAdaptiveFlow() {
             });
         } catch (error) {
             console.error('Adaptive Flow failed', error);
-            output.innerHTML = `<p class="text-red-400">Fehler beim Berechnen des Flows: ${error.message}</p>`;
+            output.innerHTML = `<p class="text-red-400">${getUserFriendlyErrorMessage(error)}</p>`;
         } finally {
             runButton.disabled = false;
             buttonText.classList.remove('hidden');
@@ -711,7 +712,7 @@ function setupAiCollaboration() {
             });
         } catch (error) {
             console.error('AI Collaboration failed', error);
-            output.innerHTML = `<p class="text-red-400">Fehler bei der Kollaboration: ${error.message}</p>`;
+            output.innerHTML = `<p class="text-red-400">${getUserFriendlyErrorMessage(error)}</p>`;
         } finally {
             generateButton.disabled = false;
             buttonText?.classList.remove('hidden');
@@ -775,7 +776,7 @@ function setupStoryArcDesigner() {
             });
         } catch (error) {
             console.error('Story Arc Designer failed', error);
-            output.innerHTML = `<p class="text-red-400">Fehler beim Erstellen des Story-Arcs: ${error.message}</p>`;
+            output.innerHTML = `<p class="text-red-400">${getUserFriendlyErrorMessage(error)}</p>`;
         } finally {
             regenerateButton.disabled = false;
             buttonText?.classList.remove('hidden');
@@ -1079,7 +1080,7 @@ Continuity mode: Balanced evolution`;
             renderResult(normalized);
         } catch (error) {
             console.error('Narrative Chapters failed', error);
-            output.innerHTML = `<p class="text-red-400">Fehler beim Generieren der Kapitel: ${error.message}</p>`;
+            output.innerHTML = `<p class="text-red-400">${getUserFriendlyErrorMessage(error)}</p>`;
         } finally {
             runButton.disabled = false;
             buttonText?.classList.remove('hidden');
@@ -1193,7 +1194,7 @@ function setupImmersiveSpace() {
             });
         } catch (error) {
             console.error('Immersive Space failed', error);
-            output.innerHTML = `<p class="text-red-400">Fehler beim Gestalten des Klangraums: ${error.message}</p>`;
+            output.innerHTML = `<p class="text-red-400">${getUserFriendlyErrorMessage(error)}</p>`;
         } finally {
             generateButton.disabled = false;
             buttonText?.classList.remove('hidden');
@@ -1303,7 +1304,7 @@ function setupHumanTouch() {
             });
         } catch (error) {
             console.error('Human Touch failed', error);
-            output.innerHTML = `<p class="text-red-400">Fehler beim Humanisieren: ${error.message}</p>`;
+            output.innerHTML = `<p class="text-red-400">${getUserFriendlyErrorMessage(error)}</p>`;
         } finally {
             generateButton.disabled = false;
             buttonText?.classList.remove('hidden');
@@ -1427,7 +1428,7 @@ function setupReleaseForecast() {
             });
         } catch (error) {
             console.error('Release Forecast failed', error);
-            output.innerHTML = `<p class="text-red-400">Fehler bei der Release-Planung: ${error.message}</p>`;
+            output.innerHTML = `<p class="text-red-400">${getUserFriendlyErrorMessage(error)}</p>`;
         } finally {
             generateButton.disabled = false;
             buttonText?.classList.remove('hidden');
@@ -1551,7 +1552,7 @@ function setupKlugTagger(toolId, systemPrompt) {
                 suggestions.appendChild(tag);
             });
         } catch (error) {
-            suggestions.innerHTML = `<p class="text-red-400">Fehler bei der Analyse: ${error.message}</p>`;
+            suggestions.innerHTML = `<p class="text-red-400">${getUserFriendlyErrorMessage(error)}</p>`;
         }
     });
 
@@ -1624,7 +1625,7 @@ function setupHookGenerator() {
                 hooksPart.replace('HOOKS:', '').trim().split('\n').forEach(hook => output.appendChild(createSuggestionElement(hook, 'hook')));
             }
         } catch (error) {
-            output.innerHTML = `<p class="text-red-400">Fehler beim Erstellen der Vorschläge: ${error.message}</p>`;
+            output.innerHTML = `<p class="text-red-400">${getUserFriendlyErrorMessage(error)}</p>`;
         }
     });
 }
@@ -1667,7 +1668,7 @@ function setupSongStructure() {
                 }
             };
         } catch (error) {
-            output.innerHTML = `<p class="text-red-400">Fehler beim Erstellen des Struktur-Vorschlags: ${error.message}</p>`;
+            output.innerHTML = `<p class="text-red-400">${getUserFriendlyErrorMessage(error)}</p>`;
         }
     });
 }
@@ -1704,7 +1705,7 @@ function setupVibeEnhancer() {
                 modalLogic.close();
             };
         } catch (error) {
-            output.innerHTML = `<p class="text-red-400 text-center col-span-2">Fehler beim Veredeln des Vibes: ${error.message}</p>`;
+            output.innerHTML = `<p class="text-red-400 text-center col-span-2">${getUserFriendlyErrorMessage(error)}</p>`;
         }
     });
 }
@@ -1739,7 +1740,7 @@ function setupArtistSuggester() {
                 output.appendChild(el);
             });
         } catch (error) {
-            output.innerHTML = `<p class="text-red-400">Fehler bei der Künstlersuche: ${error.message}</p>`;
+            output.innerHTML = `<p class="text-red-400">${getUserFriendlyErrorMessage(error)}</p>`;
         }
     });
 }
@@ -1773,7 +1774,7 @@ function setupTempoFinder() {
                 modalLogic.close();
             };
         } catch (error) {
-            output.innerHTML = `<p class="text-red-400">Fehler bei der Tempo-Suche: ${error.message}</p>`;
+            output.innerHTML = `<p class="text-red-400">${getUserFriendlyErrorMessage(error)}</p>`;
         }
     });
 }
@@ -1962,7 +1963,7 @@ function setupStyleSync() {
         if (masterPromptDisplay) masterPromptDisplay.textContent = currentText || '// Warten auf Input...';
 
         studioModal.classList.remove('hidden');
-        document.body.style.overflow = 'hidden';
+        if(window.BodyScrollLock) BodyScrollLock.lock();
         if(window.CloseStack) CloseStack.push(closeStudio, { id: 'style-sync-studio' });
         // Phase 3 (P3-5): Push style-sync scope
         if(window.ScopeStack) studioModal._scopeToken = ScopeStack.push('style-sync');
@@ -1975,7 +1976,7 @@ function setupStyleSync() {
         // Phase 3 (P3-5): Pop style-sync scope
         if(window.ScopeStack && studioModal._scopeToken){ ScopeStack.pop(studioModal._scopeToken); studioModal._scopeToken = null; }
         studioModal.classList.add('hidden');
-        document.body.style.overflow = '';
+        if(window.BodyScrollLock) BodyScrollLock.unlock();
     };
 
     openButton.addEventListener('click', openStudio);
@@ -2014,7 +2015,7 @@ function setupStyleSync() {
 
             } catch (error) {
                 console.error('Encoder Error:', error);
-                visualPlaceholder.innerHTML = `<p class="text-red-400 text-xs text-center px-4">Fehler: ${error.message}</p>`;
+                visualPlaceholder.innerHTML = `<p class="text-red-400 text-xs text-center px-4">${getUserFriendlyErrorMessage(error)}</p>`;
             } finally {
                 transcodeBtn.classList.remove('animate-pulse');
             }
@@ -2192,7 +2193,7 @@ function setupStyleSync() {
 
             } catch (error) {
                 console.error('Decoder Error:', error);
-                decodeResult.value = `Fehler bei der Analyse: ${error.message}`;
+                decodeResult.value = getUserFriendlyErrorMessage(error);
             } finally {
                 decodeBtn.classList.remove('animate-pulse');
             }
@@ -2250,7 +2251,7 @@ function setupKlangStudio() {
     // Open Modal
     openTile.addEventListener('click', () => {
         modal.classList.remove('hidden');
-        document.body.style.overflow = 'hidden';
+        if(window.BodyScrollLock) BodyScrollLock.lock();
         if(window.CloseStack) CloseStack.push(closeModal, { id: 'klang-studio' });
         // Phase 3 (P3-5): Push klang-studio scope
         if(window.ScopeStack) modal._scopeToken = ScopeStack.push('klang-studio');
@@ -2267,7 +2268,7 @@ function setupKlangStudio() {
         // Phase 3 (P3-5): Pop klang-studio scope
         if(window.ScopeStack && modal._scopeToken){ ScopeStack.pop(modal._scopeToken); modal._scopeToken = null; }
         modal.classList.add('hidden');
-        document.body.style.overflow = '';
+        if(window.BodyScrollLock) BodyScrollLock.unlock();
     };
 
     closeBtn?.addEventListener('click', closeModal);

@@ -150,7 +150,9 @@
         // (data loading for taggers, UI reset for synth-designer, etc.)
         var proxyBtn = document.getElementById(tool.buttonId);
         if (proxyBtn) proxyBtn.click();
-        // Undo the body scroll-lock that setupModal's open() sets
+        // Undo the body scroll-lock that setupModal's open() sets.
+        // Force-clear because the modal is displayed inline in the dashboard,
+        // not as a floating overlay, so body scroll should remain enabled.
         document.body.style.overflow = '';
     }
 
@@ -173,7 +175,7 @@
         }
 
         overlay.classList.remove('active', 'bd-has-modal');
-        document.body.style.overflow = '';
+        if(window.BodyScrollLock) BodyScrollLock.unlock();
         overlay._closing = false;
     }
 

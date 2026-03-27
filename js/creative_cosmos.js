@@ -10415,6 +10415,7 @@ function openIdeaStarter() {
     const modal = document.getElementById('idea-starter-modal');
     modal.classList.remove('hidden');
     modal.classList.add('flex', 'fade-in');
+    if(window.BodyScrollLock) BodyScrollLock.lock();
     // Phase 3 (P3-4): Push creative-cosmos scope
     if(window.ScopeStack){
         modal._scopeToken = ScopeStack.push('creative-cosmos');
@@ -10442,6 +10443,7 @@ function closeIdeaStarter() {
     modal.classList.remove('flex');
     // Pop CloseStack entry (safe if already popped by Escape)
     if(window.CloseStack) CloseStack.pop('creative-cosmos');
+    if(window.BodyScrollLock) BodyScrollLock.unlock();
     // Phase 3 (P3-4): Pop creative-cosmos scope
     if(window.ScopeStack && modal._scopeToken){
         ScopeStack.pop(modal._scopeToken);
