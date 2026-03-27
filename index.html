@@ -87,6 +87,8 @@
                     </select>
                 </div>
 
+                <div id="api-setup-error" class="ssa-inline-error hidden" role="alert"></div>
+
                 <div class="pt-2">
                     <button id="save-settings-button"
                         class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg btn-transition btn-press flex items-center justify-center gap-2">
@@ -521,9 +523,12 @@
 
         <!-- ### ERROR SECTION (FULL-WIDTH) ### -->
         <div id="error-container" class="mt-8 hidden max-w-4xl mx-auto">
-            <div class="bg-red-900/30 border border-red-700/50 text-red-300 px-4 py-3 rounded-xl relative" role="alert">
-                <strong class="font-bold">Fehler! </strong>
-                <span id="error-message"></span>
+            <div class="bg-red-900/30 border border-red-700/50 text-red-300 px-4 py-3 rounded-xl relative flex items-start gap-2" role="alert">
+                <div class="flex-1">
+                    <strong class="font-bold">Fehler! </strong>
+                    <span id="error-message"></span>
+                </div>
+                <button id="error-dismiss-btn" type="button" class="error-dismiss-btn flex-shrink-0 text-red-400 hover:text-red-200 transition-colors duration-150 text-xl leading-none px-1" aria-label="Fehlermeldung schließen">&times;</button>
             </div>
         </div>
     </main>
@@ -547,6 +552,11 @@
                 </div>
             </div>
             <div id="history-list" class="flex-1 overflow-auto p-4 space-y-3"></div>
+            <div id="history-empty-state" class="history-empty-state">
+                <div class="history-empty-icon">📋</div>
+                <div class="history-empty-title">Noch keine Einträge</div>
+                <div class="history-empty-sub">Generiere einen Prompt, um den Verlauf zu starten.</div>
+            </div>
         </div>
     </aside>
 
@@ -642,6 +652,9 @@
 
     <!-- Action HUD -->
     <div id="action-hud" class="hidden"></div>
+
+    <!-- Toast Notification Container -->
+    <div id="ssa-toast-container" aria-live="polite"></div>
 
     <!-- JavaScript Files -->
     <!-- Creative Cosmos: Idea Starter Modal (V2 Wiki Style) -->

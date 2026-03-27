@@ -1359,6 +1359,33 @@ select:focus {
     }
 }
 
+/* Error dismiss fade-out animation */
+.error-fade-out {
+    animation: errorFadeOut 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes errorFadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+}
+
+/* Error dismiss button */
+.error-dismiss-btn {
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    line-height: 1;
+    padding: 0 0.25rem;
+    margin-top: 1px;
+}
+
 /* Modal animations */
 .modal-enter-active {
     transition: all 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -1753,6 +1780,41 @@ input[type=range]:hover::-webkit-slider-thumb {
 
 .history-actions button {
     font-size: 13px;
+}
+
+/* History empty state (#82) */
+.history-empty-state {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    padding: 3rem 2rem;
+    text-align: center;
+    color: #6b7280;
+}
+
+.history-empty-state.visible {
+    display: flex;
+}
+
+.history-empty-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.history-empty-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #9ca3af;
+    margin-bottom: 0.5rem;
+}
+
+.history-empty-sub {
+    font-size: 0.875rem;
+    color: #6b7280;
+    line-height: 1.5;
 }
 
 /* Char stats badges */
@@ -4729,4 +4791,125 @@ input:focus-visible + .synth-effect-pill {
     outline-offset: 0px;
     border-color: rgba(250, 204, 21, 0.5) !important;
     box-shadow: 0 0 0 2px rgba(250, 204, 21, 0.15);
+}
+
+/* --- 15. Toast Notifications (replaces native alert()) --- */
+#ssa-toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    pointer-events: none;
+}
+
+.ssa-toast {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 18px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #f1f5f9;
+    pointer-events: auto;
+    backdrop-filter: blur(16px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.06);
+    opacity: 0;
+    transform: translateX(40px);
+    transition: opacity 200ms ease-out, transform 200ms ease-out;
+    max-width: 420px;
+    line-height: 1.4;
+}
+
+.ssa-toast.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.ssa-toast.hiding {
+    opacity: 0;
+    transform: translateX(40px);
+}
+
+.ssa-toast--error {
+    background: rgba(127, 29, 29, 0.85);
+    border: 1px solid rgba(239, 68, 68, 0.4);
+}
+
+.ssa-toast--warning {
+    background: rgba(120, 80, 0, 0.85);
+    border: 1px solid rgba(234, 179, 8, 0.4);
+}
+
+.ssa-toast--info {
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid rgba(96, 165, 250, 0.3);
+}
+
+.ssa-toast-icon {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+}
+
+.ssa-toast--error .ssa-toast-icon {
+    color: #f87171;
+}
+
+.ssa-toast--warning .ssa-toast-icon {
+    color: #facc15;
+}
+
+.ssa-toast--info .ssa-toast-icon {
+    color: #60a5fa;
+}
+
+.ssa-toast-message {
+    flex: 1;
+}
+
+.ssa-toast-close {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    font-size: 16px;
+    padding: 0 0 0 8px;
+    line-height: 1;
+    transition: color 150ms;
+}
+
+.ssa-toast-close:hover {
+    color: #fff;
+}
+
+/* Inline error for API setup modal */
+.ssa-inline-error {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: rgba(127, 29, 29, 0.5);
+    border: 1px solid rgba(239, 68, 68, 0.35);
+    color: #fca5a5;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.4;
+    margin-top: 4px;
+}
+
+.ssa-inline-error.hidden {
+    display: none;
+}
+
+.ssa-inline-error-icon {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    color: #f87171;
 }

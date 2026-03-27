@@ -96,7 +96,7 @@
   // Export/Import (single prompt)
   function exportCurrentPrompt(){
     const content = getCurrentPrompt();
-    if(!content){ alert('Kein Prompt vorhanden.'); return; }
+    if(!content){ showToast('Kein Prompt vorhanden.', 'warning'); return; }
     const idea = getCurrentIdea();
     const blob = new Blob([JSON.stringify({ content, idea, exportedAt: now() }, null, 2)], {type:'application/json'});
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'prompt.json'; a.click(); URL.revokeObjectURL(a.href);
@@ -111,7 +111,7 @@
         if(data.idea) setCurrentIdea(data.idea);
         onPromptUpdated({source:'import'});
       } else {
-        alert('Ungültige Datei.');
+        showToast('Ung\u00fcltige Datei.', 'error');
       }
     };
     reader.readAsText(file);
@@ -134,7 +134,7 @@
         saveHistory(merged);
         renderHistory();
       } else {
-        alert('Ungültige Datei.');
+        showToast('Ung\u00fcltige Datei.', 'error');
       }
     };
     reader.readAsText(file);
@@ -160,7 +160,7 @@
   function autoTrimV3(){
     let t = getCurrentPrompt();
     if(!t) return;
-    if(t.length <= 200){ alert('Prompt ist bereits ≤ 200 Zeichen.'); return; }
+    if(t.length <= 200){ showToast('Prompt ist bereits \u2264 200 Zeichen.', 'info'); return; }
     // Heuristic trim: remove filler words and compress
     const fillers = /(very|really|extremely|highly|super|quite|some|kind of|sort of)/gi;
     t = t.replace(fillers, '')
@@ -292,6 +292,12 @@
     const listEl = $('history-list'); if(!listEl) return;
     const items = loadHistory();
     listEl.innerHTML = '';
+    // Toggle empty state (#82)
+    const emptyEl = $('history-empty-state');
+    if(emptyEl){
+      if(items.length === 0){ emptyEl.classList.add('visible'); listEl.style.display = 'none'; }
+      else { emptyEl.classList.remove('visible'); listEl.style.display = ''; }
+    }
     items.forEach(item=>{
       const div = document.createElement('div');
       div.className = 'history-item p-4';
