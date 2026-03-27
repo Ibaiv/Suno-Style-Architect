@@ -10084,13 +10084,13 @@ function showSelectionPopup(x, y, selectedText, range) {
     popup.id = 'selection-popup-menu';
     popup.innerHTML = `
         <button id="mark-selection-btn" class="mark-btn">
-            <svg class="inline-block w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg aria-hidden="true" focusable="false" class="inline-block w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
             </svg>
             Markieren
         </button>
         <button id="mark-with-note-btn" class="note-btn">
-            <svg class="inline-block w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg aria-hidden="true" focusable="false" class="inline-block w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
             </svg>
             + Notiz
@@ -10137,7 +10137,7 @@ function showNoteInput(popup, selectedText, range) {
         <div class="note-input-container">
             <input type="text" id="note-input" placeholder="Notiz eingeben..." maxlength="100" />
             <button id="confirm-note-btn" aria-label="Notiz bestätigen">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg aria-hidden="true" focusable="false" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                 </svg>
             </button>
@@ -10243,7 +10243,7 @@ function handleCustomSelectionClick(e) {
     popup.className = 'remove-popup';
     popup.innerHTML = `
         <button id="remove-selection-btn" class="remove-btn">
-            <svg class="inline-block w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg aria-hidden="true" focusable="false" class="inline-block w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
             </svg>
             Markierung entfernen
@@ -10477,7 +10477,7 @@ function renderWorldTabs() {
 
         const mainBtn = document.createElement('button');
         mainBtn.className = `world-tab group-trigger`;
-        mainBtn.innerHTML = `<span class="mr-2">${headerItem.icon}</span>${headerItem.name} <svg class="w-3 h-3 ml-1 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>`;
+        mainBtn.innerHTML = `<span class="mr-2">${headerItem.icon}</span>${headerItem.name} <svg aria-hidden="true" focusable="false" class="w-3 h-3 ml-1 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>`;
 
         // Select main item on click
         mainBtn.onclick = () => selectWorld(headerItem.id);

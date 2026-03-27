@@ -2202,9 +2202,9 @@ function setupStyleSync() {
             if (mainInput) {
                 mainInput.value = generatedText;
                 // Visual feedback
-                applyBtn.innerHTML = '<span>Kopiert!</span> <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" title="Check"><polyline points="20 6 9 17 4 12"/></svg>';
+                applyBtn.innerHTML = '<span>Kopiert!</span> <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" title="Check"><polyline points="20 6 9 17 4 12"/></svg>';
                 setTimeout(() => {
-                    applyBtn.innerHTML = '<span>AUF PROMPT ANWENDEN</span> <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';
+                    applyBtn.innerHTML = '<span>AUF PROMPT ANWENDEN</span> <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';
                     // Close studio to show result
                     closeStudio();
                 }, 1000);
@@ -3159,7 +3159,7 @@ function setupKlangStudio() {
         const text = tokenPreview?.textContent || '';
         navigator.clipboard.writeText(text).then(() => {
             const originalText = copyBtn.innerHTML;
-            copyBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Kopiert!';
+            copyBtn.innerHTML = '<svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Kopiert!';
             setTimeout(() => { copyBtn.innerHTML = originalText; }, 1500);
         });
     });

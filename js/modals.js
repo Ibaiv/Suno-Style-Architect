@@ -23,7 +23,7 @@ function getModalsHTML() {
                 <input type="text" id="keyword-input" class="flex-grow bg-neutral-900/70 border border-neutral-600 rounded-lg p-2 text-neutral-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="z.B. Ozean, Mitternacht, Nostalgie...">
                 <button id="generate-ideas-button" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center justify-center w-36 btn-transition btn-press">
                     <span id="idea-button-text">Generieren</span>
-                    <svg id="idea-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                    <svg aria-hidden="true" focusable="false" id="idea-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                 </button>
             </div>
             <div id="ideas-output" class="space-y-3 text-sm max-h-[50vh] overflow-auto"></div>
@@ -47,7 +47,7 @@ function getModalsHTML() {
             </div>
             <button id="apply-producer-button" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg btn-transition btn-press">
                  <span id="apply-producer-text">Anwenden</span>
-                 <svg id="apply-producer-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                 <svg aria-hidden="true" focusable="false" id="apply-producer-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
             </button>
         </div>
     </div>
@@ -68,7 +68,7 @@ function getModalsHTML() {
             </div>
             <button id="apply-musician-button" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg btn-transition btn-press">
                 <span id="apply-musician-text">Anwenden</span>
-                <svg id="apply-musician-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                <svg aria-hidden="true" focusable="false" id="apply-musician-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
             </button>
         </div>
     </div>
@@ -89,7 +89,7 @@ function getModalsHTML() {
             </div>
             <button id="apply-composer-button" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg btn-transition btn-press">
                 <span id="apply-composer-text">Anwenden</span>
-                <svg id="apply-composer-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                <svg aria-hidden="true" focusable="false" id="apply-composer-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
             </button>
         </div>
     </div>
@@ -110,7 +110,7 @@ function getModalsHTML() {
             </div>
             <button id="apply-dj-button" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg btn-transition btn-press">
                 <span id="apply-dj-text">Anwenden</span>
-                <svg id="apply-dj-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                <svg aria-hidden="true" focusable="false" id="apply-dj-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
             </button>
         </div>
     </div>
@@ -132,7 +132,7 @@ function getModalsHTML() {
             </div>
             <button id="apply-avantgarde-button" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg btn-transition btn-press">
                 <span id="apply-avantgarde-text">Anwenden</span>
-                <svg id="apply-avantgarde-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                <svg aria-hidden="true" focusable="false" id="apply-avantgarde-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
             </button>
         </div>
     </div>
@@ -153,7 +153,7 @@ function getModalsHTML() {
             </div>
             <button id="apply-minimalist-button" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg btn-transition btn-press">
                 <span id="apply-minimalist-text">Anwenden</span>
-                <svg id="apply-minimalist-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                <svg aria-hidden="true" focusable="false" id="apply-minimalist-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
             </button>
         </div>
     </div>
@@ -174,7 +174,7 @@ function getModalsHTML() {
             </div>
             <button id="apply-vocal-harmony-button" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg btn-transition btn-press">
                 <span id="apply-vocal-harmony-text">Anwenden</span>
-                <svg id="apply-vocal-harmony-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                <svg aria-hidden="true" focusable="false" id="apply-vocal-harmony-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
             </button>
         </div>
     </div>
@@ -195,7 +195,7 @@ function getModalsHTML() {
             </div>
             <button id="apply-ethno-button" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg btn-transition btn-press">
                 <span id="apply-ethno-text">Anwenden</span>
-                <svg id="apply-ethno-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                <svg aria-hidden="true" focusable="false" id="apply-ethno-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
             </button>
         </div>
     </div>
@@ -214,7 +214,7 @@ function getModalsHTML() {
            </div>
            <button id="apply-sound-engineer-button" class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg btn-transition btn-press">
                <span id="apply-sound-engineer-text">Anwenden</span>
-               <svg id="apply-sound-engineer-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+               <svg aria-hidden="true" focusable="false" id="apply-sound-engineer-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
            </button>
        </div>
     </div>
@@ -230,7 +230,7 @@ function getModalsHTML() {
             <div id="genre-selectors" class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4"></div>
             <button id="mix-genres-button" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg btn-transition btn-press">
                 <span id="mix-genres-button-text">Mischen & Anwenden</span>
-                <svg id="mix-genres-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                <svg aria-hidden="true" focusable="false" id="mix-genres-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
             </button>
             <div id="genre-mixer-output" class="mt-4 text-sm"></div>
         </div>
@@ -269,7 +269,7 @@ function getModalsHTML() {
             <div class="mt-6 border-t border-neutral-700/60 pt-4 flex justify-end">
                 <button id="apply-mood-button" class="w-36 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-lg btn-transition btn-press flex justify-center items-center">
                     <span id="apply-mood-button-text">Übernehmen</span>
-                    <svg id="apply-mood-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                    <svg aria-hidden="true" focusable="false" id="apply-mood-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                 </button>
             </div>
         </div>
@@ -319,7 +319,7 @@ function getModalsHTML() {
             <div class="mt-6 border-t border-neutral-700/60 pt-4 flex justify-end">
                 <button id="apply-production-button" class="w-36 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-lg btn-transition btn-press flex justify-center items-center">
                     <span id="apply-production-text">Übernehmen</span>
-                    <svg id="apply-production-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                    <svg aria-hidden="true" focusable="false" id="apply-production-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                 </button>
             </div>
         </div>
@@ -336,7 +336,7 @@ function getModalsHTML() {
             <div class="mt-6 border-t border-neutral-700/60 pt-4 flex justify-end">
                 <button id="apply-vocal-style-button" class="w-36 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-lg btn-transition btn-press flex justify-center items-center">
                     <span id="apply-vocal-style-text">Übernehmen</span>
-                    <svg id="apply-vocal-style-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                    <svg aria-hidden="true" focusable="false" id="apply-vocal-style-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                 </button>
             </div>
         </div>
@@ -353,7 +353,7 @@ function getModalsHTML() {
            <textarea id="custom-instruction-input" rows="4" class="w-full bg-neutral-900/70 border border-neutral-700 rounded-xl p-3 text-neutral-300 focus:ring-2 focus:ring-blue-500 placeholder-neutral-500 text-base" placeholder="z.B. Mache es düsterer und füge einen Kinderchor hinzu..."></textarea>
            <button id="apply-custom-instruction-button" class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg btn-transition btn-press">
                <span id="apply-custom-instruction-text">Anwenden</span>
-               <svg id="apply-custom-instruction-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+               <svg aria-hidden="true" focusable="false" id="apply-custom-instruction-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
            </button>
        </div>
    </div>
@@ -370,7 +370,7 @@ function getModalsHTML() {
             <div class="mt-6 border-t border-neutral-700/60 pt-4 flex justify-end">
                 <button id="apply-groove-meister-button" class="w-36 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-lg btn-transition btn-press flex justify-center items-center">
                     <span id="apply-groove-meister-text">Übernehmen</span>
-                    <svg id="apply-groove-meister-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                    <svg aria-hidden="true" focusable="false" id="apply-groove-meister-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                 </button>
             </div>
         </div>
@@ -387,7 +387,7 @@ function getModalsHTML() {
             <div class="mt-6 border-t border-neutral-700/60 pt-4 flex justify-end">
                 <button id="apply-performance-coach-button" class="w-36 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-lg btn-transition btn-press flex justify-center items-center">
                     <span id="apply-performance-coach-text">Übernehmen</span>
-                    <svg id="apply-performance-coach-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                    <svg aria-hidden="true" focusable="false" id="apply-performance-coach-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                 </button>
             </div>
         </div>
@@ -404,7 +404,7 @@ function getModalsHTML() {
             <div class="mt-6 border-t border-neutral-700/60 pt-4 flex justify-end">
                 <button id="apply-effect-chain-button" class="w-36 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-lg btn-transition btn-press flex justify-center items-center">
                     <span id="apply-effect-chain-text">Übernehmen</span>
-                    <svg id="apply-effect-chain-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                    <svg aria-hidden="true" focusable="false" id="apply-effect-chain-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                 </button>
             </div>
         </div>
@@ -429,7 +429,7 @@ function getModalsHTML() {
                 </div>
                 <button id="run-adaptive-flow-button" class="w-full lg:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-5 rounded-lg btn-transition btn-press flex items-center justify-center gap-2">
                     <span id="run-adaptive-flow-text">Flow formen</span>
-                    <svg id="adaptive-flow-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                    <svg aria-hidden="true" focusable="false" id="adaptive-flow-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                 </button>
             </div>
             <div id="adaptive-flow-output" class="mt-5 text-sm space-y-4"></div>
@@ -447,7 +447,7 @@ function getModalsHTML() {
             <div class="mt-6 border-t border-neutral-700/60 pt-4 flex justify-end">
                 <button id="generate-ai-collab-button" class="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-5 rounded-lg btn-transition btn-press flex items-center justify-center gap-2">
                     <span id="generate-ai-collab-text">Interplay erschaffen</span>
-                    <svg id="ai-collab-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                    <svg aria-hidden="true" focusable="false" id="ai-collab-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                 </button>
             </div>
             <div id="ai-collab-output" class="mt-5 text-sm space-y-4"></div>
@@ -464,7 +464,7 @@ function getModalsHTML() {
             <div class="border border-neutral-700 rounded-2xl p-4 bg-neutral-900/40">
                 <button id="story-arc-generate-button" class="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-5 rounded-lg btn-transition btn-press flex items-center justify-center gap-2">
                     <span id="story-arc-generate-text">Arc neu berechnen</span>
-                    <svg id="story-arc-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                    <svg aria-hidden="true" focusable="false" id="story-arc-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                 </button>
                 <div id="story-arc-output" class="mt-4 text-sm space-y-4"></div>
             </div>
@@ -490,7 +490,7 @@ function getModalsHTML() {
                 <div class="md:col-span-2 flex items-end">
                     <button id="run-narrative-chapters-button" class="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-5 rounded-lg btn-transition btn-press flex items-center justify-center gap-2">
                         <span id="run-narrative-chapters-text">Kapitel generieren</span>
-                        <svg id="narrative-chapters-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                        <svg aria-hidden="true" focusable="false" id="narrative-chapters-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                     </button>
                 </div>
             </div>
@@ -509,7 +509,7 @@ function getModalsHTML() {
             <div class="mt-6 border-t border-neutral-700/60 pt-4 flex justify-end">
                 <button id="run-immersive-space-button" class="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-5 rounded-lg btn-transition btn-press flex items-center justify-center gap-2">
                     <span id="run-immersive-space-text">Raum modellieren</span>
-                    <svg id="immersive-space-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                    <svg aria-hidden="true" focusable="false" id="immersive-space-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                 </button>
             </div>
             <div id="immersive-space-output" class="mt-5 text-sm space-y-4"></div>
@@ -527,7 +527,7 @@ function getModalsHTML() {
             <div class="mt-6 border-t border-neutral-700/60 pt-4 flex justify-end">
                 <button id="apply-human-touch-button" class="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-5 rounded-lg btn-transition btn-press flex items-center justify-center gap-2">
                     <span id="apply-human-touch-text">Humanisieren</span>
-                    <svg id="human-touch-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                    <svg aria-hidden="true" focusable="false" id="human-touch-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                 </button>
             </div>
             <div id="human-touch-output" class="mt-5 text-sm space-y-4"></div>
@@ -559,7 +559,7 @@ function getModalsHTML() {
             <div class="mt-6 border-t border-neutral-700/60 pt-4 flex justify-end">
                 <button id="generate-release-forecast-button" class="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-5 rounded-lg btn-transition btn-press flex items-center justify-center gap-2">
                     <span id="generate-release-forecast-text">Plan generieren</span>
-                    <svg id="release-forecast-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                    <svg aria-hidden="true" focusable="false" id="release-forecast-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                 </button>
             </div>
             <div id="release-forecast-output" class="mt-5 text-sm space-y-4"></div>
@@ -574,45 +574,45 @@ function getModalsHTML() {
             <div class="flex justify-between items-center mb-8 relative z-10">
                 <div class="flex items-center gap-3">
                     <div class="p-2 bg-white/5 rounded-lg border border-white/10">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 7h.01"/><path d="M17 7h.01"/><path d="M7 17h.01"/><path d="M17 17h.01"/><path d="M12 12h.01"/></svg>
+                        <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 7h.01"/><path d="M17 7h.01"/><path d="M7 17h.01"/><path d="M17 17h.01"/><path d="M12 12h.01"/></svg>
                     </div>
                     <h2 class="text-xl font-bold text-white tracking-tight">Synth-Designer Lab</h2>
                 </div>
                 <button class="close-modal-button text-neutral-500 hover:text-white transition-colors" aria-label="Schließen">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 </button>
             </div>
             
             <form id="synth-designer-form" class="space-y-8 relative z-10">
                 <!-- Section 1: Instrument Role -->
                 <div>
-                    <p class="text-[10px] font-bold text-neutral-500 uppercase tracking-[0.2em] mb-4">1. Instrument-Rolle</p>
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    <p class="text-[10px] font-bold text-neutral-500 uppercase tracking-[0.2em] mb-4" id="synth-role-label">1. Instrument-Rolle</p>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4" role="radiogroup" aria-labelledby="synth-role-label">
                         <label class="block cursor-pointer group">
                             <input type="radio" name="synth-role" value="Lead melody" class="sr-only peer">
                             <div class="synth-card aspect-square rounded-2xl border border-white/5 bg-[#13151f] flex flex-col items-center justify-center gap-3 transition-all duration-300 hover:border-white/20 peer-checked:border-blue-500 peer-checked:bg-blue-500/5 peer-checked:shadow-[0_0_20px_rgba(59,130,246,0.15)]">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-400 group-hover:text-white peer-checked:text-blue-400 transition-colors"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>
+                                <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-400 group-hover:text-white peer-checked:text-blue-400 transition-colors"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>
                                 <span class="text-sm font-medium text-neutral-400 group-hover:text-white peer-checked:text-white">Lead</span>
                             </div>
                         </label>
                         <label class="block cursor-pointer group">
                             <input type="radio" name="synth-role" value="Bass foundation" class="sr-only peer">
                             <div class="synth-card aspect-square rounded-2xl border border-white/5 bg-[#13151f] flex flex-col items-center justify-center gap-3 transition-all duration-300 hover:border-white/20 peer-checked:border-blue-500 peer-checked:bg-blue-500/5 peer-checked:shadow-[0_0_20px_rgba(59,130,246,0.15)]">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-400 group-hover:text-white peer-checked:text-blue-400 transition-colors"><path d="M13.8 2.2a2 2 0 0 1 1 1.7l-1 5a2 2 0 0 1-3.5 1l-1.5-3a2 2 0 0 1 .5-2.5l2.5-2.2Z"/><path d="M6 9.5a5.5 5.5 0 0 0 2 11h8a5.5 5.5 0 0 0 2-11"/><path d="M9 16c1.5-1 4-1 6 0"/><path d="M9 13a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2"/></svg>
+                                <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-400 group-hover:text-white peer-checked:text-blue-400 transition-colors"><path d="M13.8 2.2a2 2 0 0 1 1 1.7l-1 5a2 2 0 0 1-3.5 1l-1.5-3a2 2 0 0 1 .5-2.5l2.5-2.2Z"/><path d="M6 9.5a5.5 5.5 0 0 0 2 11h8a5.5 5.5 0 0 0 2-11"/><path d="M9 16c1.5-1 4-1 6 0"/><path d="M9 13a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2"/></svg>
                                 <span class="text-sm font-medium text-neutral-400 group-hover:text-white peer-checked:text-white">Bass</span>
                             </div>
                         </label>
                         <label class="block cursor-pointer group">
                             <input type="radio" name="synth-role" value="Atmospheric pad" class="sr-only peer">
                             <div class="synth-card aspect-square rounded-2xl border border-white/5 bg-[#13151f] flex flex-col items-center justify-center gap-3 transition-all duration-300 hover:border-white/20 peer-checked:border-blue-500 peer-checked:bg-blue-500/5 peer-checked:shadow-[0_0_20px_rgba(59,130,246,0.15)]">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-400 group-hover:text-white peer-checked:text-blue-400 transition-colors"><path d="M17.5 19c0-1.7-1.3-3-3-3h-5c-1.7 0-3 1.3-3 3"/><path d="M12 2C7 2 3 7 3 13s5 11 9 11 9-5 9-11-4-11-9-11z"/></svg>
+                                <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-400 group-hover:text-white peer-checked:text-blue-400 transition-colors"><path d="M17.5 19c0-1.7-1.3-3-3-3h-5c-1.7 0-3 1.3-3 3"/><path d="M12 2C7 2 3 7 3 13s5 11 9 11 9-5 9-11-4-11-9-11z"/></svg>
                                 <span class="text-sm font-medium text-neutral-400 group-hover:text-white peer-checked:text-white">Pad</span>
                             </div>
                         </label>
                         <label class="block cursor-pointer group">
                             <input type="radio" name="synth-role" value="Arpeggiated pattern" class="sr-only peer">
                             <div class="synth-card aspect-square rounded-2xl border border-white/5 bg-[#13151f] flex flex-col items-center justify-center gap-3 transition-all duration-300 hover:border-white/20 peer-checked:border-blue-500 peer-checked:bg-blue-500/5 peer-checked:shadow-[0_0_20px_rgba(59,130,246,0.15)]">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-400 group-hover:text-white peer-checked:text-blue-400 transition-colors"><path d="M2 8h20"/><path d="M6 8v12"/><path d="M10 8v12"/><path d="M14 8v12"/><path d="M18 8v12"/><rect width="20" height="16" x="2" y="4" rx="2"/></svg>
+                                <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-400 group-hover:text-white peer-checked:text-blue-400 transition-colors"><path d="M2 8h20"/><path d="M6 8v12"/><path d="M10 8v12"/><path d="M14 8v12"/><path d="M18 8v12"/><rect width="20" height="16" x="2" y="4" rx="2"/></svg>
                                 <span class="text-sm font-medium text-neutral-400 group-hover:text-white peer-checked:text-white">Arpeggio</span>
                             </div>
                         </label>
@@ -621,8 +621,8 @@ function getModalsHTML() {
 
                 <!-- Section 2: Waveform -->
                 <div>
-                    <p class="text-[10px] font-bold text-neutral-500 uppercase tracking-[0.2em] mb-4">2. Grundcharakter (Waveform)</p>
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    <p class="text-[10px] font-bold text-neutral-500 uppercase tracking-[0.2em] mb-4" id="synth-core-label">2. Grundcharakter (Waveform)</p>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4" role="radiogroup" aria-labelledby="synth-core-label">
                         <label class="block cursor-pointer group">
                             <input type="radio" name="synth-core" value="soft, warm waveform" class="sr-only peer">
                             <div class="synth-card p-6 rounded-2xl border border-white/5 bg-[#13151f] flex flex-col items-center justify-center gap-3 transition-all duration-300 hover:border-white/20 peer-checked:border-blue-500 peer-checked:bg-blue-500/5 peer-checked:shadow-[0_0_20px_rgba(59,130,246,0.15)]">
@@ -672,8 +672,8 @@ function getModalsHTML() {
 
                 <!-- Section 4: Envelope -->
                 <div>
-                    <p class="text-[10px] font-bold text-neutral-500 uppercase tracking-[0.2em] mb-4">4. Hüllkurve (Envelope)</p>
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <p class="text-[10px] font-bold text-neutral-500 uppercase tracking-[0.2em] mb-4" id="synth-envelope-label">4. Hüllkurve (Envelope)</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4" role="radiogroup" aria-labelledby="synth-envelope-label">
                         <label class="block cursor-pointer group">
                             <input type="radio" name="synth-envelope" value="short, plucky articulation" class="sr-only peer">
                              <div class="synth-card p-4 rounded-xl border border-white/5 bg-[#13151f] flex flex-col items-center justify-center gap-1 transition-all duration-300 hover:border-white/20 peer-checked:border-blue-500 peer-checked:bg-blue-500/5">
@@ -700,8 +700,8 @@ function getModalsHTML() {
 
                 <!-- Section 5: Effects -->
                 <div>
-                     <p class="text-[10px] font-bold text-neutral-500 uppercase tracking-[0.2em] mb-4">5. Effekte</p>
-                     <div class="flex flex-wrap gap-2">
+                     <p class="text-[10px] font-bold text-neutral-500 uppercase tracking-[0.2em] mb-4" id="synth-effects-label">5. Effekte</p>
+                     <div class="flex flex-wrap gap-2" role="group" aria-labelledby="synth-effects-label">
                         <label class="cursor-pointer group">
                             <input type="checkbox" name="synth-effects" value="lush reverb for spaciousness" class="sr-only peer">
                             <div class="synth-effect-pill px-6 py-2.5 rounded-full border border-white/5 bg-[#13151f] text-sm text-neutral-400 transition-all duration-200 hover:bg-white/5 hover:text-white peer-checked:bg-blue-600 peer-checked:border-blue-500 peer-checked:text-white peer-checked:shadow-[0_0_15px_rgba(37,99,235,0.4)]">
@@ -738,7 +738,7 @@ function getModalsHTML() {
                 </button>
                 <button id="add-synth-button" type="button" class="bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-semibold py-3 px-8 rounded-lg shadow-[0_0_20px_rgba(37,99,235,0.4)] transition-all transform hover:-translate-y-0.5 active:scale-95 flex items-center gap-2">
                     <span id="add-synth-button-text">Add Sound to Prompt</span>
-                    <svg id="add-synth-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                    <svg aria-hidden="true" focusable="false" id="add-synth-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 818-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 714 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                 </button>
             </div>
         </div>
@@ -754,14 +754,14 @@ function getModalsHTML() {
             <textarea id="image-prompt-input" rows="3" class="w-full bg-neutral-900/70 border border-neutral-700 rounded-xl p-3 text-neutral-300 focus:ring-2 focus:ring-blue-500 placeholder-neutral-500 text-base" placeholder="z.B. Eine Cyberpunk-Stadt im Neon-Regen, eine ruhige Waldlichtung im Morgennebel..."></textarea>
             <button id="generate-image-button" class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg btn-transition btn-press flex items-center justify-center">
                 <span id="generate-image-text">Bild generieren</span>
-                <svg id="generate-image-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                <svg aria-hidden="true" focusable="false" id="generate-image-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
             </button>
             <div id="visual-engine-output" class="mt-4 p-2 bg-neutral-900/50 rounded-xl border border-neutral-700 min-h-[100px] flex items-center justify-center">
                 <p class="text-neutral-500 text-sm">Bild wird hier angezeigt...</p>
             </div>
             <button id="analyze-image-button" class="mt-4 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg btn-transition btn-press flex items-center justify-center hidden">
                 <span id="analyze-image-text">Schritt 2: Bild für Prompt analysieren</span>
-                <svg id="analyze-image-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                <svg aria-hidden="true" focusable="false" id="analyze-image-loader" class="animate-spin h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
             </button>
         </div>
     </div>
@@ -792,7 +792,7 @@ function getModalsHTML() {
                         <option value="Reggae/Dub">Reggae / Dub</option>
                     </select>
                     <div class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-neutral-400">
-                        <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>
+                        <svg aria-hidden="true" focusable="false" class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>
                     </div>
                 </div>
             </div>

@@ -28,7 +28,7 @@
                         </h2>
                         <button id="close-klang-studio"
                             class="text-neutral-400 hover:text-white bg-white/5 hover:bg-white/10 p-2 rounded-full transition-colors" aria-label="Klang-Studio schließen">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                            <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M18 6 6 18" />
                                 <path d="m6 6 12 12" />
@@ -54,8 +54,8 @@
 
                             <!-- Waveform Selection -->
                             <div class="ks-panel mb-6">
-                                <p class="ks-panel-header">1. Wellenform</p>
-                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                                <p class="ks-panel-header" id="ks-waveform-label">1. Wellenform</p>
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4" role="radiogroup" aria-labelledby="ks-waveform-label">
                                     <label class="cursor-pointer">
                                         <input type="radio" name="ks-waveform" value="sawtooth" class="sr-only peer"
                                             checked>
@@ -104,8 +104,8 @@
 
                             <!-- Cutoff Reference -->
                             <div class="ks-panel mb-6">
-                                <p class="ks-panel-header">3. Cutoff-Referenz</p>
-                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                                <p class="ks-panel-header" id="ks-cutoff-label">3. Cutoff-Referenz</p>
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" role="radiogroup" aria-labelledby="ks-cutoff-label">
                                     <label class="cursor-pointer">
                                         <input type="radio" name="ks-cutoff" value="2000" class="sr-only peer">
                                         <div class="ks-radio-card py-3">
@@ -139,8 +139,8 @@
 
                             <!-- Envelope -->
                             <div class="ks-panel mb-6">
-                                <p class="ks-panel-header">4. Hüllkurve (Envelope)</p>
-                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                                <p class="ks-panel-header" id="ks-envelope-label">4. Hüllkurve (Envelope)</p>
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" role="radiogroup" aria-labelledby="ks-envelope-label">
                                     <label class="cursor-pointer">
                                         <input type="radio" name="ks-envelope" value="percussive" class="sr-only peer">
                                         <div class="ks-radio-card py-3">
@@ -174,8 +174,8 @@
 
                             <!-- Effects -->
                             <div class="ks-panel mb-6">
-                                <p class="ks-panel-header">5. Effekte</p>
-                                <div class="flex flex-wrap gap-3">
+                                <p class="ks-panel-header" id="ks-effects-label">5. Effekte</p>
+                                <div class="flex flex-wrap gap-3" role="group" aria-labelledby="ks-effects-label">
                                     <label class="cursor-pointer">
                                         <input type="checkbox" name="ks-effects" value="reverb" class="sr-only peer"
                                             checked>
@@ -632,8 +632,8 @@
                             </div>
 
                             <div class="ks-panel">
-                                <p class="ks-panel-header">Blend-Modus</p>
-                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                                <p class="ks-panel-header" id="ks-blend-mode-label">Blend-Modus</p>
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" role="radiogroup" aria-labelledby="ks-blend-mode-label">
                                     <label class="cursor-pointer">
                                         <input type="radio" name="ks-blend-mode" value="harmonic" class="sr-only peer"
                                             checked>
