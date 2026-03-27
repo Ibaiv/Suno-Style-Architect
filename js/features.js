@@ -22,7 +22,7 @@ function initializeAdvancedFeatures() {
     setupStyleSync();
     setupKlangStudio();
 
-    // Bottom systems are intentionally disabled during rework
+    // Bottom tool systems require the dashboard DOM to be present
     if (!hasBottomToolSystems) return;
 
     setupExpertRefinements();

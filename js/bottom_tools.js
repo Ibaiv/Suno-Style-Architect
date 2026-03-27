@@ -219,12 +219,33 @@
         overlay._closing = false;
     }
 
+    var BD_COLLAPSE_KEY = 'ssa_bd_collapsed';
+
     function initCollapseToggle() {
         var toggle = document.getElementById('bd-collapse-toggle');
         if (!toggle) return;
+
+        var layout = document.querySelector('.app-main-layout');
+        if (!layout) return;
+
+        // Restore persisted state — default to collapsed to save screen space
+        // (addresses issue #80: bottom section wastes 33% of screen by default)
+        var saved = null;
+        try { saved = localStorage.getItem(BD_COLLAPSE_KEY); } catch (_) {}
+
+        var shouldCollapse = saved === null ? true : saved === '1';
+
+        if (shouldCollapse) {
+            // Apply collapsed state immediately without transition on load
+            layout.classList.add('bd-collapsed');
+        }
+
         toggle.addEventListener('click', function () {
-            var layout = document.querySelector('.app-main-layout');
-            if (layout) layout.classList.toggle('bd-collapsed');
+            layout.classList.toggle('bd-collapsed');
+            var collapsed = layout.classList.contains('bd-collapsed');
+            try { localStorage.setItem(BD_COLLAPSE_KEY, collapsed ? '1' : '0'); } catch (_) {}
+            // Dispatch event so other components can react to layout change
+            document.dispatchEvent(new CustomEvent('bottomdashboard:toggle', { detail: { collapsed: collapsed } }));
         });
     }
 
