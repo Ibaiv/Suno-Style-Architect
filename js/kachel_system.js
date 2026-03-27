@@ -543,7 +543,8 @@
 
         // Expose globally
         window.BdUndo = {
-            captureBeforeApply: undoCaptureBeforeApply
+            captureBeforeApply: undoCaptureBeforeApply,
+            performUndo: undoPerform
         };
 
         undoUpdateUI();
@@ -636,11 +637,6 @@
             return Promise.resolve();
         }
 
-        // Capture undo state before modification
-        if (window.BdUndo) {
-            window.BdUndo.captureBeforeApply(toolName);
-        }
-
         var resultEl = document.getElementById('result-text');
         var currentText = (resultEl.textContent || '').trim();
         var sysPrompt = promptFn();
@@ -682,7 +678,11 @@
                 }
             }
 
-            resultEl.textContent = finalText;
+            if (typeof applyPromptWithUndo === 'function') {
+                applyPromptWithUndo(finalText, toolName);
+            } else {
+                resultEl.textContent = finalText;
+            }
             if (window.QW) {
                 window.QW.onPromptUpdated({ source: 'quick-apply:' + toolName });
             }
@@ -1565,6 +1565,15 @@
             if (runBtn) {
                 runBtn.disabled = false;
                 runBtn.textContent = '\u25B6 Ausf\u00fchren';
+            }
+            // Show undo toast after chain completes (#76)
+            if (typeof showToast === 'function' && window.BdUndo) {
+                showToast(
+                    'Prompt \u00fcberschrieben von \u201e' + chainName + '\u201c',
+                    'info',
+                    6000,
+                    { label: 'R\u00fcckg\u00e4ngig', onClick: function () { window.BdUndo.performUndo(); } }
+                );
             }
             if (window.QW) window.QW.onPromptUpdated({ source: 'chain' });
         }).catch(function (e) {
