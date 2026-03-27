@@ -5,7 +5,12 @@
   const MAX_HISTORY = 20;
   const STORAGE_KEY = 'ssa_history_v1';
 
-  // Curated Hinweise (German). IDs H01..H30
+  // TODO [FUTURE]: Curated Hinweise (H01..H30) — UI removed for now, keep data for future use.
+  // The lint hint overlay was removed because readability could not be solved satisfactorily.
+  // When re-enabling, restore: HTML <span id="lint-hints">, CSS .meister-lint-inline,
+  // updateHintsUI(), scheduleSmartHints(), runSmartHintsOnce(), and HINT_SELECTOR_PROMPT in prompts.js.
+  // See git history for the full implementation.
+  /*
   const CURATED_HINTS = [
     { id: 'H01', text: 'Kein Gesangsstil erwähnt – füge eine klare Vocal-Charakteristik hinzu.' },
     { id: 'H02', text: 'Keine BPM/Tempo-Angabe – nenne ein passendes Tempo (z.B. 120 bpm oder "mid-tempo").' },
@@ -38,13 +43,7 @@
     { id: 'H29', text: 'Outro/Ende – Fade-out, abruptes Ende, Stinger oder Reprise definieren.' },
     { id: 'H30', text: 'Redundanz – straffe Formulierungen, streiche Füllwörter und Dopplungen.' }
   ];
-
-  // Smart hint selection state
-  let lastRuleHint = null;
-  let lastSmartHintId = null;
-  let smartHintsTimer = null;
-  let smartHintsRunCounter = 0;
-  let smartHintsStatus = 'idle'; // 'idle' | 'loading' | 'ready' | 'error'
+  */
 
   const PRESETS = [
     { id: 'cinematic', label: 'Cinematic', text: 'Cinematic score about an ocean journey; strings, brass, deep percussion; evolving arcs; emotional climax.' },
@@ -200,91 +199,9 @@
     );
   }
 
-  // Render combined hints (rule-based + AI-selected)
-  function updateHintsUI(){
-    const box = $('lint-hints');
-    if(!box) return;
-    let chosen = null;
-    const aiText = lastSmartHintId ? (CURATED_HINTS.find(h => h.id === lastSmartHintId)?.text || null) : null;
-
-    if (aiText) {
-      chosen = aiText;
-    } else if (lastRuleHint) {
-      chosen = lastRuleHint;
-    }
-
-    if (!chosen && smartHintsStatus !== 'loading') {
-      box.innerHTML = '';
-      return;
-    }
-
-    const pill = chosen ? `<span class=\"badge warn\" style=\"margin-right:6px\">${chosen}</span>` : '';
-    const aiBadge = smartHintsStatus === 'loading' ? `<span class=\"badge\" style=\"margin-left:4px\">KI analysiert…</span>` : '';
-    box.innerHTML = `${chosen ? 'Hinweis: ' : ''}${pill}${!chosen ? aiBadge : aiBadge}`;
-  }
-
-  // LLM-based smart hint selection (debounced)
-  function scheduleSmartHints(){
-    clearTimeout(smartHintsTimer);
-    const prompt = getCurrentPrompt();
-    if(!prompt){
-      lastSmartHintId = null;
-      smartHintsStatus = 'idle';
-      updateHintsUI();
-      return;
-    }
-    if(!window.API_KEY){
-      // No API key set: skip AI hints
-      lastSmartHintId = null;
-      smartHintsStatus = 'idle';
-      updateHintsUI();
-      return;
-    }
-    smartHintsStatus = 'loading';
-    updateHintsUI();
-    smartHintsTimer = setTimeout(()=> runSmartHintsOnce(prompt), 800);
-  }
-
-  async function runSmartHintsOnce(prompt){
-    const runId = ++smartHintsRunCounter;
-    try{
-      const hintsList = CURATED_HINTS.map(h=>`${h.id}: ${h.text}`).join('\n');
-      const userMessage = `USER_PROMPT:\n${prompt}\n\nHINTS:\n${hintsList}\n\nReturn JSON with selected ID.`;
-      const raw = await callOpenRouterAPI(userMessage, HINT_SELECTOR_PROMPT);
-      // best-effort JSON extraction
-      const jsonText = (raw.match(/\{[\s\S]*\}/) || [raw])[0];
-      const parsed = JSON.parse(jsonText);
-      let id = null;
-      if (typeof parsed?.hint === 'string') {
-        id = parsed.hint;
-      } else if (Array.isArray(parsed?.hints) && parsed.hints.length > 0) {
-        id = parsed.hints[0]; // tolerate older format
-      }
-      const known = new Set(CURATED_HINTS.map(h=>h.id));
-      const finalId = (typeof id === 'string' && known.has(id)) ? id : null;
-      if(runId !== smartHintsRunCounter) return; // stale
-      lastSmartHintId = finalId;
-      smartHintsStatus = 'ready';
-      updateHintsUI();
-    } catch(e){
-      if(runId !== smartHintsRunCounter) return;
-      smartHintsStatus = 'error';
-      updateHintsUI();
-    }
-  }
-
-  // Linting suggestions (rule-based quick checks) + trigger AI
+  // Lint / character stats only — hint UI and AI calls removed (see TODO above)
   function runLint(){
-    const prompt = getCurrentPrompt();
-    const hints = [];
-    if(!/\b(bpm|BPM|\d{2,3}\s?bpm)\b/.test(prompt)) hints.push('Kein BPM gefunden – füge z.B. "120 bpm" hinzu.');
-    if(!/vocal|vocals|singer|choir/i.test(prompt)) hints.push('Kein Gesangsstil erwähnt – füge eine klare Vocal-Charakteristik hinzu.');
-    if(!/\b(kick|snare|drums|percussion|beat)\b/i.test(prompt)) hints.push('Keine Rhythmus-/Drum-Hinweise – ein kurzer Hinweis kann helfen.');
-    if(/,{2,}/.test(prompt)) hints.push('Doppelte Kommas gefunden – bereinige die Aufzählungen.');
-    if(prompt.split(/\s+/).length>150) hints.push('Sehr viele Wörter – erwäge eine Verdichtung.');
-    lastRuleHint = hints[0] || null;
-    updateHintsUI();
-    scheduleSmartHints();
+    updateCharStats();
   }
 
   // Clean up old template data from localStorage

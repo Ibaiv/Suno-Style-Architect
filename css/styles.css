@@ -2069,6 +2069,57 @@ input[type=range]:hover::-webkit-slider-thumb {
     border-radius: 6px;
 }
 
+/* Category headers in command palette */
+.cmdk-category {
+    padding: 8px 16px 4px;
+    cursor: default;
+    pointer-events: none;
+    user-select: none;
+    margin-top: 6px;
+}
+
+.cmdk-category:first-child {
+    margin-top: 0;
+}
+
+.cmdk-category-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #64748b;
+}
+
+/* Indented tool items under categories */
+.cmdk-item.cmdk-tool {
+    padding-left: 28px;
+}
+
+.cmdk-item .cmdk-icon {
+    margin-right: 8px;
+    font-size: 14px;
+    width: 20px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.cmdk-item .cmdk-desc {
+    color: #64748b;
+    font-size: 11px;
+    margin-left: 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.cmdk-label-group {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    flex: 1;
+    overflow: hidden;
+}
+
 /* Action HUD */
 #action-hud {
     position: fixed;
@@ -5227,29 +5278,19 @@ input:focus-visible + .synth-effect-pill {
 .meister-char-overlay {
     position: absolute;
     bottom: 0;
-    left: 0;
     right: 0;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 4px 10px;
+    justify-content: flex-end;
+    padding: 6px 12px;
     font-size: 0.7rem;
     pointer-events: none;
     z-index: 5;
-    background: linear-gradient(
-        to top,
-        rgba(23, 23, 23, 0.95) 0%,
-        rgba(23, 23, 23, 0.7) 60%,
-        rgba(23, 23, 23, 0) 100%
-    );
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-    border-radius: 0 0 0.75rem 0.75rem;
-    gap: 8px;
+    border-radius: 0 0 0.75rem 0;
 }
 
 .meister-char-count {
-    opacity: 0.85;
+    opacity: 0.6;
     color: #a3a3a3;
     white-space: nowrap;
     flex-shrink: 0;
@@ -5257,23 +5298,7 @@ input:focus-visible + .synth-effect-pill {
 }
 
 .meister-char-overlay:hover .meister-char-count {
-    opacity: 1;
-}
-
-/* (C) Lint hints inline with char count */
-.meister-lint-inline {
     opacity: 0.9;
-    color: #fcd34d;
-    font-size: 0.7rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    min-width: 0;
-    flex: 1;
-}
-
-.meister-lint-inline:empty {
-    display: none;
 }
 
 /* =============================================
@@ -5523,18 +5548,28 @@ input:focus-visible + .synth-effect-pill {
 
     /* Transition class — applied for the duration of the animation */
     .app-main-layout.vision-focus-transitioning .app-top-row {
-        transition: grid-template-columns 420ms cubic-bezier(0.4, 0, 0.2, 1);
+        transition: grid-template-columns 420ms cubic-bezier(0.4, 0, 0.2, 1),
+                    column-gap 420ms cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .app-main-layout.vision-focus-transitioning .app-idea-card {
         transition: opacity 320ms ease, transform 320ms ease,
-                    padding 420ms cubic-bezier(0.4, 0, 0.2, 1),
-                    margin 420ms cubic-bezier(0.4, 0, 0.2, 1);
+                    padding 420ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .app-main-layout.vision-focus-transitioning .app-kreativ-stack {
+        transition: margin 420ms cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     /* ── Active state: Vision card collapsed to 0 ─────── */
     .app-main-layout.vision-focus-active .app-top-row {
         grid-template-columns: 0fr 1fr 1fr;
+        column-gap: 0;  /* remove phantom gap from collapsed 0fr column */
+    }
+
+    /* Re-add visual gap between the two visible columns */
+    .app-main-layout.vision-focus-active .app-kreativ-stack {
+        margin-left: 1rem;
     }
 
     .app-main-layout.vision-focus-active .app-idea-card {
@@ -5544,7 +5579,6 @@ input:focus-visible + .synth-effect-pill {
         padding: 0 !important;
         min-width: 0;
         pointer-events: none;
-        margin-right: -1rem;  /* absorb the gap-4 (16px) between ghost column and result column */
     }
 
     /* Inner content collapses so the 0fr track truly empties */
