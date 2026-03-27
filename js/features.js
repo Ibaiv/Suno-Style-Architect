@@ -2246,11 +2246,15 @@ function setupKlangStudio() {
         if(window.CloseStack) CloseStack.push(closeModal, { id: 'klang-studio' });
         // Phase 3 (P3-5): Push klang-studio scope
         if(window.ScopeStack) modal._scopeToken = ScopeStack.push('klang-studio');
+        // Focus trap: trap Tab/Shift+Tab within the modal, auto-focus first element
+        if(window.FocusTrap) modal._focusTrap = FocusTrap.activate(modal);
         updateTokenPreview();
     });
 
     // Close Modal
     const closeModal = () => {
+        // Deactivate focus trap (restores focus to trigger element)
+        if(window.FocusTrap && modal._focusTrap){ modal._focusTrap.deactivate(); modal._focusTrap = null; }
         if(window.CloseStack) CloseStack.pop('klang-studio');
         // Phase 3 (P3-5): Pop klang-studio scope
         if(window.ScopeStack && modal._scopeToken){ ScopeStack.pop(modal._scopeToken); modal._scopeToken = null; }

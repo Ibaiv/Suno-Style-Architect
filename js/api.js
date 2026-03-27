@@ -394,9 +394,18 @@ function setupModal(modal, openButton) {
         } else {
             if(window.CloseStack) CloseStack.push(close, { id: 'modal-' + modal.id });
         }
+        // Focus trap: trap Tab/Shift+Tab within the modal, auto-focus first element
+        if(window.FocusTrap){
+            modal._focusTrap = FocusTrap.activate(modal);
+        }
         document.dispatchEvent(new CustomEvent('modal:open', { detail: { id: modal.id } }));
     };
     const close = () => {
+        // Deactivate focus trap before cleanup (restores focus to trigger element)
+        if(window.FocusTrap && modal._focusTrap){
+            modal._focusTrap.deactivate();
+            modal._focusTrap = null;
+        }
         // Clean up scope + CloseStack when called directly (not via Escape)
         if(modal._scopeBinding){
             // Pop the CloseStack ghost entry (removes without calling linked closeFn)

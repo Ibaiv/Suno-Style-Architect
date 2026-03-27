@@ -10421,6 +10421,10 @@ function openIdeaStarter() {
     }
     // CloseStack integration — Escape closes this modal
     if(window.CloseStack) CloseStack.push(closeIdeaStarter, { id: 'creative-cosmos' });
+    // Focus trap: trap Tab/Shift+Tab within the modal, auto-focus first element
+    if(window.FocusTrap){
+        modal._focusTrap = FocusTrap.activate(modal);
+    }
 
     if (!currentWorldId) {
         selectWorld('orchestra_treatise'); // Default
@@ -10429,6 +10433,11 @@ function openIdeaStarter() {
 
 function closeIdeaStarter() {
     const modal = document.getElementById('idea-starter-modal');
+    // Deactivate focus trap (restores focus to trigger element)
+    if(window.FocusTrap && modal._focusTrap){
+        modal._focusTrap.deactivate();
+        modal._focusTrap = null;
+    }
     modal.classList.add('hidden');
     modal.classList.remove('flex');
     // Pop CloseStack entry (safe if already popped by Escape)
