@@ -105,12 +105,24 @@
       toggle();
     });
 
-    // Insert before the undo controls (or at start of header)
-    var undoControls = header.querySelector('.bd-undo-controls');
-    if (undoControls) {
-      header.insertBefore(btn, undoControls);
+    // Insert into the header actions area (issue #107 moved controls into .meister-header-actions)
+    var actionsArea = header.querySelector('.meister-header-actions');
+    if (actionsArea) {
+      // Insert before the divider that separates tool buttons from undo controls
+      var divider = actionsArea.querySelector('.meister-header-divider');
+      if (divider) {
+        actionsArea.insertBefore(btn, divider);
+      } else {
+        actionsArea.insertBefore(btn, actionsArea.firstChild);
+      }
     } else {
-      header.appendChild(btn);
+      // Fallback for layouts without .meister-header-actions
+      var undoControls = header.querySelector('.bd-undo-controls');
+      if (undoControls && undoControls.parentNode === header) {
+        header.insertBefore(btn, undoControls);
+      } else {
+        header.appendChild(btn);
+      }
     }
   }
 
@@ -201,7 +213,7 @@
     resultCard = topRow.querySelector('.app-result-card');
     if (!visionCard || !resultCard) return;
 
-    createBtn();
+    try { createBtn(); } catch (_) { /* button injection is optional */ }
     registerShortcut();
 
     // Restore persisted state (without animation)
