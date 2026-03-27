@@ -10487,13 +10487,19 @@ function renderWorldTabs() {
         // Hover logic for Portal Dropdown
         let dropdownTimeout;
 
+        const removeDropdown = (ddEl) => {
+            if(!ddEl) return;
+            ddEl.remove();
+            if(window.CloseStack) CloseStack.pop('portal-dropdown');
+        };
+
         const showPortalDropdown = () => {
             clearTimeout(dropdownTimeout);
             // Check if already open
             if (document.getElementById(`dropdown-${groupId}`)) return;
 
-            // Close other dropdowns
-            document.querySelectorAll('.portal-dropdown').forEach(el => el.remove());
+            // Close other dropdowns (and their CloseStack entries)
+            document.querySelectorAll('.portal-dropdown').forEach(el => removeDropdown(el));
 
             const rect = mainBtn.getBoundingClientRect();
 
@@ -10511,7 +10517,7 @@ function renderWorldTabs() {
                 itemBtn.onclick = (e) => {
                     e.stopPropagation();
                     selectWorld(item.id);
-                    dropdown.remove(); // Close on selection
+                    removeDropdown(dropdown); // Close on selection
                 };
 
                 // Highlight active
@@ -10525,16 +10531,18 @@ function renderWorldTabs() {
             // Handle mouse interactions on dropdown
             dropdown.onmouseenter = () => clearTimeout(dropdownTimeout);
             dropdown.onmouseleave = () => {
-                dropdownTimeout = setTimeout(() => dropdown.remove(), 200);
+                dropdownTimeout = setTimeout(() => removeDropdown(dropdown), 200);
             };
 
             document.body.appendChild(dropdown);
+            // Register with CloseStack so Escape closes the dropdown
+            if(window.CloseStack) CloseStack.push(function(){ removeDropdown(document.getElementById(`dropdown-${groupId}`)); }, { id: 'portal-dropdown' });
         };
 
         const hidePortalDropdown = () => {
             dropdownTimeout = setTimeout(() => {
                 const dropdown = document.getElementById(`dropdown-${groupId}`);
-                if (dropdown) dropdown.remove();
+                if (dropdown) removeDropdown(dropdown);
             }, 200);
         };
 

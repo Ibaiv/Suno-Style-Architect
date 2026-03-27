@@ -124,6 +124,8 @@ function showMainApp() {
     document.body.classList.add('app-no-scroll');
     // settingsButton may not exist in the DOM; guard access to avoid runtime errors
     if (settingsButton) settingsButton.classList.remove('hidden');
+    // Clean up CloseStack entry if api-setup was opened via keyboard shortcut
+    if(window.CloseStack) CloseStack.pop('api-setup');
 }
 
 function showSettings() {

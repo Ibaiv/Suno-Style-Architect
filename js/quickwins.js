@@ -407,7 +407,11 @@
   }
   function openSettings(){
     const modal = document.getElementById('api-setup-modal');
-    if(modal) modal.style.display = 'flex';
+    if(!modal) return;
+    modal.style.display = 'flex';
+    if(window.CloseStack) CloseStack.push(function(){
+      modal.style.display = 'none';
+    }, { id: 'api-setup' });
   }
 
   // Phase 4 (P4-8): Button hints — add shortcut labels to key UI elements
@@ -499,10 +503,17 @@
     const panel = $('history-panel'); const ov = $('history-overlay');
     if(!panel||!ov) return;
     const open = !panel.classList.contains('open');
-    if(open){ panel.classList.add('open'); ov.classList.remove('hidden'); renderHistory(); }
-    else { panel.classList.remove('open'); ov.classList.add('hidden'); }
+    if(open){
+      panel.classList.add('open'); ov.classList.remove('hidden'); renderHistory();
+      if(window.CloseStack) CloseStack.push(closeHistory, { id: 'history-panel' });
+    } else {
+      closeHistory();
+    }
   }
-  function closeHistory(){ const p=$('history-panel'), o=$('history-overlay'); if(p&&o){ p.classList.remove('open'); o.classList.add('hidden'); } }
+  function closeHistory(){
+    if(window.CloseStack) CloseStack.pop('history-panel');
+    const p=$('history-panel'), o=$('history-overlay'); if(p&&o){ p.classList.remove('open'); o.classList.add('hidden'); }
+  }
 
   // Helpers
   function escapeHtml(s){ return (s||'').replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c])); }
