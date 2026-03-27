@@ -758,6 +758,7 @@ body.bd-body-resizing iframe {
 #result-text {
     overflow-y: auto;
     overflow-x: hidden;
+    padding-bottom: 24px !important;  /* space for char-stats overlay (#107) */
 
     /* Hide scrollbar – WebKit (Chrome, Safari, Edge) */
     scrollbar-width: none;            /* Firefox */
@@ -5180,4 +5181,284 @@ input:focus-visible + .synth-effect-pill {
 @keyframes ve-pulse-text {
     0%, 100% { opacity: 0.7; }
     50% { opacity: 1; }
+}
+
+/* ── Issue #107: Meisterstück space optimization ── */
+
+/* (A) Header row icon buttons for Auto-Kürzen, Export, Import */
+.meister-header-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.meister-header-icon-btn {
+    background: rgba(15, 23, 42, 0.3);
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: 6px;
+    color: rgba(148, 163, 184, 0.6);
+    cursor: pointer;
+    padding: 5px;
+    line-height: 1;
+    transition: all 150ms ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.meister-header-icon-btn:hover {
+    color: #e5e7eb;
+    border-color: rgba(148, 163, 184, 0.35);
+    background: rgba(15, 23, 42, 0.45);
+}
+
+.meister-header-icon-btn svg {
+    display: block;
+}
+
+.meister-header-divider {
+    width: 1px;
+    height: 16px;
+    background: rgba(148, 163, 184, 0.18);
+    margin: 0 2px;
+}
+
+/* (B) Character count overlay inside textarea */
+.meister-textarea-wrapper {
+    position: relative;
+}
+
+.meister-char-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 10px;
+    font-size: 0.7rem;
+    pointer-events: none;
+    z-index: 5;
+    background: linear-gradient(to top, rgba(23, 23, 23, 0.85) 0%, rgba(23, 23, 23, 0) 100%);
+    border-radius: 0 0 0.75rem 0.75rem;
+    gap: 8px;
+}
+
+.meister-char-count {
+    opacity: 0.6;
+    color: #a3a3a3;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: opacity 150ms ease;
+}
+
+.meister-char-overlay:hover .meister-char-count {
+    opacity: 0.9;
+}
+
+/* (C) Lint hints inline with char count */
+.meister-lint-inline {
+    opacity: 0.7;
+    color: #fcd34d;
+    font-size: 0.7rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+    flex: 1;
+}
+
+.meister-lint-inline:empty {
+    display: none;
+}
+
+/* =============================================
+   MOBILE RESPONSIVE — Full-screen modals
+   Issue #67: grids overflow on mobile
+   ============================================= */
+
+@media (max-width: 768px) {
+
+    /* ---- Global modal fixes ---- */
+
+    /* Idea-Starter & Klang-Studio modal windows:
+       Remove fixed 95vw/90vh sizing, fill the viewport instead */
+    #idea-starter-modal > div > div,
+    #klang-studio-modal .ks-layout {
+        width: 100vw !important;
+        height: 100vh !important;
+        height: 100dvh !important;
+        border-radius: 0 !important;
+        max-width: 100% !important;
+    }
+
+    /* Remove outer padding that wastes space on mobile */
+    #idea-starter-modal > .relative,
+    #klang-studio-modal > .relative {
+        padding: 0 !important;
+    }
+
+    /* Style-Sync Studio: reduce padding on mobile */
+    #style-sync-studio > .relative {
+        padding: 12px !important;
+    }
+
+    /* ---- Idea-Starter modal ---- */
+
+    /* Reduce header padding */
+    #idea-starter-modal .border-b.p-6 {
+        padding: 12px 16px !important;
+    }
+
+    #idea-starter-modal .border-b h2 {
+        font-size: 1.25rem !important;
+    }
+
+    /* World tabs: smaller on mobile */
+    #world-tabs {
+        gap: 6px !important;
+        justify-content: flex-start !important;
+    }
+
+    /* Content area: reduce padding */
+    #world-content-area {
+        padding: 16px !important;
+    }
+
+    /* Footer: stack or reduce padding */
+    #idea-starter-modal .border-t.p-6 {
+        padding: 10px 12px !important;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    /* ---- Klang-Studio modal ---- */
+
+    /* Header: reduce padding */
+    .ks-header {
+        padding: 10px 12px !important;
+        gap: 8px !important;
+    }
+
+    .ks-header h2 {
+        font-size: 1.1rem !important;
+    }
+
+    /* Main grid: switch from 2-row fixed ratio to auto-flowing column */
+    .ks-main-grid {
+        grid-template-rows: 1fr !important;
+        padding: 8px 10px !important;
+        gap: 8px !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+    }
+
+    /* Bottom section: collapse 3 columns to single column */
+    .ks-bottom-section {
+        grid-template-columns: 1fr !important;
+        gap: 8px !important;
+        overflow-y: auto !important;
+    }
+
+    /* Compact grid: single column on mobile */
+    .ks-compact-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Footer: reduce padding */
+    .ks-footer {
+        padding: 8px 12px !important;
+    }
+
+    /* ---- Orchestra Designer ---- */
+
+    /* 3-column grid -> single column stack */
+    .ks-orch-grid {
+        grid-template-columns: 1fr !important;
+        overflow-y: auto !important;
+    }
+
+    /* Left column: reduce min-height on token panel */
+    .ks-orch-token-panel {
+        min-height: 120px !important;
+    }
+
+    /* Bottom grid: single column */
+    .ks-orch-bottom-grid {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+    }
+
+    /* Room presets: allow wrapping */
+    .ks-orch-room-presets {
+        flex-wrap: wrap !important;
+    }
+
+    .ks-orch-room-btn {
+        min-width: 60px !important;
+        padding: 8px 12px !important;
+    }
+
+    /* Effect sliders: single column */
+    .ks-orch-effect-sliders {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* Reduce padding on orchestra panels */
+    .ks-orch-left,
+    .ks-orch-center,
+    .ks-orch-right {
+        padding: 10px !important;
+    }
+
+    .ks-orch-bottom {
+        padding: 10px 12px !important;
+    }
+
+    /* ---- Style-Sync Studio ---- */
+
+    /* Override h-1/3 on terminal display and drop zone —
+       they become far too small on mobile */
+    #style-sync-studio .terminal-display {
+        height: auto !important;
+        min-height: 120px !important;
+        max-height: 200px !important;
+    }
+
+    #style-sync-studio .drop-zone {
+        height: auto !important;
+        min-height: 140px !important;
+    }
+
+    /* Reduce glass-panel padding on mobile */
+    #style-sync-studio .glass-panel {
+        padding: 12px !important;
+        border-radius: 16px !important;
+    }
+
+    /* Studio header: reduce gap and size */
+    #style-sync-studio .flex.justify-between.items-center.mb-6 {
+        margin-bottom: 12px !important;
+    }
+
+    #style-sync-studio h2 {
+        font-size: 1.25rem !important;
+    }
+
+    /* ---- Modals.js injected modals (smaller modals) ---- */
+
+    /* Ensure all modal-content containers are scrollable and fit viewport */
+    .modal-content {
+        max-height: 90vh !important;
+        max-height: 90dvh !important;
+        overflow-y: auto !important;
+        margin: 0 auto;
+    }
+
+    /* Synth Designer modal grids: ensure they don't overflow */
+    #synth-designer-modal .modal-content {
+        max-width: 100% !important;
+        width: 100% !important;
+    }
 }
