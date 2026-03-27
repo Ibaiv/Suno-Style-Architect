@@ -214,7 +214,7 @@ const generatePrompt = async () => {
         if(window.QW){ window.QW.onPromptUpdated({source:'generate'}); }
     } catch (error) {
         console.error("Error calling API:", error);
-        showError(`Ein Fehler ist aufgetreten: ${error.message}.`);
+        showError(getUserFriendlyErrorMessage(error));
         setKlugToolsState(false);
     } finally {
         setLoading(false);
@@ -246,6 +246,7 @@ const refinePro = async () => {
         const originalText = sunoProText.textContent;
         sunoProText.textContent = 'Fehler';
         setTimeout(() => { sunoProText.textContent = originalText; }, 2000);
+        showToast(getUserFriendlyErrorMessage(error), 'error');
     } finally {
         setProLoading(false);
         sunoProButton.disabled = false;
