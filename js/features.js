@@ -401,7 +401,7 @@ function setupVisualEngine() {
     openButton.addEventListener('click', (e) => {
         if (!FAL_API_KEY) {
             e.preventDefault(); e.stopPropagation();
-            alert('Bitte hinterlege zuerst einen gültigen Fal.ai API Key unter Einstellungen.');
+            showToast('Bitte hinterlege zuerst einen g\u00fcltigen Fal.ai API Key unter Einstellungen.', 'warning');
             if (typeof showSettings === 'function') showSettings();
         }
     }, { capture: true });
@@ -478,7 +478,7 @@ function setupVisualEngine() {
     analyzeButton.addEventListener('click', async () => {
         if (!generatedImageUrl) return;
         if (!API_KEY) {
-            alert('Bitte konfiguriere zuerst deinen OpenRouter API Key in den Einstellungen.');
+            showToast('Bitte konfiguriere zuerst deinen OpenRouter API Key in den Einstellungen.', 'warning');
             if (typeof showSettings === 'function') showSettings();
             return;
         }
@@ -1990,7 +1990,7 @@ function setupStyleSync() {
         transcodeBtn.addEventListener('click', async () => {
             const promptText = masterPromptDisplay.textContent;
             if (!promptText || promptText.startsWith('//')) {
-                alert('Bitte erstelle zuerst einen Musik-Prompt im Hauptfenster.');
+                showToast('Bitte erstelle zuerst einen Musik-Prompt im Hauptfenster.', 'warning');
                 return;
             }
 
@@ -2044,7 +2044,7 @@ function setupStyleSync() {
                 URL.revokeObjectURL(url);
             } catch (error) {
                 console.error('Download Error:', error);
-                alert('Fehler beim Herunterladen des Bildes.');
+                showToast('Fehler beim Herunterladen des Bildes.', 'error');
             }
         });
     }
@@ -2066,7 +2066,7 @@ function setupStyleSync() {
                 setTimeout(() => copyBtn.classList.remove('bg-green-500/50'), 1000);
             } catch (error) {
                 console.error('Copy Error:', error);
-                alert('Fehler beim Kopieren. Bitte versuche es erneut.');
+                showToast('Fehler beim Kopieren. Bitte versuche es erneut.', 'error');
             }
         });
     }
@@ -2149,7 +2149,7 @@ function setupStyleSync() {
             const maxSizeMB = 5;
             const maxSizeBytes = maxSizeMB * 1024 * 1024;
             if (file.size > maxSizeBytes) {
-                alert(`Die Datei ist zu groß (${(file.size / 1024 / 1024).toFixed(1)} MB). Maximale Größe: ${maxSizeMB} MB.`);
+                showToast(`Die Datei ist zu gro\u00df (${(file.size / 1024 / 1024).toFixed(1)} MB). Maximale Gr\u00f6\u00dfe: ${maxSizeMB} MB.`, 'error');
                 return;
             }
 

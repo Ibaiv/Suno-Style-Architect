@@ -48,3 +48,49 @@ const musicGenres = ["Acoustic", "Afrobeat", "Alternative", "Ambient", "Blues", 
 // App state variables
 let isPromptGenerated = false;
 let selectedKlugItems = []; // Generic state for selected tags in modals
+
+// === Global Toast Notification (replaces native alert()) ===
+function showToast(message, type = 'error', duration = 4500) {
+    const container = document.getElementById('ssa-toast-container');
+    if (!container) { console.warn('Toast container not found:', message); return; }
+
+    const iconSVGs = {
+        error: '<svg class="ssa-toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>',
+        warning: '<svg class="ssa-toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+        info: '<svg class="ssa-toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>'
+    };
+
+    const toast = document.createElement('div');
+    toast.className = `ssa-toast ssa-toast--${type}`;
+    toast.setAttribute('role', 'alert');
+    toast.innerHTML = `${iconSVGs[type] || iconSVGs.error}<span class="ssa-toast-message">${message}</span><button class="ssa-toast-close" aria-label="Schlie\u00dfen">\u00d7</button>`;
+
+    container.appendChild(toast);
+
+    // Trigger reflow then animate in
+    requestAnimationFrame(() => { toast.classList.add('show'); });
+
+    const dismiss = () => {
+        toast.classList.remove('show');
+        toast.classList.add('hiding');
+        toast.addEventListener('transitionend', () => toast.remove(), { once: true });
+        // Fallback removal in case transitionend doesn't fire
+        setTimeout(() => { if (toast.parentNode) toast.remove(); }, 300);
+    };
+
+    toast.querySelector('.ssa-toast-close').addEventListener('click', dismiss);
+    if (duration > 0) setTimeout(dismiss, duration);
+}
+
+// Show inline error inside a specific container element
+function showInlineError(containerId, message) {
+    const el = document.getElementById(containerId);
+    if (!el) { showToast(message, 'error'); return; }
+    el.innerHTML = `<svg class="ssa-inline-error-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg><span>${message}</span>`;
+    el.classList.remove('hidden');
+}
+
+function hideInlineError(containerId) {
+    const el = document.getElementById(containerId);
+    if (el) { el.classList.add('hidden'); el.innerHTML = ''; }
+}

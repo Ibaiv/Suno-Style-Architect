@@ -10661,7 +10661,7 @@ async function generateVision() {
 
     // Require at least one selection (either interactive-term or custom)
     if (selectedKeys.length === 0 && customTexts.length === 0) {
-        alert("Bitte klicke auf ein paar Begriffe im Text oder markiere Textpassagen, bevor du startest.");
+        showToast("Bitte klicke auf ein paar Begriffe im Text oder markiere Textpassagen, bevor du startest.", "warning");
         return;
     }
 
@@ -10709,7 +10709,7 @@ async function generateVision() {
         closeIdeaStarter();
 
     } catch (e) {
-        alert("Fehler bei der Generierung: " + e.message);
+        showToast("Fehler bei der Generierung: " + e.message, "error");
     } finally {
         btn.disabled = false;
         spinner.classList.add('hidden');

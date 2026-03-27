@@ -1619,7 +1619,7 @@
         var allPresets = DEFAULT_CHAIN_PRESETS.concat(userPresets);
 
         if (allPresets.length === 0) {
-            window.alert('Keine gespeicherten Presets vorhanden.');
+            showToast('Keine gespeicherten Presets vorhanden.', 'info');
             return;
         }
 
