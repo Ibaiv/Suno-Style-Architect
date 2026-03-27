@@ -5245,13 +5245,20 @@ input:focus-visible + .synth-effect-pill {
     font-size: 0.7rem;
     pointer-events: none;
     z-index: 5;
-    background: linear-gradient(to top, rgba(23, 23, 23, 0.85) 0%, rgba(23, 23, 23, 0) 100%);
+    background: linear-gradient(
+        to top,
+        rgba(23, 23, 23, 0.95) 0%,
+        rgba(23, 23, 23, 0.7) 60%,
+        rgba(23, 23, 23, 0) 100%
+    );
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     border-radius: 0 0 0.75rem 0.75rem;
     gap: 8px;
 }
 
 .meister-char-count {
-    opacity: 0.6;
+    opacity: 0.85;
     color: #a3a3a3;
     white-space: nowrap;
     flex-shrink: 0;
@@ -5259,12 +5266,12 @@ input:focus-visible + .synth-effect-pill {
 }
 
 .meister-char-overlay:hover .meister-char-count {
-    opacity: 0.9;
+    opacity: 1;
 }
 
 /* (C) Lint hints inline with char count */
 .meister-lint-inline {
-    opacity: 0.7;
+    opacity: 0.9;
     color: #fcd34d;
     font-size: 0.7rem;
     overflow: hidden;
