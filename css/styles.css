@@ -5530,7 +5530,8 @@ input:focus-visible + .synth-effect-pill {
 
     .app-main-layout.vision-focus-transitioning .app-idea-card {
         transition: opacity 320ms ease, transform 320ms ease,
-                    padding 420ms cubic-bezier(0.4, 0, 0.2, 1);
+                    padding 420ms cubic-bezier(0.4, 0, 0.2, 1),
+                    margin 420ms cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     /* ── Active state: Vision card collapsed to 0 ─────── */
@@ -5545,6 +5546,7 @@ input:focus-visible + .synth-effect-pill {
         padding: 0 !important;
         min-width: 0;
         pointer-events: none;
+        margin-right: -1rem;  /* absorb the gap-4 (16px) between ghost column and result column */
     }
 
     /* Inner content collapses so the 0fr track truly empties */
