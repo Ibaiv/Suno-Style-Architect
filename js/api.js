@@ -14,6 +14,11 @@ function getUserFriendlyErrorMessage(error) {
         return 'Verbindungsfehler. Bitte prüfe deine Internetverbindung.';
     }
 
+    // User-initiated cancellation (distinct from timeout)
+    if (/user.?cancel/i.test(msg)) {
+        return 'Bildgenerierung wurde abgebrochen.';
+    }
+
     // Timeout
     if (/timeout|aborted|abort/i.test(msg)) {
         return 'Die Anfrage hat zu lange gedauert. Bitte prüfe deine Internetverbindung und versuche es erneut.';

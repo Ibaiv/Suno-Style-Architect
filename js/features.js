@@ -141,8 +141,7 @@ function setupExpertRefinement(type, systemPrompt) {
         const userQuery = `Prompt: "${currentPrompt}"\nInfluence Level: ${influence}`;
         try {
             const refined = await callOpenRouterAPI(userQuery, systemPrompt);
-            if (window.BdUndo) window.BdUndo.captureBeforeApply(type);
-            document.getElementById('result-text').textContent = refined;
+            applyPromptWithUndo(refined, type);
             if (window.QW) { window.QW.onPromptUpdated({ source: `expert:${type}` }); }
             modalLogic.close();
         } catch (error) {
@@ -188,8 +187,7 @@ function setupSoundEngineer() {
 
         try {
             const refined = await callOpenRouterAPI(userQuery, SOUND_ENGINEER_PROMPT);
-            if (window.BdUndo) window.BdUndo.captureBeforeApply('Sound Engineer');
-            document.getElementById('result-text').textContent = refined;
+            applyPromptWithUndo(refined, 'Sound Engineer');
             if (window.QW) { window.QW.onPromptUpdated({ source: 'sound-engineer' }); }
             modalLogic.close();
         } catch (error) {
@@ -358,10 +356,7 @@ Sound Design Choices:
         try {
             const translated = await callOpenRouterAPI(userQuery, SYNTH_DESIGN_TRANSLATOR_PROMPT);
             const updatedPrompt = appendPromptSentence(trimmedPrompt, translated);
-            if (resultTextEl) {
-                if (window.BdUndo) window.BdUndo.captureBeforeApply('Synth Designer');
-                resultTextEl.textContent = updatedPrompt;
-            }
+            applyPromptWithUndo(updatedPrompt, 'Synth Designer');
             if (window.QW) {
                 window.QW.onPromptUpdated({ source: 'klug:synth-designer' });
             }
@@ -392,6 +387,13 @@ function setupVisualEngine() {
     const analyzeText = document.getElementById('analyze-image-text');
     const analyzeLoader = document.getElementById('analyze-image-loader');
 
+    // Progress indicator elements
+    const progressArea = document.getElementById('ve-progress-area');
+    const progressBar = document.getElementById('ve-progress-bar');
+    const progressStatus = document.getElementById('ve-progress-status');
+    const progressElapsed = document.getElementById('ve-progress-elapsed');
+    const cancelBtn = document.getElementById('ve-cancel-btn');
+
     if (!modal || !openButton || !input || !generateButton || !output || !analyzeButton) return;
 
     // Prevent double initialization
@@ -411,17 +413,84 @@ function setupVisualEngine() {
     let generatedImageUrl = null;
     let genReqId = 0;
     let anaReqId = 0;
+    let currentAbortController = null;
+    let elapsedTimerId = null;
+
+    // --- Progress indicator helpers ---
+    const showProgress = () => {
+        if (progressArea) progressArea.classList.add('active');
+        output.style.display = 'none';
+    };
+    const hideProgress = () => {
+        if (progressArea) progressArea.classList.remove('active');
+        output.style.display = '';
+        stopElapsedTimer();
+        if (progressBar) progressBar.style.width = '0%';
+        if (progressStatus) {
+            progressStatus.textContent = 'Bild wird generiert...';
+            progressStatus.classList.remove('ve-status-warning');
+        }
+        if (progressElapsed) progressElapsed.textContent = '';
+    };
+    const startElapsedTimer = () => {
+        const startTime = Date.now();
+        const updateElapsed = () => {
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            const mins = Math.floor(elapsed / 60);
+            const secs = elapsed % 60;
+            if (progressElapsed) {
+                progressElapsed.textContent = mins > 0
+                    ? `${mins}:${String(secs).padStart(2, '0')} vergangen`
+                    : `${secs}s vergangen`;
+            }
+            // Update progress bar (estimate based on 120s max)
+            if (progressBar) {
+                const pct = Math.min((elapsed / 120) * 95, 95);
+                progressBar.style.width = pct + '%';
+            }
+            // Show warning after 30s
+            if (elapsed >= 30 && progressStatus) {
+                progressStatus.textContent = 'Dauert l\u00e4nger als erwartet \u2013 bitte Geduld...';
+                progressStatus.classList.add('ve-status-warning');
+            }
+        };
+        updateElapsed();
+        elapsedTimerId = setInterval(updateElapsed, 1000);
+    };
+    const stopElapsedTimer = () => {
+        if (elapsedTimerId) {
+            clearInterval(elapsedTimerId);
+            elapsedTimerId = null;
+        }
+    };
+    const cancelGeneration = () => {
+        if (currentAbortController) {
+            currentAbortController.abort(new Error('user-cancel'));
+            currentAbortController = null;
+        }
+    };
+
+    // Attach cancel button listener
+    if (cancelBtn) cancelBtn.addEventListener('click', cancelGeneration);
 
     const resetUI = () => {
         generatedImageUrl = null;
         analyzeButton.classList.add('hidden');
+        hideProgress();
         output.innerHTML = `<p class="text-neutral-500 text-sm">Bild wird hier angezeigt...</p>`;
         input.value = input.value || '';
+        // Cancel any in-flight request when modal resets
+        cancelGeneration();
     };
 
     // Reset UI whenever modal opens
     document.addEventListener('modal:open', (ev) => {
         if (ev.detail?.id === 'visual-engine-modal') resetUI();
+    });
+
+    // Also cancel on modal close
+    document.addEventListener('modal:close', (ev) => {
+        if (ev.detail?.id === 'visual-engine-modal') cancelGeneration();
     });
 
     const setGenLoading = (isLoading) => {
@@ -446,14 +515,38 @@ function setupVisualEngine() {
             output.innerHTML = `<p class="text-amber-300 text-sm">Bitte gib eine Beschreibung ein.</p>`;
             return;
         }
+
+        // Abort any previous in-flight request
+        cancelGeneration();
+
+        // Create new AbortController for this request
+        const abortController = new AbortController();
+        currentAbortController = abortController;
+
         setGenLoading(true);
         const myId = ++genReqId;
-        output.innerHTML = `<div class="animate-spin h-6 w-6 text-blue-400"></div>`;
         analyzeButton.classList.add('hidden');
+
+        // Show progress indicator instead of output area
+        showProgress();
+        if (progressStatus) {
+            progressStatus.textContent = 'Bild wird generiert... Dies kann bis zu 2 Minuten dauern.';
+            progressStatus.classList.remove('ve-status-warning');
+        }
+        startElapsedTimer();
+
         try {
-            // Use default timeout (120s) from api.js to support slower models like Nano Banana Pro
-            const url = await callFalAPI(prompt, { retries: 2 });
+            // Pass the AbortController signal to callFalAPI for cancellation support
+            const url = await callFalAPI(prompt, { retries: 2, signal: abortController.signal });
             if (myId !== genReqId) return; // stale
+
+            // Update status during image preload
+            if (progressStatus) {
+                progressStatus.textContent = 'Bild wird geladen...';
+                progressStatus.classList.remove('ve-status-warning');
+            }
+            if (progressBar) progressBar.style.width = '98%';
+
             // Preload image
             await new Promise((resolve, reject) => {
                 const img = new Image();
@@ -461,13 +554,27 @@ function setupVisualEngine() {
                 img.onerror = reject;
                 img.src = url + (url.includes('?') ? '&' : '?') + 't=' + Date.now();
             });
+
+            // Hide progress, show result
+            hideProgress();
             generatedImageUrl = url;
             output.innerHTML = `<img src="${url}" alt="Generiertes Bild" class="rounded-lg w-full h-auto">`;
             analyzeButton.classList.remove('hidden');
         } catch (error) {
-            console.error('Fal.ai error', error);
-            output.innerHTML = `<p class="text-red-400 text-sm">${getUserFriendlyErrorMessage(error)}</p>`;
+            hideProgress();
+            // Check if this was a user-initiated cancellation
+            const isUserCancel = error?.message?.includes('user-cancel') ||
+                                 (abortController.signal.aborted && abortController.signal.reason?.message?.includes('user-cancel'));
+            if (isUserCancel) {
+                output.innerHTML = `<p class="text-neutral-400 text-sm">Bildgenerierung wurde abgebrochen.</p>`;
+            } else {
+                console.error('Fal.ai error', error);
+                output.innerHTML = `<p class="text-red-400 text-sm">${getUserFriendlyErrorMessage(error)}</p>`;
+            }
         } finally {
+            if (currentAbortController === abortController) {
+                currentAbortController = null;
+            }
             setGenLoading(false);
         }
     });
@@ -498,8 +605,7 @@ function setupVisualEngine() {
             const initialState = document.getElementById('initial-state');
             const resultContainer = document.getElementById('result-container');
             if (resultText) {
-                if (window.BdUndo) window.BdUndo.captureBeforeApply('Visual Engine');
-                resultText.textContent = generatedText;
+                applyPromptWithUndo(generatedText, 'Visual Engine');
             }
             if (initialState) initialState.classList.add('hidden');
             if (resultContainer) {
@@ -597,8 +703,7 @@ function setupAdaptiveFlow() {
 
             const applyButton = output.querySelector('#apply-adaptive-flow-button');
             applyButton?.addEventListener('click', () => {
-                if (window.BdUndo) window.BdUndo.captureBeforeApply('Adaptive Flow');
-                document.getElementById('result-text').textContent = cleanPrompt;
+                applyPromptWithUndo(cleanPrompt, 'Adaptive Flow');
                 if (window.QW) { window.QW.onPromptUpdated({ source: 'future-lab:adaptive-flow' }); }
                 modalLogic.close();
             });
@@ -705,8 +810,7 @@ function setupAiCollaboration() {
 
             const applyButton = output.querySelector('#apply-ai-collab-button');
             applyButton?.addEventListener('click', () => {
-                if (window.BdUndo) window.BdUndo.captureBeforeApply('AI Collab');
-                document.getElementById('result-text').textContent = cleanPrompt;
+                applyPromptWithUndo(cleanPrompt, 'AI Collab');
                 if (window.QW) { window.QW.onPromptUpdated({ source: 'future-lab:ai-collab' }); }
                 modalLogic.close();
             });
@@ -769,8 +873,7 @@ function setupStoryArcDesigner() {
 
             const applyButton = output.querySelector('#apply-story-arc-button');
             applyButton?.addEventListener('click', () => {
-                if (window.BdUndo) window.BdUndo.captureBeforeApply('Story Arc');
-                document.getElementById('result-text').textContent = cleanPrompt;
+                applyPromptWithUndo(cleanPrompt, 'Story Arc');
                 if (window.QW) { window.QW.onPromptUpdated({ source: 'future-lab:story-arc' }); }
                 modalLogic.close();
             });
@@ -1032,8 +1135,7 @@ function setupNarrativeChapters() {
                 const selected = data.chapters[index];
                 if (!selected) return;
 
-                if (window.BdUndo) window.BdUndo.captureBeforeApply('Narrative Chapters');
-                document.getElementById('result-text').textContent = selected.prompt;
+                applyPromptWithUndo(selected.prompt, 'Narrative Chapters');
                 if (window.QW) {
                     window.QW.onPromptUpdated({ source: `future-lab:narrative-chapters:chapter-${selected.index}` });
                 }
@@ -1187,8 +1289,7 @@ function setupImmersiveSpace() {
 
             const applyButton = output.querySelector('#apply-immersive-space-button');
             applyButton?.addEventListener('click', () => {
-                if (window.BdUndo) window.BdUndo.captureBeforeApply('Immersive Space');
-                document.getElementById('result-text').textContent = cleanPrompt;
+                applyPromptWithUndo(cleanPrompt, 'Immersive Space');
                 if (window.QW) { window.QW.onPromptUpdated({ source: 'future-lab:immersive-space' }); }
                 modalLogic.close();
             });
@@ -1297,8 +1398,7 @@ function setupHumanTouch() {
 
             const applyButton = output.querySelector('#apply-human-touch-result');
             applyButton?.addEventListener('click', () => {
-                if (window.BdUndo) window.BdUndo.captureBeforeApply('Human Touch');
-                document.getElementById('result-text').textContent = cleanPrompt;
+                applyPromptWithUndo(cleanPrompt, 'Human Touch');
                 if (window.QW) { window.QW.onPromptUpdated({ source: 'future-lab:human-touch' }); }
                 modalLogic.close();
             });
@@ -1476,8 +1576,7 @@ function setupGenreMixer() {
             const prompt = `Rewrite this prompt: "${document.getElementById('result-text').textContent}" to also incorporate a mix of the following genres: ${selectedGenres.join(', ')}`;
             try {
                 const response = await callOpenRouterAPI(prompt, GENRE_MIXER_PROMPT);
-                if (window.BdUndo) window.BdUndo.captureBeforeApply('Genre Mixer');
-                document.getElementById('result-text').textContent = response;
+                applyPromptWithUndo(response, 'Genre Mixer');
                 if (window.QW) { window.QW.onPromptUpdated({ source: 'genre-mixer' }); }
                 modalLogic.close();
             } catch (error) {
@@ -1567,8 +1666,7 @@ function setupKlugTagger(toolId, systemPrompt) {
         const prompt = `Original prompt: "${document.getElementById('result-text').textContent}". Integrate these elements: "${selectedKlugItems.join(', ')}".`;
         try {
             const refinedPrompt = await callOpenRouterAPI(prompt, PROMPT_REFINER_PROMPT);
-            if (window.BdUndo) window.BdUndo.captureBeforeApply('Klug: ' + toolId);
-            document.getElementById('result-text').textContent = refinedPrompt;
+            applyPromptWithUndo(refinedPrompt, 'Klug: ' + toolId);
             if (window.QW) { window.QW.onPromptUpdated({ source: `klug:${toolId}` }); }
             modalLogic.close();
         } catch (error) {
@@ -1601,9 +1699,9 @@ function setupHookGenerator() {
                 div.className = 'p-3 bg-neutral-800/20 border border-white/5 rounded-xl cursor-pointer hover:bg-white/10 transition-colors';
                 div.textContent = text.replace(/^- /, '');
                 div.onclick = () => {
-                    if (window.BdUndo) window.BdUndo.captureBeforeApply('Hook Generator');
                     const resultText = document.getElementById('result-text');
-                    resultText.textContent += (type === 'title' ? ` with the title "${div.textContent}"` : `, ${div.textContent}`);
+                    const newText = resultText.textContent + (type === 'title' ? ` with the title "${div.textContent}"` : `, ${div.textContent}`);
+                    applyPromptWithUndo(newText, 'Hook Generator');
                     modalLogic.close();
                 };
                 return div;
@@ -1659,8 +1757,7 @@ function setupSongStructure() {
                 btn.textContent = '...'; btn.disabled = true;
                 try {
                     const integratedPrompt = await callOpenRouterAPI(`Original prompt: "${document.getElementById('result-text').textContent}". Integrate this structure: "${structure}".`, STRUCTURE_INTEGRATOR_PROMPT);
-                    if (window.BdUndo) window.BdUndo.captureBeforeApply('Song Structure');
-                    document.getElementById('result-text').textContent = integratedPrompt;
+                    applyPromptWithUndo(integratedPrompt, 'Song Structure');
                     if (window.QW) { window.QW.onPromptUpdated({ source: 'song-structure' }); }
                     modalLogic.close();
                 } catch (error) {
@@ -1699,8 +1796,7 @@ function setupVibeEnhancer() {
                 </div>
             `;
             output.querySelector('#apply-vibe-button').onclick = () => {
-                if (window.BdUndo) window.BdUndo.captureBeforeApply('Vibe Enhancer');
-                document.getElementById('result-text').textContent = enhancedText;
+                applyPromptWithUndo(enhancedText, 'Vibe Enhancer');
                 if (window.QW) { window.QW.onPromptUpdated({ source: 'vibe-enhancer' }); }
                 modalLogic.close();
             };
@@ -1732,8 +1828,9 @@ function setupArtistSuggester() {
                 el.className = 'p-3 bg-neutral-800/20 border border-white/5 rounded-xl cursor-pointer hover:bg-white/10 transition-colors';
                 el.innerHTML = `<strong class="text-blue-400">${artist}</strong><p class="text-xs text-neutral-400">${justification}</p>`;
                 el.onclick = () => {
-                    if (window.BdUndo) window.BdUndo.captureBeforeApply('Artist Suggester');
-                    document.getElementById('result-text').textContent += `, in the style of ${artist}`;
+                    const resultText = document.getElementById('result-text');
+                    const newText = resultText.textContent + `, in the style of ${artist}`;
+                    applyPromptWithUndo(newText, 'Artist Suggester');
                     if (window.QW) { window.QW.onPromptUpdated({ source: 'artist-suggester' }); }
                     modalLogic.close();
                 };
@@ -1768,8 +1865,9 @@ function setupTempoFinder() {
                 </div>
             `;
             output.querySelector('.add-bpm-button').onclick = () => {
-                if (window.BdUndo) window.BdUndo.captureBeforeApply('Tempo Finder');
-                document.getElementById('result-text').textContent += `, ${bpmValue} bpm`;
+                const resultText = document.getElementById('result-text');
+                const newText = resultText.textContent + `, ${bpmValue} bpm`;
+                applyPromptWithUndo(newText, 'Tempo Finder');
                 if (window.QW) { window.QW.onPromptUpdated({ source: 'tempo-finder' }); }
                 modalLogic.close();
             };
@@ -1804,8 +1902,7 @@ function setupCustomInstruction() {
         const userQuery = `Base prompt: "${currentPrompt}"\nInstruction: "${instruction}"`;
         try {
             const refined = await callOpenRouterAPI(userQuery, CUSTOM_INSTRUCTION_PROMPT);
-            if (window.BdUndo) window.BdUndo.captureBeforeApply('Custom Instruction');
-            document.getElementById('result-text').textContent = refined;
+            applyPromptWithUndo(refined, 'Custom Instruction');
             if (window.QW) { window.QW.onPromptUpdated({ source: 'custom-instruction' }); }
             modalLogic.close();
         } catch (error) {
@@ -1910,8 +2007,7 @@ function setupGenreEvolution() {
 
         try {
             const refined = await callOpenRouterAPI(userQuery, GENRE_EVOLUTION_PROMPT);
-            if (window.BdUndo) window.BdUndo.captureBeforeApply('Genre Evolution');
-            document.getElementById('result-text').textContent = refined;
+            applyPromptWithUndo(refined, 'Genre Evolution');
             if (window.QW) { window.QW.onPromptUpdated({ source: 'get:timeline' }); }
             modalLogic.close();
         } catch (error) {
@@ -3179,12 +3275,11 @@ function setupKlangStudio() {
         const resultText = document.getElementById('result-text');
 
         if (resultText && token) {
-            if (window.BdUndo) window.BdUndo.captureBeforeApply('Klang Studio');
             const currentPrompt = resultText.textContent.trim();
             const updatedPrompt = currentPrompt
                 ? `${currentPrompt}, ${token}`
                 : token;
-            resultText.textContent = updatedPrompt;
+            applyPromptWithUndo(updatedPrompt, 'Klang Studio');
 
             if (window.QW) {
                 window.QW.onPromptUpdated({ source: 'klang-studio' });
@@ -3293,8 +3388,7 @@ Character: ${context.effects.character}`;
 
             // ALWAYS replace Meisterstück content entirely
             if (resultText && finalPrompt) {
-                if (window.BdUndo) window.BdUndo.captureBeforeApply('Klang Studio Orchestra');
-                resultText.textContent = finalPrompt;
+                applyPromptWithUndo(finalPrompt, 'Klang Studio Orchestra');
 
                 // Show the result container properly (same as generatePrompt)
                 const initialState = document.getElementById('initial-state');
@@ -3320,8 +3414,7 @@ Character: ${context.effects.character}`;
             // Fallback to non-AI token
             const fallbackToken = generateOrchestraToken();
             if (resultText && fallbackToken) {
-                if (window.BdUndo) window.BdUndo.captureBeforeApply('Klang Studio Orchestra');
-                resultText.textContent = fallbackToken;
+                applyPromptWithUndo(fallbackToken, 'Klang Studio Orchestra');
 
                 // Show the result container properly
                 const initialState = document.getElementById('initial-state');
