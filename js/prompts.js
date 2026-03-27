@@ -454,7 +454,9 @@ const EFFECT_CHAIN_PROMPT = `You are a creative audio engineer and effects speci
 - Output ONLY a comma-separated list of these effect chains.
 - The list must be in English.`;
 
-// Hint Selector Prompt for curated Hinweise
+// TODO [FUTURE]: HINT_SELECTOR_PROMPT removed — lint hint UI disabled.
+// See quickwins.js for CURATED_HINTS data and git history for full implementation.
+/*
 const HINT_SELECTOR_PROMPT = `You are a precise, conservative prompt linter for music AI prompts.
 
 You will receive:
@@ -470,6 +472,7 @@ Task:
 Output format:
 Return ONLY compact JSON with this exact shape:
 {"hint":"H05"}`;
+*/
 
 const VISUAL_ANALYZER_PROMPT = `You are a multimodal AI with a deep understanding of music and visual art. Your task is to act as a creative translator, turning visual information into a music style prompt for Suno AI.
 
