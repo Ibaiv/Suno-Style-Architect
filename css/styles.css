@@ -4551,3 +4551,134 @@ input:checked+.ks-preset-card,
     opacity: 0.5;
     font-weight: 400;
 }
+
+/* ===== Focus-Visible Indicators (Accessibility — Issue #62) ===== */
+
+/*
+ * Global focus-visible baseline for all interactive elements.
+ * Uses :focus-visible so outlines only appear for keyboard navigation,
+ * not mouse clicks. The blue ring is visible against the dark #0d0d0f
+ * background and matches the existing glassmorphism design language.
+ */
+
+/* --- 1. Universal interactive element focus ring --- */
+button:focus-visible,
+a:focus-visible,
+[role="button"]:focus-visible,
+[tabindex]:not([tabindex="-1"]):focus-visible,
+summary:focus-visible {
+    outline: 2px solid rgba(96, 165, 250, 0.6);
+    outline-offset: 2px;
+}
+
+/* --- 2. Form inputs (text, textarea, select) --- */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+    outline: 2px solid rgba(96, 165, 250, 0.6);
+    outline-offset: 0px;
+    border-color: rgba(59, 130, 246, 0.5) !important;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+/* --- 3. Range sliders — overrides outline:none from :focus rules --- */
+input[type="range"]:focus-visible,
+.synth-slider:focus-visible,
+.ks-slider:focus-visible,
+.ks-orch-slider:focus-visible {
+    outline: 2px solid rgba(96, 165, 250, 0.6);
+    outline-offset: 2px;
+}
+
+/* --- 4. KLUG buttons (tool grid) --- */
+.klug-btn:focus-visible {
+    outline: 2px solid rgba(96, 165, 250, 0.6);
+    outline-offset: 2px;
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.25);
+    border-color: rgba(59, 130, 246, 0.4) !important;
+}
+
+/* --- 5. Klang-Studio tab buttons --- */
+.ks-tab:focus-visible {
+    outline: 2px solid rgba(96, 165, 250, 0.6);
+    outline-offset: 2px;
+}
+
+/* --- 6. Klang-Studio radio cards (focus the hidden input's sibling) --- */
+.ks-radio-card:focus-visible,
+input:focus-visible + .ks-radio-card {
+    outline: 2px solid rgba(96, 165, 250, 0.6);
+    outline-offset: 2px;
+}
+
+/* --- 7. Kreativ panels --- */
+.kreativ-panel:focus-visible {
+    outline: 2px solid rgba(96, 165, 250, 0.6);
+    outline-offset: 2px;
+    box-shadow: 0 0 25px rgba(59, 130, 246, 0.2);
+}
+
+/* --- 8. App menu chip buttons --- */
+.app-menu-chip:focus-visible {
+    outline: 2px solid rgba(96, 165, 250, 0.6);
+    outline-offset: 2px;
+}
+
+/* --- 9. Generate button --- */
+#generate-button:focus-visible {
+    outline: 2px solid rgba(96, 165, 250, 0.8);
+    outline-offset: 2px;
+    box-shadow: 0 0 20px rgba(37, 99, 235, 0.5), 0 0 0 4px rgba(59, 130, 246, 0.15);
+}
+
+/* --- 10. Synth effect pills (label elements for checkboxes) --- */
+.synth-effect-pill:focus-visible,
+input:focus-visible + .synth-effect-pill {
+    outline: 2px solid rgba(96, 165, 250, 0.6);
+    outline-offset: 2px;
+}
+
+/* --- 11. Klang-Studio selects --- */
+.ks-select:focus-visible {
+    outline: 2px solid rgba(96, 165, 250, 0.6);
+    outline-offset: 0px;
+    border-color: var(--ks-primary) !important;
+    box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.15);
+}
+
+.ks-orch-select:focus-visible {
+    outline: 2px solid rgba(96, 165, 250, 0.6);
+    outline-offset: 0px;
+    border-color: rgba(6, 182, 212, 0.5) !important;
+}
+
+/* --- 12. Bottom dashboard tool cards --- */
+.bd-tool-card:focus-visible {
+    outline: 2px solid rgba(96, 165, 250, 0.4);
+    outline-offset: -1px;
+    z-index: 2;
+}
+.bd-col-purple .bd-tool-card:focus-visible {
+    outline-color: rgba(168, 85, 247, 0.6);
+}
+.bd-col-cyan .bd-tool-card:focus-visible {
+    outline-color: rgba(34, 211, 238, 0.6);
+}
+.bd-col-emerald .bd-tool-card:focus-visible {
+    outline-color: rgba(52, 211, 153, 0.6);
+}
+
+/* --- 13. Bottom dashboard search input --- */
+.bd-search-input:focus-visible {
+    outline: 2px solid rgba(96, 165, 250, 0.6);
+    outline-offset: 0px;
+    border-color: rgba(96, 165, 250, 0.4) !important;
+}
+
+/* --- 14. Selection popup note input --- */
+#selection-popup-menu #note-input:focus-visible {
+    outline: 2px solid rgba(250, 204, 21, 0.6);
+    outline-offset: 0px;
+    border-color: rgba(250, 204, 21, 0.5) !important;
+    box-shadow: 0 0 0 2px rgba(250, 204, 21, 0.15);
+}
