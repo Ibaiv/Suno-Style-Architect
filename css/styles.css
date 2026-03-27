@@ -2519,7 +2519,7 @@ input:checked+.synth-effect-pill {
 .ks-panel-header {
     font-size: 0.65rem;
     font-weight: 700;
-    color: #737373;
+    color: #9ca3af;
     text-transform: uppercase;
     letter-spacing: 0.15em;
     margin-bottom: 16px;
@@ -2575,7 +2575,7 @@ input:checked+.ks-radio-card .ks-card-label {
 
 .ks-card-sublabel {
     font-size: 0.7rem;
-    color: #525252;
+    color: #8b8b8b;
 }
 
 /* Klang-Studio Sliders */
