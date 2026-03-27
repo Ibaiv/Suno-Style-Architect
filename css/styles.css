@@ -4369,15 +4369,6 @@ input:checked+.ks-preset-card,
     opacity: 0.3;
     cursor: default;
 }
-.bd-undo-icon {
-    font-size: 0.85rem;
-}
-.bd-undo-count {
-    font-size: 0.65rem;
-    color: rgba(34, 211, 238, 0.7);
-    min-width: 12px;
-    text-align: center;
-}
 
 /* === Kachel-System: Quick-Apply (#96) === */
 .bd-quick-apply {

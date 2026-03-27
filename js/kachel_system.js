@@ -491,7 +491,6 @@
     function undoUpdateUI() {
         var undoBtn = document.getElementById('bd-undo-btn');
         var redoBtn = document.getElementById('bd-redo-btn');
-        var countEl = document.getElementById('bd-undo-count');
 
         if (undoBtn) {
             undoBtn.disabled = undoStack.length === 0;
@@ -510,9 +509,6 @@
             } else {
                 redoBtn.title = 'Wiederholen';
             }
-        }
-        if (countEl) {
-            countEl.textContent = undoStack.length > 0 ? ('\u21a9 ' + undoStack.length) : '';
         }
     }
 
