@@ -89,15 +89,16 @@ function saveSettings() {
     const model = modelSelect.value;
     
     if (!apiKey) {
-        alert('Bitte gib deinen OpenRouter API Key ein.');
+        showInlineError('api-setup-error', 'Bitte gib deinen OpenRouter API Key ein.');
         return;
     }
-    
+
     if (!apiKey.startsWith('sk-or-v1-')) {
-        alert('Der API Key sollte mit "sk-or-v1-" beginnen. Bitte überprüfe deinen Key.');
+        showInlineError('api-setup-error', 'Der API Key sollte mit "sk-or-v1-" beginnen. Bitte \u00fcberpr\u00fcfe deinen Key.');
         return;
     }
-    
+
+    hideInlineError('api-setup-error');
     API_KEY = apiKey;
     SELECTED_MODEL = model;
 
@@ -139,12 +140,37 @@ const setLoading = (isLoading) => {
     generateIcon.classList.toggle('hidden', isLoading);
 };
 
+let _errorAutoDismissTimer = null;
+
+const dismissError = () => {
+    if (_errorAutoDismissTimer) {
+        clearTimeout(_errorAutoDismissTimer);
+        _errorAutoDismissTimer = null;
+    }
+    errorContainer.classList.add('error-fade-out');
+    errorContainer.addEventListener('animationend', () => {
+        errorContainer.classList.add('hidden');
+        errorContainer.classList.remove('error-fade-out');
+    }, { once: true });
+};
+
 const showError = (message) => {
+    // Clear any pending auto-dismiss from a previous error
+    if (_errorAutoDismissTimer) {
+        clearTimeout(_errorAutoDismissTimer);
+        _errorAutoDismissTimer = null;
+    }
     errorMessage.textContent = message;
-    errorContainer.classList.remove('hidden');
+    errorContainer.classList.remove('hidden', 'error-fade-out');
     initialState.classList.remove('hidden');
     resultContainer.classList.add('hidden');
+
+    // Auto-dismiss after 8 seconds
+    _errorAutoDismissTimer = setTimeout(dismissError, 8000);
 };
+
+// Wire up the dismiss button
+document.getElementById('error-dismiss-btn')?.addEventListener('click', dismissError);
 
 const generatePrompt = async () => {
     const userInput = ideaInput.value.trim();
@@ -173,7 +199,9 @@ const generatePrompt = async () => {
     initialState.classList.add('hidden');
     resultContainer.classList.add('hidden');
     refinementControls.classList.add('hidden');
+    if (_errorAutoDismissTimer) { clearTimeout(_errorAutoDismissTimer); _errorAutoDismissTimer = null; }
     errorContainer.classList.add('hidden');
+    errorContainer.classList.remove('error-fade-out');
 
     try {
         const generatedText = await callOpenRouterAPI(userMessage, BASE_SYSTEM_PROMPT);
@@ -235,8 +263,8 @@ apiKeyInput.addEventListener('keydown', (e)=> { if(e.key === 'Enter'){ e.prevent
 sunoProButton.addEventListener('click', refinePro);
 generateButton.addEventListener('click', function(){ generatePrompt(); if(window.Tips) Tips.show('generate', generateButton); });
 ideaInput.addEventListener('keydown', (e) => e.key === 'Enter' && (e.metaKey || e.ctrlKey) && (e.preventDefault(), generatePrompt()));
-ideaInput.addEventListener('input', () => errorContainer.classList.add('hidden'));
-if (lyricInput) lyricInput.addEventListener('input', () => errorContainer.classList.add('hidden'));
+ideaInput.addEventListener('input', () => { if (_errorAutoDismissTimer) { clearTimeout(_errorAutoDismissTimer); _errorAutoDismissTimer = null; } errorContainer.classList.add('hidden'); errorContainer.classList.remove('error-fade-out'); });
+if (lyricInput) lyricInput.addEventListener('input', () => { if (_errorAutoDismissTimer) { clearTimeout(_errorAutoDismissTimer); _errorAutoDismissTimer = null; } errorContainer.classList.add('hidden'); errorContainer.classList.remove('error-fade-out'); });
 
 // === INITIALIZATION ===
 document.addEventListener('DOMContentLoaded', () => {
