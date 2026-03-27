@@ -220,6 +220,7 @@
 
   function handleModalKey(e){
     if(!_activeModal) return false;
+    if(e.metaKey || e.ctrlKey || e.altKey) return false;
     var modal = _activeModal;
     var d1to0 = ['1','2','3','4','5','6','7','8','9','0'];
     var slider = modal.querySelector('input[type="range"]');
