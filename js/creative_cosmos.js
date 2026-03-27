@@ -10136,7 +10136,7 @@ function showNoteInput(popup, selectedText, range) {
     popup.innerHTML = `
         <div class="note-input-container">
             <input type="text" id="note-input" placeholder="Notiz eingeben..." maxlength="100" />
-            <button id="confirm-note-btn">
+            <button id="confirm-note-btn" aria-label="Notiz bestätigen">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                 </svg>

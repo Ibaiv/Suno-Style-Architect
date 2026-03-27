@@ -16,7 +16,7 @@ function getModalsHTML() {
         <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-2xl">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-bold text-white">✨ Ideen-Funke</h2>
-                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none">&times;</button>
+                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none" aria-label="Schließen">&times;</button>
             </div>
             <p class="text-neutral-400 mb-4 text-sm">Gib ein Stichwort ein und erhalte 3 kreative Song-Ideen als Starthilfe.</p>
             <div class="flex gap-2 mb-4">
@@ -35,7 +35,7 @@ function getModalsHTML() {
         <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-md">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-bold text-white">Veredelung: Produzent</h2>
-                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none">&times;</button>
+                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none" aria-label="Schließen">&times;</button>
             </div>
             <p class="text-neutral-400 mb-4 text-sm">Bestimme, wie stark der Produzent den Prompt mit technischem Wissen (Mix, Sound-Design) beeinflussen soll.</p>
             <div class="mb-4">
@@ -56,7 +56,7 @@ function getModalsHTML() {
         <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-md">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-bold text-white">Veredelung: Musiker</h2>
-                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none">&times;</button>
+                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none" aria-label="Schließen">&times;</button>
             </div>
             <p class="text-neutral-400 mb-4 text-sm">Bestimme, wie stark der Musiker den Prompt mit musikalischem Wissen (Emotion, Instrumentierung) beeinflussen soll.</p>
             <div class="mb-4">
@@ -77,7 +77,7 @@ function getModalsHTML() {
         <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-md">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-bold text-white">Veredelung: Filmkomponist</h2>
-                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none">&times;</button>
+                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none" aria-label="Schließen">&times;</button>
             </div>
             <p class="text-neutral-400 mb-4 text-sm">Bestimme, wie stark der Komponist den Prompt mit cineastischem Wissen (Story, Spannung) beeinflussen soll.</p>
             <div class="mb-4">
@@ -98,7 +98,7 @@ function getModalsHTML() {
         <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-md">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-bold text-white">Veredelung: DJ / Remixer</h2>
-                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none">&times;</button>
+                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none" aria-label="Schließen">&times;</button>
             </div>
             <p class="text-neutral-400 mb-4 text-sm">Bestimme, wie stark der DJ den Prompt mit club-tauglichem Wissen (Groove, Energie) beeinflussen soll.</p>
             <div class="mb-4">
@@ -120,7 +120,7 @@ function getModalsHTML() {
         <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-md">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-bold text-white">Veredelung: Avantgarde-Klangkünstler</h2>
-                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none">&times;</button>
+                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none" aria-label="Schließen">&times;</button>
             </div>
             <p class="text-neutral-400 mb-4 text-sm">Bestimme, wie stark experimentelle und unkonventionelle Elemente den Prompt beeinflussen sollen.</p>
             <div class="mb-4">
@@ -141,7 +141,7 @@ function getModalsHTML() {
         <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-md">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-bold text-white">Veredelung: Minimalist-Komponist</h2>
-                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none">&times;</button>
+                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none" aria-label="Schließen">&times;</button>
             </div>
             <p class="text-neutral-400 mb-4 text-sm">Bestimme, wie stark der minimalistische Ansatz den Prompt vereinfachen und auf die Essenz reduzieren soll.</p>
             <div class="mb-4">
@@ -162,7 +162,7 @@ function getModalsHTML() {
         <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-md">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-bold text-white">Veredelung: Vocal-Harmony Arrangeur</h2>
-                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none">&times;</button>
+                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none" aria-label="Schließen">&times;</button>
             </div>
             <p class="text-neutral-400 mb-4 text-sm">Bestimme, wie stark komplexe Gesangs-Arrangements und Harmonien den Prompt beeinflussen sollen.</p>
             <div class="mb-4">
@@ -183,7 +183,7 @@ function getModalsHTML() {
         <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-md">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-bold text-white">Veredelung: Ethno-Musiker</h2>
-                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none">&times;</button>
+                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none" aria-label="Schließen">&times;</button>
             </div>
             <p class="text-neutral-400 mb-4 text-sm">Bestimme, wie stark authentische Weltmusik-Elemente den Prompt beeinflussen sollen.</p>
             <div class="mb-4">
@@ -204,7 +204,7 @@ function getModalsHTML() {
         <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-lg">
            <div class="flex justify-between items-center mb-4">
                <h2 class="text-xl font-bold text-white">Experte: Sound-Ingenieur</h2>
-               <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none">&times;</button>
+               <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none" aria-label="Schließen">&times;</button>
            </div>
            <p class="text-neutral-400 mb-4 text-sm">Füge bis zu drei spezifische Anweisungen hinzu, um dein Meisterstück zu verfeinern (z.B. "Phaser-Effekt auf die Drums", "betonte Snare in den Höhen", "Sternschnuppen-Sounds am Ende").</p>
            <div class="space-y-3">
@@ -224,7 +224,7 @@ function getModalsHTML() {
         <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-2xl">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-bold text-white">🎶 Genre-Mixer</h2>
-                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none">&times;</button>
+                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none" aria-label="Schließen">&times;</button>
             </div>
             <p class="text-neutral-400 mb-4 text-sm">Kombiniere bis zu 3 Genres, um einen einzigartigen Sound zu kreieren.</p>
             <div id="genre-selectors" class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4"></div>
@@ -240,7 +240,7 @@ function getModalsHTML() {
          <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-2xl">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-bold text-white">🎣 Titel- & Hook-Generator</h2>
-                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none">&times;</button>
+                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none" aria-label="Schließen">&times;</button>
             </div>
             <p class="text-neutral-400 mb-4 text-sm">Die KI schlägt Titel und Refrain-Ideen vor. Klicke, um sie dem Meisterstück hinzuzufügen.</p>
             <div id="hook-generator-output" class="space-y-4 text-sm min-h-[150px]"></div>
@@ -251,7 +251,7 @@ function getModalsHTML() {
         <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-2xl">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-bold text-white">📑 Song-Struktur-Assistent</h2>
-                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none">&times;</button>
+                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none" aria-label="Schließen">&times;</button>
             </div>
              <p class="text-neutral-400 mb-4 text-sm">Hier ist ein Vorschlag für die Struktur deines Songs.</p>
             <div id="song-structure-output" class="space-y-3 text-sm min-h-[100px]"></div>
@@ -262,7 +262,7 @@ function getModalsHTML() {
          <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-2xl">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-bold text-white">🔬 Stimmungs-Analysator</h2>
-                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none">&times;</button>
+                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none" aria-label="Schließen">&times;</button>
             </div>
             <p class="text-neutral-400 mb-4 text-sm">Wähle passende Instrumente aus und klicke auf "Übernehmen".</p>
             <div id="mood-analyzer-suggestions" class="flex flex-wrap gap-2 text-sm min-h-[50px]"></div>
@@ -279,7 +279,7 @@ function getModalsHTML() {
         <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-4xl">
              <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-bold text-white">🎨 Vibe-Veredler</h2>
-                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none">&times;</button>
+                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none" aria-label="Schließen">&times;</button>
             </div>
             <p class="text-neutral-400 mb-4 text-sm">Die KI hat deinen Prompt mit mehr atmosphärischen Details angereichert. Vergleiche und übernehme den Vorschlag.</p>
             <div id="vibe-enhancer-output" class="grid md:grid-cols-2 gap-4 max-h-[60vh] overflow-auto"></div>
@@ -290,7 +290,7 @@ function getModalsHTML() {
          <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-2xl">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-bold text-white">🧭 Künstler-Kompass</h2>
-                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none">&times;</button>
+                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none" aria-label="Schließen">&times;</button>
             </div>
             <p class="text-neutral-400 mb-4 text-sm">Hier sind Künstler mit einem ähnlichen Stil. Klicke einen Namen an, um ihn deinem Prompt hinzuzufügen.</p>
             <div id="artist-suggester-output" class="space-y-3 text-sm min-h-[150px]"></div>
@@ -301,7 +301,7 @@ function getModalsHTML() {
         <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-md">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-bold text-white">⏱️ Tempo & BPM-Finder</h2>
-                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none">&times;</button>
+                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none" aria-label="Schließen">&times;</button>
             </div>
             <p class="text-neutral-400 mb-4 text-sm">Hier ist ein Tempo-Vorschlag für deinen Song.</p>
             <div id="tempo-finder-output" class="space-y-3 text-sm min-h-[100px]"></div>
@@ -312,7 +312,7 @@ function getModalsHTML() {
         <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-2xl">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-bold text-white">🎚️ Produktions-Finish</h2>
-                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none">&times;</button>
+                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none" aria-label="Schließen">&times;</button>
             </div>
             <p class="text-neutral-400 mb-4 text-sm">Wähle passende Produktions-Techniken aus, um deinem Song den letzten Schliff zu geben.</p>
             <div id="production-finish-suggestions" class="flex flex-wrap gap-2 text-sm min-h-[50px]"></div>
@@ -329,7 +329,7 @@ function getModalsHTML() {
         <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-2xl">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-bold text-white">🎤 Gesangs-Stilist</h2>
-                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none">&times;</button>
+                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none" aria-label="Schließen">&times;</button>
             </div>
             <p class="text-neutral-400 mb-4 text-sm">Wähle passende Gesangs-Stile aus und übernehme sie in dein Meisterstück.</p>
             <div id="vocal-stylist-suggestions" class="flex flex-wrap gap-2 text-sm min-h-[50px]"></div>
@@ -347,7 +347,7 @@ function getModalsHTML() {
         <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-lg">
            <div class="flex justify-between items-center mb-4">
                <h2 class="text-xl font-bold text-white">Eigene Anweisung</h2>
-               <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none">&times;</button>
+               <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none" aria-label="Schließen">&times;</button>
            </div>
            <p class="text-neutral-400 mb-4 text-sm">Gib eine freie Anweisung, wie die KI den aktuellen Prompt verändern soll.</p>
            <textarea id="custom-instruction-input" rows="4" class="w-full bg-neutral-900/70 border border-neutral-700 rounded-xl p-3 text-neutral-300 focus:ring-2 focus:ring-blue-500 placeholder-neutral-500 text-base" placeholder="z.B. Mache es düsterer und füge einen Kinderchor hinzu..."></textarea>
@@ -363,7 +363,7 @@ function getModalsHTML() {
         <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-2xl">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-bold text-white">KLUG: Groove-Meister</h2>
-                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none">&times;</button>
+                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none" aria-label="Schließen">&times;</button>
             </div>
             <p class="text-neutral-400 mb-4 text-sm">Wähle passende rhythmische Konzepte aus, um den Groove deines Songs zu definieren.</p>
             <div id="groove-meister-suggestions" class="flex flex-wrap gap-2 text-sm min-h-[50px]"></div>
@@ -380,7 +380,7 @@ function getModalsHTML() {
         <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-2xl">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-bold text-white">KLUG: Performance-Coach</h2>
-                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none">&times;</button>
+                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none" aria-label="Schließen">&times;</button>
             </div>
             <p class="text-neutral-400 mb-4 text-sm">Wähle spezifische Spielweisen aus, um der Performance mehr Charakter zu verleihen.</p>
             <div id="performance-coach-suggestions" class="flex flex-wrap gap-2 text-sm min-h-[50px]"></div>
@@ -397,7 +397,7 @@ function getModalsHTML() {
         <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-2xl">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-bold text-white">KLUG: Effektketten-Designer</h2>
-                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none">&times;</button>
+                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none" aria-label="Schließen">&times;</button>
             </div>
             <p class="text-neutral-400 mb-4 text-sm">Wähle passende Audio-Effekte aus, um den Sound zu formen.</p>
             <div id="effect-chain-suggestions" class="flex flex-wrap gap-2 text-sm min-h-[50px]"></div>
@@ -415,7 +415,7 @@ function getModalsHTML() {
         <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-4xl">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-bold text-white">🌀 Adaptiver Flow</h2>
-                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none">&times;</button>
+                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none" aria-label="Schließen">&times;</button>
             </div>
             <p class="text-neutral-400 mb-4 text-sm">Steuere, wie stark dein Song über die Reise hinweg anschwillt, kulminiert und wieder zur Ruhe kommt.</p>
             <div class="flex flex-col lg:flex-row lg:items-center gap-4 bg-neutral-900/40 border border-neutral-700 rounded-2xl p-4">
@@ -440,7 +440,7 @@ function getModalsHTML() {
         <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-4xl">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-bold text-white">🤝 KI-Kollaboration</h2>
-                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none">&times;</button>
+                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none" aria-label="Schließen">&times;</button>
             </div>
             <p class="text-neutral-400 mb-4 text-sm">Wähle Personas, die gemeinsam an deinem Track arbeiten sollen. Die KI beschreibt, wie sie sich gegenseitig inspirieren.</p>
             <div id="ai-collab-personas" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3"></div>
@@ -458,7 +458,7 @@ function getModalsHTML() {
         <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-4xl">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-bold text-white">📚 Story-Arc Designer</h2>
-                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none">&times;</button>
+                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none" aria-label="Schließen">&times;</button>
             </div>
             <p class="text-neutral-400 mb-4 text-sm">Transformiere deinen Prompt in eine dreiteilige musikalische Reise mit klaren Höhepunkten.</p>
             <div class="border border-neutral-700 rounded-2xl p-4 bg-neutral-900/40">
@@ -475,7 +475,7 @@ function getModalsHTML() {
         <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-5xl">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-bold text-white">📖 Narrative Chapters</h2>
-                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none">&times;</button>
+                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none" aria-label="Schließen">&times;</button>
             </div>
             <p class="text-neutral-400 mb-4 text-sm">Erzeuge eine zusammenhängende Kapitelreise mit konsistenter Stil-DNA und kontrollierter Entwicklung von Mood, Key, Rhythmus und Energie.</p>
             <div class="grid gap-4 md:grid-cols-3 bg-neutral-900/40 border border-neutral-700 rounded-2xl p-4">
@@ -502,7 +502,7 @@ function getModalsHTML() {
         <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-4xl">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-bold text-white">🌌 Immersive Space</h2>
-                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none">&times;</button>
+                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none" aria-label="Schließen">&times;</button>
             </div>
             <p class="text-neutral-400 mb-4 text-sm">Definiere akustische Räume und Bewegungen, damit dein Song in 3D erlebbar wird.</p>
             <div id="immersive-space-presets" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3"></div>
@@ -520,7 +520,7 @@ function getModalsHTML() {
         <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-4xl">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-bold text-white">🎛️ Human Touch</h2>
-                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none">&times;</button>
+                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none" aria-label="Schließen">&times;</button>
             </div>
             <p class="text-neutral-400 mb-4 text-sm">Füge analoge Nuancen, organische Bewegungen und kleine Unvollkommenheiten hinzu.</p>
             <div id="human-touch-options" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3"></div>
@@ -538,7 +538,7 @@ function getModalsHTML() {
         <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-4xl">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-bold text-white">🚀 Release Forecast</h2>
-                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none">&times;</button>
+                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none" aria-label="Schließen">&times;</button>
             </div>
             <p class="text-neutral-400 mb-4 text-sm">Plane den Launch deines Songs mit datengetriebenen Impulsen, abgestimmt auf Stimmung und Zielgruppe.</p>
             <div class="grid gap-4 md:grid-cols-3 bg-neutral-900/40 border border-neutral-700 rounded-2xl p-4">
@@ -578,7 +578,7 @@ function getModalsHTML() {
                     </div>
                     <h2 class="text-xl font-bold text-white tracking-tight">Synth-Designer Lab</h2>
                 </div>
-                <button class="close-modal-button text-neutral-500 hover:text-white transition-colors">
+                <button class="close-modal-button text-neutral-500 hover:text-white transition-colors" aria-label="Schließen">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 </button>
             </div>
@@ -748,7 +748,7 @@ function getModalsHTML() {
         <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-lg">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-bold text-white">🖼️ Visueller Funke</h2>
-                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none">&times;</button>
+                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none" aria-label="Schließen">&times;</button>
             </div>
             <p class="text-neutral-400 mb-4 text-sm">Schritt 1: Beschreibe eine Szene, um ein Bild zu generieren.</p>
             <textarea id="image-prompt-input" rows="3" class="w-full bg-neutral-900/70 border border-neutral-700 rounded-xl p-3 text-neutral-300 focus:ring-2 focus:ring-blue-500 placeholder-neutral-500 text-base" placeholder="z.B. Eine Cyberpunk-Stadt im Neon-Regen, eine ruhige Waldlichtung im Morgennebel..."></textarea>
@@ -770,7 +770,7 @@ function getModalsHTML() {
         <div class="modal-content bg-neutral-800/50 border border-neutral-700 rounded-3xl shadow-2xl p-6 w-full max-w-3xl">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-bold text-white">⏳ Genre-Evolution Timeline</h2>
-                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none">&times;</button>
+                <button class="close-modal-button text-neutral-500 hover:text-white text-3xl leading-none" aria-label="Schließen">&times;</button>
             </div>
             <p class="text-neutral-400 mb-6 text-sm">Wähle ein Jahrzehnt, um deinen Prompt mit der charakteristischen Ästhetik dieser Ära zu veredeln.</p>
             

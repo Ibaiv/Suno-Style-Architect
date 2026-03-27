@@ -301,7 +301,7 @@
             <div class="history-title text-base text-neutral-200">${escapeHtml(item.content)}</div>
             <div class="history-meta">${fmtDate(item.createdAt)} ${item.idea? '· '+escapeHtml(item.idea): ''}</div>
           </div>
-          <button class="favorite-btn ${item.favorite? 'text-yellow-400':'text-neutral-400'}" title="Favorit">★</button>
+          <button class="favorite-btn ${item.favorite? 'text-yellow-400':'text-neutral-400'}" title="Favorit" aria-label="Favorit">★</button>
         </div>
         <div class="history-actions mt-2 flex gap-2">
           <button class="text-sm px-3 py-1.5 rounded bg-neutral-800/70 border border-neutral-700 hover:bg-neutral-700" data-act="restore">Wiederherstellen</button>

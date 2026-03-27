@@ -1414,7 +1414,7 @@
             chip.setAttribute('data-idx', i);
             chip.innerHTML = '<span class="bd-chain-item-emoji">' + item.emoji + '</span>' +
                 '<span class="bd-chain-item-name">' + item.toolName + '</span>' +
-                '<button class="bd-chain-item-remove" data-idx="' + i + '" title="Entfernen">\u2715</button>';
+                '<button class="bd-chain-item-remove" data-idx="' + i + '" title="Entfernen" aria-label="Entfernen">\u2715</button>';
             slots.appendChild(chip);
         });
         updateChainBadges();
@@ -1633,7 +1633,7 @@
 
         var header = document.createElement('div');
         header.className = 'bd-chain-preset-popup-header';
-        header.innerHTML = '<span>Preset laden</span><button class="bd-chain-preset-popup-close">\u2715</button>';
+        header.innerHTML = '<span>Preset laden</span><button class="bd-chain-preset-popup-close" aria-label="Schließen">\u2715</button>';
         popup.appendChild(header);
 
         var list = document.createElement('div');
@@ -1660,7 +1660,8 @@
                 var delBtn = document.createElement('button');
                 delBtn.className = 'bd-chain-preset-delete';
                 delBtn.textContent = '\u2715';
-                delBtn.title = 'Preset l\u00f6schen';
+                delBtn.title = 'Preset löschen';
+                delBtn.setAttribute('aria-label', 'Preset löschen');
                 delBtn.addEventListener('click', function (e) {
                     e.stopPropagation();
                     var presets = loadChainPresets();
@@ -1788,9 +1789,9 @@
                 '<span class="bd-chain-count" id="bd-chain-count">0 Tools</span>' +
                 '<div class="bd-chain-actions">' +
                     '<button id="bd-chain-run" class="bd-chain-action-btn bd-chain-run-btn" disabled title="Kette ausf\u00fchren">\u25B6 Ausf\u00fchren</button>' +
-                    '<button id="bd-chain-save" class="bd-chain-action-btn" title="Speichern">\uD83D\uDCBE</button>' +
-                    '<button id="bd-chain-load" class="bd-chain-action-btn" title="Laden">\uD83D\uDCC2</button>' +
-                    '<button id="bd-chain-clear" class="bd-chain-action-btn" title="Leeren">\u2715</button>' +
+                    '<button id="bd-chain-save" class="bd-chain-action-btn" title="Speichern" aria-label="Speichern">\uD83D\uDCBE</button>' +
+                    '<button id="bd-chain-load" class="bd-chain-action-btn" title="Laden" aria-label="Laden">\uD83D\uDCC2</button>' +
+                    '<button id="bd-chain-clear" class="bd-chain-action-btn" title="Leeren" aria-label="Leeren">\u2715</button>' +
                 '</div>' +
                 '<button class="bd-chain-popup-close" id="bd-chain-popup-close" aria-label="Schlie\u00dfen">\u2715</button>' +
             '</div>' +

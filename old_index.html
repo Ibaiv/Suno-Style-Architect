@@ -208,7 +208,7 @@
                             <div class="relative bg-neutral-900/70 rounded-xl border border-neutral-700 flex-grow">
                                 <button id="copy-button"
                                     class="absolute top-2.5 right-2.5 p-1.5 bg-neutral-700/50 hover:bg-neutral-700 rounded-md text-neutral-400 hover:text-white transition-all duration-200 z-10 btn-transition btn-press"
-                                    title="Kopieren">
+                                    title="Kopieren" aria-label="Kopieren">
                                     <svg id="copy-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                                         stroke-linecap="round" stroke-linejoin="round">
@@ -447,7 +447,7 @@
                     <input id="history-import-file" type="file" accept="application/json" class="hidden" />
                     <button id="history-clear"
                         class="text-sm px-3 py-1.5 rounded bg-red-900/40 border border-red-700 hover:bg-red-800/60">Leeren</button>
-                    <button id="history-close" class="text-2xl text-neutral-400 hover:text-white">&times;</button>
+                    <button id="history-close" class="text-2xl text-neutral-400 hover:text-white" aria-label="Verlauf schließen">&times;</button>
                 </div>
             </div>
             <div id="history-list" class="flex-1 overflow-auto p-4 space-y-3"></div>
@@ -472,7 +472,7 @@
                 </svg>
                 <input id="cmdk-input" type="text" placeholder="Aktion suchen… (z.B. v3, pro, kopieren)"
                     class="flex-1 bg-neutral-900/60 border border-neutral-700 rounded-md px-3 py-2 text-sm text-neutral-200 focus:outline-none focus:ring-2 focus:ring-blue-600" />
-                <button id="cmdk-close" class="text-xl text-neutral-400 hover:text-white">&times;</button>
+                <button id="cmdk-close" class="text-xl text-neutral-400 hover:text-white" aria-label="Befehlspalette schließen">&times;</button>
             </div>
             <div id="cmdk-list" class="max-h-[50vh] overflow-auto divide-y divide-neutral-800"></div>
         </div>
@@ -490,7 +490,7 @@
                     <button id="shortcut-reset"
                         class="text-xs px-2 py-1 rounded bg-neutral-800/70 border border-neutral-700 hover:bg-neutral-700">Standard</button>
                     <button id="shortcut-settings-close"
-                        class="text-2xl text-neutral-400 hover:text-white">&times;</button>
+                        class="text-2xl text-neutral-400 hover:text-white" aria-label="Tastenkürzel-Einstellungen schließen">&times;</button>
                 </div>
             </div>
             <p class="text-neutral-400 text-sm mb-4">Klicke auf ein Feld und drücke die gewünschte Kombination. Nutze
@@ -506,7 +506,7 @@
             class="relative mx-auto mt-16 w-[92vw] max-w-2xl bg-neutral-900/90 border border-neutral-700 rounded-2xl shadow-2xl p-6">
             <div class="flex items-center justify-between mb-4">
                 <h3 class="text-xl font-semibold text-white">Tastenkürzel</h3>
-                <button id="shortcut-close" class="text-2xl text-neutral-400 hover:text-white">&times;</button>
+                <button id="shortcut-close" class="text-2xl text-neutral-400 hover:text-white" aria-label="Tastenkürzel schließen">&times;</button>
             </div>
             <p class="text-neutral-400 text-sm mb-4">Nutze schnelle Aktionen ohne die Maus. Modifizierte Systemkürzel
                 (z.B. ⌘C/⌘V) bleiben unberührt.</p>
@@ -562,7 +562,7 @@
                             Kreativ-Bibliothek
                         </h2>
                         <button id="close-idea-modal"
-                            class="text-neutral-400 hover:text-white transition-colors bg-white/5 hover:bg-white/10 p-2 rounded-full">
+                            class="text-neutral-400 hover:text-white transition-colors bg-white/5 hover:bg-white/10 p-2 rounded-full" aria-label="Kreativ-Bibliothek schließen">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round">
@@ -673,7 +673,7 @@
                             Klang-Studio
                         </h2>
                         <button id="close-klang-studio"
-                            class="text-neutral-400 hover:text-white bg-white/5 hover:bg-white/10 p-2 rounded-full transition-colors">
+                            class="text-neutral-400 hover:text-white bg-white/5 hover:bg-white/10 p-2 rounded-full transition-colors" aria-label="Klang-Studio schließen">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M18 6 6 18" />
@@ -1422,7 +1422,7 @@
                     </div>
                 </div>
                 <button id="close-style-studio"
-                    class="p-3 rounded-full hover:bg-white/10 text-neutral-400 hover:text-white transition-all">
+                    class="p-3 rounded-full hover:bg-white/10 text-neutral-400 hover:text-white transition-all" aria-label="Stil-Synchronisator schließen">
                     <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -1472,7 +1472,7 @@
                             <div class="w-full border-t border-purple-500/20 dashed-line"></div>
                         </div>
                         <button id="studio-transcode-btn"
-                            class="studio-btn relative z-10 bg-[#0f0f16] border border-purple-500/50 hover:border-purple-400 text-purple-300 hover:text-white p-3 rounded-xl shadow-[0_0_15px_rgba(168,85,247,0.2)] hover:shadow-[0_0_25px_rgba(168,85,247,0.4)] transition-all transform hover:scale-105 active:scale-95 group-hover:animate-pulse">
+                            class="studio-btn relative z-10 bg-[#0f0f16] border border-purple-500/50 hover:border-purple-400 text-purple-300 hover:text-white p-3 rounded-xl shadow-[0_0_15px_rgba(168,85,247,0.2)] hover:shadow-[0_0_25px_rgba(168,85,247,0.4)] transition-all transform hover:scale-105 active:scale-95 group-hover:animate-pulse" aria-label="Transkodieren">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round">
@@ -1505,7 +1505,7 @@
                             class="absolute bottom-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                             <button id="studio-download-btn"
                                 class="p-2 bg-black/60 backdrop-blur rounded-lg hover:bg-white/10 text-white"
-                                title="Download Image"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                title="Download Image" aria-label="Bild herunterladen"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                                     <polyline points="7 10 12 15 17 10" />
@@ -1513,7 +1513,7 @@
                                 </svg></button>
                             <button id="studio-copy-btn"
                                 class="p-2 bg-black/60 backdrop-blur rounded-lg hover:bg-white/10 text-white"
-                                title="Copy Image"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                title="Copy Image" aria-label="Bild kopieren"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <rect width="8" height="4" x="8" y="2" rx="1" ry="1" />
                                     <path
@@ -1564,7 +1564,7 @@
                             <div class="w-full border-t border-indigo-500/20 dashed-line"></div>
                         </div>
                         <button id="studio-decode-btn"
-                            class="studio-btn relative z-10 bg-[#0f0f16] border border-indigo-500/50 hover:border-indigo-400 text-indigo-300 hover:text-white p-3 rounded-xl shadow-[0_0_15px_rgba(99,102,241,0.2)] hover:shadow-[0_0_25px_rgba(99,102,241,0.4)] transition-all transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed">
+                            class="studio-btn relative z-10 bg-[#0f0f16] border border-indigo-500/50 hover:border-indigo-400 text-indigo-300 hover:text-white p-3 rounded-xl shadow-[0_0_15px_rgba(99,102,241,0.2)] hover:shadow-[0_0_25px_rgba(99,102,241,0.4)] transition-all transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed" aria-label="Dekodieren">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round">
