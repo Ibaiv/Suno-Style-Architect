@@ -142,7 +142,7 @@
 
   // Accessors to current prompt/idea
   function getCurrentPrompt(){ const el = $('result-text'); return el ? el.textContent.trim() : ''; }
-  function setCurrentPrompt(t, toolName){ const el = $('result-text'); if(el){ if(window.BdUndo && el.textContent.trim()) window.BdUndo.captureBeforeApply(toolName || 'Quick Action'); el.textContent = t||''; } }
+  function setCurrentPrompt(t, toolName){ if(typeof applyPromptWithUndo === 'function'){ applyPromptWithUndo(t, toolName || 'Quick Action'); } else { const el = $('result-text'); if(el){ el.textContent = t||''; } } }
   function getCurrentIdea(){ const el = $('idea-input'); return el ? el.value.trim() : ''; }
   function setCurrentIdea(t){ const el = $('idea-input'); if(el){ el.value = t||''; el.dispatchEvent(new Event('input')); } }
 
@@ -157,10 +157,15 @@
     stats.innerHTML = `Chars: <span class=\"badge ${pro? 'ok':'err'}\">${n}</span> · Pro <1000: <span class=\"badge ${proCls}\">${pro? 'OK':'OVER'}</span>`;
   }
 
+  // Store original text before auto-trim for undo capability
+  let autoTrimOriginal = null;
+
   function autoTrimV3(){
     let t = getCurrentPrompt();
     if(!t) return;
     if(t.length <= 200){ showToast('Prompt ist bereits \u2264 200 Zeichen.', 'info'); return; }
+    // Save original text before trimming so it can be restored
+    const originalText = t;
     // Heuristic trim: remove filler words and compress
     const fillers = /(very|really|extremely|highly|super|quite|some|kind of|sort of)/gi;
     t = t.replace(fillers, '')
@@ -171,6 +176,26 @@
     setCurrentPrompt(t, 'Auto-Trim');
     updateCharStats();
     runLint();
+    // Store original for undo and show toast with undo action
+    autoTrimOriginal = originalText;
+    const charsRemoved = originalText.length - t.length;
+    showToast(
+      `Auto-Trim: ${charsRemoved} Zeichen entfernt (${originalText.length} \u2192 ${t.length})`,
+      'info',
+      10000,
+      {
+        label: 'R\u00fcckg\u00e4ngig',
+        onClick: function(){
+          if(autoTrimOriginal){
+            setCurrentPrompt(autoTrimOriginal, 'Auto-Trim R\u00fcckg\u00e4ngig');
+            updateCharStats();
+            runLint();
+            autoTrimOriginal = null;
+            showToast('Auto-Trim r\u00fcckg\u00e4ngig gemacht.', 'info');
+          }
+        }
+      }
+    );
   }
 
   // Render combined hints (rule-based + AI-selected)
@@ -541,7 +566,16 @@
     $('history-export-all')?.addEventListener('click', exportHistory);
     $('history-import')?.addEventListener('click', ()=> $('history-import-file')?.click());
     $('history-import-file')?.addEventListener('change', (e)=> importHistoryFromFile(e.target.files?.[0]));
-    $('history-clear')?.addEventListener('click', ()=>{ if(confirm('Verlauf wirklich leeren?')){ saveHistory([]); renderHistory(); }});
+    $('history-clear')?.addEventListener('click', ()=>{
+      const backup = loadHistory();
+      if(backup.length === 0){ showToast('Verlauf ist bereits leer.', 'info'); return; }
+      saveHistory([]);
+      renderHistory();
+      showToast('Verlauf geleert.', 'warning', 8000, {
+        label: 'R\u00fcckg\u00e4ngig',
+        onClick: ()=>{ saveHistory(backup); renderHistory(); showToast('Verlauf wiederhergestellt.', 'info'); }
+      });
+    });
 
   }
 

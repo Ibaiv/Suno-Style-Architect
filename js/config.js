@@ -50,7 +50,7 @@ let isPromptGenerated = false;
 let selectedKlugItems = []; // Generic state for selected tags in modals
 
 // === Global Toast Notification (replaces native alert()) ===
-function showToast(message, type = 'error', duration = 4500) {
+function showToast(message, type = 'error', duration = 4500, action) {
     const container = document.getElementById('ssa-toast-container');
     if (!container) { console.warn('Toast container not found:', message); return; }
 
@@ -60,10 +60,12 @@ function showToast(message, type = 'error', duration = 4500) {
         info: '<svg class="ssa-toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>'
     };
 
+    const actionHtml = (action && action.label) ? `<button class="ssa-toast-action">${action.label}</button>` : '';
+
     const toast = document.createElement('div');
     toast.className = `ssa-toast ssa-toast--${type}`;
     toast.setAttribute('role', 'alert');
-    toast.innerHTML = `${iconSVGs[type] || iconSVGs.error}<span class="ssa-toast-message">${message}</span><button class="ssa-toast-close" aria-label="Schlie\u00dfen">\u00d7</button>`;
+    toast.innerHTML = `${iconSVGs[type] || iconSVGs.error}<span class="ssa-toast-message">${message}</span>${actionHtml}<button class="ssa-toast-close" aria-label="Schlie\u00dfen">\u00d7</button>`;
 
     container.appendChild(toast);
 
@@ -77,6 +79,14 @@ function showToast(message, type = 'error', duration = 4500) {
         // Fallback removal in case transitionend doesn't fire
         setTimeout(() => { if (toast.parentNode) toast.remove(); }, 300);
     };
+
+    // Wire action button if provided
+    if (action && action.onClick) {
+        const actionBtn = toast.querySelector('.ssa-toast-action');
+        if (actionBtn) {
+            actionBtn.addEventListener('click', () => { action.onClick(); dismiss(); });
+        }
+    }
 
     toast.querySelector('.ssa-toast-close').addEventListener('click', dismiss);
     if (duration > 0) setTimeout(dismiss, duration);
@@ -93,4 +103,29 @@ function showInlineError(containerId, message) {
 function hideInlineError(containerId) {
     const el = document.getElementById(containerId);
     if (el) { el.classList.add('hidden'); el.innerHTML = ''; }
+}
+
+// === Prompt overwrite with undo toast (#76) ===
+// Central helper: captures undo state, sets prompt text, and shows a toast
+// with a "Rückgängig" button so the user can revert the change.
+function applyPromptWithUndo(newText, toolName) {
+    const el = document.getElementById('result-text');
+    if (!el) return;
+    const hadContent = el.textContent.trim().length > 0;
+    if (window.BdUndo && hadContent) {
+        window.BdUndo.captureBeforeApply(toolName || 'Tool');
+    }
+    el.textContent = newText || '';
+    // Show undo toast only when previous content was overwritten
+    if (hadContent && window.BdUndo) {
+        showToast(
+            `Prompt überschrieben von „${toolName || 'Tool'}"`,
+            'info',
+            6000,
+            {
+                label: 'Rückgängig',
+                onClick: function () { window.BdUndo.performUndo(); }
+            }
+        );
+    }
 }
