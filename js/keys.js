@@ -15,7 +15,15 @@
     const el = document.activeElement;
     if(!el) return false;
     const tag = el.tagName;
-    return tag === 'INPUT' || tag === 'TEXTAREA' || el.isContentEditable;
+    return tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || el.isContentEditable
+      || el.getAttribute('role') === 'textbox';
+  }
+
+  // Returns true if a binding string represents a single character with no modifiers.
+  // Used to guard against accidental triggers while typing.
+  function isSingleCharBinding(bindingStr){
+    const b = parseBinding(bindingStr);
+    return b.isChar && !b.mod && !b.shift && !b.alt;
   }
 
   function scopeAllowed(scope){
@@ -150,16 +158,24 @@
       const bins = getBindings(id);
       for(const bin of bins){
         if(matchEvent(e, bin)){
-          matches.push(action);
+          matches.push({ action, matchedBinding: bin });
           break; // only need one binding match per action
         }
       }
     }
 
     // Sort by priority descending (highest first)
-    matches.sort((a, b) => (b.priority || 0) - (a.priority || 0));
+    matches.sort((a, b) => (b.action.priority || 0) - (a.action.priority || 0));
 
-    for(const action of matches){
+    for(const { action, matchedBinding } of matches){
+      // Guard: single-character shortcuts (no modifiers) must not fire while typing
+      // in any text-accepting element — prevents accidental triggers (issue #93)
+      if(isSingleCharBinding(matchedBinding) && isTyping()){
+        if(!blocked){
+          blocked = { id: action.id, label: action.label, reason: 'typing-guard' };
+        }
+        continue;
+      }
       if(!scopeAllowed(action.scope)){
         if(!blocked){
           blocked = {
