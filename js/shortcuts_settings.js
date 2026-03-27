@@ -7,8 +7,12 @@
     renderList();
     m.classList.remove('hidden');
     const card = m.querySelector('.relative'); if(card) card.classList.add('animate-zoom-in');
+    if(window.CloseStack) CloseStack.push(closeSettings, { id: 'shortcut-settings' });
   }
-  function closeSettings(){ const m=$id('shortcut-settings-modal'); if(m) m.classList.add('hidden'); }
+  function closeSettings(){
+    if(window.CloseStack) CloseStack.pop('shortcut-settings');
+    const m=$id('shortcut-settings-modal'); if(m) m.classList.add('hidden');
+  }
 
   function bindingToLabel(b){ return Array.isArray(b)? b.join(', ') : (b||''); }
 

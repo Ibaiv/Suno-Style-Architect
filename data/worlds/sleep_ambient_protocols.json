@@ -1,0 +1,7 @@
+{
+  "id": "sleep_ambient_protocols",
+  "name": "Sleep Ambient Protocols",
+  "icon": "🌙",
+  "group": "ambient_group",
+  "content": "<h1>Sleep Ambient Protocols (Platzhalter)</h1><p>Dies ist ein Platzhaltertext fuer die kommende Sleep-Ambient-Welt in der Kreativ-Bibliothek.</p><p>Beispielbegriffe: <span class=\"interactive-term\" data-term=\"Pink Noise\">Pink Noise</span>, <span class=\"interactive-term\" data-term=\"Brown Noise\">Brown Noise</span>, <span class=\"interactive-term\" data-term=\"Circadian Rhythm\">Circadian Rhythm</span>.</p>"
+}

@@ -1,3 +1,61 @@
+// === USER-FRIENDLY ERROR MESSAGE MAPPING ===
+// Converts raw API/network errors into German user-facing messages.
+// Used by all API call sites and display points to avoid leaking technical details.
+function getUserFriendlyErrorMessage(error) {
+    const msg = (error && typeof error === 'object') ? (error.message || String(error)) : String(error || '');
+    const statusMatch = msg.match(/\b(4\d{2}|5\d{2})\b/);
+    const statusCode = statusMatch ? parseInt(statusMatch[1], 10) : null;
+
+    // Network / connection errors
+    if (error instanceof TypeError && /fetch|network/i.test(msg)) {
+        return 'Verbindungsfehler. Bitte prüfe deine Internetverbindung.';
+    }
+    if (/netzwerkfehler|network|failed to fetch|net::ERR_|DNS/i.test(msg)) {
+        return 'Verbindungsfehler. Bitte prüfe deine Internetverbindung.';
+    }
+
+    // User-initiated cancellation (distinct from timeout)
+    if (/user.?cancel/i.test(msg)) {
+        return 'Bildgenerierung wurde abgebrochen.';
+    }
+
+    // Timeout
+    if (/timeout|aborted|abort/i.test(msg)) {
+        return 'Die Anfrage hat zu lange gedauert. Bitte prüfe deine Internetverbindung und versuche es erneut.';
+    }
+
+    // Rate limiting (429)
+    if (statusCode === 429 || /rate.?limit|too many requests|429/i.test(msg)) {
+        return 'Zu viele Anfragen. Bitte warte einen Moment.';
+    }
+
+    // Auth errors (401 / 403)
+    if (statusCode === 401 || statusCode === 403 || /unauthorized|forbidden|invalid.*key|api.?key.*invalid/i.test(msg)) {
+        return 'Ungültiger API-Schlüssel. Bitte überprüfe deine Einstellungen.';
+    }
+
+    // Server errors (500+)
+    if (statusCode !== null && statusCode >= 500) {
+        return 'Der Server ist momentan nicht erreichbar. Bitte versuche es später.';
+    }
+    if (/server.?error|internal server|502|503|504|bad gateway|service unavailable/i.test(msg)) {
+        return 'Der Server ist momentan nicht erreichbar. Bitte versuche es später.';
+    }
+
+    // Not found (404) for endpoints
+    if (statusCode === 404 || /not found|endpoint.*not found/i.test(msg)) {
+        return 'Der angeforderte Dienst wurde nicht gefunden. Bitte überprüfe deine Einstellungen.';
+    }
+
+    // Already user-friendly messages (German text that we produced ourselves) — pass through
+    if (/^Bitte konfiguriere|^API-Antwort konnte nicht/i.test(msg)) {
+        return msg;
+    }
+
+    // Generic fallback
+    return 'Ein Fehler ist aufgetreten. Bitte versuche es erneut.';
+}
+
 // === FAL.AI API CALL ===
 async function callFalAPI(prompt, options = {}) {
     if (!FAL_API_KEY) {
@@ -32,6 +90,15 @@ async function callFalAPI(prompt, options = {}) {
                 num_images: 1,
                 aspect_ratio: '16:9', // Defaulting to wide for better presentation
                 output_format: 'png'
+            };
+
+            // Nano Banana 2 payload (4x faster, supports resolution & web search)
+            const nanoBanana2Payload = {
+                prompt,
+                num_images: 1,
+                aspect_ratio: '16:9',
+                output_format: 'png',
+                resolution: '1K'
             };
 
             // Recraft V3 payload
@@ -84,6 +151,7 @@ async function callFalAPI(prompt, options = {}) {
 
             // Select payload based on model
             if (FAL_MODEL === 'fal-ai/nano-banana-pro') return [nanoBananaPayload];
+            if (FAL_MODEL === 'fal-ai/nano-banana-2') return [nanoBanana2Payload];
             if (FAL_MODEL === 'fal-ai/recraft/v3/text-to-image') return [recraftPayload];
             if (FAL_MODEL === 'fal-ai/flux-pro') return [fluxProPayload];
             if (FAL_MODEL === 'fal-ai/flux-pro/kontext') return [fluxKontextPayload];
@@ -100,7 +168,7 @@ async function callFalAPI(prompt, options = {}) {
 
         // Controller to support timeout and external cancellation per endpoint attempt
         const controller = new AbortController();
-        const timer = setTimeout(() => controller.abort(new Error('Fal.ai timeout')), timeoutMs);
+        const timer = setTimeout(() => controller.abort(new Error('timeout')), timeoutMs);
         const onAbort = () => controller.abort(signal?.reason || new Error('Aborted'));
         if (signal) {
             if (signal.aborted) onAbort(); else signal.addEventListener('abort', onAbort, { once: true });
@@ -145,10 +213,10 @@ async function callFalAPI(prompt, options = {}) {
                             break;
                         }
                         if (status === 404) {
-                            lastErr = new Error(`Fal.ai endpoint not found: ${url} -> ${text}`);
+                            lastErr = new Error(`endpoint not found (${status})`);
                             throw lastErr; // bubble to try next endpoint
                         }
-                        throw new Error(`Fal.ai API request failed (${status}): ${text}`);
+                        throw new Error(`API request failed (${status})`);
                     }
 
                     const result = await response.json();
@@ -186,6 +254,7 @@ async function callOpenRouterAPI(userMessage, systemPrompt, imageUrl = null) {
 
     const payload = {
         model: SELECTED_MODEL,
+        stream: false,
         messages: [
             { role: "system", content: systemPrompt },
             { role: "user", content: userContent }
@@ -195,30 +264,64 @@ async function callOpenRouterAPI(userMessage, systemPrompt, imageUrl = null) {
         top_p: 0.9
     };
 
-    const response = await fetch(API_URL, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${API_KEY}`,
-            'HTTP-Referer': window.location.origin,
-            'X-Title': 'Suno Style Architect'
-        },
-        body: JSON.stringify(payload)
-    });
+    // Timeout after 60 seconds to prevent infinite hanging
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => {
+        controller.abort(new Error('timeout'));
+    }, 60000);
+
+    console.log('[SSA] API Request:', { model: SELECTED_MODEL, url: API_URL, messageLength: userMessage.length });
+
+    let response;
+    try {
+        response = await fetch(API_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${API_KEY}`,
+                'HTTP-Referer': window.location.origin,
+                'X-Title': 'Suno Style Architect'
+            },
+            body: JSON.stringify(payload),
+            signal: controller.signal
+        });
+    } catch (fetchErr) {
+        clearTimeout(timeoutId);
+        if (fetchErr.name === 'AbortError' || fetchErr.message?.includes('timeout')) {
+            throw new Error(getUserFriendlyErrorMessage({ message: 'timeout' }));
+        }
+        throw new Error(getUserFriendlyErrorMessage(fetchErr));
+    }
+
+    clearTimeout(timeoutId);
+
+    console.log('[SSA] API Response status:', response.status);
 
     if (!response.ok) {
         const errorData = await response.text();
-        throw new Error(`API request failed (${response.status}): ${errorData}`);
+        console.error('[SSA] API Error:', response.status, errorData);
+        throw new Error(getUserFriendlyErrorMessage({ message: `API request failed (${response.status})` }));
     }
 
-    const result = await response.json();
+    // Read response as text first, then parse - avoids hanging on malformed/streamed responses
+    const responseText = await response.text();
+    console.log('[SSA] API Response length:', responseText.length);
+
+    let result;
+    try {
+        result = JSON.parse(responseText);
+    } catch (parseErr) {
+        console.error('[SSA] Failed to parse API response:', responseText.substring(0, 500));
+        throw new Error('API-Antwort konnte nicht verarbeitet werden. Möglicherweise ein Server-Problem.');
+    }
 
     if (result.choices?.[0]?.message?.content) {
         return result.choices[0].message.content.trim();
     } else if (result.error) {
-        throw new Error(`API Error: ${result.error.message || 'Unknown error'}`);
+        throw new Error(getUserFriendlyErrorMessage({ message: result.error.message || 'Unknown error' }));
     } else {
-        throw new Error('Invalid API response structure.');
+        console.error('[SSA] Unexpected API response structure:', JSON.stringify(result).substring(0, 500));
+        throw new Error('Ein Fehler ist aufgetreten. Bitte versuche es erneut.');
     }
 }
 
@@ -281,6 +384,7 @@ try {
     if (typeof window !== 'undefined') {
         window.callFalAPI = callFalAPI;
         window.callOpenRouterAPI = callOpenRouterAPI;
+        window.getUserFriendlyErrorMessage = getUserFriendlyErrorMessage;
         window.safeCopyText = safeCopyText;
         window.setupCopyButton = setupCopyButton;
         window.setKlugToolsState = setKlugToolsState;
@@ -321,9 +425,15 @@ function setKlugToolsState(enabled) {
             }
         }
     });
+
+    // Toggle bottom dashboard visual state
+    var bd = document.querySelector('.bottom-dashboard');
+    if (bd) {
+        bd.classList.toggle('bd-tools-inactive', !enabled);
+    }
 }
 
-// Modal setup function
+// Modal setup function (Phase 3: scope integration via openWithScope)
 function setupModal(modal, openButton) {
     if (!modal) return { open: () => { }, close: () => { } };
     const closeButtons = modal.querySelectorAll('.close-modal-button');
@@ -331,20 +441,56 @@ function setupModal(modal, openButton) {
         // Allow idea-modal and style-sync-modal to open without a generated prompt
         if (!isPromptGenerated && modal.id !== 'idea-modal' && modal.id !== 'style-sync-modal') {
             console.log('Tools are disabled - generate a prompt first!');
+            if (typeof showToast === 'function') {
+                showToast('Bitte generiere zuerst einen Prompt, um dieses Tool zu nutzen.', 'warning');
+            }
+            // Shake the trigger button to give visual feedback
+            if (openButton) {
+                var triggerEl = typeof openButton === 'string' ? document.getElementById(openButton) : openButton;
+                if (triggerEl) {
+                    triggerEl.classList.add('bd-shake');
+                    setTimeout(function () { triggerEl.classList.remove('bd-shake'); }, 500);
+                }
+            }
             return;
         }
         modal.classList.remove('hidden');
-        document.body.style.overflow = 'hidden';
+        if(window.BodyScrollLock) BodyScrollLock.lock();
         modal.classList.remove('modal-leave-to');
         modal.classList.add('modal-enter-to');
+        // Phase 3 (P3-3): Linked push — CloseStack + ScopeStack together
+        if(window.ScopeStack && window.ScopeStack.openWithScope){
+            modal._scopeBinding = ScopeStack.openWithScope(close, 'modal', 'modal-' + modal.id);
+        } else {
+            if(window.CloseStack) CloseStack.push(close, { id: 'modal-' + modal.id });
+        }
+        // Focus trap: trap Tab/Shift+Tab within the modal, auto-focus first element
+        if(window.FocusTrap){
+            modal._focusTrap = FocusTrap.activate(modal);
+        }
         document.dispatchEvent(new CustomEvent('modal:open', { detail: { id: modal.id } }));
     };
     const close = () => {
+        // Deactivate focus trap before cleanup (restores focus to trigger element)
+        if(window.FocusTrap && modal._focusTrap){
+            modal._focusTrap.deactivate();
+            modal._focusTrap = null;
+        }
+        // Clean up scope + CloseStack when called directly (not via Escape)
+        if(modal._scopeBinding){
+            // Pop the CloseStack ghost entry (removes without calling linked closeFn)
+            if(window.CloseStack) CloseStack.pop(modal._scopeBinding.closeId);
+            // Pop the ScopeStack token
+            if(window.ScopeStack) ScopeStack.pop(modal._scopeBinding.scopeToken);
+            modal._scopeBinding = null;
+        } else {
+            if(window.CloseStack) CloseStack.pop('modal-' + modal.id);
+        }
         modal.classList.remove('modal-enter-to');
         modal.classList.add('modal-leave-to');
         setTimeout(() => {
             modal.classList.add('hidden');
-            document.body.style.overflow = '';
+            if(window.BodyScrollLock) BodyScrollLock.unlock();
             document.dispatchEvent(new CustomEvent('modal:close', { detail: { id: modal.id } }));
         }, 200);
     };

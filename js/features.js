@@ -8,17 +8,28 @@ document.addEventListener('modals:ready', () => {
     initializeAdvancedFeatures();
 });
 
+// Re-initialize after bottom dashboard proxy buttons are created
+document.addEventListener('bottomtools:ready', () => {
+    initializeAdvancedFeatures();
+});
+
 function initializeAdvancedFeatures() {
+    const hasBottomToolSystems = !!document.querySelector('.bottom-dashboard');
+
     // Setup all modals
     setupIdeaSpark();
+    setupCustomInstruction();
+    setupStyleSync();
+    setupKlangStudio();
+
+    // Bottom tool systems require the dashboard DOM to be present
+    if (!hasBottomToolSystems) return;
+
     setupExpertRefinements();
     setupKlugTools();
     setupVisualEngine();
     setupFutureLabTools();
-    setupCustomInstruction();
     setupGenreEvolution();
-    setupStyleSync();
-    setupKlangStudio();
 }
 
 // === IDEA SPARK LOGIC ===
@@ -65,7 +76,7 @@ function setupIdeaSpark() {
             });
         } catch (error) {
             console.error("Error generating ideas:", error);
-            ideasOutput.innerHTML = `<p class="text-red-400">Ein Fehler ist aufgetreten: ${error.message}</p>`;
+            ideasOutput.innerHTML = `<p class="text-red-400">${getUserFriendlyErrorMessage(error)}</p>`;
         } finally {
             setIdeaLoading(false);
         }
@@ -100,6 +111,7 @@ function setupExpertRefinement(type, systemPrompt) {
     const modal = document.getElementById(`${type}-modal`);
     const openButton = document.getElementById(`${type}-refine-button`);
     const slider = document.getElementById(`${type}-slider`);
+    const sliderValue = document.getElementById(`${type}-slider-value`);
     const applyButton = document.getElementById(`apply-${type}-button`);
     const buttonText = document.getElementById(`apply-${type}-text`);
     const loader = document.getElementById(`apply-${type}-loader`);
@@ -107,6 +119,15 @@ function setupExpertRefinement(type, systemPrompt) {
     if (!modal || !openButton || !applyButton) return;
 
     const modalLogic = setupModal(modal, openButton);
+    // Phase 4 (P4-3): Tip for expert chord on mouse click
+    openButton.addEventListener('click', function(){ if(window.Tips) Tips.show('chord.expert', openButton); });
+
+    // Update slider value display in real-time
+    if (slider && sliderValue) {
+        slider.addEventListener('input', () => {
+            sliderValue.textContent = slider.value + '%';
+        });
+    }
 
     applyButton.addEventListener('click', async () => {
         const influence = slider.value;
@@ -120,13 +141,14 @@ function setupExpertRefinement(type, systemPrompt) {
         const userQuery = `Prompt: "${currentPrompt}"\nInfluence Level: ${influence}`;
         try {
             const refined = await callOpenRouterAPI(userQuery, systemPrompt);
-            document.getElementById('result-text').textContent = refined;
+            applyPromptWithUndo(refined, type);
             if (window.QW) { window.QW.onPromptUpdated({ source: `expert:${type}` }); }
             modalLogic.close();
         } catch (error) {
             console.error(`Error refining with ${type}:`, error);
             buttonText.textContent = "Fehler";
             setTimeout(() => { buttonText.textContent = "Anwenden"; }, 2000);
+            showToast(getUserFriendlyErrorMessage(error), 'error');
         } finally {
             applyButton.disabled = false;
             buttonText.classList.remove('hidden');
@@ -165,7 +187,7 @@ function setupSoundEngineer() {
 
         try {
             const refined = await callOpenRouterAPI(userQuery, SOUND_ENGINEER_PROMPT);
-            document.getElementById('result-text').textContent = refined;
+            applyPromptWithUndo(refined, 'Sound Engineer');
             if (window.QW) { window.QW.onPromptUpdated({ source: 'sound-engineer' }); }
             modalLogic.close();
         } catch (error) {
@@ -334,9 +356,7 @@ Sound Design Choices:
         try {
             const translated = await callOpenRouterAPI(userQuery, SYNTH_DESIGN_TRANSLATOR_PROMPT);
             const updatedPrompt = appendPromptSentence(trimmedPrompt, translated);
-            if (resultTextEl) {
-                resultTextEl.textContent = updatedPrompt;
-            }
+            applyPromptWithUndo(updatedPrompt, 'Synth Designer');
             if (window.QW) {
                 window.QW.onPromptUpdated({ source: 'klug:synth-designer' });
             }
@@ -344,7 +364,7 @@ Sound Design Choices:
         } catch (error) {
             console.error('Synth Designer translation failed', error);
             if (errorEl) {
-                errorEl.textContent = `Fehler: ${error.message || 'Die Übersetzung ist fehlgeschlagen.'}`;
+                errorEl.textContent = getUserFriendlyErrorMessage(error);
             }
         } finally {
             applyButton.disabled = false;
@@ -367,6 +387,13 @@ function setupVisualEngine() {
     const analyzeText = document.getElementById('analyze-image-text');
     const analyzeLoader = document.getElementById('analyze-image-loader');
 
+    // Progress indicator elements
+    const progressArea = document.getElementById('ve-progress-area');
+    const progressBar = document.getElementById('ve-progress-bar');
+    const progressStatus = document.getElementById('ve-progress-status');
+    const progressElapsed = document.getElementById('ve-progress-elapsed');
+    const cancelBtn = document.getElementById('ve-cancel-btn');
+
     if (!modal || !openButton || !input || !generateButton || !output || !analyzeButton) return;
 
     // Prevent double initialization
@@ -377,7 +404,7 @@ function setupVisualEngine() {
     openButton.addEventListener('click', (e) => {
         if (!FAL_API_KEY) {
             e.preventDefault(); e.stopPropagation();
-            alert('Bitte hinterlege zuerst einen gültigen Fal.ai API Key unter Einstellungen.');
+            showToast('Bitte hinterlege zuerst einen g\u00fcltigen Fal.ai API Key unter Einstellungen.', 'warning');
             if (typeof showSettings === 'function') showSettings();
         }
     }, { capture: true });
@@ -386,17 +413,84 @@ function setupVisualEngine() {
     let generatedImageUrl = null;
     let genReqId = 0;
     let anaReqId = 0;
+    let currentAbortController = null;
+    let elapsedTimerId = null;
+
+    // --- Progress indicator helpers ---
+    const showProgress = () => {
+        if (progressArea) progressArea.classList.add('active');
+        output.style.display = 'none';
+    };
+    const hideProgress = () => {
+        if (progressArea) progressArea.classList.remove('active');
+        output.style.display = '';
+        stopElapsedTimer();
+        if (progressBar) progressBar.style.width = '0%';
+        if (progressStatus) {
+            progressStatus.textContent = 'Bild wird generiert...';
+            progressStatus.classList.remove('ve-status-warning');
+        }
+        if (progressElapsed) progressElapsed.textContent = '';
+    };
+    const startElapsedTimer = () => {
+        const startTime = Date.now();
+        const updateElapsed = () => {
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            const mins = Math.floor(elapsed / 60);
+            const secs = elapsed % 60;
+            if (progressElapsed) {
+                progressElapsed.textContent = mins > 0
+                    ? `${mins}:${String(secs).padStart(2, '0')} vergangen`
+                    : `${secs}s vergangen`;
+            }
+            // Update progress bar (estimate based on 120s max)
+            if (progressBar) {
+                const pct = Math.min((elapsed / 120) * 95, 95);
+                progressBar.style.width = pct + '%';
+            }
+            // Show warning after 30s
+            if (elapsed >= 30 && progressStatus) {
+                progressStatus.textContent = 'Dauert l\u00e4nger als erwartet \u2013 bitte Geduld...';
+                progressStatus.classList.add('ve-status-warning');
+            }
+        };
+        updateElapsed();
+        elapsedTimerId = setInterval(updateElapsed, 1000);
+    };
+    const stopElapsedTimer = () => {
+        if (elapsedTimerId) {
+            clearInterval(elapsedTimerId);
+            elapsedTimerId = null;
+        }
+    };
+    const cancelGeneration = () => {
+        if (currentAbortController) {
+            currentAbortController.abort(new Error('user-cancel'));
+            currentAbortController = null;
+        }
+    };
+
+    // Attach cancel button listener
+    if (cancelBtn) cancelBtn.addEventListener('click', cancelGeneration);
 
     const resetUI = () => {
         generatedImageUrl = null;
         analyzeButton.classList.add('hidden');
+        hideProgress();
         output.innerHTML = `<p class="text-neutral-500 text-sm">Bild wird hier angezeigt...</p>`;
         input.value = input.value || '';
+        // Cancel any in-flight request when modal resets
+        cancelGeneration();
     };
 
     // Reset UI whenever modal opens
     document.addEventListener('modal:open', (ev) => {
         if (ev.detail?.id === 'visual-engine-modal') resetUI();
+    });
+
+    // Also cancel on modal close
+    document.addEventListener('modal:close', (ev) => {
+        if (ev.detail?.id === 'visual-engine-modal') cancelGeneration();
     });
 
     const setGenLoading = (isLoading) => {
@@ -421,14 +515,38 @@ function setupVisualEngine() {
             output.innerHTML = `<p class="text-amber-300 text-sm">Bitte gib eine Beschreibung ein.</p>`;
             return;
         }
+
+        // Abort any previous in-flight request
+        cancelGeneration();
+
+        // Create new AbortController for this request
+        const abortController = new AbortController();
+        currentAbortController = abortController;
+
         setGenLoading(true);
         const myId = ++genReqId;
-        output.innerHTML = `<div class="animate-spin h-6 w-6 text-blue-400"></div>`;
         analyzeButton.classList.add('hidden');
+
+        // Show progress indicator instead of output area
+        showProgress();
+        if (progressStatus) {
+            progressStatus.textContent = 'Bild wird generiert... Dies kann bis zu 2 Minuten dauern.';
+            progressStatus.classList.remove('ve-status-warning');
+        }
+        startElapsedTimer();
+
         try {
-            // Use default timeout (120s) from api.js to support slower models like Nano Banana Pro
-            const url = await callFalAPI(prompt, { retries: 2 });
+            // Pass the AbortController signal to callFalAPI for cancellation support
+            const url = await callFalAPI(prompt, { retries: 2, signal: abortController.signal });
             if (myId !== genReqId) return; // stale
+
+            // Update status during image preload
+            if (progressStatus) {
+                progressStatus.textContent = 'Bild wird geladen...';
+                progressStatus.classList.remove('ve-status-warning');
+            }
+            if (progressBar) progressBar.style.width = '98%';
+
             // Preload image
             await new Promise((resolve, reject) => {
                 const img = new Image();
@@ -436,25 +554,39 @@ function setupVisualEngine() {
                 img.onerror = reject;
                 img.src = url + (url.includes('?') ? '&' : '?') + 't=' + Date.now();
             });
+
+            // Hide progress, show result
+            hideProgress();
             generatedImageUrl = url;
             output.innerHTML = `<img src="${url}" alt="Generiertes Bild" class="rounded-lg w-full h-auto">`;
             analyzeButton.classList.remove('hidden');
         } catch (error) {
-            console.error('Fal.ai error', error);
-            output.innerHTML = `<p class="text-red-400 text-sm">Fehler beim Generieren des Bildes: ${error.message}</p>`;
+            hideProgress();
+            // Check if this was a user-initiated cancellation
+            const isUserCancel = error?.message?.includes('user-cancel') ||
+                                 (abortController.signal.aborted && abortController.signal.reason?.message?.includes('user-cancel'));
+            if (isUserCancel) {
+                output.innerHTML = `<p class="text-neutral-400 text-sm">Bildgenerierung wurde abgebrochen.</p>`;
+            } else {
+                console.error('Fal.ai error', error);
+                output.innerHTML = `<p class="text-red-400 text-sm">${getUserFriendlyErrorMessage(error)}</p>`;
+            }
         } finally {
+            if (currentAbortController === abortController) {
+                currentAbortController = null;
+            }
             setGenLoading(false);
         }
     });
 
     input.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); generateButton.click(); }
+        if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) { e.preventDefault(); generateButton.click(); }
     });
 
     analyzeButton.addEventListener('click', async () => {
         if (!generatedImageUrl) return;
         if (!API_KEY) {
-            alert('Bitte konfiguriere zuerst deinen OpenRouter API Key in den Einstellungen.');
+            showToast('Bitte konfiguriere zuerst deinen OpenRouter API Key in den Einstellungen.', 'warning');
             if (typeof showSettings === 'function') showSettings();
             return;
         }
@@ -472,7 +604,9 @@ function setupVisualEngine() {
             const resultText = document.getElementById('result-text');
             const initialState = document.getElementById('initial-state');
             const resultContainer = document.getElementById('result-container');
-            if (resultText) resultText.textContent = generatedText;
+            if (resultText) {
+                applyPromptWithUndo(generatedText, 'Visual Engine');
+            }
             if (initialState) initialState.classList.add('hidden');
             if (resultContainer) {
                 resultContainer.classList.remove('hidden');
@@ -483,7 +617,7 @@ function setupVisualEngine() {
             modalLogic.close();
         } catch (error) {
             console.error('Visual analysis failed', error);
-            output.innerHTML = `<p class="text-red-400 text-sm">Fehler bei der Bildanalyse: ${error.message}</p>` + output.innerHTML;
+            output.innerHTML = `<p class="text-red-400 text-sm">${getUserFriendlyErrorMessage(error)}</p>` + output.innerHTML;
         } finally {
             setAnalyzeLoading(false);
         }
@@ -495,6 +629,7 @@ function setupFutureLabTools() {
     setupAdaptiveFlow();
     setupAiCollaboration();
     setupStoryArcDesigner();
+    setupNarrativeChapters();
     setupImmersiveSpace();
     setupHumanTouch();
     setupReleaseForecast();
@@ -513,6 +648,8 @@ function setupAdaptiveFlow() {
     if (!modal || !openButton || !runButton || !slider || !levelBadge || !output) return;
 
     const modalLogic = setupModal(modal, openButton);
+    // Phase 4 (P4-3): Tip for Future Lab chord on mouse click
+    openButton.addEventListener('click', function(){ if(window.Tips) Tips.show('chord.future', openButton); });
 
     slider.addEventListener('input', () => {
         levelBadge.textContent = slider.value;
@@ -566,13 +703,13 @@ function setupAdaptiveFlow() {
 
             const applyButton = output.querySelector('#apply-adaptive-flow-button');
             applyButton?.addEventListener('click', () => {
-                document.getElementById('result-text').textContent = cleanPrompt;
+                applyPromptWithUndo(cleanPrompt, 'Adaptive Flow');
                 if (window.QW) { window.QW.onPromptUpdated({ source: 'future-lab:adaptive-flow' }); }
                 modalLogic.close();
             });
         } catch (error) {
             console.error('Adaptive Flow failed', error);
-            output.innerHTML = `<p class="text-red-400">Fehler beim Berechnen des Flows: ${error.message}</p>`;
+            output.innerHTML = `<p class="text-red-400">${getUserFriendlyErrorMessage(error)}</p>`;
         } finally {
             runButton.disabled = false;
             buttonText.classList.remove('hidden');
@@ -673,13 +810,13 @@ function setupAiCollaboration() {
 
             const applyButton = output.querySelector('#apply-ai-collab-button');
             applyButton?.addEventListener('click', () => {
-                document.getElementById('result-text').textContent = cleanPrompt;
+                applyPromptWithUndo(cleanPrompt, 'AI Collab');
                 if (window.QW) { window.QW.onPromptUpdated({ source: 'future-lab:ai-collab' }); }
                 modalLogic.close();
             });
         } catch (error) {
             console.error('AI Collaboration failed', error);
-            output.innerHTML = `<p class="text-red-400">Fehler bei der Kollaboration: ${error.message}</p>`;
+            output.innerHTML = `<p class="text-red-400">${getUserFriendlyErrorMessage(error)}</p>`;
         } finally {
             generateButton.disabled = false;
             buttonText?.classList.remove('hidden');
@@ -736,13 +873,13 @@ function setupStoryArcDesigner() {
 
             const applyButton = output.querySelector('#apply-story-arc-button');
             applyButton?.addEventListener('click', () => {
-                document.getElementById('result-text').textContent = cleanPrompt;
+                applyPromptWithUndo(cleanPrompt, 'Story Arc');
                 if (window.QW) { window.QW.onPromptUpdated({ source: 'future-lab:story-arc' }); }
                 modalLogic.close();
             });
         } catch (error) {
             console.error('Story Arc Designer failed', error);
-            output.innerHTML = `<p class="text-red-400">Fehler beim Erstellen des Story-Arcs: ${error.message}</p>`;
+            output.innerHTML = `<p class="text-red-400">${getUserFriendlyErrorMessage(error)}</p>`;
         } finally {
             regenerateButton.disabled = false;
             buttonText?.classList.remove('hidden');
@@ -752,6 +889,306 @@ function setupStoryArcDesigner() {
 
     openButton.addEventListener('click', generateArc);
     regenerateButton.addEventListener('click', generateArc);
+}
+
+function setupNarrativeChapters() {
+    const modal = document.getElementById('narrative-chapters-modal');
+    const openButton = document.getElementById('narrative-chapters-button');
+    const chapterCountSelect = modal?.querySelector('#narrative-chapter-count');
+    const runButton = modal?.querySelector('#run-narrative-chapters-button');
+    const buttonText = modal?.querySelector('#run-narrative-chapters-text');
+    const loader = modal?.querySelector('#narrative-chapters-loader');
+    const output = modal?.querySelector('#narrative-chapters-output');
+
+    if (!modal || !openButton || !chapterCountSelect || !runButton || !output) return;
+
+    const modalLogic = setupModal(modal, openButton);
+    let lastNarrativeResult = null;
+    let lastRequestedCount = '4';
+
+    const escapeHtml = (value = '') => String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+
+    const toInt = (value, fallback) => {
+        const parsed = Number.parseInt(value, 10);
+        return Number.isFinite(parsed) ? parsed : fallback;
+    };
+
+    const unwrapJsonCandidate = (raw) => {
+        let text = (raw || '').trim();
+        if (!text) {
+            return '';
+        }
+
+        // Best case: complete fenced block
+        const fenced = text.match(/```(?:json)?\s*([\s\S]*?)```/i);
+        if (fenced && fenced[1]) {
+            text = fenced[1].trim();
+        } else {
+            // Fallback: strip opening/closing fences even if incomplete
+            text = text
+                .replace(/^```[a-zA-Z]*\s*/i, '')
+                .replace(/```[\s]*$/i, '')
+                .trim();
+        }
+
+        // Some models emit "json { ... }" instead of raw JSON
+        text = text.replace(/^json\s*(?=[{[])/i, '').trim();
+        return text;
+    };
+
+    const normalizeJsonText = (text) => {
+        return String(text || '')
+            .replace(/\u201c|\u201d/g, '"')
+            .replace(/\u2018|\u2019/g, "'")
+            .replace(/\u00a0/g, ' ')
+            .replace(/,\s*([}\]])/g, '$1')
+            .replace(/^\uFEFF/, '')
+            .trim();
+    };
+
+    const extractBalancedRoot = (text) => {
+        const source = String(text || '');
+        const firstBrace = source.indexOf('{');
+        const firstBracket = source.indexOf('[');
+
+        let start = -1;
+        let openChar = '';
+        let closeChar = '';
+
+        if (firstBrace === -1 && firstBracket === -1) {
+            return '';
+        }
+        if (firstBracket === -1 || (firstBrace !== -1 && firstBrace < firstBracket)) {
+            start = firstBrace;
+            openChar = '{';
+            closeChar = '}';
+        } else {
+            start = firstBracket;
+            openChar = '[';
+            closeChar = ']';
+        }
+
+        let depth = 0;
+        let inString = false;
+        let escaped = false;
+
+        for (let i = start; i < source.length; i++) {
+            const ch = source[i];
+
+            if (escaped) {
+                escaped = false;
+                continue;
+            }
+            if (ch === '\\') {
+                escaped = true;
+                continue;
+            }
+            if (ch === '"') {
+                inString = !inString;
+                continue;
+            }
+            if (inString) continue;
+
+            if (ch === openChar) {
+                depth++;
+            } else if (ch === closeChar) {
+                depth--;
+                if (depth === 0) {
+                    return source.slice(start, i + 1);
+                }
+            }
+        }
+
+        // Fallback for truncated/unbalanced text: first opening to last closing
+        if (start !== -1) {
+            const lastClose = source.lastIndexOf(closeChar);
+            if (lastClose > start) {
+                return source.slice(start, lastClose + 1);
+            }
+        }
+
+        return '';
+    };
+
+    const parseJsonLoose = (raw) => {
+        const candidate = unwrapJsonCandidate(raw);
+        if (!candidate) {
+            throw new Error('Leere Antwort erhalten.');
+        }
+
+        const attempts = [];
+        attempts.push(candidate);
+        attempts.push(extractBalancedRoot(candidate));
+        attempts.push(normalizeJsonText(candidate));
+        attempts.push(normalizeJsonText(extractBalancedRoot(candidate)));
+
+        let lastError = null;
+        for (const attempt of attempts) {
+            if (!attempt) continue;
+            try {
+                return JSON.parse(attempt);
+            } catch (error) {
+                lastError = error;
+            }
+        }
+
+        throw lastError || new Error('Antwort war kein gültiges JSON.');
+    };
+
+    const extractJsonPayload = async (raw) => {
+        try {
+            return parseJsonLoose(raw);
+        } catch (primaryError) {
+            const repairQuery = `Fix this malformed JSON and return ONLY valid JSON:\n\n${String(raw || '')}`;
+            try {
+                const repaired = await callOpenRouterAPI(repairQuery, JSON_REPAIR_PROMPT);
+                return parseJsonLoose(repaired);
+            } catch (repairError) {
+                throw new Error(`${primaryError.message} (Auto-Repair fehlgeschlagen: ${repairError.message})`);
+            }
+        }
+    };
+
+    const normalizePayload = (payload, requestedCount) => {
+        const safeCount = Math.max(3, Math.min(5, toInt(requestedCount, 4)));
+        const rawChapters = Array.isArray(payload?.chapters) ? payload.chapters : [];
+
+        if (rawChapters.length !== safeCount) {
+            throw new Error(`Erwartet ${safeCount} Kapitel, erhalten: ${rawChapters.length}.`);
+        }
+
+        const chapters = rawChapters.map((chapter, idx) => {
+            const chapterIndex = idx + 1;
+            const matrix = (chapter && typeof chapter.music_matrix === 'object' && chapter.music_matrix) ? chapter.music_matrix : {};
+            const promptText = String(chapter?.prompt || '').trim();
+            const bpmFromPrompt = promptText.match(/\b(\d{2,3})\s?BPM\b/i)?.[1];
+            const tempoBpm = Math.max(40, Math.min(240, toInt(matrix.tempo_bpm, toInt(bpmFromPrompt, 90))));
+
+            if (!promptText) {
+                throw new Error(`Kapitel ${chapterIndex} enthält keinen Prompt.`);
+            }
+
+            return {
+                index: chapterIndex,
+                title: String(chapter?.title || `Chapter ${chapterIndex}`).trim(),
+                prompt: promptText,
+                music_matrix: {
+                    mood: String(matrix.mood || 'unspecified').trim(),
+                    key: String(matrix.key || 'unspecified').trim(),
+                    rhythm: String(matrix.rhythm || 'unspecified').trim(),
+                    tempo_bpm: tempoBpm,
+                    energy: String(matrix.energy || 'unspecified').trim(),
+                    instrumentation_anchor: String(matrix.instrumentation_anchor || 'unspecified').trim(),
+                    transition_from_previous: chapterIndex === 1
+                        ? 'N/A'
+                        : String(matrix.transition_from_previous || 'evolution from prior chapter').trim()
+                }
+            };
+        });
+
+        return {
+            global_style_anchor: String(payload?.global_style_anchor || 'No explicit anchor provided.').trim(),
+            continuity_strategy: String(payload?.continuity_strategy || 'Balanced evolution across chapters.').trim(),
+            chapters
+        };
+    };
+
+    const renderResult = (data) => {
+        lastNarrativeResult = data;
+        const chapterCards = data.chapters.map((chapter, idx) => `
+            <div class="bg-neutral-900/70 border border-blue-500/30 rounded-xl p-4">
+                <h3 class="text-sm font-semibold text-neutral-100 mb-2">Kapitel ${chapter.index}: ${escapeHtml(chapter.title)}</h3>
+                <pre class="whitespace-pre-wrap text-xs md:text-sm text-neutral-200 bg-neutral-950/70 border border-neutral-700 rounded-lg p-3">${escapeHtml(chapter.prompt)}</pre>
+                <div class="mt-3 grid gap-2 sm:grid-cols-2 text-xs text-neutral-400">
+                    <div><span class="text-neutral-300 font-semibold">Mood:</span> ${escapeHtml(chapter.music_matrix.mood)}</div>
+                    <div><span class="text-neutral-300 font-semibold">Key:</span> ${escapeHtml(chapter.music_matrix.key)}</div>
+                    <div><span class="text-neutral-300 font-semibold">Rhythm:</span> ${escapeHtml(chapter.music_matrix.rhythm)}</div>
+                    <div><span class="text-neutral-300 font-semibold">Tempo:</span> ${chapter.music_matrix.tempo_bpm} BPM</div>
+                    <div><span class="text-neutral-300 font-semibold">Energy:</span> ${escapeHtml(chapter.music_matrix.energy)}</div>
+                    <div><span class="text-neutral-300 font-semibold">Anchor:</span> ${escapeHtml(chapter.music_matrix.instrumentation_anchor)}</div>
+                    <div class="sm:col-span-2"><span class="text-neutral-300 font-semibold">Transition:</span> ${escapeHtml(chapter.music_matrix.transition_from_previous)}</div>
+                </div>
+                <button class="apply-narrative-chapter-button mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg btn-transition btn-press" data-array-index="${idx}">
+                    Kapitel übernehmen
+                </button>
+            </div>
+        `).join('');
+
+        output.innerHTML = `
+            <div class="bg-neutral-900/60 border border-neutral-700 rounded-xl p-4">
+                <p class="text-xs uppercase tracking-wide text-neutral-400 mb-1">Global Style Anchor</p>
+                <p class="text-sm text-neutral-200">${escapeHtml(data.global_style_anchor)}</p>
+                <p class="text-xs uppercase tracking-wide text-neutral-400 mt-3 mb-1">Continuity Strategy</p>
+                <p class="text-sm text-neutral-300">${escapeHtml(data.continuity_strategy)}</p>
+            </div>
+            <div class="grid gap-4 lg:grid-cols-2">${chapterCards}</div>
+        `;
+
+        Array.from(output.querySelectorAll('.apply-narrative-chapter-button')).forEach((button) => {
+            button.addEventListener('click', () => {
+                const index = toInt(button.dataset.arrayIndex, -1);
+                const selected = data.chapters[index];
+                if (!selected) return;
+
+                applyPromptWithUndo(selected.prompt, 'Narrative Chapters');
+                if (window.QW) {
+                    window.QW.onPromptUpdated({ source: `future-lab:narrative-chapters:chapter-${selected.index}` });
+                }
+                modalLogic.close();
+            });
+        });
+    };
+
+    openButton.addEventListener('click', () => {
+        if (lastNarrativeResult && Array.isArray(lastNarrativeResult.chapters) && lastNarrativeResult.chapters.length) {
+            const rememberedCount = String(lastNarrativeResult.chapters.length || lastRequestedCount || '4');
+            chapterCountSelect.value = rememberedCount;
+            renderResult(lastNarrativeResult);
+            return;
+        }
+
+        chapterCountSelect.value = lastRequestedCount || '4';
+        output.innerHTML = `<p class="text-neutral-500 text-sm">Wähle 3-5 Kapitel und generiere eine zusammenhängende Prompt-Reise.</p>`;
+    });
+
+    runButton.addEventListener('click', async () => {
+        const currentPrompt = document.getElementById('result-text').textContent.trim();
+        if (!currentPrompt) {
+            output.innerHTML = `<p class="text-red-400">Bitte generiere zuerst einen Prompt.</p>`;
+            return;
+        }
+
+        const requestedCount = toInt(chapterCountSelect.value, 4);
+        lastRequestedCount = String(requestedCount);
+
+        runButton.disabled = true;
+        buttonText?.classList.add('hidden');
+        loader?.classList.remove('hidden');
+        output.innerHTML = `<div class="animate-spin h-6 w-6 text-blue-400 mx-auto"></div>`;
+
+        const userQuery = `Base prompt: "${currentPrompt}"
+Requested chapter count: ${requestedCount}
+Continuity mode: Balanced evolution`;
+
+        try {
+            const response = await callOpenRouterAPI(userQuery, NARRATIVE_CHAPTERS_PROMPT);
+            const parsed = await extractJsonPayload(response);
+            const normalized = normalizePayload(parsed, requestedCount);
+            renderResult(normalized);
+        } catch (error) {
+            console.error('Narrative Chapters failed', error);
+            output.innerHTML = `<p class="text-red-400">${getUserFriendlyErrorMessage(error)}</p>`;
+        } finally {
+            runButton.disabled = false;
+            buttonText?.classList.remove('hidden');
+            loader?.classList.add('hidden');
+        }
+    });
 }
 
 function setupImmersiveSpace() {
@@ -852,13 +1289,13 @@ function setupImmersiveSpace() {
 
             const applyButton = output.querySelector('#apply-immersive-space-button');
             applyButton?.addEventListener('click', () => {
-                document.getElementById('result-text').textContent = cleanPrompt;
+                applyPromptWithUndo(cleanPrompt, 'Immersive Space');
                 if (window.QW) { window.QW.onPromptUpdated({ source: 'future-lab:immersive-space' }); }
                 modalLogic.close();
             });
         } catch (error) {
             console.error('Immersive Space failed', error);
-            output.innerHTML = `<p class="text-red-400">Fehler beim Gestalten des Klangraums: ${error.message}</p>`;
+            output.innerHTML = `<p class="text-red-400">${getUserFriendlyErrorMessage(error)}</p>`;
         } finally {
             generateButton.disabled = false;
             buttonText?.classList.remove('hidden');
@@ -961,13 +1398,13 @@ function setupHumanTouch() {
 
             const applyButton = output.querySelector('#apply-human-touch-result');
             applyButton?.addEventListener('click', () => {
-                document.getElementById('result-text').textContent = cleanPrompt;
+                applyPromptWithUndo(cleanPrompt, 'Human Touch');
                 if (window.QW) { window.QW.onPromptUpdated({ source: 'future-lab:human-touch' }); }
                 modalLogic.close();
             });
         } catch (error) {
             console.error('Human Touch failed', error);
-            output.innerHTML = `<p class="text-red-400">Fehler beim Humanisieren: ${error.message}</p>`;
+            output.innerHTML = `<p class="text-red-400">${getUserFriendlyErrorMessage(error)}</p>`;
         } finally {
             generateButton.disabled = false;
             buttonText?.classList.remove('hidden');
@@ -1091,7 +1528,7 @@ function setupReleaseForecast() {
             });
         } catch (error) {
             console.error('Release Forecast failed', error);
-            output.innerHTML = `<p class="text-red-400">Fehler bei der Release-Planung: ${error.message}</p>`;
+            output.innerHTML = `<p class="text-red-400">${getUserFriendlyErrorMessage(error)}</p>`;
         } finally {
             generateButton.disabled = false;
             buttonText?.classList.remove('hidden');
@@ -1139,7 +1576,7 @@ function setupGenreMixer() {
             const prompt = `Rewrite this prompt: "${document.getElementById('result-text').textContent}" to also incorporate a mix of the following genres: ${selectedGenres.join(', ')}`;
             try {
                 const response = await callOpenRouterAPI(prompt, GENRE_MIXER_PROMPT);
-                document.getElementById('result-text').textContent = response;
+                applyPromptWithUndo(response, 'Genre Mixer');
                 if (window.QW) { window.QW.onPromptUpdated({ source: 'genre-mixer' }); }
                 modalLogic.close();
             } catch (error) {
@@ -1214,7 +1651,7 @@ function setupKlugTagger(toolId, systemPrompt) {
                 suggestions.appendChild(tag);
             });
         } catch (error) {
-            suggestions.innerHTML = `<p class="text-red-400">Fehler bei der Analyse: ${error.message}</p>`;
+            suggestions.innerHTML = `<p class="text-red-400">${getUserFriendlyErrorMessage(error)}</p>`;
         }
     });
 
@@ -1229,7 +1666,7 @@ function setupKlugTagger(toolId, systemPrompt) {
         const prompt = `Original prompt: "${document.getElementById('result-text').textContent}". Integrate these elements: "${selectedKlugItems.join(', ')}".`;
         try {
             const refinedPrompt = await callOpenRouterAPI(prompt, PROMPT_REFINER_PROMPT);
-            document.getElementById('result-text').textContent = refinedPrompt;
+            applyPromptWithUndo(refinedPrompt, 'Klug: ' + toolId);
             if (window.QW) { window.QW.onPromptUpdated({ source: `klug:${toolId}` }); }
             modalLogic.close();
         } catch (error) {
@@ -1263,7 +1700,8 @@ function setupHookGenerator() {
                 div.textContent = text.replace(/^- /, '');
                 div.onclick = () => {
                     const resultText = document.getElementById('result-text');
-                    resultText.textContent += (type === 'title' ? ` with the title "${div.textContent}"` : `, ${div.textContent}`);
+                    const newText = resultText.textContent + (type === 'title' ? ` with the title "${div.textContent}"` : `, ${div.textContent}`);
+                    applyPromptWithUndo(newText, 'Hook Generator');
                     modalLogic.close();
                 };
                 return div;
@@ -1285,7 +1723,7 @@ function setupHookGenerator() {
                 hooksPart.replace('HOOKS:', '').trim().split('\n').forEach(hook => output.appendChild(createSuggestionElement(hook, 'hook')));
             }
         } catch (error) {
-            output.innerHTML = `<p class="text-red-400">Fehler beim Erstellen der Vorschläge: ${error.message}</p>`;
+            output.innerHTML = `<p class="text-red-400">${getUserFriendlyErrorMessage(error)}</p>`;
         }
     });
 }
@@ -1319,7 +1757,7 @@ function setupSongStructure() {
                 btn.textContent = '...'; btn.disabled = true;
                 try {
                     const integratedPrompt = await callOpenRouterAPI(`Original prompt: "${document.getElementById('result-text').textContent}". Integrate this structure: "${structure}".`, STRUCTURE_INTEGRATOR_PROMPT);
-                    document.getElementById('result-text').textContent = integratedPrompt;
+                    applyPromptWithUndo(integratedPrompt, 'Song Structure');
                     if (window.QW) { window.QW.onPromptUpdated({ source: 'song-structure' }); }
                     modalLogic.close();
                 } catch (error) {
@@ -1327,7 +1765,7 @@ function setupSongStructure() {
                 }
             };
         } catch (error) {
-            output.innerHTML = `<p class="text-red-400">Fehler beim Erstellen des Struktur-Vorschlags: ${error.message}</p>`;
+            output.innerHTML = `<p class="text-red-400">${getUserFriendlyErrorMessage(error)}</p>`;
         }
     });
 }
@@ -1358,12 +1796,12 @@ function setupVibeEnhancer() {
                 </div>
             `;
             output.querySelector('#apply-vibe-button').onclick = () => {
-                document.getElementById('result-text').textContent = enhancedText;
+                applyPromptWithUndo(enhancedText, 'Vibe Enhancer');
                 if (window.QW) { window.QW.onPromptUpdated({ source: 'vibe-enhancer' }); }
                 modalLogic.close();
             };
         } catch (error) {
-            output.innerHTML = `<p class="text-red-400 text-center col-span-2">Fehler beim Veredeln des Vibes: ${error.message}</p>`;
+            output.innerHTML = `<p class="text-red-400 text-center col-span-2">${getUserFriendlyErrorMessage(error)}</p>`;
         }
     });
 }
@@ -1390,14 +1828,16 @@ function setupArtistSuggester() {
                 el.className = 'p-3 bg-neutral-800/20 border border-white/5 rounded-xl cursor-pointer hover:bg-white/10 transition-colors';
                 el.innerHTML = `<strong class="text-blue-400">${artist}</strong><p class="text-xs text-neutral-400">${justification}</p>`;
                 el.onclick = () => {
-                    document.getElementById('result-text').textContent += `, in the style of ${artist}`;
+                    const resultText = document.getElementById('result-text');
+                    const newText = resultText.textContent + `, in the style of ${artist}`;
+                    applyPromptWithUndo(newText, 'Artist Suggester');
                     if (window.QW) { window.QW.onPromptUpdated({ source: 'artist-suggester' }); }
                     modalLogic.close();
                 };
                 output.appendChild(el);
             });
         } catch (error) {
-            output.innerHTML = `<p class="text-red-400">Fehler bei der Künstlersuche: ${error.message}</p>`;
+            output.innerHTML = `<p class="text-red-400">${getUserFriendlyErrorMessage(error)}</p>`;
         }
     });
 }
@@ -1425,12 +1865,14 @@ function setupTempoFinder() {
                 </div>
             `;
             output.querySelector('.add-bpm-button').onclick = () => {
-                document.getElementById('result-text').textContent += `, ${bpmValue} bpm`;
+                const resultText = document.getElementById('result-text');
+                const newText = resultText.textContent + `, ${bpmValue} bpm`;
+                applyPromptWithUndo(newText, 'Tempo Finder');
                 if (window.QW) { window.QW.onPromptUpdated({ source: 'tempo-finder' }); }
                 modalLogic.close();
             };
         } catch (error) {
-            output.innerHTML = `<p class="text-red-400">Fehler bei der Tempo-Suche: ${error.message}</p>`;
+            output.innerHTML = `<p class="text-red-400">${getUserFriendlyErrorMessage(error)}</p>`;
         }
     });
 }
@@ -1460,7 +1902,7 @@ function setupCustomInstruction() {
         const userQuery = `Base prompt: "${currentPrompt}"\nInstruction: "${instruction}"`;
         try {
             const refined = await callOpenRouterAPI(userQuery, CUSTOM_INSTRUCTION_PROMPT);
-            document.getElementById('result-text').textContent = refined;
+            applyPromptWithUndo(refined, 'Custom Instruction');
             if (window.QW) { window.QW.onPromptUpdated({ source: 'custom-instruction' }); }
             modalLogic.close();
         } catch (error) {
@@ -1565,7 +2007,7 @@ function setupGenreEvolution() {
 
         try {
             const refined = await callOpenRouterAPI(userQuery, GENRE_EVOLUTION_PROMPT);
-            document.getElementById('result-text').textContent = refined;
+            applyPromptWithUndo(refined, 'Genre Evolution');
             if (window.QW) { window.QW.onPromptUpdated({ source: 'get:timeline' }); }
             modalLogic.close();
         } catch (error) {
@@ -1617,23 +2059,26 @@ function setupStyleSync() {
         if (masterPromptDisplay) masterPromptDisplay.textContent = currentText || '// Warten auf Input...';
 
         studioModal.classList.remove('hidden');
-        document.body.style.overflow = 'hidden';
+        if(window.BodyScrollLock) BodyScrollLock.lock();
+        if(window.CloseStack) CloseStack.push(closeStudio, { id: 'style-sync-studio' });
+        // Phase 3 (P3-5): Push style-sync scope
+        if(window.ScopeStack) studioModal._scopeToken = ScopeStack.push('style-sync');
+        // Phase 4 (P4-3): Tip for chord.expert when opening via mouse
+        if(window.Tips && openButton) Tips.show('chord.future', openButton);
     };
 
     const closeStudio = () => {
+        if(window.CloseStack) CloseStack.pop('style-sync-studio');
+        // Phase 3 (P3-5): Pop style-sync scope
+        if(window.ScopeStack && studioModal._scopeToken){ ScopeStack.pop(studioModal._scopeToken); studioModal._scopeToken = null; }
         studioModal.classList.add('hidden');
-        document.body.style.overflow = '';
+        if(window.BodyScrollLock) BodyScrollLock.unlock();
     };
 
     openButton.addEventListener('click', openStudio);
     if (closeButton) closeButton.addEventListener('click', closeStudio);
 
-    // ESC key closes the modal
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && !studioModal.classList.contains('hidden')) {
-            closeStudio();
-        }
-    });
+    // Escape now handled by CloseStack (close_stack.js)
 
     // --- ENCODER LOGIC (Text -> Image) ---
     // Guard against multiple event listener attachments
@@ -1642,7 +2087,7 @@ function setupStyleSync() {
         transcodeBtn.addEventListener('click', async () => {
             const promptText = masterPromptDisplay.textContent;
             if (!promptText || promptText.startsWith('//')) {
-                alert('Bitte erstelle zuerst einen Musik-Prompt im Hauptfenster.');
+                showToast('Bitte erstelle zuerst einen Musik-Prompt im Hauptfenster.', 'warning');
                 return;
             }
 
@@ -1666,7 +2111,7 @@ function setupStyleSync() {
 
             } catch (error) {
                 console.error('Encoder Error:', error);
-                visualPlaceholder.innerHTML = `<p class="text-red-400 text-xs text-center px-4">Fehler: ${error.message}</p>`;
+                visualPlaceholder.innerHTML = `<p class="text-red-400 text-xs text-center px-4">${getUserFriendlyErrorMessage(error)}</p>`;
             } finally {
                 transcodeBtn.classList.remove('animate-pulse');
             }
@@ -1696,7 +2141,7 @@ function setupStyleSync() {
                 URL.revokeObjectURL(url);
             } catch (error) {
                 console.error('Download Error:', error);
-                alert('Fehler beim Herunterladen des Bildes.');
+                showToast('Fehler beim Herunterladen des Bildes.', 'error');
             }
         });
     }
@@ -1718,7 +2163,7 @@ function setupStyleSync() {
                 setTimeout(() => copyBtn.classList.remove('bg-green-500/50'), 1000);
             } catch (error) {
                 console.error('Copy Error:', error);
-                alert('Fehler beim Kopieren. Bitte versuche es erneut.');
+                showToast('Fehler beim Kopieren. Bitte versuche es erneut.', 'error');
             }
         });
     }
@@ -1801,7 +2246,7 @@ function setupStyleSync() {
             const maxSizeMB = 5;
             const maxSizeBytes = maxSizeMB * 1024 * 1024;
             if (file.size > maxSizeBytes) {
-                alert(`Die Datei ist zu groß (${(file.size / 1024 / 1024).toFixed(1)} MB). Maximale Größe: ${maxSizeMB} MB.`);
+                showToast(`Die Datei ist zu gro\u00df (${(file.size / 1024 / 1024).toFixed(1)} MB). Maximale Gr\u00f6\u00dfe: ${maxSizeMB} MB.`, 'error');
                 return;
             }
 
@@ -1844,7 +2289,7 @@ function setupStyleSync() {
 
             } catch (error) {
                 console.error('Decoder Error:', error);
-                decodeResult.value = `Fehler bei der Analyse: ${error.message}`;
+                decodeResult.value = getUserFriendlyErrorMessage(error);
             } finally {
                 decodeBtn.classList.remove('animate-pulse');
             }
@@ -1862,9 +2307,9 @@ function setupStyleSync() {
             if (mainInput) {
                 mainInput.value = generatedText;
                 // Visual feedback
-                applyBtn.innerHTML = '<span>Kopiert!</span> <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" title="Check"><polyline points="20 6 9 17 4 12"/></svg>';
+                applyBtn.innerHTML = '<span>Kopiert!</span> <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" title="Check"><polyline points="20 6 9 17 4 12"/></svg>';
                 setTimeout(() => {
-                    applyBtn.innerHTML = '<span>APPLY TO PROMPT</span> <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';
+                    applyBtn.innerHTML = '<span>AUF PROMPT ANWENDEN</span> <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';
                     // Close studio to show result
                     closeStudio();
                 }, 1000);
@@ -1902,14 +2347,24 @@ function setupKlangStudio() {
     // Open Modal
     openTile.addEventListener('click', () => {
         modal.classList.remove('hidden');
-        document.body.style.overflow = 'hidden';
+        if(window.BodyScrollLock) BodyScrollLock.lock();
+        if(window.CloseStack) CloseStack.push(closeModal, { id: 'klang-studio' });
+        // Phase 3 (P3-5): Push klang-studio scope
+        if(window.ScopeStack) modal._scopeToken = ScopeStack.push('klang-studio');
+        // Focus trap: trap Tab/Shift+Tab within the modal, auto-focus first element
+        if(window.FocusTrap) modal._focusTrap = FocusTrap.activate(modal);
         updateTokenPreview();
     });
 
     // Close Modal
     const closeModal = () => {
+        // Deactivate focus trap (restores focus to trigger element)
+        if(window.FocusTrap && modal._focusTrap){ modal._focusTrap.deactivate(); modal._focusTrap = null; }
+        if(window.CloseStack) CloseStack.pop('klang-studio');
+        // Phase 3 (P3-5): Pop klang-studio scope
+        if(window.ScopeStack && modal._scopeToken){ ScopeStack.pop(modal._scopeToken); modal._scopeToken = null; }
         modal.classList.add('hidden');
-        document.body.style.overflow = '';
+        if(window.BodyScrollLock) BodyScrollLock.unlock();
     };
 
     closeBtn?.addEventListener('click', closeModal);
@@ -1919,12 +2374,7 @@ function setupKlangStudio() {
         }
     });
 
-    // ESC key to close
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
-            closeModal();
-        }
-    });
+    // Escape now handled by CloseStack (close_stack.js)
 
     // Tab Switching
     tabs.forEach(tab => {
@@ -2131,47 +2581,642 @@ function setupKlangStudio() {
         return parts.join(', ');
     }
 
-    function generateOrchestraToken() {
-        const preset = modal.querySelector('input[name="ks-orch-preset"]:checked')?.value || 'symphony';
-        const acoustics = modal.querySelector('input[name="ks-acoustics"]:checked')?.value || 'concert';
+    // === PRODUCER-QUALITY DESCRIPTOR LIBRARY ===
+    const PRODUCER_DESCRIPTORS = {
+        strings: [
+            { max: 15, text: 'barely there, like distant memories of strings, subliminal warmth beneath the mix' },
+            { max: 30, text: 'gossamer string textures weaving through silence, intimate and exposed' },
+            { max: 50, text: 'warm string bed providing harmonic foundation, supportive yet unobtrusive' },
+            { max: 70, text: 'lush string section with full body, legato phrases breathing naturally' },
+            { max: 85, text: 'sweeping orchestral strings with cinematic depth, emotionally charged swells' },
+            { max: 100, text: 'wall-of-sound string orchestra, dramatic and overwhelming, Zimmer-esque intensity' }
+        ],
+        woodwinds: [
+            { max: 15, text: 'spectral woodwind whispers, atmospheric color barely perceptible' },
+            { max: 30, text: 'soft flute motifs and oboe sighs, pastoral and dreamlike' },
+            { max: 50, text: 'clarinet warmth and bassoon depth adding orchestral color' },
+            { max: 70, text: 'expressive woodwind choir with distinct character, dance of reeds and air' },
+            { max: 85, text: 'virtuosic woodwind passages cutting through the texture, melodically assertive' },
+            { max: 100, text: 'blazing woodwind ensemble commanding attention, brilliant and urgent' }
+        ],
+        brass: [
+            { max: 15, text: 'distant muted brass, like city sounds through fog' },
+            { max: 30, text: 'warm french horn pads, golden and noble but restrained' },
+            { max: 50, text: 'dignified brass chorale, rich low-end foundation with controlled power' },
+            { max: 70, text: 'triumphant brass fanfares, majestic without overwhelming' },
+            { max: 85, text: 'powerful brass section punching through the mix, bold and fearless' },
+            { max: 100, text: 'thundering brass wall, apocalyptic power, unstoppable force of sound' }
+        ],
+        percussion: [
+            { max: 15, text: 'barely audible percussion dust, felt more than heard' },
+            { max: 30, text: 'soft timpani rolls and suspended cymbal shimmers, atmospheric bed' },
+            { max: 50, text: 'steady rhythmic heartbeat, grounding the orchestral movement' },
+            { max: 70, text: 'propulsive percussion patterns with impact, forward momentum' },
+            { max: 85, text: 'explosive percussion hits and rhythmic fury, adrenaline-inducing' },
+            { max: 100, text: 'earth-shaking percussion assault, primal and devastating' }
+        ],
+        hall: [
+            { max: 15, text: 'completely dry, clinical clarity, every note surgically exposed' },
+            { max: 35, text: 'controlled early reflections, professional studio ambience' },
+            { max: 55, text: 'natural room sound, musicians breathing together in shared space' },
+            { max: 75, text: 'spacious concert hall decay, orchestral warmth enveloping the listener' },
+            { max: 90, text: 'vast reverberant space, notes dissolving into ethereal echoes' },
+            { max: 100, text: 'endless reverb tail, sounds floating in cosmic space' }
+        ],
+        echo: [
+            { max: 10, text: 'no delay, pure direct signal' },
+            { max: 30, text: 'micro-delay adding thickness and dimension without obvious repeats' },
+            { max: 50, text: 'musical delay patterns dancing with the arrangement' },
+            { max: 70, text: 'layered echoes building atmospheric complexity' },
+            { max: 90, text: 'deep trailing echoes, sounds ricocheting through vast spaces' },
+            { max: 100, text: 'self-oscillating delay creating walls of repeated sound' }
+        ],
+        air: [
+            { max: 20, text: 'dense and compact, instruments fighting for space' },
+            { max: 40, text: 'controlled stereo field, intimate and direct' },
+            { max: 60, text: 'natural spatial separation, each section with its place' },
+            { max: 80, text: 'expansive stereo image, cinematic width and depth' },
+            { max: 95, text: 'immersive soundscape stretching beyond the speakers' },
+            { max: 100, text: 'overwhelming spatial experience, sounds arriving from everywhere' }
+        ],
+        warmth: [
+            { max: 15, text: 'pristine and cold, digital clarity without color' },
+            { max: 35, text: 'balanced tonal character, transparent and honest' },
+            { max: 55, text: 'subtle analog coloration, slightly rounded transients' },
+            { max: 75, text: 'tape-saturated warmth, rich harmonic overtones' },
+            { max: 90, text: 'creamy analog saturation, musical compression' },
+            { max: 100, text: 'heavily colored, thick and syrupy, dripping with character' }
+        ],
+        dynamics: [
+            { max: 20, text: 'pianissimo whispers, fragile and delicate, on the edge of silence' },
+            { max: 40, text: 'piano, gentle and introspective, restrained emotional weight' },
+            { max: 60, text: 'mezzo-forte, balanced and natural, conversational dynamics' },
+            { max: 80, text: 'forte, bold and assertive, confident musical statements' },
+            { max: 100, text: 'fortissimo, powerful and intense, overwhelming emotional climax' }
+        ]
+    };
 
-        const presetMap = {
-            'symphony': 'full symphony orchestra',
-            'chamber': 'intimate chamber orchestra',
-            'quartet': 'string quartet',
-            'brass': 'brass ensemble',
-            'woodwind': 'woodwind section',
-            'solo': 'solo instrument'
-        };
+    const ARTICULATION_DESCRIPTORS = {
+        'legato': 'seamlessly connected phrases, bow never leaving the string, breath never breaking',
+        'staccato': 'precise rhythmic punctuation, notes like controlled bursts of energy',
+        'pizzicato': 'plucked textures adding percussive sparkle and playful character',
+        'weich': 'soft-focused tone, edges smoothed, intimate and vulnerable',
+        'brilliant': 'crystalline clarity cutting through, present and articulate',
+        'muted': 'veiled and mysterious, brass speaking in hushed tones',
+        'open': 'full resonant brass speaking with authority and projection',
+        'dezent': 'restrained percussion, subtle textural support',
+        'dramatisch': 'dramatic percussion hits, impactful and theatrical'
+    };
 
-        const acousticsMap = {
-            'intimate': 'intimate chamber room acoustics',
-            'concert': 'lush concert hall reverberation',
-            'cathedral': 'massive cathedral reverb',
-            'dry': 'dry studio recording'
-        };
+    const SOLO_DESCRIPTORS = {
+        'violin': 'expressive solo violin singing above the orchestra, emotionally exposed',
+        'flute': 'ethereal flute solo passages floating through the texture',
+        'trumpet': 'heroic trumpet solo cutting through with brilliant clarity',
+        'cello': 'rich cello solo weaving through the orchestral fabric, deeply resonant'
+    };
 
-        const parts = [presetMap[preset]];
+    const PRESET_DESCRIPTORS = {
+        'symphony': 'full symphony orchestra in traditional concert formation',
+        'chamber': 'intimate chamber orchestra with crystalline transparency',
+        'quartet': 'string quartet with intimate conversation between voices',
+        'brass': 'brass ensemble with noble power and ceremonial grandeur',
+        'woodwind': 'woodwind ensemble with pastoral charm and expressive color'
+    };
 
-        // Check dominance
-        dominanceSliders.forEach(slider => {
-            const section = slider.dataset.section;
-            const value = parseInt(slider.value);
-            if (value > 70) {
-                const sectionNames = {
-                    'strings': 'prominent strings',
-                    'woodwinds': 'emphasized woodwinds',
-                    'brass': 'powerful brass',
-                    'percussion': 'driving percussion'
-                };
-                parts.push(sectionNames[section]);
+    // === INSTRUMENTATION ANALYSIS SYSTEM ===
+    const INSTRUMENT_CONFIG = {
+        strings: {
+            instruments: {
+                'erste-violine': { name: 'first violins', role: 'melodic lead', register: 'high' },
+                'zweite-violine': { name: 'second violins', role: 'harmonic support', register: 'high' },
+                'viola': { name: 'violas', role: 'inner voice', register: 'mid' },
+                'violoncello': { name: 'cellos', role: 'tenor line and bass', register: 'mid-low' },
+                'kontrabass': { name: 'double basses', role: 'foundation', register: 'low' }
+            },
+            patterns: {
+                full: 'complete string section from soaring first violins through rumbling double basses',
+                upper: 'crystalline upper strings with shimmering high register focus',
+                lower: 'rich lower strings providing warm, grounded foundation',
+                violinsOnly: 'violin section in dual-voice harmony without lower strings',
+                chamberCore: 'violin-viola-cello trio with chamber intimacy'
+            }
+        },
+        woodwinds: {
+            instruments: {
+                'floete': { name: 'flutes', role: 'aerial melody', register: 'high' },
+                'oboe': { name: 'oboes', role: 'expressive color', register: 'mid-high' },
+                'klarinette': { name: 'clarinets', role: 'warm body', register: 'mid' },
+                'fagott': { name: 'bassoons', role: 'bass foundation', register: 'low' }
+            },
+            patterns: {
+                full: 'complete woodwind choir in classic double-wind formation',
+                upper: 'airy high woodwinds with flute and oboe color',
+                lower: 'dark woodwind voices with clarinet depth and bassoon foundation',
+                solo: 'single woodwind voice with exposed, intimate character'
+            }
+        },
+        brass: {
+            instruments: {
+                'horn': { name: 'french horns', role: 'noble warmth', register: 'mid' },
+                'trompete': { name: 'trumpets', role: 'brilliant fanfare', register: 'high' },
+                'posaune': { name: 'trombones', role: 'power and weight', register: 'mid-low' },
+                'tuba': { name: 'tuba', role: 'bass anchor', register: 'low' }
+            },
+            patterns: {
+                full: 'complete brass section with noble power from horn warmth to tuba depth',
+                fanfare: 'brilliant brass fanfare with trumpets and horns',
+                lowBrass: 'dark brass voices with trombone weight and tuba foundation',
+                hornsOnly: 'warm french horn choir, golden and pastoral'
+            }
+        },
+        percussion: {
+            instruments: {
+                'pauke': { name: 'timpani', role: 'rhythmic foundation', register: 'low' },
+                'becken': { name: 'cymbals', role: 'dramatic color', register: 'high' }
+            },
+            patterns: {
+                full: 'full percussion battery with timpani thunder and cymbal shimmer',
+                timpaniOnly: 'timpani rolls providing rhythmic heartbeat and dramatic punctuation',
+                sparse: 'minimal percussion adding subtle textural emphasis'
+            }
+        }
+    };
+
+    // Analyze which instruments are active in each section
+    function getInstrumentationContext() {
+        const sections = {};
+
+        for (const [sectionName, sectionConfig] of Object.entries(INSTRUMENT_CONFIG)) {
+            const activeInstruments = [];
+            const totalInstruments = Object.keys(sectionConfig.instruments).length;
+            let totalSeats = 0;
+            let activeSeats = 0;
+
+            for (const [instId, instInfo] of Object.entries(sectionConfig.instruments)) {
+                // Count all seats for this instrument (there can be multiple)
+                const seats = modal.querySelectorAll(`[data-instrument="${instId}"]`);
+                const activeSeatsForInst = modal.querySelectorAll(`[data-instrument="${instId}"].active`);
+
+                totalSeats += seats.length;
+                activeSeats += activeSeatsForInst.length;
+
+                if (activeSeatsForInst.length > 0) {
+                    activeInstruments.push({
+                        id: instId,
+                        ...instInfo,
+                        count: activeSeatsForInst.length,
+                        total: seats.length
+                    });
+                }
+            }
+
+            sections[sectionName] = {
+                active: activeInstruments,
+                totalInstruments: totalInstruments,
+                activeInstrumentTypes: activeInstruments.length,
+                density: totalSeats > 0 ? activeSeats / totalSeats : 0,
+                seatCount: { active: activeSeats, total: totalSeats }
+            };
+        }
+
+        return sections;
+    }
+
+    // Generate intelligent descriptor based on instrumentation
+    function getInstrumentationDescriptor(sectionName, sectionData) {
+        const config = INSTRUMENT_CONFIG[sectionName];
+        const active = sectionData.active;
+        const density = sectionData.density;
+
+        // No instruments active
+        if (active.length === 0) {
+            return null;
+        }
+
+        // All instruments active with high density
+        if (sectionData.activeInstrumentTypes === sectionData.totalInstruments && density > 0.7) {
+            return config.patterns.full;
+        }
+
+        // Section-specific pattern detection
+        if (sectionName === 'strings') {
+            const hasViolins = active.some(i => i.id.includes('violine'));
+            const hasViolas = active.some(i => i.id === 'viola');
+            const hasCellos = active.some(i => i.id === 'violoncello');
+            const hasBasses = active.some(i => i.id === 'kontrabass');
+
+            if (hasViolins && !hasCellos && !hasBasses) return config.patterns.upper;
+            if ((hasCellos || hasBasses) && !hasViolins) return config.patterns.lower;
+            if (hasViolins && !hasBasses && active.length <= 3) return config.patterns.chamberCore;
+        }
+
+        if (sectionName === 'woodwinds') {
+            const hasFlutes = active.some(i => i.id === 'floete');
+            const hasOboes = active.some(i => i.id === 'oboe');
+            const hasClarinets = active.some(i => i.id === 'klarinette');
+            const hasBassoons = active.some(i => i.id === 'fagott');
+
+            if ((hasFlutes || hasOboes) && !hasClarinets && !hasBassoons) return config.patterns.upper;
+            if ((hasClarinets || hasBassoons) && !hasFlutes && !hasOboes) return config.patterns.lower;
+            if (active.length === 1) return `solo ${active[0].name} with exposed, intimate character`;
+        }
+
+        if (sectionName === 'brass') {
+            const hasHorns = active.some(i => i.id === 'horn');
+            const hasTrumpets = active.some(i => i.id === 'trompete');
+            const hasTrombones = active.some(i => i.id === 'posaune');
+            const hasTuba = active.some(i => i.id === 'tuba');
+
+            if (hasHorns && hasTrumpets && !hasTrombones && !hasTuba) return config.patterns.fanfare;
+            if ((hasTrombones || hasTuba) && !hasTrumpets) return config.patterns.lowBrass;
+            if (hasHorns && active.length === 1) return config.patterns.hornsOnly;
+        }
+
+        if (sectionName === 'percussion') {
+            const hasTimpani = active.some(i => i.id === 'pauke');
+            const hasCymbals = active.some(i => i.id === 'becken');
+
+            if (hasTimpani && !hasCymbals) return config.patterns.timpaniOnly;
+            if (density < 0.5) return config.patterns.sparse;
+        }
+
+        // Fallback: generate from active instruments
+        const names = active.map(i => i.name).join(', ');
+        return `${names} providing ${density > 0.6 ? 'substantial' : 'selective'} ${sectionName} presence`;
+    }
+
+    // Get orchestra balance profile
+    function getOrchestraBalanceProfile(instrumentation) {
+        const sections = Object.entries(instrumentation);
+        const activeSections = sections.filter(([_, data]) => data.active.length > 0);
+        const densities = sections.map(([name, data]) => ({ name, density: data.density }));
+
+        // Sort by density
+        densities.sort((a, b) => b.density - a.density);
+
+        if (activeSections.length === 0) return 'silent, no instruments active';
+        if (activeSections.length === 4 && densities[0].density > 0.7) return 'grand full orchestral forces';
+
+        const dominant = densities[0];
+        if (dominant.density > 0.7 && densities[1].density < 0.4) {
+            return `${dominant.name}-dominated texture`;
+        }
+
+        if (activeSections.length <= 2) {
+            return `chamber texture with ${activeSections.map(([n]) => n).join(' and ')}`;
+        }
+
+        return 'balanced orchestral blend';
+    }
+
+    // Helper to get descriptor from value
+    function getDescriptor(descriptorArray, value) {
+        for (const desc of descriptorArray) {
+            if (value <= desc.max) return desc.text;
+        }
+        return descriptorArray[descriptorArray.length - 1].text;
+    }
+
+    // Build rich orchestra context for AI refinement
+    function getOrchestraContext() {
+        const stringsVal = parseInt(document.getElementById('ks-strings-slider')?.value || 50);
+        const woodwindsVal = parseInt(document.getElementById('ks-woodwinds-slider')?.value || 50);
+        const brassVal = parseInt(document.getElementById('ks-brass-slider')?.value || 50);
+        const percussionVal = parseInt(document.getElementById('ks-percussion-slider')?.value || 50);
+        const hallVal = parseInt(document.getElementById('ks-hall-slider')?.value || 60);
+        const echoVal = parseInt(document.getElementById('ks-echo-slider')?.value || 35);
+        const airVal = parseInt(document.getElementById('ks-air-slider')?.value || 65);
+        const warmthVal = parseInt(document.getElementById('ks-warmth-slider')?.value || 55);
+        const dynamicsVal = parseInt(document.getElementById('ks-dynamics-slider')?.value || 60);
+
+        const activePreset = modal.querySelector('.ks-orch-preset-btn.active');
+        const preset = activePreset?.dataset.preset || 'symphony';
+
+        const activeRoom = modal.querySelector('.ks-orch-room-btn.active');
+        const roomName = activeRoom?.querySelector('.room-name')?.textContent || 'Konzert';
+
+        // Gather articulations
+        const articulations = [];
+        modal.querySelectorAll('.ks-orch-tags .ks-orch-tag.active').forEach(tag => {
+            const key = tag.dataset.tag?.toLowerCase();
+            if (ARTICULATION_DESCRIPTORS[key]) {
+                articulations.push(ARTICULATION_DESCRIPTORS[key]);
             }
         });
 
-        parts.push(acousticsMap[acoustics]);
+        // Solo instrument
+        const soloInstrument = document.getElementById('ks-solo-instrument')?.value;
+        const soloDesc = (soloInstrument && soloInstrument !== 'none') ? SOLO_DESCRIPTORS[soloInstrument] : null;
+
+        // Get instrumentation analysis
+        const instrumentation = getInstrumentationContext();
+        const balanceProfile = getOrchestraBalanceProfile(instrumentation);
+
+        // Generate intelligent section descriptors based on actual instrument seats
+        const stringsInst = getInstrumentationDescriptor('strings', instrumentation.strings);
+        const woodwindsInst = getInstrumentationDescriptor('woodwinds', instrumentation.woodwinds);
+        const brassInst = getInstrumentationDescriptor('brass', instrumentation.brass);
+        const percussionInst = getInstrumentationDescriptor('percussion', instrumentation.percussion);
+
+        return {
+            setup: {
+                preset: PRESET_DESCRIPTORS[preset] || preset,
+                room: roomName,
+                balanceProfile: balanceProfile
+            },
+            sections: {
+                // Use instrumentation descriptors if section has active instruments, otherwise use slider intensity
+                strings: stringsInst || getDescriptor(PRODUCER_DESCRIPTORS.strings, stringsVal),
+                woodwinds: woodwindsInst || getDescriptor(PRODUCER_DESCRIPTORS.woodwinds, woodwindsVal),
+                brass: brassInst || getDescriptor(PRODUCER_DESCRIPTORS.brass, brassVal),
+                percussion: percussionInst || getDescriptor(PRODUCER_DESCRIPTORS.percussion, percussionVal)
+            },
+            intensity: {
+                // Keep slider values for intensity context
+                strings: stringsVal,
+                woodwinds: woodwindsVal,
+                brass: brassVal,
+                percussion: percussionVal
+            },
+            instrumentation: {
+                // Raw instrumentation data for AI
+                strings: instrumentation.strings,
+                woodwinds: instrumentation.woodwinds,
+                brass: instrumentation.brass,
+                percussion: instrumentation.percussion
+            },
+            articulations: articulations,
+            effects: {
+                space: getDescriptor(PRODUCER_DESCRIPTORS.hall, hallVal),
+                delay: getDescriptor(PRODUCER_DESCRIPTORS.echo, echoVal),
+                width: getDescriptor(PRODUCER_DESCRIPTORS.air, airVal),
+                character: getDescriptor(PRODUCER_DESCRIPTORS.warmth, warmthVal)
+            },
+            dynamics: getDescriptor(PRODUCER_DESCRIPTORS.dynamics, dynamicsVal),
+            solo: soloDesc
+        };
+    }
+
+    function generateOrchestraToken() {
+        const context = getOrchestraContext();
+        const parts = [];
+
+        // Preset base
+        parts.push(context.setup.preset);
+
+        // Section descriptors
+        parts.push(context.sections.strings);
+        parts.push(context.sections.woodwinds);
+        parts.push(context.sections.brass);
+        parts.push(context.sections.percussion);
+
+        // Articulations
+        context.articulations.forEach(art => parts.push(art));
+
+        // Solo
+        if (context.solo) parts.push(context.solo);
+
+        // Dynamics
+        parts.push(context.dynamics);
+
+        // Effects (only add distinctive ones)
+        if (context.effects.space.includes('vast') || context.effects.space.includes('endless')) {
+            parts.push(context.effects.space);
+        }
+        if (context.effects.character.includes('tape') || context.effects.character.includes('creamy')) {
+            parts.push(context.effects.character);
+        }
 
         return parts.join(', ');
     }
+
+    // === NEW ORCHESTRA UI HANDLERS ===
+
+    // Orchestra Preset Buttons
+    const orchPresetBtns = modal.querySelectorAll('.ks-orch-preset-btn');
+    orchPresetBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            orchPresetBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            // Update seats based on preset
+            updateOrchestraSeatsFromPreset(btn.dataset.preset);
+            updateOrchestraTokenPreview();
+            updateTokenPreview();
+        });
+    });
+
+    // Orchestra Seat Toggle
+    const orchSeats = modal.querySelectorAll('.ks-orch-seat-wide');
+    orchSeats.forEach(seat => {
+        seat.addEventListener('click', () => {
+            seat.classList.toggle('active');
+            updateOrchestraTokenPreview();
+            updateTokenPreview();
+        });
+    });
+
+    // Orchestra Section Sliders
+    const orchSectionSliders = modal.querySelectorAll('.ks-orch-slider[data-section]');
+    orchSectionSliders.forEach(slider => {
+        slider.addEventListener('input', () => {
+            const section = slider.dataset.section;
+            const valueDisplay = document.getElementById(`ks-${section}-value`);
+            if (valueDisplay) {
+                valueDisplay.textContent = `${slider.value}%`;
+            }
+            updateOrchestraTokenPreview();
+            updateTokenPreview();
+        });
+    });
+
+    // Orchestra Tags Toggle
+    const orchTags = modal.querySelectorAll('.ks-orch-tag');
+    orchTags.forEach(tag => {
+        tag.addEventListener('click', () => {
+            // Toggle within same group (find parent .ks-orch-tags)
+            const tagGroup = tag.closest('.ks-orch-tags');
+            if (tagGroup) {
+                tagGroup.querySelectorAll('.ks-orch-tag').forEach(t => t.classList.remove('active'));
+            }
+            tag.classList.add('active');
+            updateOrchestraTokenPreview();
+            updateTokenPreview();
+        });
+    });
+
+    // Room Acoustics Preset Buttons (with effect slider auto-update)
+    const roomPresets = {
+        'intimate': { hall: 20, echo: 10, air: 30, warmth: 70 },
+        'concert': { hall: 60, echo: 35, air: 65, warmth: 55 },
+        'cathedral': { hall: 90, echo: 70, air: 85, warmth: 40 },
+        'studio': { hall: 10, echo: 5, air: 50, warmth: 50 }
+    };
+
+    const effectLabels = {
+        hall: { 0: 'Trocken', 30: 'Dezent', 50: 'Warmer Saal', 70: 'Großer Raum', 90: 'Kathedrale' },
+        echo: { 0: 'Kein Echo', 20: 'Subtiles Echo', 50: 'Moderates Echo', 70: 'Tiefes Echo' },
+        air: { 0: 'Dicht', 30: 'Kompakt', 50: 'Neutral', 70: 'Offen-Transparent', 90: 'Luftig-Weit' },
+        warmth: { 0: 'Kalt-Klar', 30: 'Neutral', 50: 'Warm-Mittig', 70: 'Warm-Analog', 90: 'Sehr Warm' }
+    };
+
+    function getEffectLabel(effect, value) {
+        const labels = effectLabels[effect];
+        const thresholds = Object.keys(labels).map(Number).sort((a, b) => a - b);
+        let label = labels[0];
+        for (const threshold of thresholds) {
+            if (value >= threshold) label = labels[threshold];
+        }
+        return label;
+    }
+
+    const roomBtns = modal.querySelectorAll('.ks-orch-room-btn');
+    roomBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            roomBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const room = btn.dataset.room;
+            const preset = roomPresets[room];
+            if (preset) {
+                // Animate sliders to preset values
+                animateSlider('ks-hall-slider', preset.hall);
+                animateSlider('ks-echo-slider', preset.echo);
+                animateSlider('ks-air-slider', preset.air);
+                animateSlider('ks-warmth-slider', preset.warmth);
+            }
+            updateOrchestraTokenPreview();
+            updateTokenPreview();
+        });
+    });
+
+    function animateSlider(sliderId, targetValue) {
+        const slider = document.getElementById(sliderId);
+        const valueEl = document.getElementById(sliderId.replace('slider', 'value'));
+        const labelEl = document.getElementById(sliderId.replace('slider', 'label'));
+
+        if (!slider) return;
+
+        const currentValue = parseInt(slider.value);
+        const diff = targetValue - currentValue;
+        const steps = 10;
+        const stepValue = diff / steps;
+        let step = 0;
+
+        const animate = () => {
+            step++;
+            const newValue = Math.round(currentValue + (stepValue * step));
+            slider.value = newValue;
+            if (valueEl) valueEl.textContent = `${newValue}%`;
+
+            // Update semantic label
+            const effect = sliderId.replace('ks-', '').replace('-slider', '');
+            if (labelEl) labelEl.textContent = getEffectLabel(effect, newValue);
+
+            if (step < steps) {
+                requestAnimationFrame(animate);
+            }
+        };
+        requestAnimationFrame(animate);
+    }
+
+    // Effect Sliders Manual Update
+    const effectSliders = modal.querySelectorAll('.ks-orch-slider.effect-slider');
+    effectSliders.forEach(slider => {
+        slider.addEventListener('input', () => {
+            const effect = slider.dataset.effect;
+            const valueEl = document.getElementById(`ks-${effect}-value`);
+            const labelEl = document.getElementById(`ks-${effect}-label`);
+
+            if (valueEl) valueEl.textContent = `${slider.value}%`;
+            if (labelEl) labelEl.textContent = getEffectLabel(effect, parseInt(slider.value));
+
+            updateOrchestraTokenPreview();
+            updateTokenPreview();
+        });
+    });
+
+    // Update Orchestra Token Preview (terminal style)
+    function updateOrchestraTokenPreview() {
+        const tokenOutput = document.getElementById('ks-orch-token-output');
+        if (!tokenOutput) return;
+
+        const activePreset = modal.querySelector('.ks-orch-preset-btn.active');
+        const preset = activePreset?.querySelector('.preset-name')?.textContent || 'Sinfonieorchester';
+
+        const stringsVal = document.getElementById('ks-strings-slider')?.value || 80;
+        const woodwindsVal = document.getElementById('ks-woodwinds-slider')?.value || 55;
+        const brassVal = document.getElementById('ks-brass-slider')?.value || 40;
+        const percussionVal = document.getElementById('ks-percussion-slider')?.value || 25;
+
+        const activeRoom = modal.querySelector('.ks-orch-room-btn.active');
+        const room = activeRoom?.querySelector('.room-name')?.textContent || 'Konzert';
+
+        const activeTags = [];
+        modal.querySelectorAll('.ks-orch-tags .ks-orch-tag.active').forEach(t => activeTags.push(t.textContent));
+
+        const activeSeats = modal.querySelectorAll('.ks-orch-seat-wide.active').length;
+        const totalSeats = modal.querySelectorAll('.ks-orch-seat-wide').length;
+
+        tokenOutput.textContent = `> initializing_orchestration_engine...
+> loading_preset: ${preset}
+> adjusting_section_dynamics:
+  strings(${stringsVal}%), woodwinds(${woodwindsVal}%)
+  brass(${brassVal}%), percussion(${percussionVal}%)
+> applying_articulations: ${activeTags.join(', ') || 'Standard'}
+> room_acoustics: ${room}
+> active_instruments: ${activeSeats}/${totalSeats}
+> ready_for_prompt_generation...
+> token_count: ${generateOrchestraToken().length}`;
+    }
+
+    // Preset to Seat Mapping
+    function updateOrchestraSeatsFromPreset(preset) {
+        const allSeats = modal.querySelectorAll('.ks-orch-seat-wide');
+
+        const presetConfigs = {
+            'symphony': () => allSeats.forEach(s => s.classList.add('active')),
+            'chamber': () => {
+                allSeats.forEach(s => s.classList.remove('active'));
+                // Activate chamber orchestra instruments (full German names)
+                const chamberIds = ['erste-violine', 'zweite-violine', 'viola', 'violoncello', 'floete', 'oboe', 'horn'];
+                allSeats.forEach(s => {
+                    if (chamberIds.includes(s.dataset.instrument)) s.classList.add('active');
+                });
+            },
+            'quartet': () => {
+                allSeats.forEach(s => s.classList.remove('active'));
+                // Activate string quartet (full German names)
+                const quartetIds = ['erste-violine', 'zweite-violine', 'viola', 'violoncello'];
+                allSeats.forEach(s => {
+                    if (quartetIds.includes(s.dataset.instrument)) s.classList.add('active');
+                });
+            },
+            'brass': () => {
+                allSeats.forEach(s => s.classList.remove('active'));
+                // Activate brass section
+                allSeats.forEach(s => {
+                    if (s.dataset.section === 'brass') s.classList.add('active');
+                });
+            },
+            'woodwind': () => {
+                allSeats.forEach(s => s.classList.remove('active'));
+                // Activate woodwind section
+                allSeats.forEach(s => {
+                    if (s.dataset.section === 'woodwinds') s.classList.add('active');
+                });
+            }
+        };
+
+        if (presetConfigs[preset]) {
+            presetConfigs[preset]();
+        }
+    }
+
+    // Initialize orchestra token preview on load
+    setTimeout(() => {
+        updateOrchestraTokenPreview();
+    }, 100);
 
     function generateBlenderToken() {
         const primary = document.getElementById('ks-primary-sound')?.value || 'synth_lead';
@@ -2219,7 +3264,7 @@ function setupKlangStudio() {
         const text = tokenPreview?.textContent || '';
         navigator.clipboard.writeText(text).then(() => {
             const originalText = copyBtn.innerHTML;
-            copyBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Kopiert!';
+            copyBtn.innerHTML = '<svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Kopiert!';
             setTimeout(() => { copyBtn.innerHTML = originalText; }, 1500);
         });
     });
@@ -2234,7 +3279,7 @@ function setupKlangStudio() {
             const updatedPrompt = currentPrompt
                 ? `${currentPrompt}, ${token}`
                 : token;
-            resultText.textContent = updatedPrompt;
+            applyPromptWithUndo(updatedPrompt, 'Klang Studio');
 
             if (window.QW) {
                 window.QW.onPromptUpdated({ source: 'klang-studio' });
@@ -2302,24 +3347,92 @@ function setupKlangStudio() {
     const declineBtn = document.getElementById('ks-decline-btn');
     declineBtn?.addEventListener('click', closeModal);
 
-    // Accept Button - apply token and close
+    // Accept Button - generate orchestral prompt and replace Meisterstück content
     const acceptBtn = document.getElementById('ks-accept-btn');
-    acceptBtn?.addEventListener('click', () => {
-        const token = tokenPreview?.textContent || '';
+    acceptBtn?.addEventListener('click', async () => {
         const resultText = document.getElementById('result-text');
 
-        if (resultText && token && token !== 'Module kommt in Phase 2...') {
-            const currentPrompt = resultText.textContent.trim();
-            const updatedPrompt = currentPrompt
-                ? `${currentPrompt}, ${token}`
-                : token;
-            resultText.textContent = updatedPrompt;
+        // Show loading state
+        const originalBtnText = acceptBtn.textContent;
+        acceptBtn.textContent = '⏳ Generating...';
+        acceptBtn.disabled = true;
 
-            if (window.QW) {
-                window.QW.onPromptUpdated({ source: 'klang-studio' });
+        try {
+            // Get rich orchestra context
+            const context = getOrchestraContext();
+
+            // Build structured input for AI refinement
+            const orchestraInput = `Preset: ${context.setup.preset}
+Room: ${context.setup.room}
+Orchestra Balance: ${context.setup.balanceProfile}
+Strings: ${context.sections.strings}
+Woodwinds: ${context.sections.woodwinds}
+Brass: ${context.sections.brass}
+Percussion: ${context.sections.percussion}
+Articulations: ${context.articulations.join(', ') || 'none specified'}
+Solo: ${context.solo || 'none'}
+Dynamics: ${context.dynamics}
+Space: ${context.effects.space}
+Delay: ${context.effects.delay}
+Width: ${context.effects.width}
+Character: ${context.effects.character}`;
+
+            // Generate AI-refined orchestral prompt
+            let finalPrompt;
+            if (typeof callOpenRouterAPI === 'function' && typeof ORCHESTRA_REFINER_PROMPT !== 'undefined') {
+                finalPrompt = await callOpenRouterAPI(orchestraInput, ORCHESTRA_REFINER_PROMPT);
+            } else {
+                // Fallback to live preview token if AI not available
+                finalPrompt = generateOrchestraToken();
             }
-        }
 
-        closeModal();
+            // ALWAYS replace Meisterstück content entirely
+            if (resultText && finalPrompt) {
+                applyPromptWithUndo(finalPrompt, 'Klang Studio Orchestra');
+
+                // Show the result container properly (same as generatePrompt)
+                const initialState = document.getElementById('initial-state');
+                const resultContainer = document.getElementById('result-container');
+                const refinementControls = document.getElementById('refinement-controls');
+
+                if (initialState) initialState.classList.add('hidden');
+                if (resultContainer) {
+                    resultContainer.classList.remove('hidden');
+                    resultContainer.classList.add('fade-in');
+                }
+                if (refinementControls) refinementControls.classList.remove('hidden');
+                if (typeof setKlugToolsState === 'function') setKlugToolsState(true);
+
+                if (window.QW) {
+                    window.QW.onPromptUpdated({ source: 'klang-studio-orchestra' });
+                }
+            }
+
+            closeModal();
+        } catch (error) {
+            console.error('Orchestra AI processing failed:', error);
+            // Fallback to non-AI token
+            const fallbackToken = generateOrchestraToken();
+            if (resultText && fallbackToken) {
+                applyPromptWithUndo(fallbackToken, 'Klang Studio Orchestra');
+
+                // Show the result container properly
+                const initialState = document.getElementById('initial-state');
+                const resultContainer = document.getElementById('result-container');
+                const refinementControls = document.getElementById('refinement-controls');
+
+                if (initialState) initialState.classList.add('hidden');
+                if (resultContainer) {
+                    resultContainer.classList.remove('hidden');
+                    resultContainer.classList.add('fade-in');
+                }
+                if (refinementControls) refinementControls.classList.remove('hidden');
+                if (typeof setKlugToolsState === 'function') setKlugToolsState(true);
+            }
+            closeModal();
+        } finally {
+            acceptBtn.textContent = originalBtnText;
+            acceptBtn.disabled = false;
+        }
     });
 }

@@ -9,6 +9,7 @@ const saveSettingsButton = document.getElementById('save-settings-button');
 const settingsButton = document.getElementById('settings-button');
 const changeSettingsButton = document.getElementById('change-settings-button');
 const currentModelSpan = document.getElementById('current-model');
+const currentImageModelSpan = document.getElementById('current-image-model');
 const mainApp = document.getElementById('main-app');
 
 // Main app elements
@@ -35,6 +36,15 @@ const sunoProLoader = document.getElementById('suno-pro-loader');
 const customInstructionButton = document.getElementById('custom-instruction-button');
 
 // === API SETUP LOGIC ===
+function updateHeaderModelChips(textModelKey, imageModelKey) {
+    if (currentModelSpan) {
+        currentModelSpan.textContent = MODEL_NAMES[textModelKey] || textModelKey;
+    }
+    if (currentImageModelSpan) {
+        currentImageModelSpan.textContent = FAL_MODEL_NAMES[imageModelKey] || imageModelKey;
+    }
+}
+
 function loadSettings() {
     // Try multiple keys for compatibility
     const candidates = [
@@ -52,7 +62,7 @@ function loadSettings() {
         localStorage.getItem('FAL_API_KEY'),
     ];
     const savedFalKey = falCandidates.find(Boolean) || '';
-    const savedFalModel = localStorage.getItem('fal_model') || 'fal-ai/fast-sdxl';
+    const savedFalModel = localStorage.getItem('fal_model') || 'fal-ai/nano-banana-pro';
     FAL_API_KEY = savedFalKey;
     FAL_MODEL = savedFalModel;
     if (falApiKeyInput) falApiKeyInput.value = savedFalKey;
@@ -66,7 +76,7 @@ function loadSettings() {
         localStorage.setItem('ssa_api_key', savedKey);
         apiKeyInput.value = savedKey;
         modelSelect.value = savedModel;
-        currentModelSpan.textContent = MODEL_NAMES[savedModel] || savedModel;
+        updateHeaderModelChips(savedModel, savedFalModel);
         showMainApp();
     } else {
         // Show setup modal explicitly if not configured
@@ -79,15 +89,16 @@ function saveSettings() {
     const model = modelSelect.value;
     
     if (!apiKey) {
-        alert('Bitte gib deinen OpenRouter API Key ein.');
+        showInlineError('api-setup-error', 'Bitte gib deinen OpenRouter API Key ein.');
         return;
     }
-    
+
     if (!apiKey.startsWith('sk-or-v1-')) {
-        alert('Der API Key sollte mit "sk-or-v1-" beginnen. Bitte überprüfe deinen Key.');
+        showInlineError('api-setup-error', 'Der API Key sollte mit "sk-or-v1-" beginnen. Bitte \u00fcberpr\u00fcfe deinen Key.');
         return;
     }
-    
+
+    hideInlineError('api-setup-error');
     API_KEY = apiKey;
     SELECTED_MODEL = model;
 
@@ -103,20 +114,24 @@ function saveSettings() {
     localStorage.setItem('fal_api_key', falKey);
     localStorage.setItem('fal_model', falModel);
     
-    currentModelSpan.textContent = MODEL_NAMES[model] || model;
+    updateHeaderModelChips(model, falModel);
     showMainApp();
 }
 
 function showMainApp() {
     apiSetupModal.style.display = 'none';
-    mainApp.style.display = 'block';
+    mainApp.style.display = 'flex';
+    document.body.classList.add('app-no-scroll');
     // settingsButton may not exist in the DOM; guard access to avoid runtime errors
     if (settingsButton) settingsButton.classList.remove('hidden');
+    // Clean up CloseStack entry if api-setup was opened via keyboard shortcut
+    if(window.CloseStack) CloseStack.pop('api-setup');
 }
 
 function showSettings() {
     apiSetupModal.style.display = 'flex';
     mainApp.style.display = 'none';
+    document.body.classList.remove('app-no-scroll');
 }
 
 // === MAIN APP LOGIC ===
@@ -127,12 +142,37 @@ const setLoading = (isLoading) => {
     generateIcon.classList.toggle('hidden', isLoading);
 };
 
+let _errorAutoDismissTimer = null;
+
+const dismissError = () => {
+    if (_errorAutoDismissTimer) {
+        clearTimeout(_errorAutoDismissTimer);
+        _errorAutoDismissTimer = null;
+    }
+    errorContainer.classList.add('error-fade-out');
+    errorContainer.addEventListener('animationend', () => {
+        errorContainer.classList.add('hidden');
+        errorContainer.classList.remove('error-fade-out');
+    }, { once: true });
+};
+
 const showError = (message) => {
+    // Clear any pending auto-dismiss from a previous error
+    if (_errorAutoDismissTimer) {
+        clearTimeout(_errorAutoDismissTimer);
+        _errorAutoDismissTimer = null;
+    }
     errorMessage.textContent = message;
-    errorContainer.classList.remove('hidden');
+    errorContainer.classList.remove('hidden', 'error-fade-out');
     initialState.classList.remove('hidden');
     resultContainer.classList.add('hidden');
+
+    // Auto-dismiss after 8 seconds
+    _errorAutoDismissTimer = setTimeout(dismissError, 8000);
 };
+
+// Wire up the dismiss button
+document.getElementById('error-dismiss-btn')?.addEventListener('click', dismissError);
 
 const generatePrompt = async () => {
     const userInput = ideaInput.value.trim();
@@ -161,11 +201,13 @@ const generatePrompt = async () => {
     initialState.classList.add('hidden');
     resultContainer.classList.add('hidden');
     refinementControls.classList.add('hidden');
+    if (_errorAutoDismissTimer) { clearTimeout(_errorAutoDismissTimer); _errorAutoDismissTimer = null; }
     errorContainer.classList.add('hidden');
+    errorContainer.classList.remove('error-fade-out');
 
     try {
         const generatedText = await callOpenRouterAPI(userMessage, BASE_SYSTEM_PROMPT);
-        resultText.textContent = generatedText;
+        applyPromptWithUndo(generatedText, 'Prompt generiert');
         resultContainer.classList.remove('hidden');
         resultContainer.classList.add('fade-in');
         refinementControls.classList.remove('hidden');
@@ -173,7 +215,7 @@ const generatePrompt = async () => {
         if(window.QW){ window.QW.onPromptUpdated({source:'generate'}); }
     } catch (error) {
         console.error("Error calling API:", error);
-        showError(`Ein Fehler ist aufgetreten: ${error.message}.`);
+        showError(getUserFriendlyErrorMessage(error));
         setKlugToolsState(false);
     } finally {
         setLoading(false);
@@ -198,12 +240,13 @@ const refinePro = async () => {
     try {
         const refined = await callOpenRouterAPI(currentPrompt, SUNO_PRO_REFINER_PROMPT);
         // Hard clip to 1000 as an extra safeguard
-        resultText.textContent = refined.slice(0, 1000);
+        applyPromptWithUndo(refined.slice(0, 1000), 'Suno Pro');
     } catch (error) {
         console.error('Error refining for pro:', error);
         const originalText = sunoProText.textContent;
         sunoProText.textContent = 'Fehler';
         setTimeout(() => { sunoProText.textContent = originalText; }, 2000);
+        showToast(getUserFriendlyErrorMessage(error), 'error');
     } finally {
         setProLoading(false);
         sunoProButton.disabled = false;
@@ -219,10 +262,10 @@ apiKeyInput.addEventListener('keydown', (e)=> { if(e.key === 'Enter'){ e.prevent
 
 // Main app listeners
 sunoProButton.addEventListener('click', refinePro);
-generateButton.addEventListener('click', generatePrompt);
-ideaInput.addEventListener('keydown', (e) => e.key === 'Enter' && !e.shiftKey && (e.preventDefault(), generatePrompt()));
-ideaInput.addEventListener('input', () => errorContainer.classList.add('hidden'));
-if (lyricInput) lyricInput.addEventListener('input', () => errorContainer.classList.add('hidden'));
+generateButton.addEventListener('click', function(){ generatePrompt(); if(window.Tips) Tips.show('generate', generateButton); });
+ideaInput.addEventListener('keydown', (e) => e.key === 'Enter' && (e.metaKey || e.ctrlKey) && (e.preventDefault(), generatePrompt()));
+ideaInput.addEventListener('input', () => { if (_errorAutoDismissTimer) { clearTimeout(_errorAutoDismissTimer); _errorAutoDismissTimer = null; } errorContainer.classList.add('hidden'); errorContainer.classList.remove('error-fade-out'); });
+if (lyricInput) lyricInput.addEventListener('input', () => { if (_errorAutoDismissTimer) { clearTimeout(_errorAutoDismissTimer); _errorAutoDismissTimer = null; } errorContainer.classList.add('hidden'); errorContainer.classList.remove('error-fade-out'); });
 
 // === INITIALIZATION ===
 document.addEventListener('DOMContentLoaded', () => {
@@ -230,4 +273,3 @@ document.addEventListener('DOMContentLoaded', () => {
     setKlugToolsState(false);
     setupCopyButton(copyButton, copyIcon, checkIcon, resultText);
 });
-

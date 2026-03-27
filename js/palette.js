@@ -1,4 +1,5 @@
-// palette.js - Command Palette and HUD integration (Phase 2)
+// palette.js - Command Palette and HUD integration (Phase 2+3+4)
+// Palette navigation now routes through Keys.register(). Scope-aware blocked feedback.
 (function(){
   let open = false;
   let items = []; // {id,label,bindings}
@@ -61,11 +62,23 @@
     const card = $id('cmdk-container');
     if(card) card.classList.add('animate-zoom-in');
     open = true;
+    // Phase 3 (P3-7): Push command-palette scope
+    if(window.ScopeStack){
+      overlay._scopeToken = ScopeStack.push('command-palette');
+    }
+    if(window.CloseStack) CloseStack.push(closePalette, { id: 'palette' });
     const input = $id('cmdk-input'); if(input){ input.value = ''; setTimeout(()=> input.focus(), 10); }
   }
 
   function closePalette(){
-    const overlay = $id('cmdk-overlay'); if(overlay) overlay.classList.add('hidden');
+    if(window.CloseStack) CloseStack.pop('palette');
+    const overlay = $id('cmdk-overlay');
+    // Phase 3 (P3-7): Pop command-palette scope
+    if(window.ScopeStack && overlay && overlay._scopeToken){
+      ScopeStack.pop(overlay._scopeToken);
+      overlay._scopeToken = null;
+    }
+    if(overlay) overlay.classList.add('hidden');
     open = false;
   }
 
@@ -75,24 +88,33 @@
     if(window.Keys){ Keys.run(it.id); }
   }
 
-  function onOverlayKey(e){
-    if(!open) return;
-    const input = $id('cmdk-input');
-    if(e.target === input){
-      if(e.key === 'ArrowDown'){ e.preventDefault(); index = Math.min(index+1, filtered.length-1); setActive(); }
-      else if(e.key === 'ArrowUp'){ e.preventDefault(); index = Math.max(index-1, 0); setActive(); }
-      else if(e.key === 'Enter'){ e.preventDefault(); selectIndex(index); }
-      else if(e.key === 'Escape'){ e.preventDefault(); closePalette(); }
-    } else {
-      if(e.key === 'Escape'){ e.preventDefault(); closePalette(); }
-    }
+  // Phase 2 (P2-8): Register palette navigation via Keys
+  function registerPaletteKeys(){
+    if(!window.Keys) return;
+
+    Keys.register({ id:'palette.down', label:'Palette: N\u00e4chster', scope:'command-palette', priority:50,
+      bindings:['ArrowDown'],
+      when: function(){ return open && document.activeElement === $id('cmdk-input'); },
+      run: function(){ index = Math.min(index+1, filtered.length-1); setActive(); }
+    });
+    Keys.register({ id:'palette.up', label:'Palette: Vorheriger', scope:'command-palette', priority:50,
+      bindings:['ArrowUp'],
+      when: function(){ return open && document.activeElement === $id('cmdk-input'); },
+      run: function(){ index = Math.max(index-1, 0); setActive(); }
+    });
+    Keys.register({ id:'palette.select', label:'Palette: Ausw\u00e4hlen', scope:'command-palette', priority:50,
+      bindings:['Enter'],
+      when: function(){ return open && document.activeElement === $id('cmdk-input'); },
+      run: function(){ selectIndex(index); }
+    });
   }
 
   function wire(){
     document.getElementById('cmdk-close')?.addEventListener('click', closePalette);
     document.getElementById('cmdk-overlay')?.querySelector('.absolute')?.addEventListener('click', closePalette);
     document.getElementById('cmdk-input')?.addEventListener('input', (e)=> filter(e.target.value));
-    document.addEventListener('keydown', onOverlayKey);
+    // Phase 2: palette arrow/enter now handled via Keys.register() — no global keydown listener needed
+    registerPaletteKeys();
   }
 
   // HUD + pulse feedback
@@ -126,6 +148,23 @@
   document.addEventListener('keys:action', (e)=>{
     const { id, label } = e.detail || {};
     if(id && label){ showHUD(label); pulse(targetFor(id)); }
+  });
+
+  // Phase 3 (P3-10): Scope-aware blocked feedback
+  document.addEventListener('keys:blocked', (e)=>{
+    const { label, reason, requiredScope, currentScope } = e.detail || {};
+    if(!label) return;
+    let msg;
+    if(reason === 'guard'){
+      msg = label + ' \u2013 nicht verf\u00fcgbar';
+    } else if(reason === 'scope' && requiredScope){
+      const scopeLabels = window.ScopeStack ? ScopeStack.SCOPE_LABELS : {};
+      const scopeLabel = scopeLabels[requiredScope] || requiredScope;
+      msg = label + ' \u2013 nur in ' + scopeLabel;
+    } else {
+      msg = label + ' \u2013 hier nicht aktiv';
+    }
+    showHUD(msg);
   });
 
   document.addEventListener('DOMContentLoaded', ()=>{ wire(); });

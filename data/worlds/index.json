@@ -43,24 +43,153 @@
       "group": "orchestra_group"
     },
     {
-      "id": "garage",
-      "name": "Garage Rock",
-      "icon": "🎸"
-    },
-    {
-      "id": "synthwave",
-      "name": "Synthwave",
-      "icon": "Neon"
-    },
-    {
       "id": "ambient",
       "name": "Ambient Musik",
-      "icon": "🌌"
+      "icon": "🌌",
+      "group": "ambient_group"
+    },
+    {
+      "id": "dark_ambient_ecologies",
+      "name": "Dark Ambient Ecologies",
+      "icon": "🌑",
+      "group": "ambient_group"
+    },
+    {
+      "id": "sleep_ambient_protocols",
+      "name": "Sleep Ambient Protocols",
+      "icon": "🌙",
+      "group": "ambient_group"
+    },
+    {
+      "id": "field_recording_ambient",
+      "name": "Field Recording Ambient",
+      "icon": "🎙️",
+      "group": "ambient_group"
+    },
+    {
+      "id": "uk_garage_london",
+      "name": "UK Garage London",
+      "icon": "🇬🇧",
+      "group": "urban_club_group"
+    },
+    {
+      "id": "detroit_techno_foundry",
+      "name": "Detroit Techno Foundry",
+      "icon": "🏭",
+      "group": "urban_club_group"
+    },
+    {
+      "id": "chicago_house_classics",
+      "name": "Chicago House Classics",
+      "icon": "🏙️",
+      "group": "urban_club_group"
+    },
+    {
+      "id": "hip_hop_main",
+      "name": "Hip Hop",
+      "icon": "🎤",
+      "group": "hip_hop_group"
+    },
+    {
+      "id": "golden_age_boom_bap",
+      "name": "Golden Age Boom Bap",
+      "icon": "🥁",
+      "group": "hip_hop_group"
+    },
+    {
+      "id": "jazz_hip_hop_lounge",
+      "name": "Jazz Hip Hop Lounge",
+      "icon": "🎷",
+      "group": "hip_hop_group"
+    },
+    {
+      "id": "lofi_hip_hop_tape",
+      "name": "Lo-Fi Hip Hop Tape",
+      "icon": "📼",
+      "group": "hip_hop_group"
+    },
+    {
+      "id": "gfunk_west_coast",
+      "name": "G-Funk West Coast",
+      "icon": "🌴",
+      "group": "hip_hop_group"
+    },
+    {
+      "id": "southern_trap_lab",
+      "name": "Southern Trap Lab",
+      "icon": "808",
+      "group": "hip_hop_group"
+    },
+    {
+      "id": "drill_dark_energy",
+      "name": "Drill Dark Energy",
+      "icon": "🖤",
+      "group": "hip_hop_group"
+    },
+    {
+      "id": "conscious_hip_hop_poetics",
+      "name": "Conscious Hip Hop Poetics",
+      "icon": "📝",
+      "group": "hip_hop_group"
+    },
+    {
+      "id": "party_hip_hop_classics",
+      "name": "Party Hip Hop Classics",
+      "icon": "🎉",
+      "group": "hip_hop_group"
+    },
+    {
+      "id": "experimental_hip_hop_future",
+      "name": "Experimental Hip Hop Future",
+      "icon": "🧪",
+      "group": "hip_hop_group"
+    },
+    {
+      "id": "instrumental_beat_scene",
+      "name": "Instrumental Beat Scene",
+      "icon": "🎛️",
+      "group": "hip_hop_group"
     },
     {
       "id": "world_orchestra_treatise",
       "name": "Welt-Orchester",
       "icon": "🌏",
+      "group": "world_orchestra_group"
+    },
+    {
+      "id": "arabic_takht",
+      "name": "Arabischer Takht",
+      "icon": "🪕",
+      "group": "world_orchestra_group"
+    },
+    {
+      "id": "hindustani_raga_ensemble",
+      "name": "Hindustani Raga-Ensemble",
+      "icon": "🪘",
+      "group": "world_orchestra_group"
+    },
+    {
+      "id": "west_african_polyrhythm_ensemble",
+      "name": "Westafrikanisches Polyrhythmus-Ensemble",
+      "icon": "🥁",
+      "group": "world_orchestra_group"
+    },
+    {
+      "id": "balkan_brass_orchestra",
+      "name": "Balkan Brass-Orchester",
+      "icon": "🎺",
+      "group": "world_orchestra_group"
+    },
+    {
+      "id": "andean_ensemble",
+      "name": "Andines Ensemble",
+      "icon": "🏔️",
+      "group": "world_orchestra_group"
+    },
+    {
+      "id": "taiko_kumi_daiko",
+      "name": "Taiko Kumi-Daiko",
+      "icon": "🥁",
       "group": "world_orchestra_group"
     },
     {

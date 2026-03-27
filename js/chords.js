@@ -1,7 +1,9 @@
-// chords.js - Two-key chords and modal keyboard enhancements (Phase 3)
+// chords.js - Two-key chords, modal keyboard enhancements, Future Lab + Nav chords (Phase 2+3)
+// Chord initiation now routes through Keys.register(). Active-chord keys route via keys.js chord-mode check.
 (function(){
-  let chord = null; // { mode: 'expert'|'klug', deadline: ts, page: 0 }
+  let chord = null; // { mode: 'expert'|'klug'|'future'|'nav', deadline: ts, page: 0, scopeToken: null }
   const CHORD_TTL = 1200; // ms
+  const NAV_TTL = 800;    // ms — shorter for navigation chord
   const MAX_KEYS = 9;
 
   const expertButtons = [
@@ -31,127 +33,265 @@
     '#effect-chain-button'
   ];
 
-  function isTyping(){
-    const el = document.activeElement; if(!el) return false;
-    return el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.isContentEditable;
+  // Phase 2 (P2-5): Future Lab tools
+  const futureLabButtons = [
+    '#adaptive-flow-button',
+    '#ai-collab-button',
+    '#story-arc-button',
+    '#narrative-chapters-button',
+    '#immersive-space-button',
+    '#human-touch-button',
+    '#release-forecast-button'
+  ];
+
+  // Phase 2 (P2-6): Navigation targets
+  const navTargets = {
+    d: { label: 'Dashboard', action: function(){ var bd = document.querySelector('.bottom-dashboard'); if(bd){ bd.scrollIntoView({ behavior:'smooth', block:'start' }); bd.focus(); } } },
+    c: { label: 'Creative Cosmos', action: function(){ var tile = document.getElementById('idea-starter-tile'); if(tile) tile.click(); } },
+    s: { label: 'Style Sync', action: function(){ var tile = document.getElementById('style-sync-tile'); if(tile) tile.click(); } },
+    t: { label: 'Kachel-System', action: function(){ var bd = document.querySelector('.bottom-dashboard'); if(bd) bd.focus(); } }
+  };
+
+  function buttonsFor(mode){
+    if(mode === 'expert') return expertButtons;
+    if(mode === 'klug') return klugButtons;
+    if(mode === 'future') return futureLabButtons;
+    return [];
+  }
+
+  function hasExpertTargets(){
+    return expertButtons.some(function(sel){ return !!document.querySelector(sel); });
+  }
+  function hasKlugTargets(){
+    return klugButtons.some(function(sel){ return !!document.querySelector(sel); });
+  }
+  function hasFutureTargets(){
+    return futureLabButtons.some(function(sel){ return !!document.querySelector(sel); });
   }
 
   function startChord(mode){
-    chord = { mode, deadline: Date.now()+CHORD_TTL, page: 0 };
-    showKeycaps(mode);
-    setTimeout(()=>{ if(chord && Date.now()>chord.deadline) cancelChord(); }, CHORD_TTL+50);
+    var ttl = mode === 'nav' ? NAV_TTL : CHORD_TTL;
+    chord = { mode: mode, deadline: Date.now() + ttl, page: 0, scopeToken: null };
+    // Phase 3 (P3-6): Push scope for chord-builder
+    if(window.ScopeStack){
+      chord.scopeToken = ScopeStack.push('chord-builder');
+    }
+    if(mode === 'nav'){
+      showNavKeycaps();
+    } else {
+      showKeycaps(mode);
+    }
+    setTimeout(function(){ if(chord && Date.now() > chord.deadline) cancelChord(); }, ttl + 50);
   }
 
-  function cancelChord(){ chord = null; hideKeycaps(); }
-
-  function buttonsFor(mode){ return mode==='expert' ? expertButtons : klugButtons; }
+  function cancelChord(){
+    if(chord && chord.scopeToken && window.ScopeStack){
+      ScopeStack.pop(chord.scopeToken);
+    }
+    chord = null;
+    hideKeycaps();
+  }
 
   function showKeycaps(mode){
     hideKeycaps();
-    const arr = buttonsFor(mode);
-    const page = chord ? (chord.page||0) : 0;
-    const start = page * MAX_KEYS;
-    const end = Math.min(start + MAX_KEYS, arr.length);
-    arr.slice(start, end).forEach((sel, i)=>{
-      const btn = document.querySelector(sel);
+    var arr = buttonsFor(mode);
+    var page = chord ? (chord.page || 0) : 0;
+    var start = page * MAX_KEYS;
+    var end = Math.min(start + MAX_KEYS, arr.length);
+    arr.slice(start, end).forEach(function(sel, i){
+      var btn = document.querySelector(sel);
       if(!btn) return;
-      btn.classList.add('keycap-target','chord-highlight');
-      const cap = document.createElement('span');
+      btn.classList.add('keycap-target', 'chord-highlight');
+      var cap = document.createElement('span');
       cap.className = 'keycap-badge keycap-badge-lg';
-      cap.textContent = String(i+1);
+      cap.textContent = String(i + 1);
       cap.dataset.keycap = '1';
       btn.appendChild(cap);
     });
-    const hint = document.getElementById('chord-hint');
+    var hint = document.getElementById('chord-hint');
+    if(hint){ hint.classList.add('show'); }
+  }
+
+  function showNavKeycaps(){
+    hideKeycaps();
+    // Show keycap badges on nav targets if their elements exist
+    var targets = {
+      d: '.bottom-dashboard',
+      c: '#idea-starter-tile',
+      s: '#style-sync-tile',
+      t: '.bottom-dashboard'
+    };
+    Object.keys(targets).forEach(function(key){
+      var el = document.querySelector(targets[key]);
+      if(!el) return;
+      // Avoid duplicate badges
+      if(el.querySelector('.keycap-badge[data-keycap="nav"]')) return;
+      el.classList.add('keycap-target', 'chord-highlight');
+      var cap = document.createElement('span');
+      cap.className = 'keycap-badge keycap-badge-lg';
+      cap.textContent = key.toUpperCase();
+      cap.dataset.keycap = 'nav';
+      el.style.position = el.style.position || 'relative';
+      el.appendChild(cap);
+    });
+    var hint = document.getElementById('chord-hint');
     if(hint){ hint.classList.add('show'); }
   }
 
   function hideKeycaps(){
-    document.querySelectorAll('.keycap-badge').forEach(el=> el.remove());
-    document.querySelectorAll('.keycap-target').forEach(el=> { el.classList.remove('keycap-target','chord-highlight'); });
-    const hint = document.getElementById('chord-hint');
+    document.querySelectorAll('.keycap-badge').forEach(function(el){ el.remove(); });
+    document.querySelectorAll('.keycap-target').forEach(function(el){
+      el.classList.remove('keycap-target', 'chord-highlight');
+    });
+    var hint = document.getElementById('chord-hint');
     if(hint){ hint.classList.remove('show'); }
   }
 
   function clickIndex(mode, idx){
-    const arr = buttonsFor(mode);
-    const page = chord ? (chord.page||0) : 0;
-    const realIdx = page * MAX_KEYS + idx;
-    const sel = arr[realIdx]; if(!sel) return;
-    const el = document.querySelector(sel); if(el){ el.classList.add('pulse'); setTimeout(()=> el.classList.remove('pulse'), 400); el.click(); }
+    var arr = buttonsFor(mode);
+    var page = chord ? (chord.page || 0) : 0;
+    var realIdx = page * MAX_KEYS + idx;
+    var sel = arr[realIdx]; if(!sel) return;
+    var el = document.querySelector(sel);
+    if(el){
+      el.classList.add('pulse');
+      setTimeout(function(){ el.classList.remove('pulse'); }, 400);
+      el.click();
+    }
     cancelChord();
   }
 
-  function onKeydown(e){
-    // Esc closes visible modals
-    if(e.key === 'Escape'){
-      const openModal = Array.from(document.querySelectorAll('[id$="-modal"]')).find(m=> !m.classList.contains('hidden'));
-      if(openModal){
-        e.preventDefault();
-        const closeBtn = openModal.querySelector('.close-modal-button');
-        if(closeBtn) closeBtn.click(); else openModal.classList.add('hidden');
-        return;
-      }
-    }
+  // Exposed Chords API — called by keys.js chord-mode routing (P2-4b)
+  function handleChordKey(e){
+    if(!chord) return;
 
-    // Ignore modified keys and when typing for chord start
-    const hasMod = e.metaKey || e.ctrlKey || e.altKey;
-    if(chord){
-      if(e.key>='1' && e.key<='9'){
+    // Nav chord mode: letter keys map to targets
+    if(chord.mode === 'nav'){
+      var navKey = e.key.toLowerCase();
+      if(navTargets[navKey]){
         e.preventDefault();
-        const idx = parseInt(e.key,10)-1;
-        clickIndex(chord.mode, idx);
+        navTargets[navKey].action();
+        cancelChord();
         return;
       }
-      if(e.key==='0'){
-        e.preventDefault();
-        const arr = buttonsFor(chord.mode);
-        const totalPages = Math.ceil(arr.length / MAX_KEYS);
-        chord.page = (chord.page + 1) % totalPages;
-        chord.deadline = Date.now()+CHORD_TTL;
-        showKeycaps(chord.mode);
-        return;
-      }
-      // cancel on other keys
+      // Unrecognized key: cancel + re-dispatch
       cancelChord();
+      Chords._redispatch = true;
       return;
     }
 
-    if(isTyping() || hasMod) return;
-
-    // start chord with e or k
-    if(e.code === 'KeyE'){ e.preventDefault(); startChord('expert'); }
-    else if(e.code === 'KeyK'){ e.preventDefault(); startChord('klug'); }
-  }
-
-  // Modal slider keys: digits set 10..100; arrows adjust; Enter apply
-  function onModalOpen(ev){
-    const modalId = ev.detail && ev.detail.id; if(!modalId) return;
-    const modal = document.getElementById(modalId); if(!modal) return;
-
-    function keyHandler(e){
-      const d1to0 = ['1','2','3','4','5','6','7','8','9','0'];
-      const slider = modal.querySelector('input[type="range"]');
-      const applyBtn = modal.querySelector('button[id^="apply-"]');
-      if(e.key === 'Enter' && applyBtn){ e.preventDefault(); applyBtn.click(); return; }
-      if(!slider) return;
-      const cur = parseInt(slider.value||'50',10);
-      if(e.key === 'ArrowUp' || e.key === 'ArrowRight'){ e.preventDefault(); slider.value = Math.min(100, cur+5); slider.dispatchEvent(new Event('input')); return; }
-      if(e.key === 'ArrowDown' || e.key === 'ArrowLeft'){ e.preventDefault(); slider.value = Math.max(0, cur-5); slider.dispatchEvent(new Event('input')); return; }
-      const idx = d1to0.indexOf(e.key);
-      if(idx >= 0){ e.preventDefault(); const val = idx===9 ? 100 : (idx+1)*10; slider.value = val; slider.dispatchEvent(new Event('input')); }
+    // Standard chord modes (expert/klug/future): digit keys
+    if(e.key >= '1' && e.key <= '9'){
+      e.preventDefault();
+      var idx = parseInt(e.key, 10) - 1;
+      clickIndex(chord.mode, idx);
+      return;
     }
-
-    modal.__keyHandler = keyHandler;
-    document.addEventListener('keydown', keyHandler);
+    if(e.key === '0'){
+      e.preventDefault();
+      var arr = buttonsFor(chord.mode);
+      var totalPages = Math.ceil(arr.length / MAX_KEYS);
+      if(totalPages > 1){
+        chord.page = (chord.page + 1) % totalPages;
+        chord.deadline = Date.now() + CHORD_TTL;
+        showKeycaps(chord.mode);
+      }
+      return;
+    }
+    // Other key: cancel chord
+    cancelChord();
   }
+
+  // Modal slider key handling (P2-4b) — tracks active modal
+  var _activeModal = null;
+
+  function onModalOpen(ev){
+    var modalId = ev.detail && ev.detail.id; if(!modalId) return;
+    var modal = document.getElementById(modalId); if(!modal) return;
+    _activeModal = modal;
+  }
+
   function onModalClose(ev){
-    const modalId = ev.detail && ev.detail.id; if(!modalId) return;
-    const modal = document.getElementById(modalId); if(!modal) return;
-    if(modal.__keyHandler){ document.removeEventListener('keydown', modal.__keyHandler); delete modal.__keyHandler; }
+    var modalId = ev.detail && ev.detail.id; if(!modalId) return;
+    if(_activeModal && _activeModal.id === modalId){
+      _activeModal = null;
+    }
   }
 
-  document.addEventListener('keydown', onKeydown);
+  function handleModalKey(e){
+    if(!_activeModal) return false;
+    if(e.metaKey || e.ctrlKey || e.altKey) return false;
+    var modal = _activeModal;
+    var d1to0 = ['1','2','3','4','5','6','7','8','9','0'];
+    var slider = modal.querySelector('input[type="range"]');
+    var applyBtn = modal.querySelector('button[id^="apply-"]') || modal.querySelector('button[id^="run-"]');
+
+    if(e.key === 'Enter' && applyBtn){
+      e.preventDefault();
+      applyBtn.click();
+      return true;
+    }
+    if(!slider) return false;
+    var cur = parseInt(slider.value || '50', 10);
+    if(e.key === 'ArrowUp' || e.key === 'ArrowRight'){
+      e.preventDefault();
+      slider.value = Math.min(100, cur + 5);
+      slider.dispatchEvent(new Event('input'));
+      return true;
+    }
+    if(e.key === 'ArrowDown' || e.key === 'ArrowLeft'){
+      e.preventDefault();
+      slider.value = Math.max(0, cur - 5);
+      slider.dispatchEvent(new Event('input'));
+      return true;
+    }
+    var idx = d1to0.indexOf(e.key);
+    if(idx >= 0){
+      e.preventDefault();
+      var val = idx === 9 ? 100 : (idx + 1) * 10;
+      slider.value = val;
+      slider.dispatchEvent(new Event('input'));
+      return true;
+    }
+    return false;
+  }
+
+  // Register chord initiation keys via Keys (P2-4a, P2-5, P2-6)
+  function registerChordKeys(){
+    if(!window.Keys) return;
+
+    Keys.register({ id:'chord.expert', label:'Experten-Chord', scope:'global',
+      bindings:['e'], when: hasExpertTargets, run: function(){ startChord('expert'); } });
+
+    Keys.register({ id:'chord.klug', label:'KLUG-Chord', scope:'global',
+      bindings:['k'], when: hasKlugTargets, run: function(){ startChord('klug'); } });
+
+    // Phase 2 (P2-5): Future Lab chord
+    Keys.register({ id:'chord.future', label:'Future-Lab-Chord', scope:'global',
+      bindings:['f'], when: hasFutureTargets, run: function(){ startChord('future'); } });
+
+    // Phase 2 (P2-6): Navigation chord
+    Keys.register({ id:'chord.nav', label:'Navigation-Chord', scope:'global',
+      bindings:['v'], run: function(){ startChord('nav'); } });
+  }
+
+  // Listen for modal lifecycle
   document.addEventListener('modal:open', onModalOpen);
   document.addEventListener('modal:close', onModalClose);
+
+  // Register chord keys on DOMContentLoaded (after keys.js is loaded)
+  document.addEventListener('DOMContentLoaded', registerChordKeys);
+
+  // Expose Chords API for keys.js integration
+  window.Chords = {
+    isActive: function(){ return !!chord; },
+    handleChordKey: handleChordKey,
+    handleModalKey: handleModalKey,
+    _redispatch: false
+  };
+
+  Object.defineProperty(window.Chords, 'activeModal', {
+    get: function(){ return _activeModal; },
+    set: function(v){ _activeModal = v; }
+  });
 })();
