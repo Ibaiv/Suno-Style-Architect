@@ -709,11 +709,23 @@ body.bd-body-resizing iframe {
     background: rgba(30, 41, 59, 0.75);
     display: inline-block;
     transition: transform 0.18s ease, background-color 0.18s ease, border-color 0.18s ease, opacity 0.18s ease;
+    position: relative;
 }
 
 button.tool-page-dot {
     cursor: pointer;
     padding: 0;
+}
+
+/* Expand touch target to 44x44px (WCAG 2.5.8) while keeping visual dot small */
+button.tool-page-dot::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 44px;
+    min-height: 44px;
 }
 
 button.tool-page-dot:hover {
@@ -752,6 +764,18 @@ button.tool-page-dot:hover {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    /* Expand touch target to 44x44px (WCAG 2.5.8) while keeping visual size */
+    position: relative;
+}
+
+.tool-help-btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 44px;
+    min-height: 44px;
 }
 
 .tool-help-popover {
@@ -953,6 +977,8 @@ button.tool-page-dot:hover {
     font-size: 0.74rem;
     line-height: 1;
     padding: 7px 11px;
+    min-height: 44px; /* WCAG 2.5.8 minimum touch target */
+    box-sizing: border-box;
     white-space: nowrap;
     transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
