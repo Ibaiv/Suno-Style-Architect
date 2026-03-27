@@ -98,6 +98,11 @@
     if(!!b.alt !== !!e.altKey) return false;
     // key — char-based bindings match e.key (QWERTZ-safe), code-based match e.code
     if(b.isChar){
+      // macOS transforms Alt+<key> into special characters (e.g. å, ß, ∂)
+      // so e.key won't match the plain letter — fall back to e.code
+      if(b.alt && (e.key||'').toLowerCase() !== b.key){
+        return (e.code || '') === 'Key' + b.key.toUpperCase();
+      }
       return (e.key||'').toLowerCase() === b.key;
     }
     const code = e.code || '';
