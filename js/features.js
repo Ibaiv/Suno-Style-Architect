@@ -2204,7 +2204,7 @@ function setupStyleSync() {
                 // Visual feedback
                 applyBtn.innerHTML = '<span>Kopiert!</span> <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" title="Check"><polyline points="20 6 9 17 4 12"/></svg>';
                 setTimeout(() => {
-                    applyBtn.innerHTML = '<span>APPLY TO PROMPT</span> <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';
+                    applyBtn.innerHTML = '<span>AUF PROMPT ANWENDEN</span> <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';
                     // Close studio to show result
                     closeStudio();
                 }, 1000);

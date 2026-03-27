@@ -352,7 +352,7 @@
 
     Keys.register({ id:'history.toggle', label:'Verlauf', scope:'global', bindings:['h'], run:()=> $('history-toggle-button')?.click() });
 
-    Keys.register({ id:'auto.trim', label:'Auto-Trim 200', scope:'global', bindings:['b'], when:resExists, run:()=> $('auto-trim-v3-button')?.click() });
+    Keys.register({ id:'auto.trim', label:'Auto-Kürzen 200', scope:'global', bindings:['b'], when:resExists, run:()=> $('auto-trim-v3-button')?.click() });
 
     // Phase 2 (P2-9): QWERTZ dual binding — Shift+Slash + F1
     Keys.register({ id:'help.shortcuts', label:'Tastenk\u00fcrzel', scope:'any', bindings:['Shift+Slash', 'F1'], run:()=> openShortcutModal() });
