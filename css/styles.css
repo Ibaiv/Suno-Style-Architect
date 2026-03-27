@@ -47,6 +47,15 @@ body.app-no-scroll {
     flex-direction: column;
 }
 
+/* On small screens, allow scrolling so content isn't clipped (issue #69) */
+@media (max-width: 768px) {
+    #main-app {
+        height: auto;
+        min-height: 100dvh;
+        overflow: auto;
+    }
+}
+
 .app-main-layout {
     flex: 1;
     min-height: 0;
