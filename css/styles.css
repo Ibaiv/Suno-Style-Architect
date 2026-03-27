@@ -60,7 +60,7 @@ body.app-no-scroll {
     flex: 1;
     min-height: 0;
     display: grid;
-    grid-template-rows: minmax(0, 67%) minmax(0, 33%);
+    grid-template-rows: minmax(0, calc(67% - 4px)) minmax(0, calc(33% - 4px));
     gap: 8px;
 }
 
@@ -230,8 +230,8 @@ body.bd-body-resizing iframe {
     border-radius: 24px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    padding: 10px;
+    gap: 8px;
+    padding: 8px;
     overflow: hidden;
     position: relative;
     animation: bdPanelSlideUp 400ms var(--bd-ease-major) both;
@@ -277,7 +277,7 @@ body.bd-body-resizing iframe {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 10px 14px 8px 14px;
+    padding: 8px 12px;
     border-bottom: 1px solid rgba(148, 163, 184, 0.12);
 }
 
@@ -360,7 +360,7 @@ body.bd-body-resizing iframe {
     flex: 1;
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 6px 8px 8px 8px;
+    padding: 8px;
     display: flex;
     flex-direction: column;
     gap: 4px;
@@ -377,7 +377,7 @@ body.bd-body-resizing iframe {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 6px 10px;
+    padding: 8px 12px;
     border-radius: 12px;
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(148, 163, 184, 0.08);
@@ -702,7 +702,7 @@ body.bd-body-resizing iframe {
 }
 
 .app-kreativ-stack {
-    gap: 10px !important;
+    gap: 8px !important;
 }
 
 .app-kreativ-stack.app-top-card {
@@ -740,6 +740,32 @@ body.bd-body-resizing iframe {
 
 .app-result-card #initial-state p {
     font-size: 0.88rem;
+}
+
+/* ── "Dein Meisterstück" result card scroll fix (#104) ── */
+.app-result-card {
+    overflow: hidden;          /* keep border-radius clipping on the card itself */
+}
+
+/* Allow the flex chain from card to <pre> to shrink so #result-text can scroll */
+.app-result-card #result-wrapper,
+.app-result-card #result-container,
+.app-result-card #result-container > .relative {
+    min-height: 0;
+}
+
+/* Make the result <pre> scrollable with a hidden scrollbar */
+#result-text {
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    /* Hide scrollbar – WebKit (Chrome, Safari, Edge) */
+    scrollbar-width: none;            /* Firefox */
+    -ms-overflow-style: none;         /* IE / legacy Edge */
+}
+
+#result-text::-webkit-scrollbar {
+    display: none;                    /* Chrome, Safari, Edge */
 }
 
 .tool-system-panel {
@@ -1003,7 +1029,7 @@ button.tool-page-dot:hover {
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     box-shadow: 0 10px 26px rgba(0, 0, 0, 0.32);
-    padding: 10px 14px;
+    padding: 8px 12px;
 }
 
 .app-menu-main {
@@ -1047,7 +1073,8 @@ button.tool-page-dot:hover {
     align-items: center;
     justify-content: flex-end;
     gap: 8px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    min-width: 0;
 }
 
 .app-menu-chip {
@@ -1092,46 +1119,97 @@ button.app-menu-chip:hover {
 
 @media (max-width: 1100px) {
     .app-menu-main {
-        flex-direction: column;
-        align-items: flex-start;
+        flex-direction: row;
+        align-items: center;
+        flex-wrap: nowrap;
+        min-width: 0;
     }
 
     .app-menu-controls {
-        width: 100%;
-        justify-content: flex-start;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none; /* Firefox */
+        min-width: 0;
+        flex-shrink: 1;
+        gap: 6px;
+        mask-image: linear-gradient(to right, black 90%, transparent 100%);
+        -webkit-mask-image: linear-gradient(to right, black 90%, transparent 100%);
     }
-}
 
-@media (max-width: 600px) {
-    .app-menu-bar {
-        padding: 9px 11px;
-        border-radius: 16px;
+    .app-menu-controls::-webkit-scrollbar {
+        display: none; /* Chrome/Safari */
     }
 
-    .app-menu-icon {
-        width: 34px;
-        height: 34px;
-        border-radius: 11px;
+    .app-menu-brand {
+        flex-shrink: 0;
     }
 
     .app-menu-title {
         font-size: 1.05rem;
     }
 
+    .app-menu-chip {
+        flex-shrink: 0;
+        font-size: 0.7rem;
+        padding: 5px 9px;
+        min-height: 36px;
+    }
+}
+
+@media (max-width: 900px) {
+    /* Hide less essential controls on narrower screens */
+    #help-shortcuts-button,
+    #shortcuts-settings-button {
+        display: none;
+    }
+
+    .app-menu-title {
+        font-size: 0.95rem;
+    }
+
+    .app-menu-icon {
+        width: 34px;
+        height: 34px;
+    }
+}
+
+@media (max-width: 600px) {
+    .app-menu-bar {
+        padding: 8px 10px;
+        border-radius: 16px;
+    }
+
+    .app-menu-icon {
+        width: 30px;
+        height: 30px;
+        border-radius: 10px;
+    }
+
+    .app-menu-title {
+        font-size: 0.88rem;
+    }
+
     .app-menu-controls {
-        gap: 6px;
+        gap: 5px;
     }
 
     .app-menu-chip {
-        font-size: 0.7rem;
-        padding: 6px 10px;
+        font-size: 0.66rem;
+        padding: 4px 8px;
+        min-height: 32px;
+    }
+
+    /* Hide history button on small screens to save space */
+    #history-toggle-button {
+        display: none;
     }
 }
 
 @media (max-height: 800px) {
     .app-main-layout {
-        grid-template-rows: minmax(0, 68%) minmax(0, 32%);
-        gap: 7px;
+        grid-template-rows: minmax(0, calc(68% - 4px)) minmax(0, calc(32% - 4px));
+        gap: 8px;
     }
 
     .app-menu-bar {
@@ -1144,7 +1222,7 @@ button.app-menu-chip:hover {
     }
 
     .app-kreativ-stack .kreativ-panel {
-        padding: 11px !important;
+        padding: 12px !important;
         border-radius: 16px !important;
     }
 
@@ -1283,7 +1361,7 @@ button.app-menu-chip:hover {
     overflow: hidden;
     padding-top: 0;
     padding-bottom: 0;
-    margin-bottom: 0.25rem !important;
+    margin-bottom: 0.5rem !important;
     border-color: rgba(255, 255, 255, 0.06);
 }
 
