@@ -2,7 +2,7 @@
 
 A concise, action-oriented cheat sheet for working on this project in Warp.
 
-Repository: /Users/felix/Documents/WebProjects/suno-style-architect
+Repository: ./suno-style-architect
 OS: macOS • Shell: zsh
 
 TL;DR

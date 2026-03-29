@@ -49,7 +49,7 @@ A powerful AI-powered web application for creating optimized music prompts for S
 
 1. **Navigate to the project directory:**
    ```bash
-   cd /Users/felix/Documents/WebProjects/suno-style-architect
+   cd path/to/suno-style-architect
    ```
 
 2. **Start the development server:**

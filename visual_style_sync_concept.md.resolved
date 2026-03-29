@@ -25,11 +25,11 @@ Nutzer können Bilder (eigene Fotos, Kunstwerke, Texturen) hochladen, um daraus 
 ## 🛠️ Technische Blaupause & Implementierungs-Prompts
 
 ### Phase A: Fix der Fal.ai Schnittstelle
-Damit die Bildgenerierung stabil läuft, muss der API-Wrapper in [js/api.js](file:///Users/felix/Documents/WebProjects/Suno-Style-Architect-Git/Suno-Style-Architect/js/api.js) modernisiert werden.
+Damit die Bildgenerierung stabil läuft, muss der API-Wrapper in [js/api.js](./js/api.js) modernisiert werden.
 
 > [!TIP]
 > **LLM Implementation Prompt:**
-> „Überarbeite die Funktion [callFalAPI](file:///Users/felix/Documents/WebProjects/Suno-Style-Architect-Git/Suno-Style-Architect/js/api.js#1-118) in [js/api.js](file:///Users/felix/Documents/WebProjects/Suno-Style-Architect-Git/Suno-Style-Architect/js/api.js). Stelle sicher, dass für Flux-Modelle (wie `flux-pro/kontext`) der korrekte Authorization-Header (`Key {API_KEY}`) verwendet wird. Implementiere ein robustes Fallback-System für verschiedene Payload-Strukturen (z.B. `input: { prompt }` vs. `{ prompt }`).“
+> „Überarbeite die Funktion [callFalAPI](./js/api.js#1-118) in [js/api.js](./js/api.js). Stelle sicher, dass für Flux-Modelle (wie `flux-pro/kontext`) der korrekte Authorization-Header (`Key {API_KEY}`) verwendet wird. Implementiere ein robustes Fallback-System für verschiedene Payload-Strukturen (z.B. `input: { prompt }` vs. `{ prompt }`).“
 
 ---
 
@@ -41,7 +41,7 @@ Implementierung der Funktion, die aus dem generierten Ergebnis-Text ein Bild ers
 > „Erstelle ein neues KLUG-Tool 'Visual Archetype'. 
 > 1. Die Logik soll den Text aus `#result-text` nehmen.
 > 2. Ein System-Prompt (`IMAGE_ARCHETYPE_PROMPT`) soll den musikalischen Prompt in eine rein visuelle Beschreibung übersetzen (z.B. 'A surreal digital abstract painting representing heavy bass, metallic clashing synths, and neon blue energy flow').
-> 3. Sende diese Beschreibung an [callFalAPI](file:///Users/felix/Documents/WebProjects/Suno-Style-Architect-Git/Suno-Style-Architect/js/api.js#1-118) und zeige das resultierende Bild in einem stylischen Modal an.“
+> 3. Sende diese Beschreibung an [callFalAPI](./js/api.js#1-118) und zeige das resultierende Bild in einem stylischen Modal an.“
 
 ---
 

@@ -1,0 +1,22 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Local tool config
+.claude/
+
+# Temporary & build artifacts
+tmp/
+temp
+output/
+
+# Environment & secrets
+.env
+.env.local
+.env.production
+
+# Dependencies
+node_modules/
+
+# Logs
+*.log
