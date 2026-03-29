@@ -76,7 +76,7 @@ function setupIdeaSpark() {
             });
         } catch (error) {
             console.error("Error generating ideas:", error);
-            ideasOutput.innerHTML = `<p class="text-red-400">${getUserFriendlyErrorMessage(error)}</p>`;
+            ideasOutput.innerHTML = `<p class="text-red-400">${escapeHTML(getUserFriendlyErrorMessage(error))}</p>`;
         } finally {
             setIdeaLoading(false);
         }
@@ -277,7 +277,7 @@ function setupUnifiedKlugTool(toolId, systemPrompt) {
             // 4. Typewriter reveal animation
             revealKlugRows(listContainer, data, selectedItems, updateSelectionCount);
         } catch (error) {
-            listContainer.innerHTML = `<p class="text-red-400 p-4 text-sm text-center">${getUserFriendlyErrorMessage(error)}</p>`;
+            listContainer.innerHTML = `<p class="text-red-400 p-4 text-sm text-center">${escapeHTML(getUserFriendlyErrorMessage(error))}</p>`;
         }
     });
 
@@ -375,7 +375,7 @@ function revealKlugRows(container, data, selectedItems, onSelectionChange) {
         const header = document.createElement('div');
         header.className = 'klug-category-header revealed';
         header.style.animationDelay = `${delayIndex * REVEAL_DELAY}ms`;
-        header.innerHTML = `<span class="klug-category-dot" style="background:${color}"></span>${category.name}`;
+        header.innerHTML = `<span class="klug-category-dot" style="background:${color}"></span>${escapeHTML(category.name)}`;
         container.appendChild(header);
         delayIndex++;
 
@@ -785,7 +785,7 @@ function setupVisualEngine() {
             // Hide progress, show result
             hideProgress();
             generatedImageUrl = url;
-            output.innerHTML = `<img src="${url}" alt="Generiertes Bild" class="rounded-lg w-full h-auto">`;
+            output.innerHTML = `<img src="${escapeHTML(url)}" alt="Generiertes Bild" class="rounded-lg w-full h-auto">`;
             analyzeButton.classList.remove('hidden');
         } catch (error) {
             hideProgress();
@@ -796,7 +796,7 @@ function setupVisualEngine() {
                 output.innerHTML = `<p class="text-neutral-400 text-sm">Bildgenerierung wurde abgebrochen.</p>`;
             } else {
                 console.error('Fal.ai error', error);
-                output.innerHTML = `<p class="text-red-400 text-sm">${getUserFriendlyErrorMessage(error)}</p>`;
+                output.innerHTML = `<p class="text-red-400 text-sm">${escapeHTML(getUserFriendlyErrorMessage(error))}</p>`;
             }
         } finally {
             if (currentAbortController === abortController) {
@@ -844,7 +844,7 @@ function setupVisualEngine() {
             modalLogic.close();
         } catch (error) {
             console.error('Visual analysis failed', error);
-            output.innerHTML = `<p class="text-red-400 text-sm">${getUserFriendlyErrorMessage(error)}</p>` + output.innerHTML;
+            output.innerHTML = `<p class="text-red-400 text-sm">${escapeHTML(getUserFriendlyErrorMessage(error))}</p>` + output.innerHTML;
         } finally {
             setAnalyzeLoading(false);
         }
@@ -912,18 +912,18 @@ function setupAdaptiveFlow() {
                 <div class="grid gap-4 md:grid-cols-2">
                     <div>
                         <h3 class="text-sm font-semibold text-neutral-300 mb-2">Aktueller Prompt</h3>
-                        <pre class="whitespace-pre-wrap text-xs md:text-sm text-neutral-400 bg-neutral-900/70 border border-neutral-700 rounded-xl p-3">${currentPrompt}</pre>
+                        <pre class="whitespace-pre-wrap text-xs md:text-sm text-neutral-400 bg-neutral-900/70 border border-neutral-700 rounded-xl p-3">${escapeHTML(currentPrompt)}</pre>
                     </div>
                     <div>
                         <h3 class="text-sm font-semibold text-neutral-300 mb-2">Neuer Flow</h3>
-                        <pre class="whitespace-pre-wrap text-xs md:text-sm text-neutral-200 bg-neutral-900/70 border border-blue-500/40 rounded-xl p-3" id="adaptive-flow-result">${cleanPrompt}</pre>
+                        <pre class="whitespace-pre-wrap text-xs md:text-sm text-neutral-200 bg-neutral-900/70 border border-blue-500/40 rounded-xl p-3" id="adaptive-flow-result">${escapeHTML(cleanPrompt)}</pre>
                         <button id="apply-adaptive-flow-button" class="mt-3 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg btn-transition btn-press">Flow übernehmen</button>
                     </div>
                 </div>
                 <div class="mt-4">
                     <h4 class="text-sm font-semibold text-neutral-300 mb-2">Flow-Notizen</h4>
                     <ul class="text-xs md:text-sm text-neutral-400 space-y-1">
-                        ${notes.map(note => `<li class="flex gap-2"><span class="text-blue-400">•</span><span>${note}</span></li>`).join('')}
+                        ${notes.map(note => `<li class="flex gap-2"><span class="text-blue-400">•</span><span>${escapeHTML(note)}</span></li>`).join('')}
                     </ul>
                 </div>
             `;
@@ -936,7 +936,7 @@ function setupAdaptiveFlow() {
             });
         } catch (error) {
             console.error('Adaptive Flow failed', error);
-            output.innerHTML = `<p class="text-red-400">${getUserFriendlyErrorMessage(error)}</p>`;
+            output.innerHTML = `<p class="text-red-400">${escapeHTML(getUserFriendlyErrorMessage(error))}</p>`;
         } finally {
             runButton.disabled = false;
             buttonText.classList.remove('hidden');
@@ -1023,13 +1023,13 @@ function setupAiCollaboration() {
                 <div class="space-y-4">
                     <div class="bg-neutral-900/70 border border-blue-500/30 rounded-xl p-4">
                         <h3 class="text-sm font-semibold text-neutral-200 mb-2">Kooperativer Prompt</h3>
-                        <pre class="whitespace-pre-wrap text-xs md:text-sm text-neutral-100" id="ai-collab-result">${cleanPrompt}</pre>
+                        <pre class="whitespace-pre-wrap text-xs md:text-sm text-neutral-100" id="ai-collab-result">${escapeHTML(cleanPrompt)}</pre>
                         <button id="apply-ai-collab-button" class="mt-3 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg btn-transition btn-press">Prompt übernehmen</button>
                     </div>
                     <div>
                         <h4 class="text-sm font-semibold text-neutral-300 mb-2">Interplay-Ideen</h4>
                         <ul class="text-xs md:text-sm text-neutral-400 space-y-1">
-                            ${notes.map(note => `<li class="flex gap-2"><span class="text-blue-400">•</span><span>${note}</span></li>`).join('')}
+                            ${notes.map(note => `<li class="flex gap-2"><span class="text-blue-400">•</span><span>${escapeHTML(note)}</span></li>`).join('')}
                         </ul>
                     </div>
                 </div>
@@ -1043,7 +1043,7 @@ function setupAiCollaboration() {
             });
         } catch (error) {
             console.error('AI Collaboration failed', error);
-            output.innerHTML = `<p class="text-red-400">${getUserFriendlyErrorMessage(error)}</p>`;
+            output.innerHTML = `<p class="text-red-400">${escapeHTML(getUserFriendlyErrorMessage(error))}</p>`;
         } finally {
             generateButton.disabled = false;
             buttonText?.classList.remove('hidden');
@@ -1086,13 +1086,13 @@ function setupStoryArcDesigner() {
                 <div class="space-y-4">
                     <div class="bg-neutral-900/70 border border-blue-500/30 rounded-xl p-4">
                         <h3 class="text-sm font-semibold text-neutral-200 mb-2">Dramaturgischer Prompt</h3>
-                        <pre class="whitespace-pre-wrap text-xs md:text-sm text-neutral-100" id="story-arc-result">${cleanPrompt}</pre>
+                        <pre class="whitespace-pre-wrap text-xs md:text-sm text-neutral-100" id="story-arc-result">${escapeHTML(cleanPrompt)}</pre>
                         <button id="apply-story-arc-button" class="mt-3 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg btn-transition btn-press">Prompt übernehmen</button>
                     </div>
                     <div>
                         <h4 class="text-sm font-semibold text-neutral-300 mb-2">Arc-Gliederung</h4>
                         <ul class="text-xs md:text-sm text-neutral-400 space-y-1">
-                            ${notes.map(note => `<li class="flex gap-2"><span class="text-blue-400">•</span><span>${note}</span></li>`).join('')}
+                            ${notes.map(note => `<li class="flex gap-2"><span class="text-blue-400">•</span><span>${escapeHTML(note)}</span></li>`).join('')}
                         </ul>
                     </div>
                 </div>
@@ -1106,7 +1106,7 @@ function setupStoryArcDesigner() {
             });
         } catch (error) {
             console.error('Story Arc Designer failed', error);
-            output.innerHTML = `<p class="text-red-400">${getUserFriendlyErrorMessage(error)}</p>`;
+            output.innerHTML = `<p class="text-red-400">${escapeHTML(getUserFriendlyErrorMessage(error))}</p>`;
         } finally {
             regenerateButton.disabled = false;
             buttonText?.classList.remove('hidden');
@@ -1409,7 +1409,7 @@ Continuity mode: Balanced evolution`;
             renderResult(normalized);
         } catch (error) {
             console.error('Narrative Chapters failed', error);
-            output.innerHTML = `<p class="text-red-400">${getUserFriendlyErrorMessage(error)}</p>`;
+            output.innerHTML = `<p class="text-red-400">${escapeHTML(getUserFriendlyErrorMessage(error))}</p>`;
         } finally {
             runButton.disabled = false;
             buttonText?.classList.remove('hidden');
@@ -1502,13 +1502,13 @@ function setupImmersiveSpace() {
                 <div class="space-y-4">
                     <div class="bg-neutral-900/70 border border-blue-500/30 rounded-xl p-4">
                         <h3 class="text-sm font-semibold text-neutral-200 mb-2">Immersiver Prompt</h3>
-                        <pre class="whitespace-pre-wrap text-xs md:text-sm text-neutral-100" id="immersive-space-result">${cleanPrompt}</pre>
+                        <pre class="whitespace-pre-wrap text-xs md:text-sm text-neutral-100" id="immersive-space-result">${escapeHTML(cleanPrompt)}</pre>
                         <button id="apply-immersive-space-button" class="mt-3 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg btn-transition btn-press">Prompt übernehmen</button>
                     </div>
                     <div>
                         <h4 class="text-sm font-semibold text-neutral-300 mb-2">Raum-Notizen</h4>
                         <ul class="text-xs md:text-sm text-neutral-400 space-y-1">
-                            ${notes.map(note => `<li class="flex gap-2"><span class="text-blue-400">•</span><span>${note}</span></li>`).join('')}
+                            ${notes.map(note => `<li class="flex gap-2"><span class="text-blue-400">•</span><span>${escapeHTML(note)}</span></li>`).join('')}
                         </ul>
                     </div>
                 </div>
@@ -1522,7 +1522,7 @@ function setupImmersiveSpace() {
             });
         } catch (error) {
             console.error('Immersive Space failed', error);
-            output.innerHTML = `<p class="text-red-400">${getUserFriendlyErrorMessage(error)}</p>`;
+            output.innerHTML = `<p class="text-red-400">${escapeHTML(getUserFriendlyErrorMessage(error))}</p>`;
         } finally {
             generateButton.disabled = false;
             buttonText?.classList.remove('hidden');
@@ -1611,13 +1611,13 @@ function setupHumanTouch() {
                 <div class="space-y-4">
                     <div class="bg-neutral-900/70 border border-blue-500/30 rounded-xl p-4">
                         <h3 class="text-sm font-semibold text-neutral-200 mb-2">Humanisierter Prompt</h3>
-                        <pre class="whitespace-pre-wrap text-xs md:text-sm text-neutral-100" id="human-touch-result">${cleanPrompt}</pre>
+                        <pre class="whitespace-pre-wrap text-xs md:text-sm text-neutral-100" id="human-touch-result">${escapeHTML(cleanPrompt)}</pre>
                         <button id="apply-human-touch-result" class="mt-3 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg btn-transition btn-press">Prompt übernehmen</button>
                     </div>
                     <div>
                         <h4 class="text-sm font-semibold text-neutral-300 mb-2">Nuancen</h4>
                         <ul class="text-xs md:text-sm text-neutral-400 space-y-1">
-                            ${notes.map(note => `<li class="flex gap-2"><span class="text-blue-400">•</span><span>${note}</span></li>`).join('')}
+                            ${notes.map(note => `<li class="flex gap-2"><span class="text-blue-400">•</span><span>${escapeHTML(note)}</span></li>`).join('')}
                         </ul>
                     </div>
                 </div>
@@ -1631,7 +1631,7 @@ function setupHumanTouch() {
             });
         } catch (error) {
             console.error('Human Touch failed', error);
-            output.innerHTML = `<p class="text-red-400">${getUserFriendlyErrorMessage(error)}</p>`;
+            output.innerHTML = `<p class="text-red-400">${escapeHTML(getUserFriendlyErrorMessage(error))}</p>`;
         } finally {
             generateButton.disabled = false;
             buttonText?.classList.remove('hidden');
@@ -1726,13 +1726,13 @@ function setupReleaseForecast() {
                     <div>
                         <h3 class="text-sm font-semibold text-neutral-200 mb-2">Release-Plan</h3>
                         <ul class="text-xs md:text-sm text-neutral-300 space-y-1">
-                            ${planLines.map(line => `<li class="flex gap-2"><span class="text-blue-400">•</span><span>${line}</span></li>`).join('')}
+                            ${planLines.map(line => `<li class="flex gap-2"><span class="text-blue-400">•</span><span>${escapeHTML(line)}</span></li>`).join('')}
                         </ul>
                     </div>
                     <div>
                         <h4 class="text-sm font-semibold text-neutral-300 mb-2">Taktiken</h4>
                         <ul class="text-xs md:text-sm text-neutral-400 space-y-1">
-                            ${tacticsLines.map(line => `<li class="flex gap-2"><span class="text-blue-400">•</span><span>${line}</span></li>`).join('')}
+                            ${tacticsLines.map(line => `<li class="flex gap-2"><span class="text-blue-400">•</span><span>${escapeHTML(line)}</span></li>`).join('')}
                         </ul>
                     </div>
                     <div class="flex flex-col sm:flex-row gap-2">
@@ -1755,7 +1755,7 @@ function setupReleaseForecast() {
             });
         } catch (error) {
             console.error('Release Forecast failed', error);
-            output.innerHTML = `<p class="text-red-400">${getUserFriendlyErrorMessage(error)}</p>`;
+            output.innerHTML = `<p class="text-red-400">${escapeHTML(getUserFriendlyErrorMessage(error))}</p>`;
         } finally {
             generateButton.disabled = false;
             buttonText?.classList.remove('hidden');
@@ -2004,7 +2004,7 @@ function setupStyleSync() {
 
             } catch (error) {
                 console.error('Encoder Error:', error);
-                visualPlaceholder.innerHTML = `<p class="text-red-400 text-xs text-center px-4">${getUserFriendlyErrorMessage(error)}</p>`;
+                visualPlaceholder.innerHTML = `<p class="text-red-400 text-xs text-center px-4">${escapeHTML(getUserFriendlyErrorMessage(error))}</p>`;
             } finally {
                 transcodeBtn.classList.remove('animate-pulse');
             }

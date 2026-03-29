@@ -1,3 +1,10 @@
+// === HTML SANITIZATION ===
+function escapeHTML(str) {
+    const div = document.createElement('div');
+    div.textContent = String(str);
+    return div.innerHTML;
+}
+
 // === FAL.AI STATE ===
 let FAL_API_KEY = '';
 let FAL_MODEL = 'fal-ai/nano-banana-pro';  // Nano Banana Pro - newest 2025 model
@@ -65,7 +72,7 @@ function showToast(message, type = 'error', duration = 4500, action) {
     const toast = document.createElement('div');
     toast.className = `ssa-toast ssa-toast--${type}`;
     toast.setAttribute('role', 'alert');
-    toast.innerHTML = `${iconSVGs[type] || iconSVGs.error}<span class="ssa-toast-message">${message}</span>${actionHtml}<button class="ssa-toast-close" aria-label="Schlie\u00dfen">\u00d7</button>`;
+    toast.innerHTML = `${iconSVGs[type] || iconSVGs.error}<span class="ssa-toast-message">${escapeHTML(message)}</span>${actionHtml}<button class="ssa-toast-close" aria-label="Schlie\u00dfen">\u00d7</button>`;
 
     container.appendChild(toast);
 
@@ -96,7 +103,7 @@ function showToast(message, type = 'error', duration = 4500, action) {
 function showInlineError(containerId, message) {
     const el = document.getElementById(containerId);
     if (!el) { showToast(message, 'error'); return; }
-    el.innerHTML = `<svg class="ssa-inline-error-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg><span>${message}</span>`;
+    el.innerHTML = `<svg class="ssa-inline-error-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg><span>${escapeHTML(message)}</span>`;
     el.classList.remove('hidden');
 }
 
