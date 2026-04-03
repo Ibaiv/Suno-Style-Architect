@@ -8,7 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 
@@ -674,101 +674,174 @@
     <div id="ssa-toast-container" aria-live="polite"></div>
 
     <!-- JavaScript Files -->
-    <!-- Creative Cosmos: Idea Starter Modal (V2 Wiki Style) -->
+    <!-- Creative Cosmos: Spectrum Navigator Modal -->
     <div id="idea-starter-modal" class="fixed inset-0 z-[130] hidden">
-        <div class="absolute inset-0 bg-black/95 backdrop-blur-xl"></div>
-        <div class="relative w-full h-full flex items-center justify-center p-4">
-            <!-- Large Modal Window (16:9 target) -->
-            <div
-                class="bg-[#0b0b14] border border-neutral-700/50 shadow-2xl rounded-3xl w-[95vw] h-[90vh] flex flex-col overflow-hidden relative">
-
-                <!-- Header: World Selection -->
-                <div class="border-b border-white/5 bg-black/40 p-6 flex flex-col gap-6 z-20">
-                    <div class="flex justify-between items-center">
-                        <h2 class="text-3xl font-bold text-white tracking-tight flex items-center gap-3">
-                            <span
-                                class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-lg shadow-lg shadow-purple-900/30">📚</span>
-                            Kreativ-Bibliothek
-                        </h2>
-                        <button id="close-idea-modal"
-                            class="text-neutral-400 hover:text-white transition-colors bg-white/5 hover:bg-white/10 p-2 rounded-full" aria-label="Kreativ-Bibliothek schließen">
-                            <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path d="M18 6 6 18" />
-                                <path d="m6 6 12 12" />
-                            </svg>
-                        </button>
-                    </div>
-                    <!-- World Tabs (Modern Pill Design) -->
-                    <div id="world-tabs"
-                        class="flex gap-3 overflow-x-auto pb-2 scrollbar-hide justify-start lg:justify-center">
-                        <!-- Populated by JS -->
-                    </div>
+        <div class="sn-shell">
+            <!-- Top Bar -->
+            <header class="sn-top-bar">
+                <div class="sn-top-bar-brand">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                    <span class="sn-top-bar-title">Spectrum Navigator</span>
+                    <span class="sn-top-bar-subtitle">Kreativbibliothek</span>
                 </div>
+                <div class="sn-top-bar-actions">
+                    <!-- Shuffle Button -->
+                    <button class="sn-btn-icon" id="sn-shuffle-btn" title="Inspiration-Shuffle" aria-label="Inspiration-Shuffle">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
+                    </button>
+                    <!-- Cancel -->
+                    <button class="sn-btn-icon" id="cancel-idea-btn" title="Abbrechen" aria-label="Abbrechen">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                    </button>
+                    <!-- Close -->
+                    <button class="sn-btn-icon" id="close-idea-modal" title="Schliessen" aria-label="Kreativ-Bibliothek schliessen">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                    </button>
+                </div>
+            </header>
 
-                <!-- Main Content Area (Reading Mode) -->
-                <div class="flex-1 overflow-y-auto custom-scrollbar relative bg-[#11111a] flex flex-col items-center"
-                    id="wiki-scroll-container">
-                    <div id="world-content-area"
-                        class="max-w-4xl w-full py-12 px-8 lg:px-12 opacity-0 translate-y-4 transition-all duration-500">
-                        <!-- Dynamic Content populated by JS -->
-                        <div class="text-center text-neutral-500 mt-20 flex flex-col items-center gap-4">
-                            <div class="text-6xl opacity-20">📖</div>
-                            <p class="text-xl font-medium">Wähle eine Welt aus, um den Artikel zu laden.</p>
-                            <p class="text-sm opacity-60">Markiere Text, um deine Vision zu bauen.</p>
+            <!-- Main Split View -->
+            <div class="sn-main-content">
+                <!-- Left: Spectrum Map Panel -->
+                <div class="sn-spectrum-panel">
+                    <div class="sn-spectrum-header">
+                        <div class="sn-spectrum-search-wrap">
+                            <svg class="sn-spectrum-search-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                            <input class="sn-spectrum-search" id="sn-spectrum-search" type="text" placeholder="Suche in Welten und Begriffen..." autocomplete="off" spellcheck="false">
+                            <button class="sn-spectrum-search-clear" id="sn-search-clear" aria-label="Suche leeren">&times;</button>
+                            <div class="sn-cross-search-results" id="sn-cross-search-results"></div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Footer: Actions -->
-                <div class="border-t border-white/5 bg-black/40 p-6 flex justify-between items-center z-20 w-full">
-                    <div class="flex items-center gap-6">
-                        <!-- Selection Counter -->
-                        <div id="selection-counter" class="text-sm text-neutral-400 hidden">
-                            <span
-                                class="inline-flex items-center gap-1.5 bg-blue-500/10 border border-blue-500/30 px-2 py-1 rounded-lg">
-                                <span id="term-count" class="text-blue-400 font-medium">0</span> Begriffe
-                            </span>
-                            <span
-                                class="inline-flex items-center gap-1.5 bg-yellow-500/10 border border-yellow-500/30 px-2 py-1 rounded-lg ml-2">
-                                <span id="passage-count" class="text-yellow-400 font-medium">0</span> Passagen
-                            </span>
+                    <div class="sn-spectrum-canvas-wrap">
+                        <div class="sn-axis-label sn-axis-label-bottom">Traditionell / Akustisch</div>
+                        <div class="sn-axis-label sn-axis-label-top-right">Modern / Elektronisch</div>
+                        <div class="sn-axis-label sn-axis-label-left-bottom">Ruhig</div>
+                        <div class="sn-axis-label sn-axis-label-left-top">Intensiv</div>
+
+                        <!-- Mood Compass -->
+                        <div class="sn-mood-compass" title="Mood-Kompass: Zeigt die Richtung deiner Auswahl">
+                            <div class="sn-compass-ring">
+                                <svg class="sn-compass-crosshair" viewBox="0 0 72 72">
+                                    <line x1="36" y1="12" x2="36" y2="60" stroke="rgba(255,255,255,0.06)" stroke-width="0.5"/>
+                                    <line x1="12" y1="36" x2="60" y2="36" stroke="rgba(255,255,255,0.06)" stroke-width="0.5"/>
+                                    <circle cx="36" cy="36" r="18" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="0.5"/>
+                                </svg>
+                                <div class="sn-compass-needle" id="sn-compass-needle"></div>
+                                <span class="sn-compass-lbl sn-compass-lbl-top">Intensiv</span>
+                                <span class="sn-compass-lbl sn-compass-lbl-bottom">Ruhig</span>
+                                <span class="sn-compass-lbl sn-compass-lbl-left">Dunkel</span>
+                                <span class="sn-compass-lbl sn-compass-lbl-right">Hell</span>
+                            </div>
                         </div>
-                        <div class="text-xs text-neutral-500 hidden sm:block">
-                            <span class="font-medium text-indigo-400">Tipp:</span> Klicke Begriffe oder markiere Text
+
+                        <!-- Spectrum Canvas -->
+                        <div class="sn-spectrum-canvas" id="sn-spectrum-canvas">
+                            <svg class="sn-spectrum-grid" id="sn-spectrum-grid"></svg>
                         </div>
                     </div>
-                    <div class="flex gap-3">
-                        <button id="reset-selections-btn"
-                            class="px-4 py-2.5 rounded-xl border border-neutral-700 text-neutral-500 hover:text-red-400 hover:border-red-500/50 hover:bg-red-500/5 transition-all text-sm font-medium hidden">
-                            Zurücksetzen
-                        </button>
-                        <button id="cancel-idea-btn"
-                            class="px-6 py-3 rounded-xl border border-white/10 text-neutral-400 hover:text-white hover:bg-white/5 transition-all text-sm font-medium">
-                            Abbrechen
-                        </button>
-                        <button id="generate-idea-btn"
-                            class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-indigo-900/20 hover:shadow-indigo-900/40 transform hover:-translate-y-0.5 transition-all flex items-center gap-2">
-                            <span>Prompt aus Auswahl erstellen</span>
-                            <svg aria-hidden="true" focusable="false" id="gen-spinner" class="animate-spin h-4 w-4 hidden" xmlns="http://www.w3.org/2000/svg"
-                                fill="none" viewBox="0 0 24 24">
-                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                                    stroke-width="4"></circle>
-                                <path class="opacity-75" fill="currentColor"
-                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                                </path>
-                            </svg>
-                            <svg aria-hidden="true" focusable="false" id="gen-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <path
-                                    d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275Z" />
-                            </svg>
-                        </button>
-                    </div>
+
+                    <div class="sn-spectrum-legend" id="sn-spectrum-legend"></div>
                 </div>
 
+                <!-- Right: Article Panel -->
+                <div class="sn-article-panel" id="sn-article-panel">
+                    <!-- Empty state -->
+                    <div class="sn-article-empty" id="sn-article-empty">
+                        <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+                        <div class="sn-article-empty-title">Welt auswaehlen</div>
+                        <div class="sn-article-empty-sub">Klicke auf einen Knoten im Spektrum, um eine musikalische Welt zu erkunden und Begriffe fuer deinen Prompt auszuwaehlen.</div>
+                    </div>
+
+                    <!-- Article scroll container -->
+                    <div class="sn-article-scroll" id="sn-article-scroll" style="display:none;">
+                        <!-- Font Size Widget -->
+                        <div class="sn-text-size-widget" id="sn-text-size-widget">
+                            <button class="sn-text-size-btn" data-size="small" title="Kleiner">A-</button>
+                            <button class="sn-text-size-btn active" data-size="medium" title="Normal">A</button>
+                            <button class="sn-text-size-btn" data-size="large" title="Groesser">A+</button>
+                        </div>
+
+                        <div class="sn-back-to-overview" id="sn-back-to-overview">
+                            <button class="sn-back-to-overview-btn" aria-label="Zurueck zur Uebersicht">
+                                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+                                Uebersicht
+                            </button>
+                        </div>
+                        <div id="sn-quick-overview-mount"></div>
+                        <div class="sn-article-body" id="world-content-area"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom: Mood Board Tray -->
+            <div class="sn-mood-tray" id="sn-mood-tray">
+                <div class="sn-tray-header" id="sn-tray-header" tabindex="0" role="button" aria-label="Mood Board ein-/ausklappen">
+                    <div class="sn-tray-left">
+                        <span class="sn-tray-label">Mood Board</span>
+                        <div class="sn-tray-counts" id="selection-counter">
+                            <span class="sn-tray-count sn-tray-count-terms"><span id="term-count">0</span> Begriffe</span>
+                            <span class="sn-tray-count sn-tray-count-passages"><span id="passage-count">0</span> Passagen</span>
+                        </div>
+                        <div class="sn-tray-peek" id="sn-tray-peek"></div>
+                    </div>
+                    <div class="sn-tray-right">
+                        <button class="sn-tray-action sn-tray-action-reset" id="reset-selections-btn" title="Alle Auswahlen zuruecksetzen">
+                            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+                            Zuruecksetzen
+                        </button>
+                        <button class="sn-tray-action sn-tray-action-generate" id="generate-idea-btn" title="Prompt erstellen" disabled>
+                            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                            <span id="sn-generate-label">Prompt erstellen</span>
+                            <svg aria-hidden="true" focusable="false" id="gen-spinner" class="sn-spinner hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            <svg aria-hidden="true" focusable="false" id="gen-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275Z"/>
+                            </svg>
+                        </button>
+                        <span class="sn-tray-toggle-icon" id="sn-tray-toggle-icon">&#9650;</span>
+                    </div>
+                </div>
+                <div class="sn-tray-content" id="sn-tray-content">
+                    <div class="sn-tray-empty" id="sn-tray-empty">Begriffe und Passagen hier sammeln &mdash; aus allen Welten</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shared Tooltip -->
+        <div class="sn-node-tooltip" id="sn-node-tooltip">
+            <div class="sn-node-tooltip-name" id="sn-tooltip-name"></div>
+            <div class="sn-node-tooltip-tags" id="sn-tooltip-tags"></div>
+        </div>
+
+        <!-- Mark Popup -->
+        <div class="sn-mark-popup" id="sn-mark-popup">
+            <button class="sn-mark-popup-btn sn-mark-btn" id="sn-mark-btn">Markieren</button>
+            <button class="sn-mark-popup-btn sn-note-btn" id="sn-note-btn">+ Notiz</button>
+            <button class="sn-mark-popup-btn sn-cancel-btn" id="sn-cancel-mark-btn">Abbrechen</button>
+        </div>
+
+        <!-- Note Input Overlay -->
+        <div class="sn-note-input-overlay" id="sn-note-overlay">
+            <div class="sn-note-input-box">
+                <div class="sn-note-input-title">Notiz hinzufuegen</div>
+                <textarea class="sn-note-input-field" id="sn-note-field" placeholder="Deine Notiz zu dieser Passage..."></textarea>
+                <div class="sn-note-input-actions">
+                    <button class="sn-btn sn-btn-ghost" id="sn-note-cancel-btn">Abbrechen</button>
+                    <button class="sn-btn sn-btn-primary" id="sn-note-save-btn">Speichern</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shuffle Overlay -->
+        <div class="sn-shuffle-overlay" id="sn-shuffle-overlay">
+            <div class="sn-shuffle-panel">
+                <h3>Inspiration-Shuffle</h3>
+                <p class="sn-shuffle-subtitle">Drei zufaellige Welten mit spannenden Begriffen.</p>
+                <div class="sn-shuffle-suggestions" id="sn-shuffle-suggestions"></div>
+                <button class="sn-shuffle-close" id="sn-shuffle-close">Schliessen</button>
             </div>
         </div>
     </div>
