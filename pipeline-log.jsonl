@@ -1,0 +1,2 @@
+{"timestamp":"2026-04-03T04:42:07Z","phase":"worker","event":"failed","details":{"issue_index":2,"attempts_exhausted":3}}
+{"timestamp":"2026-04-03T04:42:07Z","phase":"pipeline","event":"complete","details":{"accepted":2,"failed":1}}

@@ -1,0 +1,3211 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Radial Explorer — Kreativbibliothek</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* =====================================================
+   RADIAL EXPLORER — Design #4
+   Kreativbibliothek Redesign for Suno Style Architect
+   A cosmic, radial navigation for 45 musical worlds
+   ===================================================== */
+
+/* --- Reset & Base --- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg-deep: #08081a;
+  --bg-panel: rgba(12, 12, 32, 0.88);
+  --bg-glass: rgba(16, 16, 42, 0.72);
+  --bg-surface: rgba(22, 22, 50, 0.55);
+  --bg-card: rgba(18, 18, 44, 0.65);
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-active: rgba(255, 255, 255, 0.15);
+  --text-primary: #e8e8f2;
+  --text-secondary: #9898b4;
+  --text-muted: #5e5e7a;
+  --text-dim: #3a3a58;
+
+  /* Category Colors */
+  --cat-orchestra: #e5a84b;
+  --cat-ambient: #6ba3d6;
+  --cat-club: #2dd4bf;
+  --cat-hiphop: #a78bfa;
+  --cat-world: #4ade80;
+  --cat-sound: #f472b6;
+
+  --accent-rose: #f43f5e;
+  --accent-green: #22c55e;
+  --accent-blue: #4a7cff;
+
+  --ease-dramatic: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: 'DM Sans', 'Inter', sans-serif;
+
+  --reader-font-size: 17px;
+}
+
+html, body {
+  height: 100%;
+  font-family: var(--font-body);
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* --- App Shell --- */
+.app-shell {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background: var(--bg-deep);
+  background-image:
+    radial-gradient(ellipse at 50% 50%, rgba(30, 20, 60, 0.35) 0%, transparent 65%),
+    radial-gradient(ellipse at 30% 70%, rgba(20, 40, 70, 0.15) 0%, transparent 50%);
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Top Bar --- */
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 52px;
+  padding: 0 24px;
+  background: var(--bg-panel);
+  border-bottom: 1px solid var(--border-subtle);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  z-index: 100;
+  flex-shrink: 0;
+}
+
+.top-bar-title {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.top-bar-title .icon {
+  font-size: 18px;
+  opacity: 0.85;
+}
+
+.top-bar-stats {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.stat-badge {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-badge .count {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* --- Main Content Area --- */
+.main-content {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ========================================
+   STATE 1: EXPLORER VIEW (Radial Navigator)
+   ======================================== */
+.explorer-view {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s var(--ease-dramatic), transform 0.5s var(--ease-dramatic);
+  z-index: 10;
+}
+
+.explorer-view.hidden {
+  opacity: 0;
+  transform: scale(0.85);
+  pointer-events: none;
+}
+
+/* Search Bar (above the radial) */
+.explorer-search-wrap {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(480px, 90vw);
+  z-index: 20;
+}
+
+.explorer-search {
+  width: 100%;
+  height: 44px;
+  padding: 0 44px 0 42px;
+  background: var(--bg-glass);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  color: var(--text-primary);
+  font-size: 14px;
+  font-family: var(--font-body);
+  outline: none;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+.explorer-search::placeholder { color: var(--text-muted); }
+.explorer-search:focus {
+  border-color: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 0 0 3px rgba(120, 140, 255, 0.12);
+}
+
+.search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.search-clear {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-radius: 50%;
+  font-size: 16px;
+  transition: color 0.2s, background 0.2s;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.search-clear.visible { opacity: 1; pointer-events: auto; }
+.search-clear:hover { color: var(--text-primary); background: var(--bg-surface); }
+
+/* --- Radial Navigator Container --- */
+.radial-container {
+  position: relative;
+  width: min(680px, 80vh, 80vw);
+  height: min(680px, 80vh, 80vw);
+}
+
+.radial-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Concentric guide rings */
+.guide-ring {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.03);
+  stroke-width: 1;
+}
+
+/* Category arc segments */
+.cat-arc {
+  fill: none;
+  stroke-width: 32;
+  opacity: 0.08;
+  transition: opacity 0.35s var(--ease-smooth), stroke-width 0.35s var(--ease-smooth);
+  cursor: pointer;
+}
+
+.cat-arc:hover, .cat-arc.active {
+  opacity: 0.18;
+  stroke-width: 38;
+}
+
+.cat-arc.dimmed { opacity: 0.02; }
+
+/* Category label arcs */
+.cat-label {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  fill: var(--text-muted);
+  transition: fill 0.3s;
+  pointer-events: none;
+}
+
+.cat-arc:hover + .cat-label-g .cat-label,
+.cat-arc.active + .cat-label-g .cat-label {
+  fill: var(--text-secondary);
+}
+
+/* World nodes */
+.world-node {
+  cursor: pointer;
+  transition: transform 0.35s var(--ease-bounce), opacity 0.35s;
+}
+
+.world-node.dimmed { opacity: 0.12; }
+.world-node.recommended { animation: pulseGlow 2s ease-in-out infinite; }
+
+.world-node-bg {
+  fill: var(--bg-deep);
+  stroke-width: 1.5;
+  transition: r 0.25s var(--ease-bounce), stroke-width 0.25s, filter 0.25s;
+}
+
+.world-node:hover .world-node-bg {
+  r: 20;
+  stroke-width: 2.5;
+  filter: drop-shadow(0 0 8px var(--node-color));
+}
+
+.world-node-icon {
+  font-size: 12px;
+  text-anchor: middle;
+  dominant-baseline: central;
+  pointer-events: none;
+  transition: font-size 0.25s var(--ease-bounce);
+}
+
+.world-node:hover .world-node-icon { font-size: 14px; }
+
+.world-node-label {
+  font-family: var(--font-body);
+  font-size: 9.5px;
+  font-weight: 500;
+  fill: var(--text-secondary);
+  text-anchor: middle;
+  opacity: 0;
+  transition: opacity 0.25s;
+  pointer-events: none;
+}
+
+.world-node:hover .world-node-label { opacity: 1; }
+.cat-arc:hover ~ .world-nodes-g .world-node .world-node-label { opacity: 0.7; }
+
+/* Selection count badge on world node */
+.world-node-badge {
+  font-size: 8px;
+  font-weight: 700;
+  font-family: var(--font-body);
+  fill: var(--bg-deep);
+  text-anchor: middle;
+  dominant-baseline: central;
+  pointer-events: none;
+}
+
+.world-node-badge-bg {
+  fill: var(--node-color);
+  transition: r 0.25s;
+}
+
+/* Center hub */
+.center-hub {
+  cursor: default;
+}
+
+.center-hub-bg {
+  fill: rgba(16, 16, 40, 0.9);
+  stroke: rgba(255, 255, 255, 0.06);
+  stroke-width: 1;
+}
+
+.center-hub-label {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 600;
+  fill: var(--text-secondary);
+  text-anchor: middle;
+}
+
+.center-hub-count {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  fill: var(--text-primary);
+  text-anchor: middle;
+}
+
+.center-hub-sublabel {
+  font-family: var(--font-body);
+  font-size: 10px;
+  fill: var(--text-muted);
+  text-anchor: middle;
+}
+
+/* Staggered entrance animation */
+@keyframes nodeEnter {
+  0% { opacity: 0; transform: scale(0.3); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes arcEnter {
+  0% { stroke-dashoffset: 1000; opacity: 0; }
+  100% { stroke-dashoffset: 0; opacity: 0.08; }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { filter: drop-shadow(0 0 4px var(--node-color)); }
+  50% { filter: drop-shadow(0 0 14px var(--node-color)); }
+}
+
+@keyframes hubEnter {
+  0% { opacity: 0; transform: scale(0); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* --- Action Bar (below radial) --- */
+.explorer-actions {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 20;
+}
+
+.btn-action {
+  height: 40px;
+  padding: 0 20px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  background: var(--bg-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.25s var(--ease-smooth);
+  white-space: nowrap;
+}
+
+.btn-action:hover:not(:disabled) {
+  background: rgba(30, 30, 65, 0.85);
+  border-color: var(--border-active);
+}
+
+.btn-action:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.btn-action.primary {
+  background: linear-gradient(135deg, rgba(74, 124, 255, 0.25), rgba(167, 139, 250, 0.25));
+  border-color: rgba(120, 140, 255, 0.3);
+}
+
+.btn-action.primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, rgba(74, 124, 255, 0.4), rgba(167, 139, 250, 0.4));
+  border-color: rgba(120, 140, 255, 0.5);
+  box-shadow: 0 0 20px rgba(100, 120, 255, 0.15);
+}
+
+.btn-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  border-top-color: var(--text-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  display: none;
+}
+
+.btn-spinner.visible { display: block; }
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* --- Node Tooltip --- */
+.node-tooltip {
+  position: fixed;
+  padding: 12px 16px;
+  background: rgba(14, 14, 36, 0.95);
+  border: 1px solid var(--border-active);
+  border-radius: var(--radius-md);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  pointer-events: none;
+  z-index: 200;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.2s, transform 0.2s;
+  max-width: 260px;
+}
+
+.node-tooltip.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.node-tooltip-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.node-tooltip-icon { font-size: 20px; }
+.node-tooltip-name {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.node-tooltip-group {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.node-tooltip-desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+.node-tooltip-sel {
+  margin-top: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--accent-blue);
+}
+
+/* ========================================
+   STATE 2: READER VIEW
+   ======================================== */
+.reader-view {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+  transition: opacity 0.5s var(--ease-dramatic), transform 0.5s var(--ease-dramatic);
+  z-index: 10;
+}
+
+.reader-view.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* Mini Radial (top-left persistent nav) */
+.mini-radial {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--bg-glass);
+  border: 1px solid var(--border-subtle);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  cursor: pointer;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s var(--ease-smooth);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.mini-radial:hover {
+  transform: scale(1.08);
+  border-color: var(--border-active);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+}
+
+.mini-radial svg {
+  width: 40px;
+  height: 40px;
+}
+
+.mini-radial-tooltip {
+  position: absolute;
+  left: 68px;
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  padding: 6px 12px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  color: var(--text-secondary);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.mini-radial:hover .mini-radial-tooltip { opacity: 1; }
+
+/* Text Size Widget (top-right) */
+.text-size-widget {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px;
+  background: var(--bg-glass);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  z-index: 30;
+}
+
+.text-size-btn {
+  width: 30px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--font-body);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: color 0.2s, background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.text-size-btn:hover { color: var(--text-primary); background: var(--bg-surface); }
+.text-size-btn.active { color: var(--text-primary); background: var(--bg-surface); }
+
+/* Reader Main */
+.reader-main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 80px 24px 40px;
+  scroll-behavior: smooth;
+}
+
+.reader-main::-webkit-scrollbar { width: 6px; }
+.reader-main::-webkit-scrollbar-track { background: transparent; }
+.reader-main::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 3px;
+}
+.reader-main::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.14); }
+
+.reader-content {
+  max-width: 720px;
+  width: 100%;
+  padding-bottom: 100px;
+}
+
+/* Breadcrumb */
+.reader-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.reader-breadcrumb a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.reader-breadcrumb a:hover { color: var(--text-primary); }
+.breadcrumb-sep { opacity: 0.4; }
+
+/* Featured Terms */
+.featured-terms {
+  margin-bottom: 32px;
+  padding: 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.featured-terms-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.featured-terms-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.featured-term {
+  padding: 6px 14px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.25s var(--ease-smooth);
+  background: transparent;
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.featured-term:hover {
+  border-color: var(--border-active);
+  color: var(--text-primary);
+  background: var(--bg-surface);
+}
+
+.featured-term.selected {
+  border-color: var(--cat-color, var(--accent-blue));
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.04), inset 0 0 20px rgba(255, 255, 255, 0.02);
+}
+
+/* Article Content Styling */
+.article-body {
+  font-size: var(--reader-font-size);
+  line-height: 1.65;
+  color: var(--text-primary);
+}
+
+.article-body h1 {
+  font-family: var(--font-display);
+  font-size: 1.9em;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 28px;
+  letter-spacing: -0.3px;
+}
+
+.article-body h2 {
+  font-family: var(--font-display);
+  font-size: 1.35em;
+  font-weight: 600;
+  line-height: 1.3;
+  margin: 36px 0 8px;
+  padding: 12px 0 12px 16px;
+  border-left: 3px solid var(--cat-color, var(--text-muted));
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.2s, border-color 0.2s;
+  position: relative;
+}
+
+.article-body h2::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%) rotate(0deg);
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid var(--text-muted);
+  transition: transform 0.3s var(--ease-smooth);
+}
+
+.article-body h2.collapsed::after {
+  transform: translateY(-50%) rotate(-90deg);
+}
+
+.article-body h2:hover { color: var(--text-primary); }
+
+.article-body h3 {
+  font-family: var(--font-display);
+  font-size: 1.1em;
+  font-weight: 600;
+  margin: 24px 0 8px;
+  color: var(--text-primary);
+}
+
+.article-body p {
+  margin-bottom: 16px;
+  color: rgba(232, 232, 242, 0.88);
+}
+
+.article-body ul, .article-body ol {
+  margin: 12px 0 16px 24px;
+  color: rgba(232, 232, 242, 0.85);
+}
+
+.article-body li { margin-bottom: 6px; }
+
+.article-body blockquote {
+  margin: 16px 0;
+  padding: 12px 20px;
+  border-left: 3px solid var(--text-dim);
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+/* Collapsible sections */
+.collapsible-section {
+  overflow: hidden;
+  max-height: 5000px;
+  transition: max-height 0.5s var(--ease-smooth), opacity 0.3s;
+  opacity: 1;
+}
+
+.collapsible-section.collapsed {
+  max-height: 0;
+  opacity: 0;
+}
+
+/* Interactive Terms in article */
+.article-body .interactive-term {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 1px 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.25s var(--ease-smooth);
+  border-bottom: 1.5px solid rgba(255, 255, 255, 0.12);
+  position: relative;
+  display: inline;
+}
+
+.article-body .interactive-term:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-bottom-color: rgba(255, 255, 255, 0.25);
+}
+
+.article-body .interactive-term.selected {
+  background: rgba(255, 255, 255, 0.1);
+  border-bottom-color: var(--cat-color, var(--accent-blue));
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.05);
+}
+
+/* Starburst micro-effect */
+@keyframes starburst {
+  0% { transform: scale(0); opacity: 0.8; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
+.term-burst {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border-radius: 50%;
+  border: 2px solid var(--cat-color, var(--accent-blue));
+  animation: starburst 0.5s ease-out forwards;
+  pointer-events: none;
+}
+
+/* Float counter */
+.term-counter-float {
+  position: fixed;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent-green);
+  pointer-events: none;
+  z-index: 999;
+  animation: floatUp 0.7s ease-out forwards;
+}
+
+@keyframes floatUp {
+  0% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-30px); }
+}
+
+/* Custom text selections (marked passages) */
+.custom-selection {
+  background: rgba(255, 255, 255, 0.04);
+  border-left: 3px solid var(--cat-color, var(--accent-blue));
+  padding-left: 4px;
+  border-radius: 2px;
+  transition: background 0.2s;
+}
+
+.custom-selection:hover { background: rgba(255, 255, 255, 0.07); }
+
+.note-indicator {
+  display: inline-block;
+  color: var(--cat-color, var(--accent-blue));
+  font-weight: 700;
+  font-size: 0.8em;
+  vertical-align: super;
+  margin-left: 2px;
+  cursor: help;
+}
+
+/* Mark Popup */
+.mark-popup {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border-active);
+  border-radius: var(--radius-md);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 300;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(4px);
+  transition: opacity 0.15s, transform 0.15s;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.mark-popup.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.mark-popup button {
+  padding: 5px 12px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-family: var(--font-body);
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.mark-popup button:hover { background: rgba(255, 255, 255, 0.1); color: var(--text-primary); }
+
+/* ========================================
+   CREATIVE CONSTELLATION (floating widget)
+   ======================================== */
+.constellation-widget {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  width: 200px;
+  height: 200px;
+  background: var(--bg-glass);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  z-index: 30;
+  cursor: pointer;
+  transition: all 0.3s var(--ease-smooth);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+.constellation-widget:hover {
+  border-color: var(--border-active);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.45);
+}
+
+.constellation-widget-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 8px 12px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  background: rgba(8, 8, 26, 0.5);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.constellation-widget-header .count-badge {
+  background: var(--bg-surface);
+  padding: 2px 7px;
+  border-radius: var(--radius-full);
+  font-variant-numeric: tabular-nums;
+}
+
+.constellation-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+/* Constellation expanded overlay */
+.constellation-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 8, 26, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.constellation-overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.constellation-expanded {
+  width: min(800px, 90vw);
+  max-height: 85vh;
+  background: var(--bg-panel);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.constellation-expanded-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.constellation-expanded-title {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.constellation-close-btn {
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.constellation-close-btn:hover {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+}
+
+.constellation-expanded-body {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+.constellation-expanded-canvas {
+  width: 50%;
+  min-height: 350px;
+  border-right: 1px solid var(--border-subtle);
+}
+
+.constellation-expanded-list {
+  width: 50%;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.constellation-expanded-list::-webkit-scrollbar { width: 5px; }
+.constellation-expanded-list::-webkit-scrollbar-track { background: transparent; }
+.constellation-expanded-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.06); border-radius: 3px; }
+
+.constellation-world-group {
+  margin-bottom: 20px;
+}
+
+.constellation-world-name {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.constellation-world-name .icon { font-size: 16px; }
+
+.constellation-term-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  margin: 0 6px 6px 0;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.constellation-term-remove {
+  width: 16px;
+  height: 16px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.15s;
+}
+
+.constellation-term-remove:hover {
+  background: rgba(244, 63, 94, 0.2);
+  color: var(--accent-rose);
+}
+
+.constellation-passage-chip {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.constellation-passage-chip .text { flex: 1; }
+.constellation-passage-chip .note-tag {
+  font-size: 11px;
+  color: var(--cat-color, var(--accent-blue));
+  font-style: italic;
+  margin-top: 4px;
+}
+
+/* World Recommendations */
+.recommendations-panel {
+  position: absolute;
+  bottom: 76px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  background: var(--bg-glass);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  z-index: 20;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%) translateY(8px);
+  transition: opacity 0.35s, transform 0.35s var(--ease-dramatic);
+}
+
+.recommendations-panel.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+.recommendations-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.recommendation-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  background: var(--bg-surface);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.recommendation-chip:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-primary);
+  border-color: var(--border-active);
+}
+
+.recommendation-chip .icon { font-size: 14px; }
+
+/* ========================================
+   NOTE OVERLAY
+   ======================================== */
+.note-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 8, 26, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+.note-overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.note-modal {
+  width: min(400px, 90vw);
+  padding: 24px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+}
+
+.note-modal h3 {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.note-field {
+  width: 100%;
+  height: 80px;
+  padding: 10px 14px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 14px;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.note-field:focus { border-color: var(--border-active); }
+
+.note-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.note-actions button {
+  padding: 8px 16px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.note-actions button:hover { background: rgba(255, 255, 255, 0.08); color: var(--text-primary); }
+
+.note-actions button.primary-btn {
+  background: rgba(74, 124, 255, 0.2);
+  border-color: rgba(74, 124, 255, 0.3);
+  color: var(--text-primary);
+}
+
+/* ========================================
+   PROMPT RESULT OVERLAY
+   ======================================== */
+.prompt-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 8, 26, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s;
+}
+
+.prompt-overlay.visible { opacity: 1; pointer-events: auto; }
+
+.prompt-modal {
+  width: min(560px, 90vw);
+  max-height: 80vh;
+  background: var(--bg-panel);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.prompt-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.prompt-modal-title {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.prompt-result-body {
+  flex: 1;
+  padding: 24px;
+  overflow-y: auto;
+}
+
+.prompt-result-text {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text-primary);
+  white-space: pre-wrap;
+  font-family: var(--font-body);
+}
+
+.prompt-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 16px 24px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+/* ========================================
+   TOAST SYSTEM
+   ======================================== */
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 8px;
+}
+
+.toast {
+  padding: 12px 16px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  color: var(--text-primary);
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  transform: translateX(120%);
+  transition: transform 0.3s var(--ease-dramatic), opacity 0.3s;
+  max-width: 360px;
+}
+
+.toast.show { transform: translateX(0); }
+.toast.hiding { transform: translateX(120%); opacity: 0; }
+
+.toast.error { border-left: 3px solid var(--accent-rose); }
+.toast.warning { border-left: 3px solid #f59e0b; }
+.toast.info { border-left: 3px solid var(--accent-blue); }
+.toast.success { border-left: 3px solid var(--accent-green); }
+
+.toast-close {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 18px;
+  padding: 0 0 0 8px;
+  line-height: 1;
+  transition: color 0.15s;
+  flex-shrink: 0;
+}
+
+.toast-close:hover { color: var(--text-primary); }
+
+/* ========================================
+   RESPONSIVE TWEAKS
+   ======================================== */
+@media (max-width: 700px) {
+  .radial-container {
+    width: 92vw;
+    height: 92vw;
+  }
+  .constellation-widget {
+    width: 140px;
+    height: 140px;
+    bottom: 10px;
+    right: 10px;
+  }
+  .reader-main { padding: 70px 16px 30px; }
+  .constellation-expanded-body { flex-direction: column; }
+  .constellation-expanded-canvas { width: 100%; min-height: 200px; border-right: none; border-bottom: 1px solid var(--border-subtle); }
+  .constellation-expanded-list { width: 100%; }
+}
+</style>
+</head>
+<body>
+<div class="app-shell">
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="top-bar-title">
+      <span class="icon">&#127917;</span>
+      <span>Kreativ-Kompass</span>
+    </div>
+    <div class="top-bar-stats">
+      <div class="stat-badge">
+        <span>Begriffe</span>
+        <span class="count" id="term-count">0</span>
+      </div>
+      <div class="stat-badge">
+        <span>Passagen</span>
+        <span class="count" id="passage-count">0</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- === EXPLORER VIEW === -->
+    <div class="explorer-view" id="explorer-view">
+      <!-- Search -->
+      <div class="explorer-search-wrap">
+        <span class="search-icon">&#128269;</span>
+        <input type="text" class="explorer-search" id="explorer-search" placeholder="Welten durchsuchen..." autocomplete="off" />
+        <button class="search-clear" id="search-clear" aria-label="Suche leeren">&times;</button>
+      </div>
+
+      <!-- Radial Navigator -->
+      <div class="radial-container" id="radial-container">
+        <svg class="radial-svg" id="radial-svg" viewBox="0 0 700 700"></svg>
+      </div>
+
+      <!-- Recommendations -->
+      <div class="recommendations-panel" id="recommendations-panel">
+        <span class="recommendations-label">Verwandte Welten</span>
+        <div id="recommendations-chips"></div>
+      </div>
+
+      <!-- Actions -->
+      <div class="explorer-actions">
+        <button class="btn-action" id="btn-reset" title="Auswahl zuruecksetzen">
+          <span>&#8635;</span>
+          <span>Zuruecksetzen</span>
+        </button>
+        <button class="btn-action primary" id="btn-generate" disabled>
+          <div class="btn-spinner" id="generate-spinner"></div>
+          <span id="generate-label">Prompt erstellen</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- === READER VIEW === -->
+    <div class="reader-view" id="reader-view">
+      <!-- Mini Radial Nav -->
+      <div class="mini-radial" id="mini-radial" title="Zurueck zum Kompass">
+        <svg id="mini-radial-svg" viewBox="0 0 40 40"></svg>
+        <div class="mini-radial-tooltip">Zurueck zum Kompass</div>
+      </div>
+
+      <!-- Text Size -->
+      <div class="text-size-widget">
+        <button class="text-size-btn" data-size="small" title="Kleiner">A-</button>
+        <button class="text-size-btn active" data-size="medium" title="Normal">A</button>
+        <button class="text-size-btn" data-size="large" title="Groesser">A+</button>
+      </div>
+
+      <!-- Reader Main -->
+      <div class="reader-main" id="reader-main">
+        <div class="reader-content" id="reader-content">
+          <div class="reader-breadcrumb" id="reader-breadcrumb"></div>
+          <div class="featured-terms" id="featured-terms"></div>
+          <div class="article-body" id="article-body"></div>
+        </div>
+      </div>
+
+      <!-- Constellation Widget -->
+      <div class="constellation-widget" id="constellation-widget">
+        <div class="constellation-widget-header">
+          <span>Konstellation</span>
+          <span class="count-badge" id="constellation-count">0</span>
+        </div>
+        <canvas class="constellation-canvas" id="constellation-canvas"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Mark Popup -->
+<div class="mark-popup" id="mark-popup">
+  <button id="mark-btn">Markieren</button>
+  <button id="note-btn">+ Notiz</button>
+  <button id="cancel-mark-btn" style="opacity:0.5">&times;</button>
+</div>
+
+<!-- Note Overlay -->
+<div class="note-overlay" id="note-overlay">
+  <div class="note-modal">
+    <h3>Notiz hinzufuegen</h3>
+    <textarea class="note-field" id="note-field" placeholder="Deine Notiz zu dieser Passage..."></textarea>
+    <div class="note-actions">
+      <button id="note-cancel-btn">Abbrechen</button>
+      <button id="note-save-btn" class="primary-btn">Speichern</button>
+    </div>
+  </div>
+</div>
+
+<!-- Prompt Result Overlay -->
+<div class="prompt-overlay" id="prompt-overlay">
+  <div class="prompt-modal">
+    <div class="prompt-modal-header">
+      <div class="prompt-modal-title">Dein Suno-Prompt</div>
+      <button class="constellation-close-btn" id="prompt-close-btn">&times;</button>
+    </div>
+    <div class="prompt-result-body">
+      <div class="prompt-result-text" id="prompt-result-text"></div>
+    </div>
+    <div class="prompt-modal-footer">
+      <button class="btn-action" id="prompt-copy-btn">Kopieren</button>
+      <button class="btn-action" id="prompt-close-btn-2">Schliessen</button>
+    </div>
+  </div>
+</div>
+
+<!-- Constellation Expanded Overlay -->
+<div class="constellation-overlay" id="constellation-overlay">
+  <div class="constellation-expanded">
+    <div class="constellation-expanded-header">
+      <div class="constellation-expanded-title">Kreative Konstellation</div>
+      <button class="constellation-close-btn" id="constellation-close-btn">&times;</button>
+    </div>
+    <div class="constellation-expanded-body">
+      <canvas class="constellation-expanded-canvas" id="constellation-expanded-canvas"></canvas>
+      <div class="constellation-expanded-list" id="constellation-expanded-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toast-container"></div>
+
+<script>
+/* =====================================================
+   RADIAL EXPLORER — Full Application Logic
+   ===================================================== */
+
+// ---- CONSTANTS ----
+const CREATIVE_SYSTEM_PROMPT = `Du bist ein hoch-kreativer Musik-Architekt. Deine Aufgabe ist es, basierend auf den vom User in einem interaktiven Artikel ausgewählten Begriffen einen kohärenten, detaillierten Suno-Prompt zu erstellen.
+WICHTIG:
+- Integriere die ausgewählten Begriffe (Keywords) sinnvoll in den Prompt.
+- Das Ergebnis soll ein reiner Prompt-String sein, formatiert im [Style], [Instrumentation], [Mood] Format.
+- Füge keine Erklärungen hinzu, nur den Prompt.`;
+
+const API_URL = 'https://openrouter.ai/api/v1/chat/completions';
+
+const GROUP_META = {
+  orchestra_group:       { label: 'Orchester',        color: '#e5a84b', emoji: '\uD83C\uDFBB', angle: 270 },
+  ambient_group:         { label: 'Ambient',           color: '#6ba3d6', emoji: '\uD83C\uDF0C', angle: 330 },
+  urban_club_group:      { label: 'Club / Electronic', color: '#2dd4bf', emoji: '\uD83C\uDFA7', angle: 30  },
+  hip_hop_group:         { label: 'Hip Hop',           color: '#a78bfa', emoji: '\uD83C\uDFA4', angle: 90  },
+  world_orchestra_group: { label: 'Welt-Orchester',    color: '#4ade80', emoji: '\uD83C\uDF0F', angle: 150 },
+  sound_feeling_group:   { label: 'Sound & Feeling',   color: '#f472b6', emoji: '\uD83D\uDD0A', angle: 210 }
+};
+
+// Groups ordered clockwise from top (270 degrees = 12 o'clock)
+const GROUP_ORDER = [
+  'orchestra_group',
+  'ambient_group',
+  'urban_club_group',
+  'hip_hop_group',
+  'world_orchestra_group',
+  'sound_feeling_group'
+];
+
+// Related groups for recommendations
+const GROUP_RELATIONS = {
+  orchestra_group:       ['world_orchestra_group', 'ambient_group', 'sound_feeling_group'],
+  ambient_group:         ['sound_feeling_group', 'orchestra_group', 'urban_club_group'],
+  urban_club_group:      ['hip_hop_group', 'ambient_group', 'sound_feeling_group'],
+  hip_hop_group:         ['urban_club_group', 'sound_feeling_group', 'world_orchestra_group'],
+  world_orchestra_group: ['orchestra_group', 'sound_feeling_group', 'hip_hop_group'],
+  sound_feeling_group:   ['ambient_group', 'orchestra_group', 'urban_club_group']
+};
+
+const TEXT_SIZES = { small: 14, medium: 17, large: 20 };
+
+
+// ---- STATE ----
+let allWorlds = [];
+let worldDataCache = {};
+let allWorldTermsCache = {};
+let activeWorldId = null;
+let activeView = 'explorer'; // 'explorer' | 'reader'
+let selections = {};        // { worldId: { term: true, ... } }
+let customSelections = {};   // { worldId: [{ text, note?, id }, ...] }
+let pendingRange = null;
+let searchTimeout = null;
+let currentTextSize = 'medium';
+
+// Constellation force simulation state
+let constellationNodes = [];
+let constellationLinks = [];
+let constellationAnimFrame = null;
+
+
+// ---- DOM REFS ----
+const $explorerView = document.getElementById('explorer-view');
+const $readerView = document.getElementById('reader-view');
+const $radialSvg = document.getElementById('radial-svg');
+const $miniRadial = document.getElementById('mini-radial');
+const $miniRadialSvg = document.getElementById('mini-radial-svg');
+const $search = document.getElementById('explorer-search');
+const $searchClear = document.getElementById('search-clear');
+const $readerMain = document.getElementById('reader-main');
+const $readerContent = document.getElementById('reader-content');
+const $breadcrumb = document.getElementById('reader-breadcrumb');
+const $featuredTerms = document.getElementById('featured-terms');
+const $articleBody = document.getElementById('article-body');
+const $termCount = document.getElementById('term-count');
+const $passageCount = document.getElementById('passage-count');
+const $btnReset = document.getElementById('btn-reset');
+const $btnGenerate = document.getElementById('btn-generate');
+const $generateLabel = document.getElementById('generate-label');
+const $generateSpinner = document.getElementById('generate-spinner');
+const $markPopup = document.getElementById('mark-popup');
+const $constellationCanvas = document.getElementById('constellation-canvas');
+const $constellationWidget = document.getElementById('constellation-widget');
+const $constellationCount = document.getElementById('constellation-count');
+const $recommendationsPanel = document.getElementById('recommendations-panel');
+const $recommendationsChips = document.getElementById('recommendations-chips');
+const $nodeTooltip = document.createElement('div');
+
+
+// ---- INITIALIZATION ----
+async function init() {
+  // Create tooltip element
+  $nodeTooltip.className = 'node-tooltip';
+  $nodeTooltip.innerHTML = `
+    <div class="node-tooltip-header">
+      <span class="node-tooltip-icon" id="tooltip-icon"></span>
+      <span class="node-tooltip-name" id="tooltip-name"></span>
+    </div>
+    <div class="node-tooltip-group" id="tooltip-group"></div>
+    <div class="node-tooltip-desc" id="tooltip-desc"></div>
+    <div class="node-tooltip-sel" id="tooltip-sel"></div>
+  `;
+  document.body.appendChild($nodeTooltip);
+
+  try {
+    const resp = await fetch('../data/worlds/index.json');
+    if (!resp.ok) throw new Error('Konnte Welt-Index nicht laden.');
+    const data = await resp.json();
+    allWorlds = data.worlds || [];
+    renderRadialNavigator();
+    renderMiniRadial();
+    bindEvents();
+    initConstellationCanvas();
+    showToast('45 Welten geladen. Erkunde das musikalische Universum!', 'info', 3000);
+  } catch (err) {
+    console.error('Init error:', err);
+    showToast('Fehler beim Laden der Welten: ' + err.message, 'error');
+  }
+}
+
+
+// ---- TOAST ----
+function showToast(message, type = 'info', duration = 4000) {
+  const container = document.getElementById('toast-container');
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.innerHTML = `<span>${escapeHtml(message)}</span><button class="toast-close" aria-label="Schliessen">&times;</button>`;
+  container.appendChild(toast);
+  requestAnimationFrame(() => toast.classList.add('show'));
+  const dismiss = () => {
+    toast.classList.remove('show');
+    toast.classList.add('hiding');
+    setTimeout(() => toast.remove(), 300);
+  };
+  toast.querySelector('.toast-close').addEventListener('click', dismiss);
+  if (duration > 0) setTimeout(dismiss, duration);
+}
+
+function escapeHtml(str) {
+  const d = document.createElement('div');
+  d.textContent = String(str);
+  return d.innerHTML;
+}
+
+
+// ---- SVG HELPERS ----
+function svgEl(tag, attrs = {}) {
+  const el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (k === 'href' && tag === 'textPath') {
+      el.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', v);
+      el.setAttribute('href', v);
+    } else {
+      el.setAttribute(k, v);
+    }
+  }
+  return el;
+}
+
+function describeArc(cx, cy, r, startAngle, endAngle) {
+  const startRad = (startAngle - 90) * Math.PI / 180;
+  const endRad = (endAngle - 90) * Math.PI / 180;
+  const x1 = cx + r * Math.cos(startRad);
+  const y1 = cy + r * Math.sin(startRad);
+  const x2 = cx + r * Math.cos(endRad);
+  const y2 = cy + r * Math.sin(endRad);
+  const largeArc = (endAngle - startAngle) > 180 ? 1 : 0;
+  return `M ${x1} ${y1} A ${r} ${r} 0 ${largeArc} 1 ${x2} ${y2}`;
+}
+
+function polarToCartesian(cx, cy, r, angleDeg) {
+  const rad = (angleDeg - 90) * Math.PI / 180;
+  return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
+}
+
+
+// ---- RADIAL NAVIGATOR RENDERING ----
+function renderRadialNavigator() {
+  const svg = $radialSvg;
+  svg.innerHTML = '';
+
+  const cx = 350, cy = 350;
+  const innerR = 100;
+  const outerR = 290;
+  const arcR = 250; // where the category arc band sits
+  const segmentGap = 2; // degrees gap between segments
+  const segAngle = 360 / GROUP_ORDER.length; // 60 degrees each
+
+  // Defs for glow filters
+  const defs = svgEl('defs');
+  GROUP_ORDER.forEach(gid => {
+    const filter = svgEl('filter', { id: `glow-${gid}`, x: '-50%', y: '-50%', width: '200%', height: '200%' });
+    const blur = svgEl('feGaussianBlur', { stdDeviation: '3', result: 'coloredBlur' });
+    const merge = svgEl('feMerge');
+    merge.appendChild(svgEl('feMergeNode', { in: 'coloredBlur' }));
+    merge.appendChild(svgEl('feMergeNode', { in: 'SourceGraphic' }));
+    filter.appendChild(blur);
+    filter.appendChild(merge);
+    defs.appendChild(filter);
+  });
+  svg.appendChild(defs);
+
+  // Concentric guide rings (orrery style)
+  for (let r = 140; r <= 280; r += 35) {
+    svg.appendChild(svgEl('circle', {
+      cx, cy, r,
+      class: 'guide-ring',
+      'stroke-dasharray': r < 200 ? 'none' : '2 4'
+    }));
+  }
+
+  // Group worlds by group
+  const worldsByGroup = {};
+  GROUP_ORDER.forEach(g => worldsByGroup[g] = []);
+  allWorlds.forEach(w => {
+    if (worldsByGroup[w.group]) worldsByGroup[w.group].push(w);
+  });
+
+  // Render each category segment
+  GROUP_ORDER.forEach((gid, segIdx) => {
+    const meta = GROUP_META[gid];
+    const worlds = worldsByGroup[gid];
+    const startAngle = segIdx * segAngle + segmentGap / 2;
+    const endAngle = (segIdx + 1) * segAngle - segmentGap / 2;
+    const midAngle = (startAngle + endAngle) / 2;
+
+    // Category arc band
+    const arcPath = describeArc(cx, cy, arcR, startAngle, endAngle);
+    const arc = svgEl('path', {
+      d: arcPath,
+      class: 'cat-arc',
+      stroke: meta.color,
+      'data-group': gid,
+      'stroke-dasharray': '1000',
+      'stroke-dashoffset': '1000',
+      style: `animation: arcEnter 0.8s ${segIdx * 0.1}s var(--ease-dramatic) forwards;`
+    });
+    svg.appendChild(arc);
+
+    // Category label along a wider arc
+    const labelR = outerR + 20;
+    const labelStart = startAngle + 8;
+    const labelEnd = endAngle - 8;
+    const labelArcId = `label-arc-${gid}`;
+    const labelPath = describeArc(cx, cy, labelR, labelStart, labelEnd);
+
+    const labelPathEl = svgEl('path', { d: labelPath, id: labelArcId, fill: 'none', stroke: 'none' });
+    defs.appendChild(labelPathEl);
+
+    const labelG = svgEl('g', { class: 'cat-label-g' });
+    const text = svgEl('text', { class: 'cat-label' });
+    const tp = svgEl('textPath', { href: `#${labelArcId}`, startOffset: '50%', 'text-anchor': 'middle' });
+    tp.textContent = `${meta.emoji} ${meta.label.toUpperCase()}`;
+    text.appendChild(tp);
+    text.style.fill = meta.color;
+    text.style.opacity = '0.5';
+    labelG.appendChild(text);
+    svg.appendChild(labelG);
+
+    // World nodes
+    const nodeGroup = svgEl('g', { class: 'world-nodes-g', 'data-group': gid });
+
+    // Distribute worlds along the segment arc at varying radii
+    const numWorlds = worlds.length;
+    if (numWorlds === 0) { svg.appendChild(nodeGroup); return; }
+
+    // Calculate rings: inner for first ~half, outer for second half
+    const anglePad = 4;
+    const availableAngle = endAngle - startAngle - anglePad * 2;
+
+    worlds.forEach((world, wIdx) => {
+      // Alternate between inner and outer rings
+      const isOuter = wIdx >= Math.ceil(numWorlds / 2);
+      const ringR = isOuter ? 220 : 170;
+      const ringWorlds = isOuter ? worlds.slice(Math.ceil(numWorlds / 2)) : worlds.slice(0, Math.ceil(numWorlds / 2));
+      const ringIdx = isOuter ? wIdx - Math.ceil(numWorlds / 2) : wIdx;
+      const ringCount = ringWorlds.length;
+
+      let angle;
+      if (ringCount === 1) {
+        angle = midAngle;
+      } else {
+        const ringAngleRange = availableAngle * 0.85;
+        const ringStart = midAngle - ringAngleRange / 2;
+        angle = ringStart + (ringAngleRange / (ringCount - 1)) * ringIdx;
+      }
+
+      const pos = polarToCartesian(cx, cy, ringR, angle);
+      const nodeR = 16;
+
+      const nodeG = svgEl('g', {
+        class: 'world-node',
+        'data-id': world.id,
+        'data-group': gid,
+        transform: `translate(${pos.x}, ${pos.y})`,
+        style: `--node-color: ${meta.color}; animation: nodeEnter 0.5s ${(segIdx * 0.1 + wIdx * 0.03 + 0.2)}s var(--ease-bounce) both;`
+      });
+
+      // Node background circle
+      nodeG.appendChild(svgEl('circle', {
+        r: nodeR,
+        class: 'world-node-bg',
+        stroke: meta.color,
+        'stroke-opacity': '0.5',
+        style: `--node-color: ${meta.color};`
+      }));
+
+      // Icon
+      const iconText = svgEl('text', { class: 'world-node-icon', y: '1' });
+      iconText.textContent = world.icon;
+      nodeG.appendChild(iconText);
+
+      // Label below
+      const label = svgEl('text', {
+        class: 'world-node-label',
+        y: nodeR + 14,
+      });
+      label.textContent = world.name.length > 18 ? world.name.substring(0, 16) + '...' : world.name;
+      nodeG.appendChild(label);
+
+      // Selection count badge (hidden by default)
+      const badgeBg = svgEl('circle', {
+        class: 'world-node-badge-bg',
+        cx: nodeR - 2,
+        cy: -(nodeR - 2),
+        r: 0,
+        style: `--node-color: ${meta.color};`
+      });
+      nodeG.appendChild(badgeBg);
+
+      const badgeText = svgEl('text', {
+        class: 'world-node-badge',
+        x: nodeR - 2,
+        y: -(nodeR - 4),
+      });
+      badgeText.textContent = '';
+      nodeG.appendChild(badgeText);
+
+      // Store position data on element for tooltip
+      nodeG._worldData = world;
+      nodeG._pos = pos;
+      nodeG._groupMeta = meta;
+
+      nodeGroup.appendChild(nodeG);
+    });
+
+    svg.appendChild(nodeGroup);
+  });
+
+  // Center hub
+  const hubG = svgEl('g', { class: 'center-hub', style: 'animation: hubEnter 0.6s 0.5s var(--ease-bounce) both;' });
+  hubG.appendChild(svgEl('circle', { cx, cy, r: innerR - 10, class: 'center-hub-bg' }));
+
+  const hubLabel = svgEl('text', { x: cx, y: cy - 18, class: 'center-hub-label' });
+  hubLabel.textContent = 'KREATIVE';
+  hubG.appendChild(hubLabel);
+
+  const hubCount = svgEl('text', { x: cx, y: cy + 10, class: 'center-hub-count', id: 'hub-count' });
+  hubCount.textContent = '0';
+  hubG.appendChild(hubCount);
+
+  const hubSub = svgEl('text', { x: cx, y: cy + 30, class: 'center-hub-sublabel' });
+  hubSub.textContent = 'Auswahl';
+  hubG.appendChild(hubSub);
+
+  svg.appendChild(hubG);
+
+  // Bind node events
+  bindRadialEvents();
+}
+
+
+// ---- MINI RADIAL (persistent reader nav) ----
+function renderMiniRadial(activeGroup = null) {
+  const svg = $miniRadialSvg;
+  svg.innerHTML = '';
+  const cx = 20, cy = 20, r = 14;
+  const segAngle = 360 / GROUP_ORDER.length;
+
+  GROUP_ORDER.forEach((gid, i) => {
+    const meta = GROUP_META[gid];
+    const startAngle = i * segAngle + 1;
+    const endAngle = (i + 1) * segAngle - 1;
+    const arcPath = describeArc(cx, cy, r, startAngle, endAngle);
+    const isActive = gid === activeGroup;
+    svg.appendChild(svgEl('path', {
+      d: arcPath,
+      fill: 'none',
+      stroke: meta.color,
+      'stroke-width': isActive ? 4 : 2.5,
+      'stroke-linecap': 'round',
+      opacity: isActive ? 0.9 : 0.25
+    }));
+  });
+
+  // Center dot
+  svg.appendChild(svgEl('circle', { cx, cy, r: 3, fill: 'rgba(255,255,255,0.3)' }));
+}
+
+
+// ---- RADIAL EVENT BINDING ----
+function bindRadialEvents() {
+  // World node click -> open reader
+  $radialSvg.querySelectorAll('.world-node').forEach(node => {
+    node.addEventListener('click', () => {
+      const worldId = node.getAttribute('data-id');
+      openWorld(worldId);
+    });
+
+    // Hover tooltip
+    node.addEventListener('mouseenter', (e) => {
+      const world = node._worldData;
+      const meta = node._groupMeta;
+      document.getElementById('tooltip-icon').textContent = world.icon;
+      document.getElementById('tooltip-name').textContent = world.name;
+      document.getElementById('tooltip-group').textContent = meta.label;
+
+      // Description from cache or placeholder
+      const cached = worldDataCache[world.id];
+      if (cached) {
+        const tmp = document.createElement('div');
+        tmp.innerHTML = cached.content || '';
+        const p = tmp.querySelector('p');
+        document.getElementById('tooltip-desc').textContent = p ? p.textContent.substring(0, 100) + '...' : '';
+      } else {
+        document.getElementById('tooltip-desc').textContent = 'Klicke zum Erkunden...';
+      }
+
+      // Selection count
+      const termCount = selections[world.id] ? Object.keys(selections[world.id]).filter(t => selections[world.id][t]).length : 0;
+      const passCount = (customSelections[world.id] || []).length;
+      const total = termCount + passCount;
+      document.getElementById('tooltip-sel').textContent = total > 0 ? `${total} Auswahl` : '';
+      document.getElementById('tooltip-sel').style.display = total > 0 ? 'block' : 'none';
+
+      $nodeTooltip.classList.add('visible');
+      positionTooltip(e);
+    });
+
+    node.addEventListener('mousemove', positionTooltip);
+    node.addEventListener('mouseleave', () => {
+      $nodeTooltip.classList.remove('visible');
+    });
+  });
+
+  // Category arc hover
+  $radialSvg.querySelectorAll('.cat-arc').forEach(arc => {
+    arc.addEventListener('mouseenter', () => {
+      const gid = arc.getAttribute('data-group');
+      // Expand this segment's nodes' labels
+      $radialSvg.querySelectorAll(`.world-nodes-g[data-group="${gid}"] .world-node-label`).forEach(l => {
+        l.style.opacity = '0.85';
+      });
+    });
+    arc.addEventListener('mouseleave', () => {
+      const gid = arc.getAttribute('data-group');
+      $radialSvg.querySelectorAll(`.world-nodes-g[data-group="${gid}"] .world-node-label`).forEach(l => {
+        l.style.opacity = '';
+      });
+    });
+  });
+}
+
+function positionTooltip(e) {
+  const x = e.clientX + 16;
+  const y = e.clientY - 10;
+  const w = $nodeTooltip.offsetWidth;
+  const h = $nodeTooltip.offsetHeight;
+  $nodeTooltip.style.left = (x + w > window.innerWidth - 10 ? e.clientX - w - 10 : x) + 'px';
+  $nodeTooltip.style.top = (y + h > window.innerHeight - 10 ? e.clientY - h - 10 : y) + 'px';
+}
+
+
+// ---- VIEW TRANSITIONS ----
+function switchToReader() {
+  activeView = 'reader';
+  $explorerView.classList.add('hidden');
+  $readerView.classList.add('visible');
+}
+
+function switchToExplorer() {
+  activeView = 'explorer';
+  $readerView.classList.remove('visible');
+  setTimeout(() => $explorerView.classList.remove('hidden'), 50);
+  activeWorldId = null;
+  updateRadialBadges();
+  updateRecommendations();
+}
+
+
+// ---- OPEN WORLD (Reader) ----
+async function openWorld(worldId) {
+  activeWorldId = worldId;
+  const meta = allWorlds.find(w => w.id === worldId);
+  if (!meta) return;
+
+  const groupMeta = GROUP_META[meta.group] || {};
+
+  // Set category color CSS variable
+  $readerContent.style.setProperty('--cat-color', groupMeta.color || '#6ba3d6');
+
+  // Render breadcrumb
+  $breadcrumb.innerHTML = `
+    <a data-action="back-to-group" data-group="${meta.group}">${groupMeta.emoji || ''} ${escapeHtml(groupMeta.label || '')}</a>
+    <span class="breadcrumb-sep">/</span>
+    <span>${escapeHtml(meta.name)}</span>
+  `;
+
+  // Loading state
+  $articleBody.innerHTML = '<p style="color:var(--text-muted);padding:40px 0;">Welt wird geladen...</p>';
+  $featuredTerms.innerHTML = '';
+
+  // Update mini radial
+  renderMiniRadial(meta.group);
+
+  // Switch view
+  switchToReader();
+
+  try {
+    const worldData = await loadWorldData(worldId);
+    renderArticle(worldData);
+  } catch (err) {
+    $articleBody.innerHTML = `<p style="color:var(--accent-rose);padding:40px 0;">Fehler: ${escapeHtml(err.message)}</p>`;
+    showToast('Fehler beim Laden: ' + err.message, 'error');
+  }
+}
+
+
+// ---- DATA LOADING ----
+async function loadWorldData(worldId) {
+  if (worldDataCache[worldId]) return worldDataCache[worldId];
+  const resp = await fetch(`../data/worlds/${worldId}.json`);
+  if (!resp.ok) throw new Error(`Konnte ${worldId}.json nicht laden`);
+  const data = await resp.json();
+  worldDataCache[worldId] = data;
+
+  // Cache terms
+  if (!allWorldTermsCache[worldId]) {
+    const tmp = document.createElement('div');
+    tmp.innerHTML = data.content || '';
+    const termEls = tmp.querySelectorAll('.interactive-term');
+    allWorldTermsCache[worldId] = Array.from(termEls).map(el => el.getAttribute('data-term') || el.textContent.trim());
+  }
+
+  return data;
+}
+
+async function preloadAllTerms() {
+  for (const world of allWorlds) {
+    if (allWorldTermsCache[world.id]) continue;
+    try {
+      const resp = await fetch(`../data/worlds/${world.id}.json`);
+      if (resp.ok) {
+        const data = await resp.json();
+        worldDataCache[world.id] = data;
+        const tmp = document.createElement('div');
+        tmp.innerHTML = data.content || '';
+        const termEls = tmp.querySelectorAll('.interactive-term');
+        allWorldTermsCache[world.id] = Array.from(termEls).map(el => el.getAttribute('data-term') || el.textContent.trim());
+      }
+    } catch (_) {}
+  }
+}
+
+
+// ---- RENDER ARTICLE ----
+function renderArticle(worldData) {
+  const meta = allWorlds.find(w => w.id === worldData.id) || {};
+  const terms = allWorldTermsCache[worldData.id] || [];
+  const topTerms = terms.slice(0, 8);
+  const groupMeta = GROUP_META[meta.group] || {};
+
+  // Featured Terms
+  if (topTerms.length > 0) {
+    $featuredTerms.innerHTML = `
+      <div class="featured-terms-label">Wichtige Begriffe</div>
+      <div class="featured-terms-list" id="featured-terms-list">
+        ${topTerms.map(t => `<span class="featured-term ${isTermSelected(worldData.id, t) ? 'selected' : ''}" data-term="${escapeHtml(t)}" style="--cat-color:${groupMeta.color}">${escapeHtml(t)}</span>`).join('')}
+      </div>
+    `;
+
+    // Bind featured term clicks
+    $featuredTerms.querySelectorAll('.featured-term').forEach(el => {
+      el.addEventListener('click', () => {
+        const term = el.dataset.term;
+        toggleTermSelection(worldData.id, term);
+        el.classList.toggle('selected', isTermSelected(worldData.id, term));
+        syncArticleTermHighlights();
+        updateAllCounters();
+      });
+    });
+  } else {
+    $featuredTerms.innerHTML = '';
+  }
+
+  // Article body with collapsible sections
+  let html = worldData.content || '<p>Kein Inhalt verfuegbar.</p>';
+  html = wrapCollapsibleSections(html);
+  $articleBody.innerHTML = html;
+
+  // Bind interactive terms
+  bindInteractiveTerms();
+  syncArticleTermHighlights();
+  restoreCustomSelections(worldData.id);
+
+  // Bind collapsible h2
+  $articleBody.querySelectorAll('h2').forEach(h2 => {
+    h2.addEventListener('click', () => {
+      h2.classList.toggle('collapsed');
+      const section = h2.nextElementSibling;
+      if (section && section.classList.contains('collapsible-section')) {
+        section.classList.toggle('collapsed');
+      }
+    });
+  });
+
+  $readerMain.scrollTop = 0;
+  updateAllCounters();
+}
+
+function wrapCollapsibleSections(html) {
+  const div = document.createElement('div');
+  div.innerHTML = html;
+  const children = Array.from(div.childNodes);
+  const result = document.createElement('div');
+  let currentSection = null;
+
+  children.forEach(child => {
+    if (child.nodeType === 1 && child.tagName === 'H2') {
+      if (currentSection) result.appendChild(currentSection);
+      result.appendChild(child);
+      currentSection = document.createElement('div');
+      currentSection.className = 'collapsible-section';
+    } else if (currentSection) {
+      currentSection.appendChild(child.cloneNode(true));
+    } else {
+      result.appendChild(child.cloneNode(true));
+    }
+  });
+
+  if (currentSection) result.appendChild(currentSection);
+  return result.innerHTML;
+}
+
+
+// ---- INTERACTIVE TERM SELECTION ----
+function bindInteractiveTerms() {
+  $articleBody.querySelectorAll('.interactive-term').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const term = el.getAttribute('data-term') || el.textContent.trim();
+      toggleTermSelection(activeWorldId, term);
+      const selected = isTermSelected(activeWorldId, term);
+      el.classList.toggle('selected', selected);
+
+      // Starburst effect
+      if (selected) {
+        const burst = document.createElement('span');
+        burst.className = 'term-burst';
+        burst.style.setProperty('--cat-color', $readerContent.style.getPropertyValue('--cat-color'));
+        el.style.position = 'relative';
+        el.appendChild(burst);
+        setTimeout(() => burst.remove(), 500);
+      }
+
+      // Float counter
+      createFloatCounter(e, selected ? '+1' : '-1');
+
+      // Sync all instances
+      $articleBody.querySelectorAll(`.interactive-term[data-term="${CSS.escape(term)}"]`).forEach(other => {
+        other.classList.toggle('selected', selected);
+      });
+
+      // Sync featured terms
+      $featuredTerms.querySelectorAll('.featured-term').forEach(ft => {
+        if (ft.dataset.term === term) ft.classList.toggle('selected', selected);
+      });
+
+      updateAllCounters();
+    });
+  });
+}
+
+function createFloatCounter(e, text) {
+  const float = document.createElement('div');
+  float.className = 'term-counter-float';
+  float.textContent = text;
+  float.style.left = e.clientX + 'px';
+  float.style.top = (e.clientY - 10) + 'px';
+  if (text === '-1') float.style.color = 'var(--accent-rose)';
+  document.body.appendChild(float);
+  setTimeout(() => float.remove(), 700);
+}
+
+function toggleTermSelection(worldId, term) {
+  if (!selections[worldId]) selections[worldId] = {};
+  selections[worldId][term] = !selections[worldId][term];
+  if (!selections[worldId][term]) delete selections[worldId][term];
+}
+
+function isTermSelected(worldId, term) {
+  return !!(selections[worldId] && selections[worldId][term]);
+}
+
+function syncArticleTermHighlights() {
+  if (!activeWorldId) return;
+  $articleBody.querySelectorAll('.interactive-term').forEach(el => {
+    const term = el.getAttribute('data-term') || el.textContent.trim();
+    el.classList.toggle('selected', isTermSelected(activeWorldId, term));
+  });
+}
+
+
+// ---- TEXT MARKING ----
+function handleTextSelection(e) {
+  const sel = window.getSelection();
+  if (!sel || sel.isCollapsed || !sel.rangeCount) return;
+  if (!activeWorldId) return;
+
+  const range = sel.getRangeAt(0);
+  if (!$articleBody.contains(range.commonAncestorContainer)) return;
+
+  const text = sel.toString().trim();
+  if (text.length < 3) return;
+
+  pendingRange = range.cloneRange();
+
+  const rect = range.getBoundingClientRect();
+  $markPopup.style.left = Math.min(rect.left + rect.width / 2 - 80, window.innerWidth - 200) + 'px';
+  $markPopup.style.top = (rect.top - 42) + 'px';
+  $markPopup.classList.add('visible');
+}
+
+function markSelection(withNote = false) {
+  if (!pendingRange || !activeWorldId) return;
+  $markPopup.classList.remove('visible');
+
+  if (withNote) {
+    document.getElementById('note-overlay').classList.add('visible');
+    document.getElementById('note-field').value = '';
+    document.getElementById('note-field').focus();
+    return;
+  }
+
+  applyMark(pendingRange.toString().trim(), null);
+}
+
+function applyMark(text, note) {
+  if (!pendingRange || !activeWorldId) return;
+
+  const markId = 'mark_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6);
+
+  try {
+    const span = document.createElement('span');
+    span.className = 'custom-selection';
+    span.dataset.markId = markId;
+    span.title = note || '';
+    if (note) {
+      const sup = document.createElement('span');
+      sup.className = 'note-indicator';
+      sup.textContent = '*';
+      sup.title = note;
+      pendingRange.surroundContents(span);
+      span.appendChild(sup);
+    } else {
+      pendingRange.surroundContents(span);
+    }
+  } catch (err) {
+    showToast('Markierung konnte nicht erstellt werden (Text kreuzt Element-Grenzen).', 'warning');
+    pendingRange = null;
+    return;
+  }
+
+  if (!customSelections[activeWorldId]) customSelections[activeWorldId] = [];
+  customSelections[activeWorldId].push({ id: markId, text, note });
+
+  window.getSelection().removeAllRanges();
+  pendingRange = null;
+
+  updateAllCounters();
+  showToast('Passage markiert', 'success', 2000);
+}
+
+function restoreCustomSelections(worldId) {
+  // Custom selections persist via DOM within session; if article is re-rendered
+  // we rely on the cache to avoid re-rendering.
+}
+
+
+// ---- SEARCH ----
+function handleSearch(query) {
+  const q = query.toLowerCase();
+  $searchClear.classList.toggle('visible', q.length > 0);
+
+  $radialSvg.querySelectorAll('.world-node').forEach(node => {
+    const world = node._worldData;
+    if (!q) {
+      node.classList.remove('dimmed');
+      return;
+    }
+    const match = world.name.toLowerCase().includes(q) || world.id.toLowerCase().includes(q);
+    node.classList.toggle('dimmed', !match);
+  });
+
+  // Also dim category arcs if no worlds match
+  $radialSvg.querySelectorAll('.cat-arc').forEach(arc => {
+    const gid = arc.getAttribute('data-group');
+    if (!q) { arc.classList.remove('dimmed'); return; }
+    const hasMatch = Array.from($radialSvg.querySelectorAll(`.world-node[data-group="${gid}"]`)).some(n => !n.classList.contains('dimmed'));
+    arc.classList.toggle('dimmed', !hasMatch);
+  });
+}
+
+
+// ---- UPDATE ALL COUNTERS ----
+function updateAllCounters() {
+  let totalTerms = 0;
+  let totalPassages = 0;
+
+  Object.keys(selections).forEach(wId => {
+    Object.keys(selections[wId]).forEach(t => {
+      if (selections[wId][t]) totalTerms++;
+    });
+  });
+
+  Object.keys(customSelections).forEach(wId => {
+    totalPassages += (customSelections[wId] || []).length;
+  });
+
+  $termCount.textContent = totalTerms;
+  $passageCount.textContent = totalPassages;
+
+  const total = totalTerms + totalPassages;
+  $btnGenerate.disabled = total === 0;
+  $constellationCount.textContent = total;
+
+  // Update hub count
+  const hubCount = document.getElementById('hub-count');
+  if (hubCount) hubCount.textContent = total;
+
+  // Update radial badges
+  updateRadialBadges();
+
+  // Update constellation
+  updateConstellation();
+
+  // Update recommendations
+  updateRecommendations();
+}
+
+function updateRadialBadges() {
+  $radialSvg.querySelectorAll('.world-node').forEach(node => {
+    const wId = node.getAttribute('data-id');
+    const termCount = selections[wId] ? Object.keys(selections[wId]).filter(t => selections[wId][t]).length : 0;
+    const passCount = (customSelections[wId] || []).length;
+    const total = termCount + passCount;
+
+    const badgeBg = node.querySelector('.world-node-badge-bg');
+    const badgeText = node.querySelector('.world-node-badge');
+    if (badgeBg && badgeText) {
+      badgeBg.setAttribute('r', total > 0 ? 7 : 0);
+      badgeText.textContent = total > 0 ? total : '';
+    }
+  });
+}
+
+
+// ---- WORLD RECOMMENDATIONS ----
+function updateRecommendations() {
+  // Find which groups have selections
+  const activeGroups = new Set();
+  Object.keys(selections).forEach(wId => {
+    if (Object.keys(selections[wId]).some(t => selections[wId][t])) {
+      const w = allWorlds.find(x => x.id === wId);
+      if (w) activeGroups.add(w.group);
+    }
+  });
+
+  if (activeGroups.size === 0) {
+    $recommendationsPanel.classList.remove('visible');
+    // Clear recommended state on nodes
+    $radialSvg.querySelectorAll('.world-node.recommended').forEach(n => n.classList.remove('recommended'));
+    return;
+  }
+
+  // Collect related groups that are NOT already active
+  const relatedGroups = new Set();
+  activeGroups.forEach(g => {
+    (GROUP_RELATIONS[g] || []).forEach(rg => {
+      if (!activeGroups.has(rg)) relatedGroups.add(rg);
+    });
+  });
+
+  // Pick up to 3 related groups
+  const recommendations = [];
+  const relArr = Array.from(relatedGroups);
+  for (let i = 0; i < Math.min(3, relArr.length); i++) {
+    const gid = relArr[i];
+    const gMeta = GROUP_META[gid];
+    const worldsInGroup = allWorlds.filter(w => w.group === gid);
+    if (worldsInGroup.length > 0) {
+      // Pick a representative world (first one)
+      const rep = worldsInGroup[0];
+      recommendations.push({ group: gid, world: rep, meta: gMeta });
+    }
+  }
+
+  if (recommendations.length === 0) {
+    $recommendationsPanel.classList.remove('visible');
+    return;
+  }
+
+  // Render recommendation chips
+  $recommendationsChips.innerHTML = recommendations.map(r =>
+    `<div class="recommendation-chip" data-world="${r.world.id}">
+      <span class="icon">${r.world.icon}</span>
+      <span>${escapeHtml(r.world.name)}</span>
+    </div>`
+  ).join('');
+
+  $recommendationsChips.querySelectorAll('.recommendation-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      openWorld(chip.dataset.world);
+    });
+  });
+
+  $recommendationsPanel.classList.add('visible');
+
+  // Highlight recommended worlds on radial
+  $radialSvg.querySelectorAll('.world-node.recommended').forEach(n => n.classList.remove('recommended'));
+  recommendations.forEach(r => {
+    const node = $radialSvg.querySelector(`.world-node[data-id="${r.world.id}"]`);
+    if (node) node.classList.add('recommended');
+  });
+}
+
+
+// ---- CONSTELLATION (Force-Directed Graph) ----
+function initConstellationCanvas() {
+  const canvas = $constellationCanvas;
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = 200 * dpr;
+  canvas.height = 200 * dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  drawConstellation(ctx, 200, 200);
+}
+
+function updateConstellation() {
+  // Build nodes and links from selections
+  constellationNodes = [];
+  constellationLinks = [];
+  let nodeIdx = 0;
+
+  Object.keys(selections).forEach(wId => {
+    const worldMeta = allWorlds.find(w => w.id === wId);
+    const groupMeta = worldMeta ? GROUP_META[worldMeta.group] : null;
+    const color = groupMeta ? groupMeta.color : '#888';
+    const worldNodes = [];
+
+    Object.keys(selections[wId]).forEach(term => {
+      if (selections[wId][term]) {
+        const existing = constellationNodes.find(n => n.id === `${wId}__${term}`);
+        const node = {
+          id: `${wId}__${term}`,
+          label: term,
+          worldId: wId,
+          color,
+          x: existing ? existing.x : 100 + (Math.random() - 0.5) * 80,
+          y: existing ? existing.y : 100 + (Math.random() - 0.5) * 80,
+          vx: 0, vy: 0,
+          type: 'term'
+        };
+        worldNodes.push(node);
+        constellationNodes.push(node);
+        nodeIdx++;
+      }
+    });
+
+    // Links between nodes of same world
+    for (let i = 0; i < worldNodes.length; i++) {
+      for (let j = i + 1; j < worldNodes.length; j++) {
+        constellationLinks.push({ source: worldNodes[i], target: worldNodes[j] });
+      }
+    }
+  });
+
+  // Draw mini constellation
+  renderConstellationFrame();
+}
+
+function renderConstellationFrame() {
+  if (constellationAnimFrame) cancelAnimationFrame(constellationAnimFrame);
+
+  const canvas = $constellationCanvas;
+  const dpr = window.devicePixelRatio || 1;
+  const w = 200, h = 200;
+  canvas.width = w * dpr;
+  canvas.height = h * dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+
+  let iterations = 0;
+
+  function simulate() {
+    // Simple force simulation
+    const nodes = constellationNodes;
+    const links = constellationLinks;
+    const cx = w / 2, cy = (h / 2) + 10;
+
+    // Center gravity
+    nodes.forEach(n => {
+      n.vx += (cx - n.x) * 0.005;
+      n.vy += (cy - n.y) * 0.005;
+    });
+
+    // Repulsion between nodes
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const dx = nodes[j].x - nodes[i].x;
+        const dy = nodes[j].y - nodes[i].y;
+        const dist = Math.max(Math.sqrt(dx * dx + dy * dy), 1);
+        const force = 200 / (dist * dist);
+        const fx = (dx / dist) * force;
+        const fy = (dy / dist) * force;
+        nodes[i].vx -= fx;
+        nodes[i].vy -= fy;
+        nodes[j].vx += fx;
+        nodes[j].vy += fy;
+      }
+    }
+
+    // Link attraction
+    links.forEach(l => {
+      const dx = l.target.x - l.source.x;
+      const dy = l.target.y - l.source.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      const force = (dist - 30) * 0.01;
+      const fx = (dx / Math.max(dist, 1)) * force;
+      const fy = (dy / Math.max(dist, 1)) * force;
+      l.source.vx += fx;
+      l.source.vy += fy;
+      l.target.vx -= fx;
+      l.target.vy -= fy;
+    });
+
+    // Apply velocity with damping
+    nodes.forEach(n => {
+      n.vx *= 0.7;
+      n.vy *= 0.7;
+      n.x += n.vx;
+      n.y += n.vy;
+      // Bounds
+      n.x = Math.max(15, Math.min(w - 15, n.x));
+      n.y = Math.max(30, Math.min(h - 15, n.y));
+    });
+
+    drawConstellation(ctx, w, h);
+
+    iterations++;
+    if (iterations < 80) {
+      constellationAnimFrame = requestAnimationFrame(simulate);
+    }
+  }
+
+  if (constellationNodes.length > 0) {
+    simulate();
+  } else {
+    drawConstellation(ctx, w, h);
+  }
+}
+
+function drawConstellation(ctx, w, h) {
+  ctx.clearRect(0, 0, w, h);
+
+  // Draw links
+  ctx.lineWidth = 0.8;
+  constellationLinks.forEach(l => {
+    ctx.beginPath();
+    ctx.strokeStyle = l.source.color + '40';
+    ctx.moveTo(l.source.x, l.source.y);
+    ctx.lineTo(l.target.x, l.target.y);
+    ctx.stroke();
+  });
+
+  // Draw nodes
+  constellationNodes.forEach(n => {
+    // Glow
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, 6, 0, Math.PI * 2);
+    ctx.fillStyle = n.color + '25';
+    ctx.fill();
+
+    // Core
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, 3, 0, Math.PI * 2);
+    ctx.fillStyle = n.color;
+    ctx.fill();
+  });
+
+  // Empty state
+  if (constellationNodes.length === 0) {
+    ctx.fillStyle = 'rgba(94, 94, 122, 0.5)';
+    ctx.font = '11px Inter';
+    ctx.textAlign = 'center';
+    ctx.fillText('Waehle Begriffe', w / 2, h / 2 + 5);
+    ctx.fillText('aus den Welten', w / 2, h / 2 + 20);
+  }
+}
+
+
+// ---- CONSTELLATION EXPANDED VIEW ----
+function openConstellationExpanded() {
+  const overlay = document.getElementById('constellation-overlay');
+  overlay.classList.add('visible');
+
+  // Render expanded canvas
+  renderExpandedConstellation();
+
+  // Render expanded list
+  renderExpandedList();
+}
+
+function renderExpandedConstellation() {
+  const canvas = document.getElementById('constellation-expanded-canvas');
+  const rect = canvas.parentElement.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  const w = rect.width || 400;
+  const h = Math.max(rect.height, 350);
+  canvas.width = w * dpr;
+  canvas.height = h * dpr;
+  canvas.style.width = w + 'px';
+  canvas.style.height = h + 'px';
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+
+  // Recalculate node positions for larger canvas
+  const scaledNodes = constellationNodes.map(n => ({
+    ...n,
+    x: (n.x / 200) * w,
+    y: (n.y / 200) * h,
+    vx: 0, vy: 0
+  }));
+
+  const cx = w / 2, cy = h / 2;
+
+  // Quick sim
+  for (let iter = 0; iter < 60; iter++) {
+    scaledNodes.forEach(n => {
+      n.vx += (cx - n.x) * 0.003;
+      n.vy += (cy - n.y) * 0.003;
+    });
+
+    for (let i = 0; i < scaledNodes.length; i++) {
+      for (let j = i + 1; j < scaledNodes.length; j++) {
+        const dx = scaledNodes[j].x - scaledNodes[i].x;
+        const dy = scaledNodes[j].y - scaledNodes[i].y;
+        const dist = Math.max(Math.sqrt(dx * dx + dy * dy), 1);
+        const force = 600 / (dist * dist);
+        const fx = (dx / dist) * force;
+        const fy = (dy / dist) * force;
+        scaledNodes[i].vx -= fx;
+        scaledNodes[i].vy -= fy;
+        scaledNodes[j].vx += fx;
+        scaledNodes[j].vy += fy;
+      }
+    }
+
+    constellationLinks.forEach(l => {
+      const sn = scaledNodes.find(n => n.id === l.source.id);
+      const tn = scaledNodes.find(n => n.id === l.target.id);
+      if (!sn || !tn) return;
+      const dx = tn.x - sn.x;
+      const dy = tn.y - sn.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      const force = (dist - 60) * 0.005;
+      const fx = (dx / Math.max(dist, 1)) * force;
+      const fy = (dy / Math.max(dist, 1)) * force;
+      sn.vx += fx;
+      sn.vy += fy;
+      tn.vx -= fx;
+      tn.vy -= fy;
+    });
+
+    scaledNodes.forEach(n => {
+      n.vx *= 0.65;
+      n.vy *= 0.65;
+      n.x += n.vx;
+      n.y += n.vy;
+      n.x = Math.max(30, Math.min(w - 30, n.x));
+      n.y = Math.max(30, Math.min(h - 30, n.y));
+    });
+  }
+
+  // Draw
+  ctx.clearRect(0, 0, w, h);
+
+  // Links
+  ctx.lineWidth = 1;
+  constellationLinks.forEach(l => {
+    const sn = scaledNodes.find(n => n.id === l.source.id);
+    const tn = scaledNodes.find(n => n.id === l.target.id);
+    if (!sn || !tn) return;
+    ctx.beginPath();
+    ctx.strokeStyle = sn.color + '30';
+    ctx.moveTo(sn.x, sn.y);
+    ctx.lineTo(tn.x, tn.y);
+    ctx.stroke();
+  });
+
+  // Nodes with labels
+  ctx.font = '11px Inter';
+  ctx.textAlign = 'center';
+  scaledNodes.forEach(n => {
+    // Outer glow
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, 10, 0, Math.PI * 2);
+    ctx.fillStyle = n.color + '18';
+    ctx.fill();
+
+    // Node
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, 5, 0, Math.PI * 2);
+    ctx.fillStyle = n.color;
+    ctx.fill();
+
+    // Label
+    ctx.fillStyle = 'rgba(232, 232, 242, 0.7)';
+    ctx.fillText(n.label.length > 20 ? n.label.substring(0, 18) + '...' : n.label, n.x, n.y + 18);
+  });
+
+  if (scaledNodes.length === 0) {
+    ctx.fillStyle = 'rgba(94, 94, 122, 0.5)';
+    ctx.font = '14px Inter';
+    ctx.textAlign = 'center';
+    ctx.fillText('Keine Auswahl vorhanden', w / 2, h / 2);
+  }
+}
+
+function renderExpandedList() {
+  const $list = document.getElementById('constellation-expanded-list');
+  let html = '';
+
+  // Group by world
+  const worldsWithSelections = new Set([
+    ...Object.keys(selections).filter(wId => Object.keys(selections[wId]).some(t => selections[wId][t])),
+    ...Object.keys(customSelections).filter(wId => (customSelections[wId] || []).length > 0)
+  ]);
+
+  if (worldsWithSelections.size === 0) {
+    $list.innerHTML = '<p style="color:var(--text-muted);padding:20px;font-size:13px;">Keine Auswahl vorhanden. Erkunde die Welten und waehle Begriffe aus.</p>';
+    return;
+  }
+
+  worldsWithSelections.forEach(wId => {
+    const meta = allWorlds.find(w => w.id === wId);
+    const groupMeta = meta ? GROUP_META[meta.group] : {};
+    const worldName = meta ? meta.name : wId;
+    const icon = meta ? meta.icon : '';
+
+    html += `<div class="constellation-world-group">
+      <div class="constellation-world-name" style="color:${groupMeta.color || '#888'}">
+        <span class="icon">${icon}</span>
+        <span>${escapeHtml(worldName)}</span>
+      </div>`;
+
+    // Terms
+    if (selections[wId]) {
+      Object.keys(selections[wId]).forEach(term => {
+        if (selections[wId][term]) {
+          html += `<span class="constellation-term-chip">
+            <span>${escapeHtml(term)}</span>
+            <button class="constellation-term-remove" data-world="${wId}" data-term="${escapeHtml(term)}" title="Entfernen">&times;</button>
+          </span>`;
+        }
+      });
+    }
+
+    // Passages
+    if (customSelections[wId]) {
+      customSelections[wId].forEach(sel => {
+        html += `<div class="constellation-passage-chip">
+          <div class="text">"${escapeHtml(sel.text.substring(0, 80))}${sel.text.length > 80 ? '...' : ''}"
+            ${sel.note ? `<div class="note-tag">Notiz: ${escapeHtml(sel.note)}</div>` : ''}
+          </div>
+          <button class="constellation-term-remove" data-world="${wId}" data-passage-id="${sel.id}" title="Entfernen">&times;</button>
+        </div>`;
+      });
+    }
+
+    html += '</div>';
+  });
+
+  $list.innerHTML = html;
+
+  // Bind remove buttons
+  $list.querySelectorAll('.constellation-term-remove').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const wId = btn.dataset.world;
+      const term = btn.dataset.term;
+      const passageId = btn.dataset.passageId;
+
+      if (term && selections[wId]) {
+        delete selections[wId][term];
+      }
+
+      if (passageId && customSelections[wId]) {
+        customSelections[wId] = customSelections[wId].filter(s => s.id !== passageId);
+        // Also remove from DOM if current world
+        if (wId === activeWorldId) {
+          const mark = $articleBody.querySelector(`[data-mark-id="${passageId}"]`);
+          if (mark) {
+            const parent = mark.parentNode;
+            while (mark.firstChild) parent.insertBefore(mark.firstChild, mark);
+            mark.remove();
+          }
+        }
+      }
+
+      syncArticleTermHighlights();
+      updateAllCounters();
+      renderExpandedList();
+      renderExpandedConstellation();
+    });
+  });
+}
+
+
+// ---- RESET ----
+function resetSelections() {
+  // Remove DOM marks from current article
+  if (activeWorldId) {
+    $articleBody.querySelectorAll('.custom-selection').forEach(el => {
+      const parent = el.parentNode;
+      while (el.firstChild) parent.insertBefore(el.firstChild, el);
+      el.remove();
+    });
+  }
+
+  selections = {};
+  customSelections = {};
+
+  syncArticleTermHighlights();
+
+  // Sync featured terms
+  $featuredTerms.querySelectorAll('.featured-term').forEach(ft => ft.classList.remove('selected'));
+
+  updateAllCounters();
+  showToast('Auswahl zurueckgesetzt', 'info', 2000);
+}
+
+
+// ---- GENERATE PROMPT ----
+async function generatePrompt() {
+  const apiKey = localStorage.getItem('openrouter_api_key');
+  if (!apiKey) {
+    showToast('Bitte konfiguriere zuerst deinen API-Key (localStorage: openrouter_api_key).', 'warning', 6000);
+    return;
+  }
+
+  const model = localStorage.getItem('selected_model') || 'google/gemini-2.5-flash';
+
+  // Collect all selections
+  const parts = [];
+
+  Object.keys(selections).forEach(wId => {
+    const worldMeta = allWorlds.find(w => w.id === wId);
+    const worldName = worldMeta ? worldMeta.name : wId;
+    const terms = Object.keys(selections[wId]).filter(t => selections[wId][t]);
+    if (terms.length > 0) {
+      parts.push(`[${worldName}]: ${terms.join(', ')}`);
+    }
+  });
+
+  Object.keys(customSelections).forEach(wId => {
+    const worldMeta = allWorlds.find(w => w.id === wId);
+    const worldName = worldMeta ? worldMeta.name : wId;
+    const passages = (customSelections[wId] || []).map(s => {
+      return s.note ? `"${s.text}" (Notiz: ${s.note})` : `"${s.text}"`;
+    });
+    if (passages.length > 0) {
+      parts.push(`[${worldName} - Markierte Passagen]: ${passages.join('; ')}`);
+    }
+  });
+
+  if (parts.length === 0) {
+    showToast('Keine Auswahl vorhanden.', 'warning');
+    return;
+  }
+
+  const userMessage = `Ausgewaehlte Begriffe und Passagen:\n${parts.join('\n')}`;
+
+  $btnGenerate.disabled = true;
+  $generateLabel.textContent = 'Generiere...';
+  $generateSpinner.classList.add('visible');
+
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 60000);
+
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`,
+        'HTTP-Referer': window.location.origin,
+        'X-Title': 'Suno Style Architect — Radial Explorer'
+      },
+      body: JSON.stringify({
+        model,
+        stream: false,
+        messages: [
+          { role: 'system', content: CREATIVE_SYSTEM_PROMPT },
+          { role: 'user', content: userMessage }
+        ],
+        temperature: 0.7,
+        max_tokens: 1000,
+        top_p: 0.9
+      }),
+      signal: controller.signal
+    });
+
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      throw new Error(`API-Fehler (${response.status})`);
+    }
+
+    const result = await response.json();
+    const promptText = result.choices?.[0]?.message?.content?.trim();
+
+    if (!promptText) throw new Error('Leere API-Antwort');
+
+    document.getElementById('prompt-result-text').textContent = promptText;
+    document.getElementById('prompt-overlay').classList.add('visible');
+
+  } catch (err) {
+    if (err.name === 'AbortError') {
+      showToast('Zeitueberschreitung. Bitte versuche es erneut.', 'error');
+    } else {
+      showToast('Fehler: ' + err.message, 'error');
+    }
+  } finally {
+    $btnGenerate.disabled = false;
+    $generateLabel.textContent = 'Prompt erstellen';
+    $generateSpinner.classList.remove('visible');
+    updateAllCounters();
+  }
+}
+
+async function copyPromptResult() {
+  const text = document.getElementById('prompt-result-text').textContent;
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+    } else {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.left = '-9999px';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+    }
+    showToast('Prompt kopiert!', 'success', 2000);
+  } catch (err) {
+    showToast('Kopieren fehlgeschlagen.', 'error');
+  }
+}
+
+
+// ---- TEXT SIZE ----
+function setTextSize(size) {
+  currentTextSize = size;
+  document.documentElement.style.setProperty('--reader-font-size', TEXT_SIZES[size] + 'px');
+  document.querySelectorAll('.text-size-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.size === size);
+  });
+}
+
+
+// ---- EVENT BINDINGS ----
+function bindEvents() {
+  // Search
+  $search.addEventListener('input', () => {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => handleSearch($search.value.trim()), 120);
+  });
+
+  $searchClear.addEventListener('click', () => {
+    $search.value = '';
+    handleSearch('');
+    $search.focus();
+  });
+
+  // Mini radial -> back to explorer
+  $miniRadial.addEventListener('click', switchToExplorer);
+
+  // Breadcrumb back
+  $breadcrumb.addEventListener('click', (e) => {
+    const link = e.target.closest('[data-action="back-to-group"]');
+    if (link) switchToExplorer();
+  });
+
+  // Text size buttons
+  document.querySelectorAll('.text-size-btn').forEach(btn => {
+    btn.addEventListener('click', () => setTextSize(btn.dataset.size));
+  });
+
+  // Text selection for marking
+  $articleBody.addEventListener('mouseup', (e) => {
+    setTimeout(() => handleTextSelection(e), 10);
+  });
+
+  // Mark buttons
+  document.getElementById('mark-btn').addEventListener('click', () => markSelection(false));
+  document.getElementById('note-btn').addEventListener('click', () => markSelection(true));
+  document.getElementById('cancel-mark-btn').addEventListener('click', () => {
+    $markPopup.classList.remove('visible');
+    window.getSelection().removeAllRanges();
+    pendingRange = null;
+  });
+
+  // Note modal
+  document.getElementById('note-save-btn').addEventListener('click', () => {
+    const note = document.getElementById('note-field').value.trim();
+    document.getElementById('note-overlay').classList.remove('visible');
+    const text = pendingRange ? pendingRange.toString().trim() : '';
+    applyMark(text, note || null);
+  });
+
+  document.getElementById('note-cancel-btn').addEventListener('click', () => {
+    document.getElementById('note-overlay').classList.remove('visible');
+    pendingRange = null;
+  });
+
+  // Reset
+  $btnReset.addEventListener('click', resetSelections);
+
+  // Generate
+  $btnGenerate.addEventListener('click', generatePrompt);
+
+  // Prompt overlay
+  document.getElementById('prompt-close-btn').addEventListener('click', () => {
+    document.getElementById('prompt-overlay').classList.remove('visible');
+  });
+  document.getElementById('prompt-close-btn-2').addEventListener('click', () => {
+    document.getElementById('prompt-overlay').classList.remove('visible');
+  });
+  document.getElementById('prompt-copy-btn').addEventListener('click', copyPromptResult);
+  document.getElementById('prompt-overlay').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('prompt-overlay')) {
+      document.getElementById('prompt-overlay').classList.remove('visible');
+    }
+  });
+
+  // Constellation widget click -> expanded
+  $constellationWidget.addEventListener('click', openConstellationExpanded);
+
+  // Constellation close
+  document.getElementById('constellation-close-btn').addEventListener('click', () => {
+    document.getElementById('constellation-overlay').classList.remove('visible');
+  });
+  document.getElementById('constellation-overlay').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('constellation-overlay')) {
+      document.getElementById('constellation-overlay').classList.remove('visible');
+    }
+  });
+
+  // Note overlay dismiss
+  document.getElementById('note-overlay').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('note-overlay')) {
+      document.getElementById('note-overlay').classList.remove('visible');
+      pendingRange = null;
+    }
+  });
+
+  // Close mark popup on outside click
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.mark-popup') && !window.getSelection()?.toString().trim()) {
+      $markPopup.classList.remove('visible');
+    }
+  });
+
+  // Keyboard: Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      if (document.getElementById('prompt-overlay').classList.contains('visible')) {
+        document.getElementById('prompt-overlay').classList.remove('visible');
+      } else if (document.getElementById('constellation-overlay').classList.contains('visible')) {
+        document.getElementById('constellation-overlay').classList.remove('visible');
+      } else if (document.getElementById('note-overlay').classList.contains('visible')) {
+        document.getElementById('note-overlay').classList.remove('visible');
+        pendingRange = null;
+      } else if ($markPopup.classList.contains('visible')) {
+        $markPopup.classList.remove('visible');
+        window.getSelection().removeAllRanges();
+        pendingRange = null;
+      } else if (activeView === 'reader') {
+        switchToExplorer();
+      }
+    }
+  });
+
+  // Window resize: resize constellation canvas
+  window.addEventListener('resize', () => {
+    initConstellationCanvas();
+    renderConstellationFrame();
+  });
+}
+
+
+// ---- BOOT ----
+document.addEventListener('DOMContentLoaded', () => {
+  init().then(() => {
+    setTimeout(() => preloadAllTerms(), 500);
+  });
+});
+</script>
+</body>
+</html>
