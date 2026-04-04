@@ -11426,6 +11426,134 @@ function snBindLabelToggle() {
 }
 
 // ===================================================
+// PANEL SPLITTER (horizontal resize)
+// ===================================================
+const SN_SPLITTER_KEY = 'sn-panel-split';
+const SN_SPLIT_MIN = 20;  // Minimum left panel width in %
+const SN_SPLIT_MAX = 75;  // Maximum left panel width in %
+
+let snSplitDragging = false;
+let snSplitStartX = 0;
+let snSplitStartFrac = 0;
+let snSplitRafId = 0;
+let snSplitPending = 0;
+let snSplitMainContent = null;
+let snSplitSpectrumPanel = null;
+
+function snApplySplit(leftPct) {
+    if (snSplitSpectrumPanel) {
+        snSplitSpectrumPanel.style.width = leftPct + '%';
+    }
+}
+
+function snClearSplit() {
+    if (snSplitSpectrumPanel) {
+        snSplitSpectrumPanel.style.width = '';
+    }
+}
+
+function snSaveSplit(leftPct) {
+    try { localStorage.setItem(SN_SPLITTER_KEY, String(Math.round(leftPct))); } catch(e) {}
+}
+
+function snRestoreSplit() {
+    try {
+        const raw = localStorage.getItem(SN_SPLITTER_KEY);
+        if (raw === null) return;
+        const val = parseFloat(raw);
+        if (!isNaN(val) && val >= SN_SPLIT_MIN && val <= SN_SPLIT_MAX) {
+            snApplySplit(val);
+        }
+    } catch(e) {}
+}
+
+function snBindSplitter() {
+    const splitter = document.getElementById('sn-panel-splitter');
+    snSplitMainContent = document.querySelector('.sn-main-content');
+    snSplitSpectrumPanel = document.querySelector('.sn-spectrum-panel');
+    if (!splitter || !snSplitMainContent || !snSplitSpectrumPanel) return;
+
+    // Restore saved split
+    snRestoreSplit();
+
+    splitter.addEventListener('pointerdown', (e) => {
+        if (e.button !== 0) return;
+        e.preventDefault();
+        e.stopPropagation();
+
+        snSplitDragging = true;
+        snSplitStartX = e.clientX;
+
+        const totalW = snSplitMainContent.clientWidth;
+        snSplitStartFrac = totalW > 0
+            ? snSplitSpectrumPanel.getBoundingClientRect().width / totalW
+            : 0.4;
+
+        document.addEventListener('pointermove', snOnSplitMove, { passive: false });
+        document.addEventListener('pointerup', snOnSplitUp);
+        document.addEventListener('pointercancel', snOnSplitUp);
+
+        splitter.classList.add('sn-splitter-active');
+        document.body.classList.add('sn-body-resizing');
+    });
+
+    // Double-click to reset
+    splitter.addEventListener('dblclick', (e) => {
+        e.preventDefault();
+        snClearSplit();
+        try { localStorage.removeItem(SN_SPLITTER_KEY); } catch(e) {}
+    });
+}
+
+function snOnSplitMove(e) {
+    if (!snSplitDragging) return;
+    e.preventDefault();
+
+    const totalW = snSplitMainContent.clientWidth;
+    if (totalW <= 0) return;
+
+    const dx = e.clientX - snSplitStartX;
+    let newLeft = (snSplitStartFrac + dx / totalW) * 100;
+    newLeft = Math.max(SN_SPLIT_MIN, Math.min(SN_SPLIT_MAX, newLeft));
+    snSplitPending = newLeft;
+
+    if (!snSplitRafId) {
+        snSplitRafId = requestAnimationFrame(() => {
+            snApplySplit(snSplitPending);
+            snSplitRafId = 0;
+        });
+    }
+}
+
+function snOnSplitUp() {
+    if (!snSplitDragging) return;
+    snSplitDragging = false;
+
+    if (snSplitRafId) { cancelAnimationFrame(snSplitRafId); snSplitRafId = 0; }
+
+    // Compute final value from actual rendered size
+    const totalW = snSplitMainContent.clientWidth;
+    let finalLeft;
+    if (totalW > 0) {
+        finalLeft = (snSplitSpectrumPanel.getBoundingClientRect().width / totalW) * 100;
+        finalLeft = Math.max(SN_SPLIT_MIN, Math.min(SN_SPLIT_MAX, Math.round(finalLeft)));
+    } else {
+        finalLeft = 40;
+    }
+
+    snApplySplit(finalLeft);
+    snSaveSplit(finalLeft);
+
+    document.removeEventListener('pointermove', snOnSplitMove);
+    document.removeEventListener('pointerup', snOnSplitUp);
+    document.removeEventListener('pointercancel', snOnSplitUp);
+
+    const splitter = document.getElementById('sn-panel-splitter');
+    if (splitter) splitter.classList.remove('sn-splitter-active');
+    document.body.classList.remove('sn-body-resizing');
+}
+
+// ===================================================
 // EVENT BINDINGS
 // ===================================================
 function snBindEvents() {
@@ -11554,6 +11682,9 @@ function snBindEvents() {
 
     // Label toggle
     snBindLabelToggle();
+
+    // Panel splitter (horizontal resize between spectrum & article)
+    snBindSplitter();
 }
 
 // Legacy stub: updateSelectionCounter (referenced by old code paths)
