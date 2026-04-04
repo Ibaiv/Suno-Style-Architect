@@ -705,12 +705,24 @@
                 <!-- Left: Spectrum Map Panel -->
                 <div class="sn-spectrum-panel">
                     <div class="sn-spectrum-header">
+                        <div class="sn-spread-control" id="sn-spread-control">
+                            <button class="sn-spread-btn" data-spread="0.5" title="Kompakt">0.5×</button>
+                            <button class="sn-spread-btn active" data-spread="1.0" title="Standard">1.0×</button>
+                            <button class="sn-spread-btn" data-spread="1.5" title="Weit">1.5×</button>
+                            <button class="sn-spread-btn" data-spread="2.0" title="Sehr weit">2.0×</button>
+                            <button class="sn-spread-btn" data-spread="3.0" title="Maximum">3.0×</button>
+                        </div>
                         <div class="sn-spectrum-search-wrap">
                             <svg class="sn-spectrum-search-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
                             <input class="sn-spectrum-search" id="sn-spectrum-search" type="text" placeholder="Suche in Welten und Begriffen..." autocomplete="off" spellcheck="false">
                             <button class="sn-spectrum-search-clear" id="sn-search-clear" aria-label="Suche leeren">&times;</button>
                             <div class="sn-cross-search-results" id="sn-cross-search-results"></div>
                         </div>
+                        <button class="sn-label-toggle" id="sn-label-toggle" title="Beschriftungen ein-/ausblenden" aria-label="Beschriftungen ein-/ausblenden">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                                <path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/>
+                            </svg>
+                        </button>
                     </div>
 
                     <div class="sn-spectrum-canvas-wrap">
@@ -755,13 +767,6 @@
 
                     <!-- Article scroll container -->
                     <div class="sn-article-scroll" id="sn-article-scroll" style="display:none;">
-                        <!-- Font Size Widget -->
-                        <div class="sn-text-size-widget" id="sn-text-size-widget">
-                            <button class="sn-text-size-btn" data-size="small" title="Kleiner">A-</button>
-                            <button class="sn-text-size-btn active" data-size="medium" title="Normal">A</button>
-                            <button class="sn-text-size-btn" data-size="large" title="Groesser">A+</button>
-                        </div>
-
                         <div class="sn-back-to-overview" id="sn-back-to-overview">
                             <button class="sn-back-to-overview-btn" aria-label="Zurueck zur Uebersicht">
                                 <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>

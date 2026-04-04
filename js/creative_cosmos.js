@@ -9993,6 +9993,25 @@ let snActiveLegendGroup = null;
 let snCurrentTextSize = 'medium';
 let snGridDrawn = false;
 
+// Pan & Zoom state
+let snZoom = 1.0;
+let snPanX = 0;
+let snPanY = 0;
+let snIsDragging = false;
+let snDragStartX = 0;
+let snDragStartY = 0;
+let snDragStartPanX = 0;
+let snDragStartPanY = 0;
+let snDragMoved = false;
+
+// Spread factor state
+let snSpreadFactor = 1.0;
+try { const stored = localStorage.getItem('sn-spread-factor'); if (stored !== null) snSpreadFactor = parseFloat(stored); } catch(e) {}
+
+// Label toggle state
+let snLabelsVisible = true;
+try { snLabelsVisible = localStorage.getItem('sn-labels-visible') !== 'false'; } catch(e) {}
+
 // Build allWorlds from inline CREATIVE_WORLDS
 (function buildWorldList() {
     snAllWorlds = Object.values(CREATIVE_WORLDS).map(w => ({
@@ -10032,6 +10051,7 @@ let sn$ = {};  // populated in initCreativeCosmos
 function snResolveDom() {
     sn$ = {
         canvas: document.getElementById('sn-spectrum-canvas'),
+        canvasWrap: document.querySelector('.sn-spectrum-canvas-wrap'),
         grid: document.getElementById('sn-spectrum-grid'),
         legend: document.getElementById('sn-spectrum-legend'),
         search: document.getElementById('sn-spectrum-search'),
@@ -10196,6 +10216,9 @@ function closeIdeaStarter() {
         ScopeStack.pop(modal._scopeToken);
         modal._scopeToken = null;
     }
+
+    // Reset pan & zoom
+    snResetPanZoom();
 }
 
 // ===================================================
@@ -10269,6 +10292,9 @@ function snRenderSpectrum() {
 
         sn$.canvas.appendChild(node);
     });
+
+    // Apply spread factor in case it's not 1.0
+    snApplySpread();
 }
 
 // ===================================================
@@ -10403,6 +10429,11 @@ function snRenderArticle(worldData) {
                     <div class="sn-quick-overview-title">${snEscapeHtml(worldData.name || meta.name)}</div>
                     <div class="sn-quick-overview-group">${snEscapeHtml(groupLabel)}</div>
                 </div>
+                <div class="sn-text-size-widget" id="sn-text-size-widget">
+                    <button class="sn-text-size-btn${snCurrentTextSize === 'small' ? ' active' : ''}" data-size="small" title="Kleiner">A-</button>
+                    <button class="sn-text-size-btn${snCurrentTextSize === 'medium' ? ' active' : ''}" data-size="medium" title="Normal">A</button>
+                    <button class="sn-text-size-btn${snCurrentTextSize === 'large' ? ' active' : ''}" data-size="large" title="Groesser">A+</button>
+                </div>
             </div>
             <div class="sn-quick-overview-desc">${snEscapeHtml(desc)}</div>
             <div class="sn-quick-overview-tags" id="sn-overview-tags">
@@ -10422,6 +10453,11 @@ function snRenderArticle(worldData) {
             snUpdateCompass();
             snUpdateGenerateButton();
         });
+    });
+
+    // Bind text-size buttons in the Quick Overview header
+    sn$.overviewMount.querySelectorAll('.sn-text-size-btn').forEach(btn => {
+        btn.addEventListener('click', () => snSetTextSize(btn.dataset.size));
     });
 
     // Article body — wrap h2 sections for collapsing
@@ -11165,6 +11201,210 @@ function snHandleArticleScroll() {
 }
 
 // ===================================================
+// PAN & ZOOM
+// ===================================================
+const SN_ZOOM_MIN = 0.4;
+const SN_ZOOM_MAX = 2.5;
+
+function snApplyTransform() {
+    if (!sn$.canvas) return;
+    sn$.canvas.style.transform = `translate(${snPanX}px, ${snPanY}px) scale(${snZoom})`;
+}
+
+function snResetPanZoom() {
+    snZoom = 1.0;
+    snPanX = 0;
+    snPanY = 0;
+    snApplyTransform();
+}
+
+function snZoomAtPoint(newZoom, clientX, clientY) {
+    newZoom = Math.max(SN_ZOOM_MIN, Math.min(SN_ZOOM_MAX, newZoom));
+    if (!sn$.canvasWrap) return;
+    const rect = sn$.canvasWrap.getBoundingClientRect();
+    // Point in the wrap's local coordinate space
+    const px = clientX - rect.left;
+    const py = clientY - rect.top;
+    // Where that point currently maps in canvas space
+    const canvasX = (px - snPanX) / snZoom;
+    const canvasY = (py - snPanY) / snZoom;
+    // After zoom, adjust pan so the same canvas point stays under cursor
+    snPanX = px - canvasX * newZoom;
+    snPanY = py - canvasY * newZoom;
+    snZoom = newZoom;
+    snApplyTransform();
+}
+
+function snBindPanZoom() {
+    const wrap = sn$.canvasWrap;
+    if (!wrap) return;
+
+    // Wheel events: zoom and horizontal pan
+    wrap.addEventListener('wheel', (e) => {
+        e.preventDefault();
+
+        // Shift + wheel = horizontal pan
+        if (e.shiftKey && !e.ctrlKey && !e.altKey) {
+            snPanX -= e.deltaY;
+            snApplyTransform();
+            return;
+        }
+
+        // Pinch on trackpad (ctrlKey) or Alt+wheel = zoom
+        if (e.ctrlKey || e.altKey) {
+            const factor = e.ctrlKey ? 0.01 : 0.002;
+            const newZoom = snZoom * (1 - e.deltaY * factor);
+            snZoomAtPoint(newZoom, e.clientX, e.clientY);
+            return;
+        }
+
+        // Normal wheel = zoom
+        const zoomFactor = 0.002;
+        const newZoom = snZoom * (1 - e.deltaY * zoomFactor);
+        snZoomAtPoint(newZoom, e.clientX, e.clientY);
+    }, { passive: false });
+
+    // Click & Drag to pan
+    wrap.addEventListener('mousedown', (e) => {
+        // Only left button, ignore if clicking on a node directly
+        if (e.button !== 0) return;
+        snIsDragging = true;
+        snDragMoved = false;
+        snDragStartX = e.clientX;
+        snDragStartY = e.clientY;
+        snDragStartPanX = snPanX;
+        snDragStartPanY = snPanY;
+        wrap.style.cursor = 'grabbing';
+    });
+
+    window.addEventListener('mousemove', (e) => {
+        if (!snIsDragging) return;
+        const dx = e.clientX - snDragStartX;
+        const dy = e.clientY - snDragStartY;
+        if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
+            snDragMoved = true;
+        }
+        snPanX = snDragStartPanX + dx;
+        snPanY = snDragStartPanY + dy;
+        snApplyTransform();
+    });
+
+    window.addEventListener('mouseup', () => {
+        if (snIsDragging) {
+            snIsDragging = false;
+            if (wrap) wrap.style.cursor = '';
+        }
+    });
+
+    // Prevent click on nodes if we were dragging
+    wrap.addEventListener('click', (e) => {
+        if (snDragMoved) {
+            e.stopPropagation();
+            snDragMoved = false;
+        }
+    }, true); // capture phase to intercept before node clicks
+
+    // Touch support for pinch-to-zoom
+    let snTouchDist = 0;
+    let snTouchPanStart = null;
+
+    wrap.addEventListener('touchstart', (e) => {
+        if (e.touches.length === 2) {
+            e.preventDefault();
+            const dx = e.touches[0].clientX - e.touches[1].clientX;
+            const dy = e.touches[0].clientY - e.touches[1].clientY;
+            snTouchDist = Math.hypot(dx, dy);
+        } else if (e.touches.length === 1) {
+            snTouchPanStart = {
+                x: e.touches[0].clientX,
+                y: e.touches[0].clientY,
+                panX: snPanX,
+                panY: snPanY
+            };
+        }
+    }, { passive: false });
+
+    wrap.addEventListener('touchmove', (e) => {
+        if (e.touches.length === 2 && snTouchDist > 0) {
+            e.preventDefault();
+            const dx = e.touches[0].clientX - e.touches[1].clientX;
+            const dy = e.touches[0].clientY - e.touches[1].clientY;
+            const newDist = Math.hypot(dx, dy);
+            const scale = newDist / snTouchDist;
+            const midX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+            const midY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+            snZoomAtPoint(snZoom * scale, midX, midY);
+            snTouchDist = newDist;
+        } else if (e.touches.length === 1 && snTouchPanStart) {
+            const dx = e.touches[0].clientX - snTouchPanStart.x;
+            const dy = e.touches[0].clientY - snTouchPanStart.y;
+            snPanX = snTouchPanStart.panX + dx;
+            snPanY = snTouchPanStart.panY + dy;
+            snApplyTransform();
+        }
+    }, { passive: false });
+
+    wrap.addEventListener('touchend', () => {
+        snTouchDist = 0;
+        snTouchPanStart = null;
+    });
+}
+
+// ===================================================
+// SPREAD FACTOR
+// ===================================================
+function snApplySpread() {
+    const canvas = sn$.canvas;
+    if (!canvas) return;
+    const nodes = canvas.querySelectorAll('.sn-world-node');
+    nodes.forEach(node => {
+        const wid = node.dataset.worldId;
+        const pos = SN_SPECTRUM_POSITIONS[wid];
+        if (!pos) return;
+        const [origX, origY] = pos;
+        const newX = 50 + (origX - 50) * snSpreadFactor;
+        const newY = 50 + (origY - 50) * snSpreadFactor;
+        node.style.left = newX + '%';
+        node.style.top = newY + '%';
+    });
+}
+
+function snBindSpreadControl() {
+    const btns = document.querySelectorAll('.sn-spread-btn');
+    // Sync active class to persisted spread factor on load
+    btns.forEach(b => b.classList.toggle('active', parseFloat(b.dataset.spread) === snSpreadFactor));
+    btns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            snSpreadFactor = parseFloat(btn.dataset.spread);
+            try { localStorage.setItem('sn-spread-factor', snSpreadFactor); } catch(e) {}
+            btns.forEach(b => b.classList.toggle('active', b === btn));
+            snApplySpread();
+        });
+    });
+}
+
+// ===================================================
+// LABEL TOGGLE
+// ===================================================
+function snBindLabelToggle() {
+    const btn = document.getElementById('sn-label-toggle');
+    if (!btn || !sn$.canvas) return;
+
+    // Apply initial state from localStorage
+    if (!snLabelsVisible) {
+        sn$.canvas.classList.add('sn-labels-hidden');
+        btn.classList.add('active');
+    }
+
+    btn.addEventListener('click', () => {
+        snLabelsVisible = !snLabelsVisible;
+        sn$.canvas.classList.toggle('sn-labels-hidden', !snLabelsVisible);
+        btn.classList.toggle('active', !snLabelsVisible);
+        try { localStorage.setItem('sn-labels-visible', snLabelsVisible ? 'true' : 'false'); } catch(e) {}
+    });
+}
+
+// ===================================================
 // EVENT BINDINGS
 // ===================================================
 function snBindEvents() {
@@ -11276,16 +11516,23 @@ function snBindEvents() {
         });
     }
 
-    // Font size buttons
-    document.querySelectorAll('.sn-text-size-btn').forEach(btn => {
-        btn.addEventListener('click', () => snSetTextSize(btn.dataset.size));
-    });
+    // Font size buttons — now dynamically injected in snRenderArticle;
+    // no static binding needed here.
 
     // Resize observer for grid
     if (sn$.canvas) {
         const ro = new ResizeObserver(() => snDrawGrid());
         ro.observe(sn$.canvas);
     }
+
+    // Pan & Zoom for spectrum canvas
+    snBindPanZoom();
+
+    // Spread factor control
+    snBindSpreadControl();
+
+    // Label toggle
+    snBindLabelToggle();
 }
 
 // Legacy stub: updateSelectionCounter (referenced by old code paths)
