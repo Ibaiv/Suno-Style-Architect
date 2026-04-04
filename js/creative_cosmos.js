@@ -9991,6 +9991,7 @@ let snPendingRange = null;
 let snSearchTimeout = null;
 let snActiveLegendGroup = null;
 let snCurrentTextSize = 'medium';
+try { const ts = localStorage.getItem('sn-text-size'); if (ts !== null && SN_TEXT_SIZES[ts]) snCurrentTextSize = ts; } catch(e) {}
 let snGridDrawn = false;
 
 // Pan & Zoom state
@@ -10127,6 +10128,9 @@ function initCreativeCosmos() {
 
     // Bind all events
     snBindEvents();
+
+    // Apply persisted text size
+    if (snCurrentTextSize !== 'medium') snSetTextSize(snCurrentTextSize);
 
     // Keyboard shortcuts
     registerCosmosShortcuts();
@@ -11127,6 +11131,7 @@ async function generateVision() {
 // ===================================================
 function snSetTextSize(size) {
     snCurrentTextSize = size;
+    try { localStorage.setItem('sn-text-size', size); } catch(e) {}
     const modal = document.getElementById('idea-starter-modal');
     if (modal) {
         modal.style.setProperty('--sn-reader-font-size', SN_TEXT_SIZES[size] + 'px');
