@@ -9997,6 +9997,11 @@ let snGridDrawn = false;
 let snZoom = 1.0;
 let snPanX = 0;
 let snPanY = 0;
+try {
+    const z = localStorage.getItem('sn-zoom'); if (z !== null) snZoom = parseFloat(z);
+    const px = localStorage.getItem('sn-pan-x'); if (px !== null) snPanX = parseFloat(px);
+    const py = localStorage.getItem('sn-pan-y'); if (py !== null) snPanY = parseFloat(py);
+} catch(e) {}
 let snIsDragging = false;
 let snDragStartX = 0;
 let snDragStartY = 0;
@@ -10217,8 +10222,7 @@ function closeIdeaStarter() {
         modal._scopeToken = null;
     }
 
-    // Reset pan & zoom
-    snResetPanZoom();
+    // Pan & zoom state is now persisted — no reset on close
 }
 
 // ===================================================
@@ -11206,9 +11210,18 @@ function snHandleArticleScroll() {
 const SN_ZOOM_MIN = 0.4;
 const SN_ZOOM_MAX = 2.5;
 
+function snPersistViewState() {
+    try {
+        localStorage.setItem('sn-zoom', snZoom);
+        localStorage.setItem('sn-pan-x', snPanX);
+        localStorage.setItem('sn-pan-y', snPanY);
+    } catch(e) {}
+}
+
 function snApplyTransform() {
     if (!sn$.canvas) return;
     sn$.canvas.style.transform = `translate(${snPanX}px, ${snPanY}px) scale(${snZoom})`;
+    snPersistViewState();
 }
 
 function snResetPanZoom() {
@@ -11348,6 +11361,9 @@ function snBindPanZoom() {
         snTouchDist = 0;
         snTouchPanStart = null;
     });
+
+    // Apply persisted pan/zoom state on init
+    snApplyTransform();
 }
 
 // ===================================================
