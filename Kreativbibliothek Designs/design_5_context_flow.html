@@ -1,0 +1,2936 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Context Flow — Kreativbibliothek</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================
+   CONTEXT FLOW — Design #5
+   Kreativbibliothek Redesign for Suno Style Architect
+   Search-first, contextual exploration with side drawer
+   ========================================================== */
+
+/* --- Reset & Base --- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg-deep: #08081a;
+  --bg-drawer: rgba(12, 12, 26, 0.95);
+  --bg-glass: rgba(20, 20, 42, 0.55);
+  --bg-glass-strong: rgba(20, 20, 42, 0.75);
+  --bg-surface: rgba(255, 255, 255, 0.03);
+  --bg-surface-hover: rgba(255, 255, 255, 0.06);
+  --bg-surface-active: rgba(255, 255, 255, 0.08);
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-medium: rgba(255, 255, 255, 0.1);
+  --border-active: rgba(255, 255, 255, 0.18);
+  --text-primary: #e8e8f2;
+  --text-secondary: #9898b4;
+  --text-muted: #5e5e7a;
+  --text-dim: #3a3a58;
+
+  /* Category Colors */
+  --cat-orchestra: #d4a056;
+  --cat-ambient: #60a5fa;
+  --cat-club: #2dd4bf;
+  --cat-hiphop: #a78bfa;
+  --cat-world: #4ade80;
+  --cat-sound: #f472b6;
+
+  /* Functional */
+  --accent-blue: #3b82f6;
+  --accent-blue-dim: rgba(59, 130, 246, 0.15);
+  --accent-green: #22c55e;
+  --accent-rose: #f43f5e;
+  --accent-amber: #f59e0b;
+  --highlight-amber: rgba(245, 158, 11, 0.18);
+
+  /* Timing */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Spacing */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;
+
+  --drawer-width: 60vw;
+  --drawer-min-width: 520px;
+  --drawer-max-width: 900px;
+
+  --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+@media (max-width: 960px) {
+  :root {
+    --drawer-width: 88vw;
+    --drawer-min-width: 320px;
+  }
+}
+
+html, body {
+  height: 100%;
+  font-family: var(--font);
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* --- Scrollbar --- */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.14); }
+
+/* =============================================
+   MAIN APP SHELL (behind drawer)
+   ============================================= */
+.app-shell {
+  width: 100vw;
+  height: 100vh;
+  background: var(--bg-deep);
+  background-image:
+    radial-gradient(ellipse at 60% 40%, rgba(30, 20, 60, 0.25) 0%, transparent 60%),
+    radial-gradient(ellipse at 20% 80%, rgba(20, 40, 70, 0.12) 0%, transparent 50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: filter 0.35s var(--ease-out);
+}
+
+.app-shell.dimmed {
+  filter: brightness(0.4);
+}
+
+.app-shell-placeholder {
+  text-align: center;
+  max-width: 400px;
+  padding: 40px;
+}
+
+.app-shell-placeholder h2 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--text-secondary);
+}
+
+.app-shell-placeholder p {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.btn-open-library {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: var(--font);
+  color: #fff;
+  background: var(--accent-blue);
+  border: none;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all 0.2s var(--ease-smooth);
+  letter-spacing: 0.2px;
+}
+
+.btn-open-library:hover {
+  background: #4b8df7;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.25);
+}
+
+.btn-open-library:active {
+  transform: translateY(0);
+}
+
+.btn-open-library .kbd {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 7px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 4px;
+  font-family: var(--font);
+}
+
+/* =============================================
+   BACKDROP OVERLAY
+   ============================================= */
+.drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s var(--ease-out);
+  z-index: 500;
+}
+
+.drawer-backdrop.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* =============================================
+   DRAWER
+   ============================================= */
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: var(--drawer-width);
+  min-width: var(--drawer-min-width);
+  max-width: var(--drawer-max-width);
+  height: 100vh;
+  background: var(--bg-drawer);
+  border-left: 1px solid var(--border-subtle);
+  z-index: 600;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.35s var(--ease-out);
+  will-change: transform;
+}
+
+.drawer.open {
+  transform: translateX(0);
+}
+
+/* --- Drawer Header --- */
+.drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+}
+
+.drawer-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.drawer-title {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.drawer-title-icon {
+  font-size: 17px;
+}
+
+.global-stats {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.stat-pill {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-pill .stat-val {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.btn-close-drawer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 16px;
+  font-family: var(--font);
+  transition: all 0.15s;
+}
+
+.btn-close-drawer:hover {
+  background: var(--bg-surface-hover);
+  color: var(--text-primary);
+  border-color: var(--border-medium);
+}
+
+/* --- Search Area --- */
+.search-area {
+  padding: 16px 24px 12px;
+  flex-shrink: 0;
+  transition: padding 0.25s var(--ease-smooth);
+}
+
+.search-area.compact {
+  padding: 10px 24px 8px;
+}
+
+.search-wrapper {
+  position: relative;
+}
+
+.search-input {
+  width: 100%;
+  height: 48px;
+  padding: 0 44px 0 44px;
+  font-size: 15px;
+  font-weight: 400;
+  font-family: var(--font);
+  color: var(--text-primary);
+  background: var(--bg-glass);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  outline: none;
+  transition: all 0.2s var(--ease-smooth);
+}
+
+.search-area.compact .search-input {
+  height: 40px;
+  font-size: 14px;
+  border-radius: var(--radius-md);
+}
+
+.search-input::placeholder {
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.search-input:focus {
+  border-color: var(--accent-blue);
+  background: var(--bg-glass-strong);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1), 0 4px 16px rgba(0,0,0,0.2);
+}
+
+.search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: 16px;
+  pointer-events: none;
+  transition: color 0.2s;
+}
+
+.search-input:focus ~ .search-icon {
+  color: var(--accent-blue);
+}
+
+.search-clear {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 14px;
+  font-family: var(--font);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+
+.search-clear.visible { display: flex; }
+.search-clear:hover { background: var(--bg-surface-hover); color: var(--text-primary); }
+
+/* Search Results Dropdown */
+.search-results {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  max-height: 380px;
+  overflow-y: auto;
+  background: rgba(16, 16, 34, 0.97);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.5), 0 4px 12px rgba(0,0,0,0.3);
+  z-index: 100;
+  display: none;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.search-results.visible { display: block; }
+
+.search-results-section {
+  padding: 6px 0;
+}
+
+.search-results-section:not(:last-child) {
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.search-results-label {
+  padding: 8px 16px 4px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.search-result-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background 0.1s;
+  font-size: 13px;
+}
+
+.search-result-item:hover,
+.search-result-item.focused {
+  background: var(--bg-surface-hover);
+}
+
+.search-result-item .sr-icon {
+  font-size: 16px;
+  width: 24px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.search-result-item .sr-name {
+  font-weight: 500;
+  color: var(--text-primary);
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.search-result-item .sr-badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  color: var(--text-secondary);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+}
+
+.search-result-item .sr-world-source {
+  font-size: 11px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.search-result-item .sr-match-highlight {
+  color: var(--accent-blue);
+  font-weight: 600;
+}
+
+.search-no-results {
+  padding: 20px 16px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* keyboard hint */
+.search-kbd-hint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 6px 16px;
+  border-top: 1px solid var(--border-subtle);
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+.search-kbd-hint kbd {
+  font-family: var(--font);
+  font-size: 10px;
+  padding: 1px 5px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 3px;
+}
+
+/* --- Recently Visited --- */
+.recents-area {
+  padding: 0 24px 12px;
+  flex-shrink: 0;
+  display: none;
+}
+
+.recents-area.visible { display: block; }
+
+.recents-area.compact-hidden { display: none !important; }
+
+.recents-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+}
+
+.recents-row {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+}
+
+.recents-row::-webkit-scrollbar { display: none; }
+
+.recent-card {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 12px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+
+.recent-card:hover {
+  background: var(--bg-surface-hover);
+  color: var(--text-primary);
+  border-color: var(--border-medium);
+}
+
+.recent-card .rc-icon { font-size: 14px; }
+.recent-card .rc-name { max-width: 120px; overflow: hidden; text-overflow: ellipsis; }
+
+/* --- Scrollable Content Area --- */
+.drawer-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* --- Accordion Browser --- */
+.accordion-browser {
+  padding: 0 24px 20px;
+  transition: opacity 0.2s;
+}
+
+.accordion-browser.hidden {
+  display: none;
+}
+
+.accordion-category {
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.accordion-category:last-child { border-bottom: none; }
+
+.accordion-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 0;
+  cursor: pointer;
+  user-select: none;
+  transition: opacity 0.15s;
+}
+
+.accordion-header:hover {
+  opacity: 0.85;
+}
+
+.accordion-color-bar {
+  width: 3px;
+  height: 20px;
+  border-radius: 2px;
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+.accordion-cat-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.accordion-cat-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  flex: 1;
+}
+
+.accordion-cat-count {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-dim);
+}
+
+.accordion-chevron {
+  font-size: 11px;
+  color: var(--text-muted);
+  transition: transform 0.2s var(--ease-smooth);
+  flex-shrink: 0;
+}
+
+.accordion-category.expanded .accordion-chevron {
+  transform: rotate(90deg);
+}
+
+.accordion-world-list {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.25s var(--ease-smooth);
+}
+
+.accordion-category.expanded .accordion-world-list {
+  max-height: 800px;
+}
+
+.accordion-world-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0 8px 16px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text-secondary);
+  transition: all 0.12s;
+  border-radius: var(--radius-sm);
+}
+
+.accordion-world-item:hover {
+  color: var(--text-primary);
+  background: var(--bg-surface-hover);
+  padding-left: 20px;
+}
+
+.accordion-world-item.active {
+  color: var(--text-primary);
+  background: var(--bg-surface-active);
+  font-weight: 500;
+}
+
+.accordion-world-item .aw-icon { font-size: 15px; }
+
+.accordion-world-item .aw-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.accordion-world-item .aw-sel-count {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 7px;
+  background: var(--accent-blue-dim);
+  color: var(--accent-blue);
+  border-radius: var(--radius-full);
+  display: none;
+}
+
+.accordion-world-item .aw-sel-count.visible { display: block; }
+
+/* --- Compact Accordion (when article is open) --- */
+.accordion-browser.compact .accordion-header {
+  padding: 8px 0;
+}
+
+.accordion-browser.compact .accordion-cat-name {
+  font-size: 12px;
+}
+
+.accordion-browser.compact .accordion-cat-icon {
+  font-size: 14px;
+}
+
+/* --- Article Area --- */
+.article-area {
+  display: none;
+  padding: 0 24px 20px;
+}
+
+.article-area.visible { display: block; }
+
+/* Back navigation */
+.article-back-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0 16px;
+}
+
+.btn-back {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: var(--font);
+  color: var(--text-secondary);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-back:hover {
+  color: var(--text-primary);
+  background: var(--bg-surface-hover);
+  border-color: var(--border-medium);
+}
+
+.btn-back .back-arrow { font-size: 13px; }
+
+/* Quick Brief Card */
+.quick-brief {
+  background: var(--bg-glass);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  margin-bottom: 20px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.qb-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.qb-icon {
+  font-size: 32px;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-surface);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+}
+
+.qb-meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.qb-name {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 4px;
+}
+
+.qb-category {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: var(--radius-full);
+  display: inline-block;
+  border: 1px solid;
+  opacity: 0.8;
+}
+
+.qb-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+}
+
+.qb-keywords {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.qb-keyword {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 10px;
+  color: var(--text-secondary);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+}
+
+/* Featured Terms */
+.featured-terms-area {
+  margin-bottom: 24px;
+}
+
+.ft-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 10px;
+}
+
+.ft-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.featured-term {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: var(--font);
+  color: var(--text-secondary);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all 0.2s var(--ease-smooth);
+  overflow: hidden;
+}
+
+.featured-term::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  transform: scale(0.5);
+  transition: all 0.25s var(--ease-out);
+}
+
+.featured-term:hover {
+  color: var(--text-primary);
+  border-color: var(--border-medium);
+  background: var(--bg-surface-hover);
+}
+
+.featured-term.selected {
+  color: #fff;
+  border-color: transparent;
+}
+
+.featured-term.selected::before {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.featured-term .ft-check {
+  display: none;
+  font-size: 11px;
+}
+
+.featured-term.selected .ft-check {
+  display: inline;
+  position: relative;
+  z-index: 1;
+}
+
+.featured-term .ft-text {
+  position: relative;
+  z-index: 1;
+}
+
+/* Article Content Body */
+.article-body {
+  max-width: 640px;
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--text-primary);
+  font-weight: 400;
+}
+
+.article-body h1 {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 20px;
+  display: none; /* hidden — brief card replaces it */
+}
+
+.article-body h2 {
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.35;
+  margin-top: 32px;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  scroll-margin-top: 24px;
+}
+
+.article-body p {
+  margin-bottom: 14px;
+}
+
+.article-body ul, .article-body ol {
+  margin-bottom: 14px;
+  padding-left: 20px;
+}
+
+.article-body li {
+  margin-bottom: 6px;
+}
+
+.article-body strong {
+  font-weight: 600;
+  color: #fff;
+}
+
+.article-body em {
+  font-style: italic;
+  color: var(--text-secondary);
+}
+
+/* Interactive Terms in Article */
+.article-body .interactive-term {
+  color: var(--accent-blue);
+  cursor: pointer;
+  padding: 1px 4px;
+  margin: 0 -2px;
+  border-radius: 4px;
+  transition: all 0.15s;
+  text-decoration-style: dotted;
+  text-decoration-color: rgba(59, 130, 246, 0.3);
+  text-underline-offset: 3px;
+  position: relative;
+}
+
+.article-body .interactive-term:hover {
+  background: rgba(59, 130, 246, 0.08);
+  text-decoration: none;
+}
+
+.article-body .interactive-term.selected {
+  background: rgba(59, 130, 246, 0.18);
+  color: #93bbfd;
+  text-decoration: none;
+}
+
+/* Custom Selection (Text Marking) */
+.custom-selection {
+  background: var(--highlight-amber);
+  border-radius: 3px;
+  padding: 1px 0;
+  position: relative;
+}
+
+.custom-selection .note-indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--accent-amber);
+  background: rgba(245, 158, 11, 0.15);
+  border-radius: 50%;
+  margin-left: 3px;
+  vertical-align: super;
+  cursor: help;
+  position: relative;
+  top: -2px;
+}
+
+/* Section Dot Navigator */
+.section-nav {
+  position: fixed;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 650;
+  display: none;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px 4px;
+}
+
+.section-nav.visible { display: flex; }
+
+.section-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--text-dim);
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.section-dot:hover {
+  background: var(--text-muted);
+  transform: scale(1.4);
+}
+
+.section-dot.active {
+  background: var(--accent-blue);
+  transform: scale(1.4);
+}
+
+.section-dot .dot-tooltip {
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-primary);
+  background: rgba(16, 16, 34, 0.95);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+  padding: 4px 10px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.section-dot:hover .dot-tooltip { opacity: 1; }
+
+/* --- Drawer Footer --- */
+.drawer-footer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 24px;
+  border-top: 1px solid var(--border-subtle);
+  background: rgba(12, 12, 26, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  flex-shrink: 0;
+}
+
+.btn-generate {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  justify-content: center;
+  padding: 11px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--font);
+  color: #fff;
+  background: var(--accent-blue);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.2px;
+}
+
+.btn-generate:hover:not(:disabled) {
+  background: #4b8df7;
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.2);
+}
+
+.btn-generate:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.btn-generate .gen-spinner {
+  display: none;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+.btn-generate .gen-spinner.visible { display: block; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.btn-secondary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 11px 18px;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: var(--font);
+  color: var(--text-secondary);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-secondary:hover {
+  color: var(--text-primary);
+  background: var(--bg-surface-hover);
+  border-color: var(--border-medium);
+}
+
+/* --- Floating Selection Summary --- */
+.selection-summary {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 0 -24px;
+  padding: 12px 24px;
+  background: rgba(12, 12, 26, 0.92);
+  border-top: 1px solid var(--border-subtle);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transform: translateY(100%);
+  transition: transform 0.25s var(--ease-out);
+  z-index: 10;
+}
+
+.selection-summary.visible {
+  transform: translateY(0);
+}
+
+.ss-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ss-worlds {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.ss-world-badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  font-size: 11px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.ss-world-badge:hover {
+  background: var(--bg-surface-hover);
+  border-color: var(--border-medium);
+}
+
+.ss-world-badge .ssw-icon { font-size: 12px; }
+.ss-world-badge .ssw-count { font-weight: 600; color: var(--text-primary); }
+
+.ss-counts {
+  font-size: 11px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.ss-expand-btn {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-family: var(--font);
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+
+.ss-expand-btn:hover {
+  background: var(--bg-surface-hover);
+  color: var(--text-primary);
+}
+
+/* Selection Detail Panel */
+.selection-detail {
+  display: none;
+  max-height: 240px;
+  overflow-y: auto;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.selection-detail.visible { display: block; }
+
+.sd-world-group {
+  margin-bottom: 10px;
+}
+
+.sd-world-name {
+  font-size: 11px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sd-term-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  font-size: 11px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  margin: 0 4px 4px 0;
+  color: var(--text-secondary);
+}
+
+.sd-term-remove {
+  width: 14px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 12px;
+  font-family: var(--font);
+  border-radius: 50%;
+  transition: all 0.1s;
+}
+
+.sd-term-remove:hover {
+  color: var(--accent-rose);
+  background: rgba(244, 63, 94, 0.1);
+}
+
+.sd-passage-chip {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 6px 10px;
+  font-size: 11px;
+  color: var(--text-muted);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  margin-bottom: 4px;
+}
+
+.sd-passage-chip .sd-passage-text {
+  flex: 1;
+  line-height: 1.4;
+  font-style: italic;
+}
+
+.sd-passage-chip .sd-passage-note {
+  font-size: 10px;
+  color: var(--accent-amber);
+  font-style: normal;
+  margin-top: 2px;
+}
+
+/* --- Mark Popup --- */
+.mark-popup {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 8px;
+  background: rgba(16, 16, 34, 0.95);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(4px);
+  transition: all 0.15s var(--ease-out);
+  z-index: 700;
+}
+
+.mark-popup.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.mark-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: var(--font);
+  color: var(--text-primary);
+  background: var(--bg-surface-hover);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.12s;
+  white-space: nowrap;
+}
+
+.mark-btn:hover {
+  background: var(--bg-surface-active);
+  border-color: var(--border-medium);
+}
+
+.mark-btn .mark-icon { font-size: 13px; }
+
+/* Note Overlay */
+.note-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.5);
+  z-index: 800;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+.note-overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.note-dialog {
+  width: 360px;
+  background: rgba(18, 18, 36, 0.97);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+}
+
+.note-dialog h3 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+.note-field {
+  width: 100%;
+  height: 80px;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-family: var(--font);
+  color: var(--text-primary);
+  background: var(--bg-glass);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  outline: none;
+  resize: none;
+  margin-bottom: 14px;
+  transition: border-color 0.2s;
+}
+
+.note-field:focus {
+  border-color: var(--accent-blue);
+}
+
+.note-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.note-actions button {
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: var(--font);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.note-actions .note-cancel {
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+}
+
+.note-actions .note-cancel:hover { background: var(--bg-surface-hover); }
+
+.note-actions .note-save {
+  background: var(--accent-blue);
+  color: #fff;
+  border-color: var(--accent-blue);
+}
+
+.note-actions .note-save:hover { background: #4b8df7; }
+
+/* --- Toast --- */
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+  background: rgba(18, 18, 36, 0.95);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-full);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  pointer-events: auto;
+  transform: translateY(16px);
+  opacity: 0;
+  animation: toastIn 0.25s var(--ease-out) forwards;
+}
+
+.toast.exit {
+  animation: toastOut 0.2s var(--ease-smooth) forwards;
+}
+
+@keyframes toastIn {
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes toastOut {
+  to { transform: translateY(-8px); opacity: 0; }
+}
+
+.toast-icon { font-size: 15px; }
+.toast.success .toast-icon::before { content: '\2713'; color: var(--accent-green); }
+.toast.error .toast-icon::before { content: '\2717'; color: var(--accent-rose); }
+.toast.warning .toast-icon::before { content: '\26A0'; color: var(--accent-amber); }
+.toast.info .toast-icon::before { content: '\2139'; color: var(--accent-blue); }
+
+/* --- Prompt Result Modal --- */
+.prompt-modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.5);
+  z-index: 900;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+.prompt-modal-overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.prompt-modal {
+  width: 520px;
+  max-width: 90vw;
+  max-height: 80vh;
+  background: rgba(18, 18, 36, 0.97);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-xl);
+  padding: 28px;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.5);
+  overflow-y: auto;
+}
+
+.prompt-modal h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.prompt-result-text {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-primary);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  white-space: pre-wrap;
+  margin-bottom: 16px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.prompt-modal-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.prompt-modal-actions button {
+  padding: 9px 18px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--font);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.15s;
+  border: 1px solid transparent;
+}
+
+.prompt-modal-actions .btn-copy {
+  background: var(--accent-blue);
+  color: #fff;
+}
+
+.prompt-modal-actions .btn-copy:hover { background: #4b8df7; }
+
+.prompt-modal-actions .btn-close-modal {
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  border-color: var(--border-subtle);
+}
+
+.prompt-modal-actions .btn-close-modal:hover {
+  background: var(--bg-surface-hover);
+  color: var(--text-primary);
+}
+
+/* --- Reduced Motion --- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* --- Focus Visible --- */
+*:focus-visible {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: 2px;
+}
+
+button:focus-visible {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: 2px;
+}
+</style>
+</head>
+<body>
+
+<!-- ======== MAIN APP SHELL ======== -->
+<div class="app-shell" id="app-shell">
+  <div class="app-shell-placeholder">
+    <h2>Suno Style Architect</h2>
+    <p>Erkunde musikalische Welten, waehle Begriffe aus und generiere kreative Suno-Prompts.</p>
+    <button class="btn-open-library" id="btn-open-library">
+      Kreativ-Bibliothek oeffnen
+      <span class="kbd">B</span>
+    </button>
+  </div>
+</div>
+
+<!-- ======== DRAWER BACKDROP ======== -->
+<div class="drawer-backdrop" id="drawer-backdrop"></div>
+
+<!-- ======== DRAWER ======== -->
+<div class="drawer" id="drawer">
+
+  <!-- Header -->
+  <div class="drawer-header">
+    <div class="drawer-header-left">
+      <span class="drawer-title-icon">&#128218;</span>
+      <span class="drawer-title">Kreativ-Bibliothek</span>
+    </div>
+    <div class="global-stats">
+      <div class="stat-pill">
+        <span>Begriffe</span>
+        <span class="stat-val" id="stat-terms">0</span>
+      </div>
+      <div class="stat-pill">
+        <span>Passagen</span>
+        <span class="stat-val" id="stat-passages">0</span>
+      </div>
+    </div>
+    <button class="btn-close-drawer" id="btn-close-drawer" title="Schliessen (Esc)">&times;</button>
+  </div>
+
+  <!-- Search -->
+  <div class="search-area" id="search-area">
+    <div class="search-wrapper" id="search-wrapper">
+      <input type="text" class="search-input" id="search-input" placeholder="Suche in allen Welten..." autocomplete="off" spellcheck="false">
+      <span class="search-icon" id="search-icon">&#128269;</span>
+      <button class="search-clear" id="search-clear">&times;</button>
+      <div class="search-results" id="search-results"></div>
+    </div>
+  </div>
+
+  <!-- Recently Visited -->
+  <div class="recents-area" id="recents-area">
+    <div class="recents-label">Zuletzt besucht</div>
+    <div class="recents-row" id="recents-row"></div>
+  </div>
+
+  <!-- Scrollable Content -->
+  <div class="drawer-content" id="drawer-content">
+
+    <!-- Accordion Browser -->
+    <div class="accordion-browser" id="accordion-browser"></div>
+
+    <!-- Article Area -->
+    <div class="article-area" id="article-area">
+      <div class="article-back-row">
+        <button class="btn-back" id="btn-back">
+          <span class="back-arrow">&larr;</span>
+          <span>Alle Welten</span>
+        </button>
+      </div>
+
+      <div class="quick-brief" id="quick-brief"></div>
+
+      <div class="featured-terms-area" id="featured-terms-area"></div>
+
+      <div class="article-body" id="article-body"></div>
+
+      <!-- Floating Selection Summary -->
+      <div class="selection-summary" id="selection-summary">
+        <div class="ss-row">
+          <div class="ss-worlds" id="ss-worlds"></div>
+          <div class="ss-counts" id="ss-counts"></div>
+          <button class="ss-expand-btn" id="ss-expand-btn" title="Details anzeigen">&#9660;</button>
+        </div>
+        <div class="selection-detail" id="selection-detail"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="drawer-footer">
+    <button class="btn-generate" id="btn-generate" disabled>
+      <span class="gen-spinner" id="gen-spinner"></span>
+      <span id="gen-label">Prompt erstellen</span>
+    </button>
+    <button class="btn-secondary" id="btn-reset">Zuruecksetzen</button>
+    <button class="btn-secondary" id="btn-cancel">Abbrechen</button>
+  </div>
+</div>
+
+<!-- Section Dot Navigator -->
+<div class="section-nav" id="section-nav"></div>
+
+<!-- Mark Popup -->
+<div class="mark-popup" id="mark-popup">
+  <button class="mark-btn" id="mark-btn-highlight">
+    <span class="mark-icon">&#9998;</span>
+    Markieren
+  </button>
+  <button class="mark-btn" id="mark-btn-note">
+    <span class="mark-icon">&#128196;</span>
+    Notiz
+  </button>
+</div>
+
+<!-- Note Overlay -->
+<div class="note-overlay" id="note-overlay">
+  <div class="note-dialog">
+    <h3>Notiz hinzufuegen</h3>
+    <textarea class="note-field" id="note-field" placeholder="Deine Notiz zu dieser Passage..."></textarea>
+    <div class="note-actions">
+      <button class="note-cancel" id="note-cancel">Abbrechen</button>
+      <button class="note-save" id="note-save">Speichern</button>
+    </div>
+  </div>
+</div>
+
+<!-- Prompt Result Modal -->
+<div class="prompt-modal-overlay" id="prompt-modal-overlay">
+  <div class="prompt-modal">
+    <h3>&#127925; Generierter Prompt</h3>
+    <div class="prompt-result-text" id="prompt-result-text"></div>
+    <div class="prompt-modal-actions">
+      <button class="btn-close-modal" id="prompt-modal-close">Schliessen</button>
+      <button class="btn-copy" id="prompt-modal-copy">Kopieren</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toast-container"></div>
+
+
+<script>
+/* ==========================================================
+   CONTEXT FLOW — JavaScript
+   ========================================================== */
+
+// ---- CONFIGURATION ----
+const API_URL = 'https://openrouter.ai/api/v1/chat/completions';
+const CREATIVE_SYSTEM_PROMPT = `Du bist ein hoch-kreativer Musik-Architekt. Deine Aufgabe ist es, basierend auf den vom User in einem interaktiven Artikel ausgewählten Begriffen einen kohärenten, detaillierten Suno-Prompt zu erstellen.
+WICHTIG:
+- Integriere die ausgewählten Begriffe (Keywords) sinnvoll in den Prompt.
+- Das Ergebnis soll ein reiner Prompt-String sein, formatiert im [Style], [Instrumentation], [Mood] Format.
+- Füge keine Erklärungen hinzu, nur den Prompt.`;
+
+const GROUP_META = {
+  orchestra_group:       { label: 'Orchestral & Klassik', emoji: '\uD83C\uDFBB', color: 'var(--cat-orchestra)', colorRaw: '#d4a056' },
+  ambient_group:         { label: 'Ambient & Texturen',   emoji: '\uD83C\uDF0C', color: 'var(--cat-ambient)',   colorRaw: '#60a5fa' },
+  urban_club_group:      { label: 'Club & Electronic',    emoji: '\uD83C\uDFA7', color: 'var(--cat-club)',      colorRaw: '#2dd4bf' },
+  hip_hop_group:         { label: 'Hip-Hop & Beats',      emoji: '\uD83C\uDFA4', color: 'var(--cat-hiphop)',    colorRaw: '#a78bfa' },
+  world_orchestra_group: { label: 'Weltmusik',            emoji: '\uD83C\uDF0F', color: 'var(--cat-world)',     colorRaw: '#4ade80' },
+  sound_feeling_group:   { label: 'Klangwelten',          emoji: '\uD83D\uDD0A', color: 'var(--cat-sound)',     colorRaw: '#f472b6' }
+};
+
+const GROUP_ORDER = [
+  'orchestra_group', 'ambient_group', 'urban_club_group',
+  'hip_hop_group', 'world_orchestra_group', 'sound_feeling_group'
+];
+
+// ---- STATE ----
+let allWorlds = [];
+let worldDataCache = {};
+let searchIndex = { worlds: [], terms: [] };
+let selections = {};      // { worldId: { term: true } }
+let customSelections = {}; // { worldId: [{ id, text, note }] }
+let activeWorldId = null;
+let pendingRange = null;
+let recentWorlds = [];     // [{ id, name, icon }] max 5
+let drawerOpen = false;
+let searchFocusIdx = -1;
+let selectionDetailOpen = false;
+
+// ---- DOM REFS ----
+const $appShell = document.getElementById('app-shell');
+const $backdrop = document.getElementById('drawer-backdrop');
+const $drawer = document.getElementById('drawer');
+const $btnOpenLibrary = document.getElementById('btn-open-library');
+const $btnCloseDrawer = document.getElementById('btn-close-drawer');
+const $searchArea = document.getElementById('search-area');
+const $searchInput = document.getElementById('search-input');
+const $searchClear = document.getElementById('search-clear');
+const $searchResults = document.getElementById('search-results');
+const $recentsArea = document.getElementById('recents-area');
+const $recentsRow = document.getElementById('recents-row');
+const $drawerContent = document.getElementById('drawer-content');
+const $accordionBrowser = document.getElementById('accordion-browser');
+const $articleArea = document.getElementById('article-area');
+const $btnBack = document.getElementById('btn-back');
+const $quickBrief = document.getElementById('quick-brief');
+const $featuredTermsArea = document.getElementById('featured-terms-area');
+const $articleBody = document.getElementById('article-body');
+const $selectionSummary = document.getElementById('selection-summary');
+const $ssWorlds = document.getElementById('ss-worlds');
+const $ssCounts = document.getElementById('ss-counts');
+const $ssExpandBtn = document.getElementById('ss-expand-btn');
+const $selectionDetail = document.getElementById('selection-detail');
+const $sectionNav = document.getElementById('section-nav');
+const $markPopup = document.getElementById('mark-popup');
+const $noteOverlay = document.getElementById('note-overlay');
+const $noteField = document.getElementById('note-field');
+const $statTerms = document.getElementById('stat-terms');
+const $statPassages = document.getElementById('stat-passages');
+const $btnGenerate = document.getElementById('btn-generate');
+const $genSpinner = document.getElementById('gen-spinner');
+const $genLabel = document.getElementById('gen-label');
+const $btnReset = document.getElementById('btn-reset');
+const $btnCancel = document.getElementById('btn-cancel');
+const $promptOverlay = document.getElementById('prompt-modal-overlay');
+const $promptResultText = document.getElementById('prompt-result-text');
+const $toastContainer = document.getElementById('toast-container');
+
+
+// ---- INIT ----
+async function init() {
+  loadRecentsFromStorage();
+
+  try {
+    const resp = await fetch('../data/worlds/index.json');
+    if (!resp.ok) throw new Error('Could not load index.json');
+    const data = await resp.json();
+    allWorlds = data.worlds || [];
+  } catch (err) {
+    showToast('Fehler beim Laden der Welten: ' + err.message, 'error', 6000);
+    return;
+  }
+
+  // Build search index for world names immediately
+  searchIndex.worlds = allWorlds.map(w => ({
+    id: w.id,
+    name: w.name,
+    icon: w.icon,
+    group: w.group,
+    nameLower: w.name.toLowerCase()
+  }));
+
+  renderAccordion();
+  renderRecents();
+  bindEvents();
+
+  // Pre-load all world data and build full term index in background
+  requestIdleCallback ? requestIdleCallback(preloadAllTerms) : setTimeout(preloadAllTerms, 500);
+}
+
+async function preloadAllTerms() {
+  const batchSize = 5;
+  for (let i = 0; i < allWorlds.length; i += batchSize) {
+    const batch = allWorlds.slice(i, i + batchSize);
+    const promises = batch.map(async (world) => {
+      if (worldDataCache[world.id]) return;
+      try {
+        const resp = await fetch(`../data/worlds/${world.id}.json`);
+        if (!resp.ok) return;
+        const data = await resp.json();
+        worldDataCache[world.id] = data;
+        indexWorldTerms(world, data);
+      } catch (_) {}
+    });
+    await Promise.all(promises);
+  }
+}
+
+function indexWorldTerms(worldMeta, worldData) {
+  const tmp = document.createElement('div');
+  tmp.innerHTML = worldData.content || '';
+  const termEls = tmp.querySelectorAll('.interactive-term');
+  const seen = new Set();
+  termEls.forEach(el => {
+    const term = el.getAttribute('data-term') || el.textContent.trim();
+    if (!term || seen.has(term)) return;
+    seen.add(term);
+    searchIndex.terms.push({
+      term: term,
+      termLower: term.toLowerCase(),
+      worldId: worldMeta.id,
+      worldName: worldMeta.name,
+      worldIcon: worldMeta.icon,
+      group: worldMeta.group
+    });
+  });
+}
+
+
+// ---- EVENTS ----
+function bindEvents() {
+  // Open / close drawer
+  $btnOpenLibrary.addEventListener('click', openDrawer);
+  $btnCloseDrawer.addEventListener('click', closeDrawer);
+  $backdrop.addEventListener('click', closeDrawer);
+  $btnCancel.addEventListener('click', closeDrawer);
+
+  // Keyboard: B to open, Esc to close
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'b' && !drawerOpen && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+      e.preventDefault();
+      openDrawer();
+    }
+    if (e.key === 'Escape') {
+      if ($noteOverlay.classList.contains('visible')) {
+        $noteOverlay.classList.remove('visible');
+        return;
+      }
+      if ($promptOverlay.classList.contains('visible')) {
+        $promptOverlay.classList.remove('visible');
+        return;
+      }
+      if ($markPopup.classList.contains('visible')) {
+        $markPopup.classList.remove('visible');
+        return;
+      }
+      if ($searchResults.classList.contains('visible')) {
+        closeSearchResults();
+        return;
+      }
+      if (drawerOpen) {
+        if (activeWorldId) {
+          goBackToBrowser();
+        } else {
+          closeDrawer();
+        }
+      }
+    }
+    // Cmd/Ctrl+K to focus search
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k' && drawerOpen) {
+      e.preventDefault();
+      $searchInput.focus();
+      $searchInput.select();
+    }
+  });
+
+  // Search
+  $searchInput.addEventListener('input', handleSearchInput);
+  $searchInput.addEventListener('focus', () => {
+    if ($searchInput.value.trim().length > 0) performSearch($searchInput.value.trim());
+  });
+  $searchInput.addEventListener('keydown', handleSearchKeydown);
+  $searchClear.addEventListener('click', () => {
+    $searchInput.value = '';
+    $searchClear.classList.remove('visible');
+    closeSearchResults();
+    $searchInput.focus();
+  });
+
+  // Close search results when clicking outside
+  document.addEventListener('mousedown', (e) => {
+    if (!document.getElementById('search-wrapper').contains(e.target)) {
+      closeSearchResults();
+    }
+  });
+
+  // Back button
+  $btnBack.addEventListener('click', goBackToBrowser);
+
+  // Footer buttons
+  $btnGenerate.addEventListener('click', generatePrompt);
+  $btnReset.addEventListener('click', resetSelections);
+
+  // Mark popup
+  document.getElementById('mark-btn-highlight').addEventListener('click', () => markSelection(false));
+  document.getElementById('mark-btn-note').addEventListener('click', () => markSelection(true));
+
+  // Note dialog
+  document.getElementById('note-save').addEventListener('click', () => {
+    const note = $noteField.value.trim();
+    $noteOverlay.classList.remove('visible');
+    applyMark(pendingRange ? pendingRange.toString().trim() : '', note || null);
+  });
+  document.getElementById('note-cancel').addEventListener('click', () => {
+    $noteOverlay.classList.remove('visible');
+    pendingRange = null;
+  });
+
+  // Text selection in article
+  $articleBody.addEventListener('mouseup', handleTextSelection);
+
+  // Selection summary expand
+  $ssExpandBtn.addEventListener('click', () => {
+    selectionDetailOpen = !selectionDetailOpen;
+    $selectionDetail.classList.toggle('visible', selectionDetailOpen);
+    $ssExpandBtn.innerHTML = selectionDetailOpen ? '&#9650;' : '&#9660;';
+    if (selectionDetailOpen) renderSelectionDetail();
+  });
+
+  // Scroll spy for section nav
+  $drawerContent.addEventListener('scroll', updateScrollSpy, { passive: true });
+
+  // Prompt modal
+  document.getElementById('prompt-modal-close').addEventListener('click', () => {
+    $promptOverlay.classList.remove('visible');
+  });
+  document.getElementById('prompt-modal-copy').addEventListener('click', () => {
+    const text = $promptResultText.textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      showToast('Prompt kopiert!', 'success', 2000);
+    }).catch(() => {
+      showToast('Kopieren fehlgeschlagen', 'error');
+    });
+  });
+  $promptOverlay.addEventListener('click', (e) => {
+    if (e.target === $promptOverlay) $promptOverlay.classList.remove('visible');
+  });
+}
+
+
+// ---- DRAWER OPEN / CLOSE ----
+function openDrawer() {
+  drawerOpen = true;
+  $drawer.classList.add('open');
+  $backdrop.classList.add('visible');
+  $appShell.classList.add('dimmed');
+  setTimeout(() => $searchInput.focus(), 380);
+}
+
+function closeDrawer() {
+  drawerOpen = false;
+  $drawer.classList.remove('open');
+  $backdrop.classList.remove('visible');
+  $appShell.classList.remove('dimmed');
+  closeSearchResults();
+}
+
+
+// ---- RENDER ACCORDION ----
+function renderAccordion() {
+  const worldsByGroup = {};
+  GROUP_ORDER.forEach(g => worldsByGroup[g] = []);
+  allWorlds.forEach(w => {
+    if (worldsByGroup[w.group]) worldsByGroup[w.group].push(w);
+  });
+
+  let html = '';
+  GROUP_ORDER.forEach(gid => {
+    const meta = GROUP_META[gid];
+    const worlds = worldsByGroup[gid] || [];
+    html += `
+      <div class="accordion-category" data-group="${gid}">
+        <div class="accordion-header" data-group="${gid}">
+          <div class="accordion-color-bar" style="background:${meta.colorRaw}"></div>
+          <span class="accordion-cat-icon">${meta.emoji}</span>
+          <span class="accordion-cat-name">${escapeHtml(meta.label)}</span>
+          <span class="accordion-cat-count">${worlds.length}</span>
+          <span class="accordion-chevron">&#9654;</span>
+        </div>
+        <div class="accordion-world-list">
+          ${worlds.map(w => `
+            <div class="accordion-world-item" data-id="${w.id}">
+              <span class="aw-icon">${w.icon}</span>
+              <span class="aw-name">${escapeHtml(w.name)}</span>
+              <span class="aw-sel-count" data-world-badge="${w.id}"></span>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  });
+
+  $accordionBrowser.innerHTML = html;
+
+  // Bind accordion
+  $accordionBrowser.querySelectorAll('.accordion-header').forEach(header => {
+    header.addEventListener('click', () => {
+      const cat = header.parentElement;
+      const wasExpanded = cat.classList.contains('expanded');
+
+      // Close all
+      $accordionBrowser.querySelectorAll('.accordion-category').forEach(c => c.classList.remove('expanded'));
+
+      // Toggle
+      if (!wasExpanded) cat.classList.add('expanded');
+    });
+  });
+
+  // Bind world items
+  $accordionBrowser.querySelectorAll('.accordion-world-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const worldId = item.dataset.id;
+      openWorld(worldId);
+    });
+  });
+}
+
+
+// ---- RECENTS ----
+function loadRecentsFromStorage() {
+  try {
+    const stored = localStorage.getItem('cf_recent_worlds');
+    if (stored) recentWorlds = JSON.parse(stored);
+  } catch (_) {}
+}
+
+function saveRecentsToStorage() {
+  try {
+    localStorage.setItem('cf_recent_worlds', JSON.stringify(recentWorlds));
+  } catch (_) {}
+}
+
+function addToRecents(worldMeta) {
+  recentWorlds = recentWorlds.filter(r => r.id !== worldMeta.id);
+  recentWorlds.unshift({ id: worldMeta.id, name: worldMeta.name, icon: worldMeta.icon });
+  if (recentWorlds.length > 5) recentWorlds = recentWorlds.slice(0, 5);
+  saveRecentsToStorage();
+  renderRecents();
+}
+
+function renderRecents() {
+  if (recentWorlds.length === 0) {
+    $recentsArea.classList.remove('visible');
+    return;
+  }
+  $recentsArea.classList.add('visible');
+  $recentsRow.innerHTML = recentWorlds.map(r => `
+    <div class="recent-card" data-id="${r.id}">
+      <span class="rc-icon">${r.icon}</span>
+      <span class="rc-name">${escapeHtml(r.name)}</span>
+    </div>
+  `).join('');
+
+  $recentsRow.querySelectorAll('.recent-card').forEach(card => {
+    card.addEventListener('click', () => openWorld(card.dataset.id));
+  });
+}
+
+
+// ---- SEARCH ----
+function handleSearchInput() {
+  const q = $searchInput.value.trim();
+  $searchClear.classList.toggle('visible', q.length > 0);
+  if (q.length === 0) {
+    closeSearchResults();
+    return;
+  }
+  performSearch(q);
+}
+
+function performSearch(query) {
+  const q = query.toLowerCase();
+  searchFocusIdx = -1;
+
+  // Search worlds
+  const worldResults = searchIndex.worlds.filter(w => w.nameLower.includes(q)).slice(0, 8);
+
+  // Search terms
+  const termResults = searchIndex.terms.filter(t => t.termLower.includes(q)).slice(0, 12);
+
+  if (worldResults.length === 0 && termResults.length === 0) {
+    $searchResults.innerHTML = `<div class="search-no-results">Keine Ergebnisse fuer &bdquo;${escapeHtml(query)}&ldquo;</div>
+      <div class="search-kbd-hint"><kbd>Esc</kbd> Schliessen</div>`;
+    $searchResults.classList.add('visible');
+    return;
+  }
+
+  let html = '';
+
+  if (worldResults.length > 0) {
+    html += `<div class="search-results-section">
+      <div class="search-results-label">Welten</div>
+      ${worldResults.map((w, i) => {
+        const gm = GROUP_META[w.group] || {};
+        const highlighted = highlightMatch(w.name, query);
+        return `<div class="search-result-item" data-type="world" data-id="${w.id}" data-idx="${i}">
+          <span class="sr-icon">${w.icon}</span>
+          <span class="sr-name">${highlighted}</span>
+          <span class="sr-badge" style="color:${gm.colorRaw};border-color:${gm.colorRaw}40">${gm.emoji || ''} ${escapeHtml((gm.label || '').split(' ')[0])}</span>
+        </div>`;
+      }).join('')}
+    </div>`;
+  }
+
+  if (termResults.length > 0) {
+    html += `<div class="search-results-section">
+      <div class="search-results-label">Begriffe</div>
+      ${termResults.map((t, i) => {
+        const highlighted = highlightMatch(t.term, query);
+        return `<div class="search-result-item" data-type="term" data-world-id="${t.worldId}" data-term="${escapeHtml(t.term)}" data-idx="${worldResults.length + i}">
+          <span class="sr-icon" style="font-size:13px;color:var(--accent-blue)">&#128196;</span>
+          <span class="sr-name">${highlighted}</span>
+          <span class="sr-world-source">${t.worldIcon} ${escapeHtml(t.worldName)}</span>
+        </div>`;
+      }).join('')}
+    </div>`;
+  }
+
+  html += `<div class="search-kbd-hint">
+    <span><kbd>&uarr;</kbd><kbd>&darr;</kbd> Navigieren</span>
+    <span><kbd>Enter</kbd> Oeffnen</span>
+    <span><kbd>Esc</kbd> Schliessen</span>
+  </div>`;
+
+  $searchResults.innerHTML = html;
+  $searchResults.classList.add('visible');
+
+  // Bind click on results
+  $searchResults.querySelectorAll('.search-result-item').forEach(item => {
+    item.addEventListener('click', () => handleSearchResultClick(item));
+  });
+}
+
+function handleSearchKeydown(e) {
+  if (!$searchResults.classList.contains('visible')) return;
+
+  const items = $searchResults.querySelectorAll('.search-result-item');
+  if (items.length === 0) return;
+
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    searchFocusIdx = Math.min(searchFocusIdx + 1, items.length - 1);
+    updateSearchFocus(items);
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    searchFocusIdx = Math.max(searchFocusIdx - 1, 0);
+    updateSearchFocus(items);
+  } else if (e.key === 'Enter') {
+    e.preventDefault();
+    if (searchFocusIdx >= 0 && searchFocusIdx < items.length) {
+      handleSearchResultClick(items[searchFocusIdx]);
+    }
+  }
+}
+
+function updateSearchFocus(items) {
+  items.forEach((item, i) => {
+    item.classList.toggle('focused', i === searchFocusIdx);
+  });
+  // Scroll into view
+  if (searchFocusIdx >= 0 && items[searchFocusIdx]) {
+    items[searchFocusIdx].scrollIntoView({ block: 'nearest' });
+  }
+}
+
+function handleSearchResultClick(item) {
+  const type = item.dataset.type;
+  closeSearchResults();
+  $searchInput.value = '';
+  $searchClear.classList.remove('visible');
+
+  if (type === 'world') {
+    openWorld(item.dataset.id);
+  } else if (type === 'term') {
+    openWorld(item.dataset.worldId, item.dataset.term);
+  }
+}
+
+function closeSearchResults() {
+  $searchResults.classList.remove('visible');
+  searchFocusIdx = -1;
+}
+
+function highlightMatch(text, query) {
+  const idx = text.toLowerCase().indexOf(query.toLowerCase());
+  if (idx === -1) return escapeHtml(text);
+  const before = text.substring(0, idx);
+  const match = text.substring(idx, idx + query.length);
+  const after = text.substring(idx + query.length);
+  return escapeHtml(before) + '<span class="sr-match-highlight">' + escapeHtml(match) + '</span>' + escapeHtml(after);
+}
+
+
+// ---- OPEN WORLD ----
+async function openWorld(worldId, scrollToTerm) {
+  const meta = allWorlds.find(w => w.id === worldId);
+  if (!meta) return;
+
+  activeWorldId = worldId;
+  addToRecents(meta);
+
+  // Switch to article view
+  $articleArea.classList.add('visible');
+  $accordionBrowser.classList.add('hidden');
+  $searchArea.classList.add('compact');
+  $recentsArea.classList.add('compact-hidden');
+  $sectionNav.classList.add('visible');
+
+  // Mark active in accordion
+  $accordionBrowser.querySelectorAll('.accordion-world-item').forEach(item => {
+    item.classList.toggle('active', item.dataset.id === worldId);
+  });
+
+  // Show loading state
+  $quickBrief.innerHTML = '<div style="padding:12px;color:var(--text-muted);font-size:13px;">Laden...</div>';
+  $featuredTermsArea.innerHTML = '';
+  $articleBody.innerHTML = '';
+
+  try {
+    let worldData;
+    if (worldDataCache[worldId]) {
+      worldData = worldDataCache[worldId];
+    } else {
+      const resp = await fetch(`../data/worlds/${worldId}.json`);
+      if (!resp.ok) throw new Error(`Konnte ${worldId}.json nicht laden`);
+      worldData = await resp.json();
+      worldDataCache[worldId] = worldData;
+      indexWorldTerms(meta, worldData);
+    }
+    renderArticle(worldData, meta, scrollToTerm);
+  } catch (err) {
+    $articleBody.innerHTML = `<p style="color:var(--accent-rose);padding:20px 0;">Fehler: ${escapeHtml(err.message)}</p>`;
+    showToast('Fehler beim Laden: ' + err.message, 'error');
+  }
+}
+
+function renderArticle(worldData, meta, scrollToTerm) {
+  const groupMeta = GROUP_META[meta.group] || {};
+  const catColor = groupMeta.colorRaw || '#888';
+
+  // Extract terms for this world
+  const allTerms = extractTermsFromContent(worldData.content || '');
+  const uniqueTerms = [...new Set(allTerms)];
+
+  // Quick Brief
+  const briefKeywords = uniqueTerms.slice(0, 5);
+  $quickBrief.innerHTML = `
+    <div class="qb-header">
+      <div class="qb-icon">${meta.icon}</div>
+      <div class="qb-meta">
+        <div class="qb-name">${escapeHtml(meta.name)}</div>
+        <span class="qb-category" style="color:${catColor};border-color:${catColor}50">${groupMeta.emoji || ''} ${escapeHtml(groupMeta.label || '')}</span>
+      </div>
+    </div>
+    <div class="qb-label">Schnellueberblick</div>
+    <div class="qb-keywords">
+      ${briefKeywords.map(k => `<span class="qb-keyword">${escapeHtml(k)}</span>`).join('')}
+    </div>
+  `;
+
+  // Featured Terms (top 10)
+  const topTerms = uniqueTerms.slice(0, 10);
+  if (topTerms.length > 0) {
+    $featuredTermsArea.innerHTML = `
+      <div class="ft-label">Wichtigste Begriffe</div>
+      <div class="ft-grid">
+        ${topTerms.map(t => `
+          <button class="featured-term ${isTermSelected(worldData.id, t) ? 'selected' : ''}" data-term="${escapeHtml(t)}" style="--ft-color:${catColor}">
+            <span class="ft-check">&#10003;</span>
+            <span class="ft-text">${escapeHtml(t)}</span>
+          </button>
+        `).join('')}
+      </div>
+    `;
+
+    // Dynamic style for selected featured terms
+    $featuredTermsArea.querySelectorAll('.featured-term').forEach(el => {
+      applyFeaturedTermStyle(el, catColor);
+      el.addEventListener('click', () => {
+        const term = el.dataset.term;
+        toggleTermSelection(worldData.id, term);
+        const selected = isTermSelected(worldData.id, term);
+        el.classList.toggle('selected', selected);
+        applyFeaturedTermStyle(el, catColor);
+        syncArticleTermHighlights();
+        updateAllCounters();
+      });
+    });
+  } else {
+    $featuredTermsArea.innerHTML = '';
+  }
+
+  // Article body
+  $articleBody.innerHTML = worldData.content || '<p>Kein Inhalt verfuegbar.</p>';
+
+  // Bind interactive terms
+  bindInteractiveTerms();
+  syncArticleTermHighlights();
+  restoreCustomSelections(worldData.id);
+
+  // Build section navigator
+  buildSectionNav();
+
+  // Scroll to top (or to term)
+  $drawerContent.scrollTop = 0;
+
+  if (scrollToTerm) {
+    setTimeout(() => scrollAndHighlightTerm(scrollToTerm), 300);
+  }
+
+  updateAllCounters();
+}
+
+function applyFeaturedTermStyle(el, color) {
+  if (el.classList.contains('selected')) {
+    el.style.background = color + '22';
+    el.style.borderColor = color + '50';
+    el.style.color = color;
+  } else {
+    el.style.background = '';
+    el.style.borderColor = '';
+    el.style.color = '';
+  }
+}
+
+function extractTermsFromContent(html) {
+  const tmp = document.createElement('div');
+  tmp.innerHTML = html;
+  const termEls = tmp.querySelectorAll('.interactive-term');
+  return Array.from(termEls).map(el => el.getAttribute('data-term') || el.textContent.trim());
+}
+
+function scrollAndHighlightTerm(termText) {
+  const termEls = $articleBody.querySelectorAll('.interactive-term');
+  for (const el of termEls) {
+    const t = el.getAttribute('data-term') || el.textContent.trim();
+    if (t === termText) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      // Pulse highlight
+      el.style.transition = 'background 0.3s, box-shadow 0.3s';
+      el.style.background = 'rgba(59, 130, 246, 0.3)';
+      el.style.boxShadow = '0 0 0 4px rgba(59, 130, 246, 0.15)';
+      setTimeout(() => {
+        el.style.background = '';
+        el.style.boxShadow = '';
+      }, 1500);
+      break;
+    }
+  }
+}
+
+
+// ---- BACK TO BROWSER ----
+function goBackToBrowser() {
+  activeWorldId = null;
+  $articleArea.classList.remove('visible');
+  $accordionBrowser.classList.remove('hidden');
+  $searchArea.classList.remove('compact');
+  $recentsArea.classList.remove('compact-hidden');
+  $sectionNav.classList.remove('visible');
+  $selectionSummary.classList.remove('visible');
+  $accordionBrowser.querySelectorAll('.accordion-world-item').forEach(item => item.classList.remove('active'));
+  updateAccordionBadges();
+}
+
+
+// ---- INTERACTIVE TERM SELECTION ----
+function bindInteractiveTerms() {
+  $articleBody.querySelectorAll('.interactive-term').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const term = el.getAttribute('data-term') || el.textContent.trim();
+      toggleTermSelection(activeWorldId, term);
+      const selected = isTermSelected(activeWorldId, term);
+
+      // Sync all instances of same term
+      $articleBody.querySelectorAll('.interactive-term').forEach(other => {
+        const otherTerm = other.getAttribute('data-term') || other.textContent.trim();
+        if (otherTerm === term) other.classList.toggle('selected', selected);
+      });
+
+      // Sync featured terms
+      $featuredTermsArea.querySelectorAll('.featured-term').forEach(ft => {
+        if (ft.dataset.term === term) {
+          ft.classList.toggle('selected', selected);
+          const meta = allWorlds.find(w => w.id === activeWorldId);
+          const catColor = meta ? (GROUP_META[meta.group] || {}).colorRaw || '#888' : '#888';
+          applyFeaturedTermStyle(ft, catColor);
+        }
+      });
+
+      updateAllCounters();
+    });
+  });
+}
+
+function toggleTermSelection(worldId, term) {
+  if (!selections[worldId]) selections[worldId] = {};
+  selections[worldId][term] = !selections[worldId][term];
+  if (!selections[worldId][term]) delete selections[worldId][term];
+}
+
+function isTermSelected(worldId, term) {
+  return !!(selections[worldId] && selections[worldId][term]);
+}
+
+function syncArticleTermHighlights() {
+  if (!activeWorldId) return;
+  $articleBody.querySelectorAll('.interactive-term').forEach(el => {
+    const term = el.getAttribute('data-term') || el.textContent.trim();
+    el.classList.toggle('selected', isTermSelected(activeWorldId, term));
+  });
+}
+
+
+// ---- TEXT MARKING ----
+function handleTextSelection() {
+  const sel = window.getSelection();
+  if (!sel || sel.isCollapsed || !sel.rangeCount) return;
+  if (!activeWorldId) return;
+
+  const range = sel.getRangeAt(0);
+  if (!$articleBody.contains(range.commonAncestorContainer)) return;
+
+  const text = sel.toString().trim();
+  if (text.length < 3) return;
+
+  pendingRange = range.cloneRange();
+
+  const rect = range.getBoundingClientRect();
+  const popupLeft = Math.min(rect.left + rect.width / 2 - 100, window.innerWidth - 240);
+  $markPopup.style.left = Math.max(10, popupLeft) + 'px';
+  $markPopup.style.top = (rect.top - 44) + 'px';
+  $markPopup.classList.add('visible');
+
+  // Auto-hide after delay
+  clearTimeout($markPopup._hideTimer);
+  $markPopup._hideTimer = setTimeout(() => {
+    $markPopup.classList.remove('visible');
+  }, 5000);
+}
+
+function markSelection(withNote) {
+  if (!pendingRange || !activeWorldId) return;
+  $markPopup.classList.remove('visible');
+  clearTimeout($markPopup._hideTimer);
+
+  if (withNote) {
+    $noteOverlay.classList.add('visible');
+    $noteField.value = '';
+    setTimeout(() => $noteField.focus(), 100);
+    return;
+  }
+
+  applyMark(pendingRange.toString().trim(), null);
+}
+
+function applyMark(text, note) {
+  if (!pendingRange || !activeWorldId) return;
+
+  const markId = 'mark_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6);
+
+  try {
+    const span = document.createElement('span');
+    span.className = 'custom-selection';
+    span.dataset.markId = markId;
+    if (note) span.title = note;
+    pendingRange.surroundContents(span);
+
+    if (note) {
+      const sup = document.createElement('span');
+      sup.className = 'note-indicator';
+      sup.textContent = '\u270E';
+      sup.title = note;
+      span.appendChild(sup);
+    }
+  } catch (err) {
+    showToast('Markierung konnte nicht erstellt werden (Text kreuzt Element-Grenzen).', 'warning');
+    pendingRange = null;
+    return;
+  }
+
+  if (!customSelections[activeWorldId]) customSelections[activeWorldId] = [];
+  customSelections[activeWorldId].push({ id: markId, text, note });
+
+  window.getSelection().removeAllRanges();
+  pendingRange = null;
+
+  updateAllCounters();
+  showToast('Passage markiert', 'success', 2000);
+}
+
+function restoreCustomSelections(worldId) {
+  // Selections persist in DOM within session since we cache world data
+}
+
+
+// ---- SECTION NAVIGATOR ----
+function buildSectionNav() {
+  const h2s = $articleBody.querySelectorAll('h2');
+  if (h2s.length === 0) {
+    $sectionNav.innerHTML = '';
+    return;
+  }
+
+  $sectionNav.innerHTML = h2s.length > 0 ? Array.from(h2s).map((h2, i) => {
+    const shortTitle = h2.textContent.trim().substring(0, 40) + (h2.textContent.trim().length > 40 ? '...' : '');
+    return `<div class="section-dot" data-section-idx="${i}" title="${escapeHtml(shortTitle)}">
+      <span class="dot-tooltip">${escapeHtml(shortTitle)}</span>
+    </div>`;
+  }).join('') : '';
+
+  $sectionNav.querySelectorAll('.section-dot').forEach(dot => {
+    dot.addEventListener('click', () => {
+      const idx = parseInt(dot.dataset.sectionIdx);
+      const h2s = $articleBody.querySelectorAll('h2');
+      if (h2s[idx]) {
+        h2s[idx].scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+}
+
+function updateScrollSpy() {
+  if (!activeWorldId) return;
+  const h2s = $articleBody.querySelectorAll('h2');
+  if (h2s.length === 0) return;
+
+  const scrollTop = $drawerContent.scrollTop;
+  const contentRect = $drawerContent.getBoundingClientRect();
+  let activeIdx = 0;
+
+  h2s.forEach((h2, i) => {
+    const rect = h2.getBoundingClientRect();
+    if (rect.top - contentRect.top <= 80) activeIdx = i;
+  });
+
+  $sectionNav.querySelectorAll('.section-dot').forEach((dot, i) => {
+    dot.classList.toggle('active', i === activeIdx);
+  });
+}
+
+
+// ---- UPDATE ALL COUNTERS ----
+function updateAllCounters() {
+  let totalTerms = 0;
+  let totalPassages = 0;
+
+  Object.keys(selections).forEach(wId => {
+    Object.keys(selections[wId]).forEach(t => {
+      if (selections[wId][t]) totalTerms++;
+    });
+  });
+
+  Object.keys(customSelections).forEach(wId => {
+    totalPassages += (customSelections[wId] || []).length;
+  });
+
+  $statTerms.textContent = totalTerms;
+  $statPassages.textContent = totalPassages;
+
+  const total = totalTerms + totalPassages;
+  $btnGenerate.disabled = total === 0;
+
+  // Selection summary
+  updateSelectionSummary(totalTerms, totalPassages);
+
+  // Accordion badges
+  updateAccordionBadges();
+}
+
+function updateAccordionBadges() {
+  $accordionBrowser.querySelectorAll('.accordion-world-item').forEach(item => {
+    const wId = item.dataset.id;
+    const badge = item.querySelector('.aw-sel-count');
+    const termCount = selections[wId] ? Object.keys(selections[wId]).filter(t => selections[wId][t]).length : 0;
+    const passCount = (customSelections[wId] || []).length;
+    const total = termCount + passCount;
+    if (badge) {
+      badge.textContent = total;
+      badge.classList.toggle('visible', total > 0);
+    }
+  });
+}
+
+function updateSelectionSummary(totalTerms, totalPassages) {
+  const total = totalTerms + totalPassages;
+  if (total === 0 || !activeWorldId) {
+    $selectionSummary.classList.remove('visible');
+    return;
+  }
+
+  $selectionSummary.classList.add('visible');
+
+  // World badges
+  const worldsWithSelections = new Set();
+  Object.keys(selections).forEach(wId => {
+    if (Object.keys(selections[wId]).some(t => selections[wId][t])) worldsWithSelections.add(wId);
+  });
+  Object.keys(customSelections).forEach(wId => {
+    if ((customSelections[wId] || []).length > 0) worldsWithSelections.add(wId);
+  });
+
+  let badgesHtml = '';
+  worldsWithSelections.forEach(wId => {
+    const meta = allWorlds.find(w => w.id === wId);
+    if (!meta) return;
+    const tc = selections[wId] ? Object.keys(selections[wId]).filter(t => selections[wId][t]).length : 0;
+    const pc = (customSelections[wId] || []).length;
+    badgesHtml += `<span class="ss-world-badge" title="${escapeHtml(meta.name)}">
+      <span class="ssw-icon">${meta.icon}</span>
+      <span class="ssw-count">${tc + pc}</span>
+    </span>`;
+  });
+
+  $ssWorlds.innerHTML = badgesHtml;
+  $ssCounts.textContent = `${totalTerms} Begriffe, ${totalPassages} Passagen`;
+
+  if (selectionDetailOpen) renderSelectionDetail();
+}
+
+function renderSelectionDetail() {
+  let html = '';
+  const worldsWithSelections = new Set([
+    ...Object.keys(selections).filter(wId => Object.keys(selections[wId]).some(t => selections[wId][t])),
+    ...Object.keys(customSelections).filter(wId => (customSelections[wId] || []).length > 0)
+  ]);
+
+  if (worldsWithSelections.size === 0) {
+    $selectionDetail.innerHTML = '<p style="color:var(--text-muted);font-size:12px;padding:8px 0;">Keine Auswahl.</p>';
+    return;
+  }
+
+  worldsWithSelections.forEach(wId => {
+    const meta = allWorlds.find(w => w.id === wId);
+    const groupMeta = meta ? GROUP_META[meta.group] : {};
+    const worldName = meta ? meta.name : wId;
+    const icon = meta ? meta.icon : '';
+
+    html += `<div class="sd-world-group">
+      <div class="sd-world-name" style="color:${groupMeta.colorRaw || '#888'}">${icon} ${escapeHtml(worldName)}</div>`;
+
+    if (selections[wId]) {
+      Object.keys(selections[wId]).forEach(term => {
+        if (selections[wId][term]) {
+          html += `<span class="sd-term-chip">
+            ${escapeHtml(term)}
+            <button class="sd-term-remove" data-world="${wId}" data-term="${escapeHtml(term)}" title="Entfernen">&times;</button>
+          </span>`;
+        }
+      });
+    }
+
+    if (customSelections[wId]) {
+      customSelections[wId].forEach(sel => {
+        html += `<div class="sd-passage-chip">
+          <div>
+            <div class="sd-passage-text">"${escapeHtml(sel.text.substring(0, 80))}${sel.text.length > 80 ? '...' : ''}"</div>
+            ${sel.note ? `<div class="sd-passage-note">Notiz: ${escapeHtml(sel.note)}</div>` : ''}
+          </div>
+          <button class="sd-term-remove" data-world="${wId}" data-passage-id="${sel.id}" title="Entfernen">&times;</button>
+        </div>`;
+      });
+    }
+
+    html += '</div>';
+  });
+
+  $selectionDetail.innerHTML = html;
+
+  // Bind remove buttons
+  $selectionDetail.querySelectorAll('.sd-term-remove').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const wId = btn.dataset.world;
+      const term = btn.dataset.term;
+      const passageId = btn.dataset.passageId;
+
+      if (term && selections[wId]) {
+        delete selections[wId][term];
+      }
+
+      if (passageId && customSelections[wId]) {
+        customSelections[wId] = customSelections[wId].filter(s => s.id !== passageId);
+        if (wId === activeWorldId) {
+          const mark = $articleBody.querySelector(`[data-mark-id="${passageId}"]`);
+          if (mark) {
+            const parent = mark.parentNode;
+            while (mark.firstChild) parent.insertBefore(mark.firstChild, mark);
+            mark.remove();
+          }
+        }
+      }
+
+      syncArticleTermHighlights();
+      // Sync featured terms
+      if (term) {
+        $featuredTermsArea.querySelectorAll('.featured-term').forEach(ft => {
+          if (ft.dataset.term === term) {
+            const selected = isTermSelected(wId, term);
+            ft.classList.toggle('selected', selected);
+            const meta = allWorlds.find(w => w.id === wId);
+            const catColor = meta ? (GROUP_META[meta.group] || {}).colorRaw || '#888' : '#888';
+            applyFeaturedTermStyle(ft, catColor);
+          }
+        });
+      }
+      updateAllCounters();
+    });
+  });
+}
+
+
+// ---- RESET ----
+function resetSelections() {
+  // Remove DOM marks
+  if (activeWorldId) {
+    $articleBody.querySelectorAll('.custom-selection').forEach(el => {
+      const parent = el.parentNode;
+      while (el.firstChild) parent.insertBefore(el.firstChild, el);
+      el.remove();
+    });
+  }
+
+  selections = {};
+  customSelections = {};
+
+  syncArticleTermHighlights();
+
+  // Reset featured terms
+  $featuredTermsArea.querySelectorAll('.featured-term').forEach(ft => {
+    ft.classList.remove('selected');
+    ft.style.background = '';
+    ft.style.borderColor = '';
+    ft.style.color = '';
+  });
+
+  updateAllCounters();
+  showToast('Auswahl zurueckgesetzt', 'info', 2000);
+}
+
+
+// ---- GENERATE PROMPT ----
+async function generatePrompt() {
+  const apiKey = localStorage.getItem('openrouter_api_key');
+  if (!apiKey) {
+    showToast('Bitte konfiguriere deinen API-Key (localStorage: openrouter_api_key).', 'warning', 6000);
+    return;
+  }
+
+  const model = localStorage.getItem('selected_model') || 'google/gemini-2.5-flash';
+
+  // Collect selections
+  const parts = [];
+
+  Object.keys(selections).forEach(wId => {
+    const worldMeta = allWorlds.find(w => w.id === wId);
+    const worldName = worldMeta ? worldMeta.name : wId;
+    const terms = Object.keys(selections[wId]).filter(t => selections[wId][t]);
+    if (terms.length > 0) {
+      parts.push(`[${worldName}]: ${terms.join(', ')}`);
+    }
+  });
+
+  Object.keys(customSelections).forEach(wId => {
+    const worldMeta = allWorlds.find(w => w.id === wId);
+    const worldName = worldMeta ? worldMeta.name : wId;
+    const passages = (customSelections[wId] || []).map(s => {
+      return s.note ? `"${s.text}" (Notiz: ${s.note})` : `"${s.text}"`;
+    });
+    if (passages.length > 0) {
+      parts.push(`[${worldName} - Markierte Passagen]: ${passages.join('; ')}`);
+    }
+  });
+
+  if (parts.length === 0) {
+    showToast('Keine Auswahl vorhanden.', 'warning');
+    return;
+  }
+
+  const userMessage = `Ausgewaehlte Begriffe und Passagen:\n${parts.join('\n')}`;
+
+  $btnGenerate.disabled = true;
+  $genLabel.textContent = 'Generiere...';
+  $genSpinner.classList.add('visible');
+
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 60000);
+
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`,
+        'HTTP-Referer': window.location.origin,
+        'X-Title': 'Suno Style Architect — Context Flow'
+      },
+      body: JSON.stringify({
+        model,
+        messages: [
+          { role: 'system', content: CREATIVE_SYSTEM_PROMPT },
+          { role: 'user', content: userMessage }
+        ],
+        max_tokens: 1024,
+        temperature: 0.8
+      }),
+      signal: controller.signal
+    });
+
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      const errData = await response.json().catch(() => ({}));
+      throw new Error(errData.error?.message || `API-Fehler: ${response.status}`);
+    }
+
+    const data = await response.json();
+    const result = data.choices?.[0]?.message?.content || 'Keine Antwort erhalten.';
+
+    // Show result modal
+    $promptResultText.textContent = result;
+    $promptOverlay.classList.add('visible');
+    showToast('Prompt erfolgreich generiert!', 'success', 3000);
+  } catch (err) {
+    if (err.name === 'AbortError') {
+      showToast('Timeout: Anfrage wurde abgebrochen.', 'error', 5000);
+    } else {
+      showToast('Fehler: ' + err.message, 'error', 5000);
+    }
+  } finally {
+    $btnGenerate.disabled = false;
+    $genLabel.textContent = 'Prompt erstellen';
+    $genSpinner.classList.remove('visible');
+    updateAllCounters(); // re-check disabled state
+  }
+}
+
+
+// ---- TOAST ----
+function showToast(message, type = 'info', duration = 3500) {
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.innerHTML = `<span class="toast-icon"></span><span>${escapeHtml(message)}</span>`;
+  $toastContainer.appendChild(toast);
+
+  setTimeout(() => {
+    toast.classList.add('exit');
+    setTimeout(() => toast.remove(), 200);
+  }, duration);
+}
+
+
+// ---- UTILS ----
+function escapeHtml(str) {
+  if (!str) return '';
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+
+// ---- LAUNCH ----
+init();
+
+// Auto-open on load for demo
+setTimeout(() => openDrawer(), 600);
+
+</script>
+</body>
+</html>

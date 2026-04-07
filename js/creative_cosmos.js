@@ -9921,307 +9921,765 @@ let selections = {};
 let customSelections = {};
 // customSelections: { worldId: [{ id: string, text: string }] }
 
+/* =====================================================
+   SPECTRUM NAVIGATOR — Full Application Logic
+   (replaces old tab-based Kreativbibliothek)
+   ===================================================== */
+
+// ---- SPECTRUM CONSTANTS ----
+const SN_GROUP_COLORS = {
+    orchestra_group: '#d4a04a',
+    ambient_group: '#4a8cd4',
+    urban_club_group: '#22d3ee',
+    hip_hop_group: '#a855f7',
+    world_orchestra_group: '#5cb85c',
+    sound_feeling_group: '#e87040'
+};
+
+const SN_GROUP_LABELS = {
+    orchestra_group: 'Orchester',
+    ambient_group: 'Ambient',
+    urban_club_group: 'Urban / Club',
+    hip_hop_group: 'Hip Hop',
+    world_orchestra_group: 'Welt-Orchester',
+    sound_feeling_group: 'Sound & Feeling'
+};
+
+// 2D Spectrum positions: { worldId: [x%, y%] }
+// X: 0=Traditional/Acoustic, 100=Modern/Electronic
+// Y: 0=Intense/Energetic (top), 100=Calm/Contemplative (bottom)
+const SN_SPECTRUM_POSITIONS = {
+    orchestra_treatise: [8, 50], orchestra: [12, 45], baroque: [10, 58],
+    chamber: [15, 65], string_quartet: [18, 72], wind_octet: [14, 60],
+    renaissance_consort: [6, 68], steel_pan: [22, 38],
+    ambient: [72, 82], dark_ambient_ecologies: [78, 78],
+    sleep_ambient_protocols: [70, 92], field_recording_ambient: [65, 88],
+    uk_garage_london: [82, 20], detroit_techno_foundry: [88, 15],
+    chicago_house_classics: [80, 25],
+    hip_hop_main: [68, 30], golden_age_boom_bap: [58, 35],
+    jazz_hip_hop_lounge: [52, 55], lofi_hip_hop_tape: [60, 65],
+    gfunk_west_coast: [65, 40], southern_trap_lab: [75, 18],
+    drill_dark_energy: [78, 12], conscious_hip_hop_poetics: [55, 45],
+    party_hip_hop_classics: [62, 22], experimental_hip_hop_future: [82, 35],
+    instrumental_beat_scene: [70, 50],
+    world_orchestra_treatise: [25, 42], arabic_takht: [20, 50],
+    hindustani_raga_ensemble: [18, 55], west_african_polyrhythm_ensemble: [28, 25],
+    balkan_brass_orchestra: [30, 18], andean_ensemble: [22, 62],
+    taiko_kumi_daiko: [32, 12], gamelan: [35, 58], gagaku: [15, 75],
+    mariachi: [26, 30],
+    sound_feeling_main: [50, 50], turntablism: [60, 28],
+    sound_system: [55, 20], modular_synthesis: [85, 55],
+    carillon: [30, 78], venetian: [20, 42], military_signal: [35, 8],
+    prepared_piano: [45, 70]
+};
+
+const SN_GROUP_MOOD_VECTORS = {
+    orchestra_group: { energy: -0.2, brightness: 0.3 },
+    ambient_group: { energy: -0.8, brightness: 0.1 },
+    urban_club_group: { energy: 0.9, brightness: 0.4 },
+    hip_hop_group: { energy: 0.5, brightness: -0.1 },
+    world_orchestra_group: { energy: 0.2, brightness: 0.2 },
+    sound_feeling_group: { energy: 0.0, brightness: 0.0 }
+};
+
+const SN_TEXT_SIZES = { small: 12, medium: 13.5, large: 15.5 };
+
+// ---- ADDITIONAL STATE ----
+let snAllWorlds = [];          // flat array of { id, group, name, icon }
+let snAllWorldTermsCache = {}; // { worldId: [term1, term2, ...] }
+let snPendingRange = null;
+let snSearchTimeout = null;
+let snActiveLegendGroup = null;
+let snCurrentTextSize = 'medium';
+try { const ts = localStorage.getItem('sn-text-size'); if (ts !== null && SN_TEXT_SIZES[ts]) snCurrentTextSize = ts; } catch(e) {}
+let snGridDrawn = false;
+
+// Pan & Zoom state
+let snZoom = 1.0;
+let snPanX = 0;
+let snPanY = 0;
+try {
+    const z = localStorage.getItem('sn-zoom'); if (z !== null) snZoom = parseFloat(z);
+    const px = localStorage.getItem('sn-pan-x'); if (px !== null) snPanX = parseFloat(px);
+    const py = localStorage.getItem('sn-pan-y'); if (py !== null) snPanY = parseFloat(py);
+} catch(e) {}
+let snIsDragging = false;
+let snDragStartX = 0;
+let snDragStartY = 0;
+let snDragStartPanX = 0;
+let snDragStartPanY = 0;
+let snDragMoved = false;
+
+// Spread factor state
+let snSpreadFactor = 1.0;
+try { const stored = localStorage.getItem('sn-spread-factor'); if (stored !== null) snSpreadFactor = parseFloat(stored); } catch(e) {}
+
+// Label toggle state
+let snLabelsVisible = true;
+try { snLabelsVisible = localStorage.getItem('sn-labels-visible') !== 'false'; } catch(e) {}
+
+// Build allWorlds from inline CREATIVE_WORLDS
+(function buildWorldList() {
+    snAllWorlds = Object.values(CREATIVE_WORLDS).map(w => ({
+        id: w.id, group: w.group, name: w.name, icon: w.icon
+    }));
+    // Pre-cache terms for every world (from inline wikiContent)
+    snAllWorlds.forEach(w => {
+        const data = CREATIVE_WORLDS[w.id];
+        if (!data || snAllWorldTermsCache[w.id]) return;
+        const tmp = document.createElement('div');
+        tmp.innerHTML = data.wikiContent || '';
+        const termEls = tmp.querySelectorAll('.interactive-term');
+        snAllWorldTermsCache[w.id] = Array.from(termEls).map(
+            el => el.getAttribute('data-term') || el.textContent.trim()
+        );
+    });
+})();
+
+// ---- HELPER ----
+function snEscapeHtml(str) {
+    const d = document.createElement('div');
+    d.textContent = String(str);
+    return d.innerHTML;
+}
+function snEscapeRegExp(string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+function snAbbreviate(name) {
+    if (name.length <= 14) return name;
+    const words = name.split(/[\s-]+/);
+    if (words.length > 2 && name.length > 18) return words.slice(0, 2).join(' ') + '...';
+    return name.substring(0, 14) + '...';
+}
+
+// ---- DOM REFS (lazy — resolved when modal opens) ----
+let sn$ = {};  // populated in initCreativeCosmos
+function snResolveDom() {
+    sn$ = {
+        canvas: document.getElementById('sn-spectrum-canvas'),
+        canvasWrap: document.querySelector('.sn-spectrum-canvas-wrap'),
+        grid: document.getElementById('sn-spectrum-grid'),
+        legend: document.getElementById('sn-spectrum-legend'),
+        search: document.getElementById('sn-spectrum-search'),
+        searchClear: document.getElementById('sn-search-clear'),
+        crossResults: document.getElementById('sn-cross-search-results'),
+        articleEmpty: document.getElementById('sn-article-empty'),
+        articleScroll: document.getElementById('sn-article-scroll'),
+        articleBody: document.getElementById('world-content-area'),
+        overviewMount: document.getElementById('sn-quick-overview-mount'),
+        backToOverview: document.getElementById('sn-back-to-overview'),
+        termCount: document.getElementById('term-count'),
+        passageCount: document.getElementById('passage-count'),
+        compassNeedle: document.getElementById('sn-compass-needle'),
+        tooltip: document.getElementById('sn-node-tooltip'),
+        tooltipName: document.getElementById('sn-tooltip-name'),
+        tooltipTags: document.getElementById('sn-tooltip-tags'),
+        markPopup: document.getElementById('sn-mark-popup'),
+        tray: document.getElementById('sn-mood-tray'),
+        trayHeader: document.getElementById('sn-tray-header'),
+        trayContent: document.getElementById('sn-tray-content'),
+        trayEmpty: document.getElementById('sn-tray-empty'),
+        trayPeek: document.getElementById('sn-tray-peek'),
+        trayToggleIcon: document.getElementById('sn-tray-toggle-icon'),
+        genBtn: document.getElementById('generate-idea-btn'),
+        genLabel: document.getElementById('sn-generate-label'),
+        genSpinner: document.getElementById('gen-spinner'),
+        genIcon: document.getElementById('gen-icon'),
+        resetBtn: document.getElementById('reset-selections-btn'),
+        shuffleBtn: document.getElementById('sn-shuffle-btn'),
+        shuffleOverlay: document.getElementById('sn-shuffle-overlay'),
+        shuffleSuggestions: document.getElementById('sn-shuffle-suggestions'),
+        shuffleClose: document.getElementById('sn-shuffle-close'),
+        noteOverlay: document.getElementById('sn-note-overlay'),
+        noteField: document.getElementById('sn-note-field'),
+        modal: document.getElementById('idea-starter-modal')
+    };
+}
+
+// ===================================================
+// INIT
+// ===================================================
 document.addEventListener('DOMContentLoaded', () => {
     initCreativeCosmos();
 });
 
 function initCreativeCosmos() {
+    snResolveDom();
+
+    // Tile to open
     const tile = document.getElementById('idea-starter-tile');
     if (tile) tile.addEventListener('click', openIdeaStarter);
 
+    // Close / Cancel
     const closeBtn = document.getElementById('close-idea-modal');
     if (closeBtn) closeBtn.addEventListener('click', closeIdeaStarter);
-
     const cancelBtn = document.getElementById('cancel-idea-btn');
     if (cancelBtn) cancelBtn.addEventListener('click', closeIdeaStarter);
 
-    const genBtn = document.getElementById('generate-idea-btn');
-    if (genBtn) genBtn.addEventListener('click', generateVision);
+    // Generate
+    if (sn$.genBtn) sn$.genBtn.addEventListener('click', generateVision);
 
-    const modal = document.getElementById('idea-starter-modal');
-    if (modal) {
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) closeIdeaStarter();
-        });
-    }
+    // Reset
+    if (sn$.resetBtn) sn$.resetBtn.addEventListener('click', resetAllSelections);
 
-    // New Interaction Logic: Click delegation for .interactive-term
-    const contentArea = document.getElementById('world-content-area');
-    if (contentArea) {
-        contentArea.addEventListener('click', (e) => {
-            // Find closest because clicking <strong> or <span> inside might bubble up
-            const term = e.target.closest('.interactive-term');
-            if (term) {
-                toggleTerm(term);
-            }
-        });
+    // Render spectrum, legend, grid
+    snRenderSpectrum();
+    snRenderLegend();
 
-        // Text selection handling for custom marking
-        contentArea.addEventListener('mouseup', handleTextSelection);
-    }
+    // Bind all events
+    snBindEvents();
 
-    // Close popup on click outside (Escape handled by CloseStack)
-    document.addEventListener('mousedown', (e) => {
-        const popup = document.getElementById('selection-popup-menu');
-        if (popup && !popup.contains(e.target)) {
-            hideSelectionPopup();
-        }
-    });
+    // Apply persisted text size
+    if (snCurrentTextSize !== 'medium') snSetTextSize(snCurrentTextSize);
 
-    renderWorldTabs();
-
-    // Reset button handler
-    const resetBtn = document.getElementById('reset-selections-btn');
-    if (resetBtn) {
-        resetBtn.addEventListener('click', resetAllSelections);
-    }
-
-    // Keyboard Shortcuts — migrated to Keys registry (Phase 2, P2-7)
+    // Keyboard shortcuts
     registerCosmosShortcuts();
+
+    // Set mood tray initial state
+    if (sn$.tray) sn$.tray.classList.add('expanded');
 }
 
-// === KEYBOARD SHORTCUTS (Phase 2+3: via Keys registry) ===
-
+// ===================================================
+// KEYBOARD SHORTCUTS (scope-based via Keys registry)
+// ===================================================
 function registerCosmosShortcuts() {
     if (!window.Keys) return;
 
-    // Phase 3: scope-based activation (creative-cosmos scope pushed by openIdeaStarter)
     Keys.register({ id:'cosmos.mark', label:'Schnell-Markierung', scope:'creative-cosmos',
         bindings:['m'], run: function(){
-            // Keep selection check inside run() — don't put in when(), to prevent fallthrough
-            const selection = window.getSelection();
-            const text = selection.toString().trim();
+            const sel = window.getSelection();
+            const text = sel.toString().trim();
             if (text && text.length >= 2) {
-                markSelectedText(text, selection.getRangeAt(0), null);
-                selection.removeAllRanges();
-                hideSelectionPopup();
+                snPendingRange = sel.getRangeAt(0).cloneRange();
+                snApplyMark(text, null);
+                sel.removeAllRanges();
             }
         }
     });
 
     Keys.register({ id:'cosmos.mark-note', label:'Markierung mit Notiz', scope:'creative-cosmos',
         bindings:['n'], run: function(){
-            const selection = window.getSelection();
-            const text = selection.toString().trim();
+            const sel = window.getSelection();
+            const text = sel.toString().trim();
             if (text && text.length >= 2) {
-                const range = selection.getRangeAt(0);
-                const rect = range.getBoundingClientRect();
-                showSelectionPopup(rect.left + rect.width / 2, rect.top, text, range);
-                const popup = document.getElementById('selection-popup-menu');
-                if (popup) {
-                    showNoteInput(popup, text, range);
+                snPendingRange = sel.getRangeAt(0).cloneRange();
+                // Open note overlay
+                if (sn$.noteOverlay) {
+                    sn$.noteOverlay.classList.add('visible');
+                    if (sn$.noteField) { sn$.noteField.value = ''; sn$.noteField.focus(); }
                 }
             }
         }
     });
 
-    Keys.register({ id:'cosmos.undo-mark', label:'Letzte Markierung r\u00fcckg\u00e4ngig', scope:'creative-cosmos',
+    Keys.register({ id:'cosmos.undo-mark', label:'Letzte Markierung rueckgaengig', scope:'creative-cosmos',
         bindings:['Backspace', 'Delete'], run: function(){
-            undoLastSelection();
+            snUndoLastMark();
         }
     });
 
-    Keys.register({ id:'cosmos.reset', label:'Alle Markierungen zur\u00fccksetzen', scope:'creative-cosmos',
+    Keys.register({ id:'cosmos.reset', label:'Alle Markierungen zuruecksetzen', scope:'creative-cosmos',
         bindings:['Shift+r'], run: function(){
             resetAllSelections();
         }
     });
 }
 
-// === TEXT SELECTION MARKING FUNCTIONS ===
+// ===================================================
+// OPEN / CLOSE (preserves ScopeStack, CloseStack, FocusTrap, BodyScrollLock)
+// ===================================================
+function openIdeaStarter() {
+    const modal = document.getElementById('idea-starter-modal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex', 'fade-in');
+    if (window.BodyScrollLock) BodyScrollLock.lock();
+    if (window.ScopeStack) {
+        modal._scopeToken = ScopeStack.push('creative-cosmos');
+    }
+    if (window.CloseStack) CloseStack.push(closeIdeaStarter, { id: 'creative-cosmos' });
+    if (window.FocusTrap) {
+        modal._focusTrap = FocusTrap.activate(modal);
+    }
 
-function generateUniqueId() {
-    return 'sel_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    // Draw grid on first open (needs layout to measure)
+    if (!snGridDrawn) {
+        requestAnimationFrame(() => { snDrawGrid(); snGridDrawn = true; });
+    }
+
+    if (!currentWorldId) {
+        snSelectWorld('orchestra_treatise');
+    }
 }
 
-function handleTextSelection(e) {
-    const selection = window.getSelection();
-    const selectedText = selection.toString().trim();
-
-    // Ignore if selecting within an interactive-term (those have their own click handler)
-    if (e.target.closest('.interactive-term')) {
-        return;
+function closeIdeaStarter() {
+    const modal = document.getElementById('idea-starter-modal');
+    if (window.FocusTrap && modal._focusTrap) {
+        modal._focusTrap.deactivate();
+        modal._focusTrap = null;
+    }
+    modal.classList.add('hidden');
+    modal.classList.remove('flex', 'fade-in');
+    if (window.CloseStack) CloseStack.pop('creative-cosmos');
+    if (window.BodyScrollLock) BodyScrollLock.unlock();
+    if (window.ScopeStack && modal._scopeToken) {
+        ScopeStack.pop(modal._scopeToken);
+        modal._scopeToken = null;
     }
 
-    // Ignore if selecting within already marked text (prevent double-marking)
-    if (e.target.closest('.custom-selection')) {
-        return;
-    }
-
-    // Ignore if selecting within headings (h1-h6 should not be markable)
-    if (e.target.closest('h1, h2, h3, h4, h5, h6')) {
-        return;
-    }
-
-    // Ignore empty or very short selections
-    if (!selectedText || selectedText.length < 2) {
-        hideSelectionPopup();
-        return;
-    }
-
-    // Additional check: ensure selection range doesn't start or end inside restricted elements
-    const range = selection.getRangeAt(0);
-    const startContainer = range.startContainer.parentElement;
-    const endContainer = range.endContainer.parentElement;
-
-    // Check if selection starts or ends inside a heading or already-marked text
-    if (startContainer?.closest('h1, h2, h3, h4, h5, h6') ||
-        endContainer?.closest('h1, h2, h3, h4, h5, h6') ||
-        startContainer?.closest('.custom-selection') ||
-        endContainer?.closest('.custom-selection')) {
-        hideSelectionPopup();
-        return;
-    }
-
-    // Show popup at cursor position
-    showSelectionPopup(e.clientX, e.clientY, selectedText, range);
+    // Pan & zoom state is now persisted — no reset on close
 }
 
-function showSelectionPopup(x, y, selectedText, range) {
-    hideSelectionPopup(); // Remove any existing
+// ===================================================
+// GRID DRAWING
+// ===================================================
+function snDrawGrid() {
+    if (!sn$.canvas || !sn$.grid) return;
+    const w = sn$.canvas.clientWidth;
+    const h = sn$.canvas.clientHeight;
+    if (!w || !h) return;
 
-    const popup = document.createElement('div');
-    popup.id = 'selection-popup-menu';
-    popup.innerHTML = `
-        <button id="mark-selection-btn" class="mark-btn">
-            <svg aria-hidden="true" focusable="false" class="inline-block w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-            </svg>
-            Markieren
-        </button>
-        <button id="mark-with-note-btn" class="note-btn">
-            <svg aria-hidden="true" focusable="false" class="inline-block w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-            </svg>
-            + Notiz
-        </button>
-    `;
+    let svg = '';
+    const stepX = w / 10;
+    const stepY = h / 10;
 
-    // Position popup
-    popup.style.left = `${x + 10}px`;
-    popup.style.top = `${y - 10}px`;
-
-    document.body.appendChild(popup);
-    if(window.CloseStack) CloseStack.push(function(){ hideSelectionPopup(); window.getSelection().removeAllRanges(); }, { id: 'selection-popup' });
-
-    // Adjust if off-screen
-    const rect = popup.getBoundingClientRect();
-    if (rect.right > window.innerWidth) {
-        popup.style.left = `${x - rect.width - 10}px`;
-    }
-    if (rect.top < 0) {
-        popup.style.top = `${y + 20}px`;
+    for (let i = 0; i <= 10; i++) {
+        const x = Math.round(i * stepX);
+        const y = Math.round(i * stepY);
+        const opacity = (i === 5) ? 0.08 : 0.03;
+        svg += `<line x1="${x}" y1="0" x2="${x}" y2="${h}" stroke="rgba(120,140,255,${opacity})" stroke-width="0.5"/>`;
+        svg += `<line x1="0" y1="${y}" x2="${w}" y2="${y}" stroke="rgba(120,140,255,${opacity})" stroke-width="0.5"/>`;
     }
 
-    // Handle mark button click
-    document.getElementById('mark-selection-btn').onclick = () => {
-        markSelectedText(selectedText, range, null);
-        hideSelectionPopup();
-        window.getSelection().removeAllRanges();
-    };
+    svg += `<defs><radialGradient id="sn-glow" cx="50%" cy="50%" r="60%">
+        <stop offset="0%" stop-color="rgba(74,124,255,0.03)"/>
+        <stop offset="100%" stop-color="transparent"/>
+    </radialGradient></defs>
+    <rect x="0" y="0" width="${w}" height="${h}" fill="url(#sn-glow)"/>`;
 
-    // Handle mark with note button click
-    document.getElementById('mark-with-note-btn').onclick = () => {
-        showNoteInput(popup, selectedText, range);
-    };
+    sn$.grid.setAttribute('viewBox', `0 0 ${w} ${h}`);
+    sn$.grid.innerHTML = svg;
 }
 
-function hideSelectionPopup() {
-    if(window.CloseStack) CloseStack.pop('selection-popup');
-    const popup = document.getElementById('selection-popup-menu');
-    if (popup) popup.remove();
+// ===================================================
+// RENDER SPECTRUM NODES
+// ===================================================
+function snRenderSpectrum() {
+    if (!sn$.canvas) return;
+    sn$.canvas.querySelectorAll('.sn-world-node').forEach(n => n.remove());
+
+    snAllWorlds.forEach((world, i) => {
+        const pos = SN_SPECTRUM_POSITIONS[world.id] || [50, 50];
+        const color = SN_GROUP_COLORS[world.group] || '#888';
+
+        const node = document.createElement('div');
+        node.className = 'sn-world-node';
+        node.dataset.worldId = world.id;
+        node.dataset.group = world.group;
+        node.style.left = pos[0] + '%';
+        node.style.top = pos[1] + '%';
+        node.style.setProperty('--node-color', color);
+        node.style.animationDelay = (i * 25) + 'ms';
+        node.setAttribute('tabindex', '0');
+        node.setAttribute('role', 'button');
+        node.setAttribute('aria-label', world.name);
+
+        node.innerHTML = `
+            <div class="sn-node-dot">
+                <span>${world.icon}</span>
+                <span class="sn-node-badge" id="sn-badge-${world.id}"></span>
+                <span class="sn-node-hits" id="sn-hits-${world.id}"></span>
+            </div>
+            <span class="sn-node-label">${snAbbreviate(world.name)}</span>`;
+
+        node.addEventListener('click', () => snSelectWorld(world.id));
+        node.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); snSelectWorld(world.id); }});
+        node.addEventListener('mouseenter', (e) => snShowNodeTooltip(e, world));
+        node.addEventListener('mouseleave', snHideNodeTooltip);
+        node.addEventListener('focus', (e) => snShowNodeTooltip(e, world));
+        node.addEventListener('blur', snHideNodeTooltip);
+
+        sn$.canvas.appendChild(node);
+    });
+
+    // Apply spread factor in case it's not 1.0
+    snApplySpread();
 }
 
-function showNoteInput(popup, selectedText, range) {
-    popup.innerHTML = `
-        <div class="note-input-container">
-            <input type="text" id="note-input" placeholder="Notiz eingeben..." maxlength="100" />
-            <button id="confirm-note-btn" aria-label="Notiz bestätigen">
-                <svg aria-hidden="true" focusable="false" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                </svg>
-            </button>
+// ===================================================
+// LEGEND
+// ===================================================
+function snRenderLegend() {
+    if (!sn$.legend) return;
+    const groups = [...new Set(snAllWorlds.map(w => w.group))];
+    sn$.legend.innerHTML = groups.map(g => `
+        <div class="sn-legend-item" data-group="${g}" tabindex="0" role="button" aria-label="${SN_GROUP_LABELS[g] || g}">
+            <span class="sn-legend-dot" style="background:${SN_GROUP_COLORS[g] || '#888'}"></span>
+            <span class="sn-legend-label">${SN_GROUP_LABELS[g] || g}</span>
         </div>
-    `;
-    const input = document.getElementById('note-input');
-    input.focus();
+    `).join('');
 
-    const confirmNote = () => {
-        const note = input.value.trim();
-        markSelectedText(selectedText, range, note || null);
-        hideSelectionPopup();
-        window.getSelection().removeAllRanges();
-    };
-
-    document.getElementById('confirm-note-btn').onclick = confirmNote;
-    input.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') confirmNote();
+    sn$.legend.querySelectorAll('.sn-legend-item').forEach(el => {
+        el.addEventListener('click', () => snFilterByGroup(el.dataset.group));
     });
 }
 
-function markSelectedText(text, range, note) {
-    if (!currentWorldId) return;
+function snFilterByGroup(group) {
+    if (!sn$.canvas) return;
+    if (snActiveLegendGroup === group) {
+        snActiveLegendGroup = null;
+        sn$.canvas.querySelectorAll('.sn-world-node').forEach(n => n.classList.remove('dimmed', 'highlighted'));
+        return;
+    }
+    snActiveLegendGroup = group;
+    sn$.canvas.querySelectorAll('.sn-world-node').forEach(n => {
+        if (n.dataset.group === group) {
+            n.classList.remove('dimmed');
+            n.classList.add('highlighted');
+        } else {
+            n.classList.add('dimmed');
+            n.classList.remove('highlighted');
+        }
+    });
+}
 
-    // Initialize custom selections for this world if needed
-    if (!customSelections[currentWorldId]) {
-        customSelections[currentWorldId] = [];
+// ===================================================
+// TOOLTIP
+// ===================================================
+function snShowNodeTooltip(e, world) {
+    if (!sn$.tooltip) return;
+    sn$.tooltipName.textContent = world.icon + ' ' + world.name;
+    const terms = snAllWorldTermsCache[world.id] || [];
+    const preview = terms.slice(0, 4);
+    sn$.tooltipTags.innerHTML = preview.map(t => `<span class="sn-node-tooltip-tag">${snEscapeHtml(t)}</span>`).join('');
+
+    const rect = e.currentTarget.getBoundingClientRect();
+    const ttW = 220;
+    let left = rect.left + rect.width / 2 - ttW / 2;
+    let top = rect.bottom + 8;
+    if (left < 8) left = 8;
+    if (left + ttW > window.innerWidth - 8) left = window.innerWidth - ttW - 8;
+    if (top + 100 > window.innerHeight) top = rect.top - 80;
+
+    sn$.tooltip.style.left = left + 'px';
+    sn$.tooltip.style.top = top + 'px';
+    sn$.tooltip.classList.add('visible');
+}
+
+function snHideNodeTooltip() {
+    if (sn$.tooltip) sn$.tooltip.classList.remove('visible');
+}
+
+// ===================================================
+// WORLD SELECTION (Spectrum version)
+// ===================================================
+function snSelectWorld(worldId) {
+    if (currentWorldId === worldId) return;
+
+    // Remove old active node
+    if (sn$.canvas) {
+        sn$.canvas.querySelectorAll('.sn-world-node.active').forEach(n => n.classList.remove('active'));
     }
 
-    const id = generateUniqueId();
+    currentWorldId = worldId;
+    if (!selections[currentWorldId]) selections[currentWorldId] = {};
 
-    // Find and auto-select any interactive-terms within the range
-    autoSelectInteractiveTermsInRange(range);
+    // Mark new active node
+    if (sn$.canvas) {
+        const node = sn$.canvas.querySelector(`[data-world-id="${worldId}"]`);
+        if (node) node.classList.add('active');
+    }
 
-    // Wrap the range in a span using extractContents + insertNode
-    // (This works across element boundaries, unlike surroundContents)
+    // Show article panel
+    if (sn$.articleEmpty) sn$.articleEmpty.style.display = 'none';
+    if (sn$.articleScroll) {
+        sn$.articleScroll.style.display = 'flex';
+        sn$.articleScroll.style.flexDirection = 'column';
+    }
+
+    const worldData = CREATIVE_WORLDS[worldId];
+    if (!worldData) return;
+
+    snRenderArticle(worldData);
+    snUpdateMoodBoard();
+    snUpdateBadges();
+    snUpdateCompass();
+    snUpdateGenerateButton();
+}
+
+// Keep old selectWorld as alias for compatibility
+function selectWorld(worldId) {
+    snSelectWorld(worldId);
+}
+
+// ===================================================
+// RENDER ARTICLE
+// ===================================================
+function snRenderArticle(worldData) {
+    if (!sn$.articleBody || !sn$.overviewMount) return;
+
+    const meta = snAllWorlds.find(w => w.id === worldData.id) || {};
+    const terms = snAllWorldTermsCache[worldData.id] || [];
+    const topTerms = terms.slice(0, 8);
+    const groupLabel = SN_GROUP_LABELS[meta.group] || '';
+
+    // Extract first paragraph as description
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = worldData.wikiContent || '';
+    const firstP = tempDiv.querySelector('p');
+    const desc = firstP ? firstP.textContent.substring(0, 160) + (firstP.textContent.length > 160 ? '...' : '') : '';
+
+    // Quick Overview
+    sn$.overviewMount.innerHTML = `
+        <div class="sn-quick-overview">
+            <div class="sn-quick-overview-header">
+                <div class="sn-quick-overview-icon">${meta.icon || '🎵'}</div>
+                <div>
+                    <div class="sn-quick-overview-title">${snEscapeHtml(worldData.name || meta.name)}</div>
+                    <div class="sn-quick-overview-group">${snEscapeHtml(groupLabel)}</div>
+                </div>
+                <div class="sn-text-size-widget" id="sn-text-size-widget">
+                    <button class="sn-text-size-btn${snCurrentTextSize === 'small' ? ' active' : ''}" data-size="small" title="Kleiner">A-</button>
+                    <button class="sn-text-size-btn${snCurrentTextSize === 'medium' ? ' active' : ''}" data-size="medium" title="Normal">A</button>
+                    <button class="sn-text-size-btn${snCurrentTextSize === 'large' ? ' active' : ''}" data-size="large" title="Groesser">A+</button>
+                </div>
+            </div>
+            <div class="sn-quick-overview-desc">${snEscapeHtml(desc)}</div>
+            <div class="sn-quick-overview-tags" id="sn-overview-tags">
+                ${topTerms.map(t => `<span class="sn-quick-tag ${snIsTermSelected(worldData.id, t) ? 'selected' : ''}" data-term="${snEscapeHtml(t)}">${snEscapeHtml(t)}</span>`).join('')}
+            </div>
+        </div>`;
+
+    // Bind quick-tag clicks
+    sn$.overviewMount.querySelectorAll('.sn-quick-tag').forEach(tag => {
+        tag.addEventListener('click', () => {
+            const term = tag.dataset.term;
+            snToggleTermSelection(currentWorldId, term);
+            tag.classList.toggle('selected', snIsTermSelected(currentWorldId, term));
+            snSyncArticleTermHighlights();
+            snUpdateMoodBoard();
+            snUpdateBadges();
+            snUpdateCompass();
+            snUpdateGenerateButton();
+        });
+    });
+
+    // Bind text-size buttons in the Quick Overview header
+    sn$.overviewMount.querySelectorAll('.sn-text-size-btn').forEach(btn => {
+        btn.addEventListener('click', () => snSetTextSize(btn.dataset.size));
+    });
+
+    // Article body — wrap h2 sections for collapsing
+    let html = worldData.wikiContent || '<p>Kein Inhalt verfuegbar.</p>';
+    html = snWrapCollapsibleSections(html);
+    sn$.articleBody.innerHTML = html;
+
+    // Bind interactive terms
+    snBindInteractiveTerms();
+    // Restore selection state
+    snSyncArticleTermHighlights();
+    // Bind collapsible h2
+    sn$.articleBody.querySelectorAll('h2').forEach(h2 => {
+        h2.addEventListener('click', () => h2.classList.toggle('collapsed'));
+    });
+    // Reset scroll
+    if (sn$.articleScroll) sn$.articleScroll.scrollTop = 0;
+}
+
+function snWrapCollapsibleSections(html) {
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    const children = Array.from(div.childNodes);
+    const result = document.createElement('div');
+    let currentSection = null;
+
+    children.forEach(child => {
+        if (child.nodeType === 1 && child.tagName === 'H2') {
+            if (currentSection) result.appendChild(currentSection);
+            result.appendChild(child);
+            currentSection = document.createElement('div');
+            currentSection.className = 'sn-collapsible-section';
+        } else if (currentSection) {
+            currentSection.appendChild(child.cloneNode(true));
+        } else {
+            result.appendChild(child.cloneNode(true));
+        }
+    });
+
+    if (currentSection) result.appendChild(currentSection);
+    return result.innerHTML;
+}
+
+// ===================================================
+// INTERACTIVE TERM SELECTION
+// ===================================================
+function snBindInteractiveTerms() {
+    if (!sn$.articleBody) return;
+    sn$.articleBody.querySelectorAll('.interactive-term').forEach(el => {
+        el.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const term = el.getAttribute('data-term') || el.textContent.trim();
+            snToggleTermSelection(currentWorldId, term);
+            el.classList.toggle('selected', snIsTermSelected(currentWorldId, term));
+
+            // Ripple effect
+            snCreateRipple(e, el);
+            // +1 / -1 float
+            const isSelected = snIsTermSelected(currentWorldId, term);
+            snCreateFloatCounter(e, isSelected ? '+1' : '-1');
+
+            // Sync overview tags
+            if (sn$.overviewMount) {
+                sn$.overviewMount.querySelectorAll('.sn-quick-tag').forEach(tag => {
+                    if (tag.dataset.term === term) tag.classList.toggle('selected', isSelected);
+                });
+            }
+            // Sync all instances in article
+            sn$.articleBody.querySelectorAll(`.interactive-term[data-term="${CSS.escape(term)}"]`).forEach(otherEl => {
+                otherEl.classList.toggle('selected', isSelected);
+            });
+
+            snUpdateMoodBoard();
+            snUpdateBadges();
+            snUpdateCompass();
+            snUpdateGenerateButton();
+        });
+    });
+}
+
+function snCreateRipple(e, el) {
+    const ripple = document.createElement('span');
+    ripple.className = 'ripple';
+    const rect = el.getBoundingClientRect();
+    ripple.style.left = (e.clientX - rect.left - 40) + 'px';
+    ripple.style.top = (e.clientY - rect.top - 40) + 'px';
+    el.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 500);
+}
+
+function snCreateFloatCounter(e, text) {
+    const float = document.createElement('div');
+    float.className = 'sn-term-counter-float';
+    float.textContent = text;
+    float.style.left = e.clientX + 'px';
+    float.style.top = (e.clientY - 10) + 'px';
+    document.body.appendChild(float);
+    setTimeout(() => float.remove(), 700);
+}
+
+function snToggleTermSelection(worldId, term) {
+    if (!selections[worldId]) selections[worldId] = {};
+    selections[worldId][term] = !selections[worldId][term];
+    if (!selections[worldId][term]) delete selections[worldId][term];
+}
+
+function snIsTermSelected(worldId, term) {
+    return !!(selections[worldId] && selections[worldId][term]);
+}
+
+function snSyncArticleTermHighlights() {
+    if (!currentWorldId || !sn$.articleBody) return;
+    sn$.articleBody.querySelectorAll('.interactive-term').forEach(el => {
+        const term = el.getAttribute('data-term') || el.textContent.trim();
+        el.classList.toggle('selected', snIsTermSelected(currentWorldId, term));
+    });
+}
+
+// ===================================================
+// TEXT MARKING (mouseup popup)
+// ===================================================
+function snHandleTextSelection(e) {
+    const sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !sel.rangeCount) return;
+    if (!currentWorldId || !sn$.articleBody) return;
+
+    const range = sel.getRangeAt(0);
+    if (!sn$.articleBody.contains(range.commonAncestorContainer)) return;
+
+    // Ignore selections inside interactive-terms, custom-selections, headings
+    if (e.target.closest('.interactive-term') || e.target.closest('.custom-selection') || e.target.closest('h1, h2, h3, h4, h5, h6')) return;
+
+    const text = sel.toString().trim();
+    if (text.length < 3) return;
+
+    snPendingRange = range.cloneRange();
+
+    const rect = range.getBoundingClientRect();
+    if (sn$.markPopup) {
+        sn$.markPopup.style.left = Math.min(rect.left + rect.width / 2 - 80, window.innerWidth - 200) + 'px';
+        sn$.markPopup.style.top = (rect.top - 42) + 'px';
+        sn$.markPopup.classList.add('visible');
+    }
+}
+
+function snMarkSelection(withNote) {
+    if (!snPendingRange || !currentWorldId) return;
+    if (sn$.markPopup) sn$.markPopup.classList.remove('visible');
+
+    if (withNote) {
+        if (sn$.noteOverlay) {
+            sn$.noteOverlay.classList.add('visible');
+            if (sn$.noteField) { sn$.noteField.value = ''; sn$.noteField.focus(); }
+        }
+        return;
+    }
+
+    snApplyMark(snPendingRange.toString().trim(), null);
+}
+
+function snApplyMark(text, note) {
+    if (!snPendingRange || !currentWorldId) return;
+
+    const markId = 'mark_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6);
+
+    // Auto-select interactive-terms within range
+    snAutoSelectTermsInRange(snPendingRange);
+
     try {
-        const wrapper = document.createElement('span');
-        wrapper.className = 'custom-selection';
-        wrapper.dataset.selectionId = id;
+        const span = document.createElement('span');
+        span.className = 'custom-selection';
+        span.dataset.markId = markId;
+        span.title = note || '';
         if (note) {
-            wrapper.dataset.note = note;
-            wrapper.classList.add('has-note');
+            const sup = document.createElement('span');
+            sup.className = 'note-indicator';
+            sup.textContent = '*';
+            sup.title = note;
+            snPendingRange.surroundContents(span);
+            span.appendChild(sup);
+        } else {
+            snPendingRange.surroundContents(span);
         }
 
-        // Extract the selected contents and wrap them
-        // This approach correctly handles selections spanning multiple elements
-        const contents = range.extractContents();
-        wrapper.appendChild(contents);
-        range.insertNode(wrapper);
-
-        // Add click handler to remove
-        wrapper.addEventListener('click', handleCustomSelectionClick);
-    } catch (e) {
-        // Fallback: log warning if wrapping fails for unexpected reasons
-        console.warn('Could not wrap selection visually, storing text only:', e);
+        // Click to remove
+        span.addEventListener('click', (e) => {
+            e.stopPropagation();
+            snRemoveMark(markId, span);
+        });
+    } catch (err) {
+        console.warn('Could not wrap selection:', err);
+        showToast('Markierung konnte nicht erstellt werden.', 'warning');
+        snPendingRange = null;
+        return;
     }
 
-    // Store the selection
-    customSelections[currentWorldId].push({
-        id: id,
-        text: text,
-        note: note
-    });
+    if (!customSelections[currentWorldId]) customSelections[currentWorldId] = [];
+    customSelections[currentWorldId].push({ id: markId, text, note });
 
-    updateSelectionCounter();
-    updateWorldTabIndicators();
+    window.getSelection().removeAllRanges();
+    snPendingRange = null;
+
+    snUpdateMoodBoard();
+    snUpdateBadges();
+    snUpdateGenerateButton();
+    showToast('Passage markiert', 'info', 2000);
 }
 
-// Feature 1: Auto-select interactive-terms within a marked range
-function autoSelectInteractiveTermsInRange(range) {
-    const contentArea = document.getElementById('world-content-area');
-    if (!contentArea) return;
-
-    // Find all interactive-terms
-    const terms = contentArea.querySelectorAll('.interactive-term');
-
-    terms.forEach(term => {
-        // Check if the term is within or overlaps with the selection range
+function snAutoSelectTermsInRange(range) {
+    if (!sn$.articleBody) return;
+    sn$.articleBody.querySelectorAll('.interactive-term').forEach(term => {
         if (range.intersectsNode(term)) {
             const termValue = term.dataset.term;
             if (!selections[currentWorldId]) selections[currentWorldId] = {};
-
-            // Only select if not already selected
             if (!selections[currentWorldId][termValue]) {
                 selections[currentWorldId][termValue] = true;
                 term.classList.add('selected');
@@ -10230,485 +10688,424 @@ function autoSelectInteractiveTermsInRange(range) {
     });
 }
 
-// Feature 2: Handle click on custom selection to show remove option
-function handleCustomSelectionClick(e) {
-    e.stopPropagation();
-    const selectionEl = e.currentTarget;
-    const selectionId = selectionEl.dataset.selectionId;
-
-    // Create remove popup
-    hideSelectionPopup();
-    const popup = document.createElement('div');
-    popup.id = 'selection-popup-menu';
-    popup.className = 'remove-popup';
-    popup.innerHTML = `
-        <button id="remove-selection-btn" class="remove-btn">
-            <svg aria-hidden="true" focusable="false" class="inline-block w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-            </svg>
-            Markierung entfernen
-        </button>
-    `;
-
-    // Position at element
-    const rect = selectionEl.getBoundingClientRect();
-    popup.style.left = `${rect.left}px`;
-    popup.style.top = `${rect.bottom + 5}px`;
-
-    document.body.appendChild(popup);
-
-    document.getElementById('remove-selection-btn').onclick = () => {
-        removeCustomSelection(selectionId, selectionEl);
-        hideSelectionPopup();
-    };
-}
-
-function removeCustomSelection(selectionId, element) {
+function snRemoveMark(markId, element) {
     if (!currentWorldId || !customSelections[currentWorldId]) return;
 
-    // Remove from state
-    customSelections[currentWorldId] = customSelections[currentWorldId].filter(
-        sel => sel.id !== selectionId
-    );
+    customSelections[currentWorldId] = customSelections[currentWorldId].filter(s => s.id !== markId);
+    if (customSelections[currentWorldId].length === 0) delete customSelections[currentWorldId];
 
-    // If element is not provided, try to find it
     if (!element) {
-        element = document.querySelector(`.custom-selection[data-selection-id="${selectionId}"]`);
+        element = document.querySelector(`[data-mark-id="${markId}"]`);
     }
-
     if (element) {
-        // Unwrap the element (keep the text content)
         const parent = element.parentNode;
-        while (element.firstChild) {
-            parent.insertBefore(element.firstChild, element);
-        }
-        parent.removeChild(element);
+        while (element.firstChild) parent.insertBefore(element.firstChild, element);
+        element.remove();
     }
 
-    updateSelectionCounter();
-    updateWorldTabIndicators();
+    snUpdateMoodBoard();
+    snUpdateBadges();
+    snUpdateCompass();
+    snUpdateGenerateButton();
 }
 
-function undoLastSelection() {
-    if (!currentWorldId || !customSelections[currentWorldId]) return;
-
-    const selections = customSelections[currentWorldId];
-    if (selections.length === 0) return;
-
-    // Get the last one
-    const lastSelection = selections[selections.length - 1];
-
-    // Remove it
-    removeCustomSelection(lastSelection.id);
+function snUndoLastMark() {
+    if (!currentWorldId || !customSelections[currentWorldId] || customSelections[currentWorldId].length === 0) return;
+    const last = customSelections[currentWorldId][customSelections[currentWorldId].length - 1];
+    snRemoveMark(last.id);
 }
 
-// Feature 3: Update selection counter in footer
-function updateSelectionCounter() {
-    const counter = document.getElementById('selection-counter');
-    const termCountEl = document.getElementById('term-count');
-    const passageCountEl = document.getElementById('passage-count');
-    const resetBtn = document.getElementById('reset-selections-btn');
+// ===================================================
+// MOOD BOARD / DNA BAR (cross-world)
+// ===================================================
+function snUpdateMoodBoard() {
+    let totalTerms = 0;
+    let totalPassages = 0;
+    let pills = [];
 
-    if (!counter || !termCountEl || !passageCountEl) return;
-
-    const termCount = Object.keys(selections[currentWorldId] || {}).length;
-    const passageCount = (customSelections[currentWorldId] || []).length;
-
-    termCountEl.textContent = termCount;
-    passageCountEl.textContent = passageCount;
-
-    // Show/hide counter and reset button based on selections
-    if (termCount > 0 || passageCount > 0) {
-        counter.classList.remove('hidden');
-        if (resetBtn) resetBtn.classList.remove('hidden');
-    } else {
-        counter.classList.add('hidden');
-        if (resetBtn) resetBtn.classList.add('hidden');
-    }
-}
-
-// Feature 4: Reset all selections for current world
-function resetAllSelections() {
-    if (!currentWorldId) return;
-
-    // Clear state
-    selections[currentWorldId] = {};
-    customSelections[currentWorldId] = [];
-
-    // Clear visual state
-    const contentArea = document.getElementById('world-content-area');
-    if (contentArea) {
-        // Remove selected class from interactive-terms
-        contentArea.querySelectorAll('.interactive-term.selected').forEach(el => {
-            el.classList.remove('selected');
-        });
-
-        // Unwrap custom selections
-        contentArea.querySelectorAll('.custom-selection').forEach(el => {
-            const parent = el.parentNode;
-            while (el.firstChild) {
-                parent.insertBefore(el.firstChild, el);
+    Object.keys(selections).forEach(wId => {
+        const worldMeta = snAllWorlds.find(w => w.id === wId);
+        const icon = worldMeta ? worldMeta.icon : '🎵';
+        Object.keys(selections[wId]).forEach(term => {
+            if (selections[wId][term]) {
+                totalTerms++;
+                pills.push({ type: 'term', worldId: wId, term, icon });
             }
-            parent.removeChild(el);
         });
-    }
+    });
 
-    updateSelectionCounter();
-    updateWorldTabIndicators();
-}
+    Object.keys(customSelections).forEach(wId => {
+        const worldMeta = snAllWorlds.find(w => w.id === wId);
+        const icon = worldMeta ? worldMeta.icon : '🎵';
+        (customSelections[wId] || []).forEach(sel => {
+            totalPassages++;
+            pills.push({ type: 'passage', worldId: wId, text: sel.text, id: sel.id, icon });
+        });
+    });
 
-// Feature 6: Update world tab indicators
-function updateWorldTabIndicators() {
-    const container = document.getElementById('world-tabs');
-    if (!container) return;
+    if (sn$.termCount) sn$.termCount.textContent = totalTerms;
+    if (sn$.passageCount) sn$.passageCount.textContent = totalPassages;
 
-    // Check all world tabs for existing indicators and update them
-    Object.keys(CREATIVE_WORLDS).forEach(worldId => {
-        const hasTerms = Object.keys(selections[worldId] || {}).length > 0;
-        const hasPassages = (customSelections[worldId] || []).length > 0;
-        const hasSelections = hasTerms || hasPassages;
+    // Update tray content
+    if (sn$.trayContent) {
+        // Remove old chips (but keep empty message)
+        sn$.trayContent.querySelectorAll('.sn-tray-chip').forEach(c => c.remove());
 
-        // Find the tab button for this world
-        const btn = container.querySelector(`[data-id="${worldId}"]`);
-        if (btn) {
-            updateTabIndicator(btn, hasSelections);
-        }
+        if (pills.length === 0) {
+            if (sn$.trayEmpty) sn$.trayEmpty.style.display = 'flex';
+        } else {
+            if (sn$.trayEmpty) sn$.trayEmpty.style.display = 'none';
 
-        // Also check group triggers (for grouped worlds)
-        const world = CREATIVE_WORLDS[worldId];
-        if (world.group) {
-            // Find if any world in this group has selections
-            const groupHasSelections = Object.values(CREATIVE_WORLDS)
-                .filter(w => w.group === world.group)
-                .some(w => {
-                    return Object.keys(selections[w.id] || {}).length > 0 ||
-                        (customSelections[w.id] || []).length > 0;
+            pills.forEach(p => {
+                const chip = document.createElement('span');
+                if (p.type === 'term') {
+                    chip.className = 'sn-tray-chip chip-term';
+                    chip.dataset.world = p.worldId;
+                    chip.dataset.term = p.term;
+                    chip.title = p.icon + ' ' + p.term;
+                    chip.innerHTML = `${snEscapeHtml(p.term)} <span class="chip-remove">&times;</span>`;
+                } else {
+                    chip.className = 'sn-tray-chip chip-passage';
+                    chip.dataset.world = p.worldId;
+                    chip.dataset.markId = p.id;
+                    const preview = p.text.length > 24 ? p.text.substring(0, 24) + '...' : p.text;
+                    chip.title = p.icon + ' ' + p.text;
+                    chip.innerHTML = `${snEscapeHtml(preview)} <span class="chip-remove">&times;</span>`;
+                }
+
+                chip.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('chip-remove')) {
+                        snRemovePill(chip);
+                    } else {
+                        snScrollToPill(chip);
+                    }
                 });
 
-            // Update group trigger if exists
-            const groupContainer = container.querySelector('.world-tab-group');
-            if (groupContainer) {
-                const groupBtn = groupContainer.querySelector('.group-trigger');
-                if (groupBtn) {
-                    updateTabIndicator(groupBtn, groupHasSelections);
-                }
-            }
-        }
-    });
-}
-
-function updateTabIndicator(btn, hasSelections) {
-    let indicator = btn.querySelector('.selection-indicator');
-
-    if (hasSelections && !indicator) {
-        // Add indicator
-        indicator = document.createElement('span');
-        indicator.className = 'selection-indicator';
-        btn.appendChild(indicator);
-    } else if (!hasSelections && indicator) {
-        // Remove indicator
-        indicator.remove();
-    }
-}
-
-function openIdeaStarter() {
-    const modal = document.getElementById('idea-starter-modal');
-    modal.classList.remove('hidden');
-    modal.classList.add('flex', 'fade-in');
-    if(window.BodyScrollLock) BodyScrollLock.lock();
-    // Phase 3 (P3-4): Push creative-cosmos scope
-    if(window.ScopeStack){
-        modal._scopeToken = ScopeStack.push('creative-cosmos');
-    }
-    // CloseStack integration — Escape closes this modal
-    if(window.CloseStack) CloseStack.push(closeIdeaStarter, { id: 'creative-cosmos' });
-    // Focus trap: trap Tab/Shift+Tab within the modal, auto-focus first element
-    if(window.FocusTrap){
-        modal._focusTrap = FocusTrap.activate(modal);
-    }
-
-    if (!currentWorldId) {
-        selectWorld('orchestra_treatise'); // Default
-    }
-}
-
-function closeIdeaStarter() {
-    const modal = document.getElementById('idea-starter-modal');
-    // Deactivate focus trap (restores focus to trigger element)
-    if(window.FocusTrap && modal._focusTrap){
-        modal._focusTrap.deactivate();
-        modal._focusTrap = null;
-    }
-    modal.classList.add('hidden');
-    modal.classList.remove('flex');
-    // Pop CloseStack entry (safe if already popped by Escape)
-    if(window.CloseStack) CloseStack.pop('creative-cosmos');
-    if(window.BodyScrollLock) BodyScrollLock.unlock();
-    // Phase 3 (P3-4): Pop creative-cosmos scope
-    if(window.ScopeStack && modal._scopeToken){
-        ScopeStack.pop(modal._scopeToken);
-        modal._scopeToken = null;
-    }
-}
-
-function renderWorldTabs() {
-    const container = document.getElementById('world-tabs');
-    if (!container) return;
-    container.innerHTML = '';
-
-    const groups = {};
-    const singles = [];
-
-    // Sort into groups and singles
-    Object.values(CREATIVE_WORLDS).forEach(world => {
-        if (world.group) {
-            if (!groups[world.group]) groups[world.group] = [];
-            groups[world.group].push(world);
-        } else {
-            singles.push(world);
-        }
-    });
-
-    // Render Groups first (specifically Orchestra Group)
-    Object.keys(groups).forEach(groupId => {
-        const groupItems = groups[groupId];
-        const headerItem = groupItems.find(i => i.id === 'orchestra_treatise') || groupItems[0];
-
-        const groupContainer = document.createElement('div');
-        groupContainer.className = 'world-tab-group relative'; // Removed group/dropdown hover logic
-
-        const mainBtn = document.createElement('button');
-        mainBtn.className = `world-tab group-trigger`;
-        mainBtn.innerHTML = `<span class="mr-2">${headerItem.icon}</span>${headerItem.name} <svg aria-hidden="true" focusable="false" class="w-3 h-3 ml-1 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>`;
-
-        // Select main item on click
-        mainBtn.onclick = () => selectWorld(headerItem.id);
-
-        // Hover logic for Portal Dropdown
-        let dropdownTimeout;
-
-        const removeDropdown = (ddEl) => {
-            if(!ddEl) return;
-            ddEl.remove();
-            if(window.CloseStack) CloseStack.pop('portal-dropdown');
-        };
-
-        const showPortalDropdown = () => {
-            clearTimeout(dropdownTimeout);
-            // Check if already open
-            if (document.getElementById(`dropdown-${groupId}`)) return;
-
-            // Close other dropdowns (and their CloseStack entries)
-            document.querySelectorAll('.portal-dropdown').forEach(el => removeDropdown(el));
-
-            const rect = mainBtn.getBoundingClientRect();
-
-            const dropdown = document.createElement('div');
-            dropdown.id = `dropdown-${groupId}`;
-            dropdown.className = `portal-dropdown fixed bg-[#0b0b14] border border-neutral-700 rounded-xl shadow-xl z-[9999] flex flex-col overflow-hidden animate-fade-in`;
-            dropdown.style.top = `${rect.bottom + 8}px`; // bit of spacing
-            dropdown.style.left = `${rect.left}px`;
-            dropdown.style.minWidth = `${rect.width}px`;
-
-            groupItems.forEach(item => {
-                const itemBtn = document.createElement('button');
-                itemBtn.className = `text-left px-4 py-3 text-sm text-neutral-400 hover:text-white hover:bg-white/5 transition-colors flex items-center gap-2 border-b border-white/5 last:border-0 pointer-events-auto`;
-                itemBtn.innerHTML = `<span>${item.icon}</span> ${item.name}`;
-                itemBtn.onclick = (e) => {
-                    e.stopPropagation();
-                    selectWorld(item.id);
-                    removeDropdown(dropdown); // Close on selection
-                };
-
-                // Highlight active
-                if (currentWorldId === item.id) {
-                    itemBtn.classList.add('text-white', 'bg-white/10');
-                }
-
-                dropdown.appendChild(itemBtn);
+                sn$.trayContent.appendChild(chip);
             });
-
-            // Handle mouse interactions on dropdown
-            dropdown.onmouseenter = () => clearTimeout(dropdownTimeout);
-            dropdown.onmouseleave = () => {
-                dropdownTimeout = setTimeout(() => removeDropdown(dropdown), 200);
-            };
-
-            document.body.appendChild(dropdown);
-            // Register with CloseStack so Escape closes the dropdown
-            if(window.CloseStack) CloseStack.push(function(){ removeDropdown(document.getElementById(`dropdown-${groupId}`)); }, { id: 'portal-dropdown' });
-        };
-
-        const hidePortalDropdown = () => {
-            dropdownTimeout = setTimeout(() => {
-                const dropdown = document.getElementById(`dropdown-${groupId}`);
-                if (dropdown) removeDropdown(dropdown);
-            }, 200);
-        };
-
-        mainBtn.onmouseenter = showPortalDropdown;
-        mainBtn.onmouseleave = hidePortalDropdown;
-
-        // Cleanup on scroll or click elsewhere? 
-        // Ideally we should listen to window events but for now simple hover is enough.
-
-        groupContainer.appendChild(mainBtn);
-        container.appendChild(groupContainer);
-    });
-
-    // Render Singles
-    singles.forEach(world => {
-        const btn = document.createElement('button');
-        btn.className = `world-tab`;
-        btn.dataset.id = world.id;
-        btn.innerHTML = `<span class="mr-2">${world.icon}</span>${world.name}`;
-        btn.onclick = () => selectWorld(world.id);
-        container.appendChild(btn);
-    });
-}
-
-function selectWorld(worldId) {
-    currentWorldId = worldId;
-
-    // Initialize state if needed
-    if (!selections[currentWorldId]) selections[currentWorldId] = {};
-
-    // Update active state for main tabs and dropdown itmes
-    document.querySelectorAll('.world-tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.world-tab-dropdown button').forEach(t => t.classList.remove('text-white', 'bg-white/10'));
-
-    const activeItemBtn = document.querySelector(`.world-tab-dropdown button[data-id="${worldId}"]`);
-    if (activeItemBtn) {
-        activeItemBtn.classList.add('text-white', 'bg-white/10');
-        // Also highlight the parent group button
-        const groupWrapper = activeItemBtn.closest('.world-tab-group');
-        if (groupWrapper) {
-            const trigger = groupWrapper.querySelector('.world-tab');
-            if (trigger) trigger.classList.add('active');
-        }
-    } else {
-        // Must be a single tab or the group trigger itself acting as a tab (if clicked directly)
-        const btn = document.querySelector(`.world-tab[data-id="${worldId}"]`);
-        if (btn) btn.classList.add('active');
-
-        // Using the loop to find buttons by data-id is safer? 
-        // Actually, the previous implementation used querySelectorAll based on dataset.
-        // Let's support both.
-        document.querySelectorAll(`.world-tab`).forEach(t => {
-            // If this tab is the one, or if it's a group trigger for the active group
-            if (t.dataset.id === worldId) {
-                t.classList.add('active');
-            }
-        });
-
-        // Identify group membership for highlighting
-        const world = CREATIVE_WORLDS[worldId];
-        if (world && world.group) {
-            // Highlight group trigger
-            // Just find any group that contains this... logic handled above by 'activeItemBtn' check mostly.
-            // If we clicked the main button "Das Orchester", renderWorldTabs assigned it an onclick for a specific ID.
-            // So it corresponds to a dataset.id on the MAIN button if we set it.
-            // In my new renderWorldTabs, I removed dataset.id from mainBtn unless I want it to be select directly.
-            // I DID add it in my thought process "mainBtn.dataset.id = headerItem.id ??". 
-            // Let's verify what I wrote in the block above.
-            // "mainBtn.onclick = () => selectWorld(headerItem.id);" - but I commented out dataset.id. 
-            // Better to re-add selection logic visual update:
         }
     }
 
-    const contentArea = document.getElementById('world-content-area');
-    contentArea.classList.add('opacity-0', 'translate-y-4');
-
-    setTimeout(() => {
-        const world = CREATIVE_WORLDS[worldId];
-        contentArea.innerHTML = `<div class="wiki-article animate-zoom-in">${world.wikiContent}</div>`;
-        contentArea.classList.remove('opacity-0', 'translate-y-4');
-
-        // Restore selections (Apply visual state)
-        const currentSelectedTerms = selections[currentWorldId];
-        const terms = contentArea.querySelectorAll('.interactive-term');
-        terms.forEach(el => {
-            // Check data-term
-            const val = el.dataset.term;
-            if (currentSelectedTerms[val]) {
-                el.classList.add('selected');
-            }
+    // Update peek chips (visible when tray is collapsed)
+    if (sn$.trayPeek) {
+        sn$.trayPeek.innerHTML = '';
+        const total = totalTerms + totalPassages;
+        const peekItems = pills.slice(0, 4);
+        peekItems.forEach(p => {
+            const chip = document.createElement('span');
+            chip.className = 'sn-tray-peek-chip';
+            chip.textContent = p.type === 'term' ? p.term : (p.text.substring(0, 16) + '...');
+            sn$.trayPeek.appendChild(chip);
         });
-
-        // Update counter for this world
-        updateSelectionCounter();
-    }, 300);
+        if (total > 4) {
+            const more = document.createElement('span');
+            more.className = 'sn-tray-peek-chip';
+            more.textContent = '+' + (total - 4);
+            sn$.trayPeek.appendChild(more);
+        }
+    }
 }
 
-function toggleTerm(el) {
-    const term = el.dataset.term;
-    if (!selections[currentWorldId]) selections[currentWorldId] = {};
-
-    const isSelected = !!selections[currentWorldId][term];
-
-    if (isSelected) {
-        // Remove
-        delete selections[currentWorldId][term];
-        el.classList.remove('selected');
+function snRemovePill(chip) {
+    const worldId = chip.dataset.world;
+    if (chip.classList.contains('chip-term')) {
+        const term = chip.dataset.term;
+        if (selections[worldId]) {
+            delete selections[worldId][term];
+            if (Object.keys(selections[worldId]).length === 0) delete selections[worldId];
+        }
+        if (currentWorldId === worldId) {
+            snSyncArticleTermHighlights();
+            if (sn$.overviewMount) {
+                sn$.overviewMount.querySelectorAll('.sn-quick-tag').forEach(tag => {
+                    if (tag.dataset.term === term) tag.classList.remove('selected');
+                });
+            }
+        }
     } else {
-        // Add
-        selections[currentWorldId][term] = true;
-        el.classList.add('selected');
+        const markId = chip.dataset.markId;
+        snRemoveMark(markId);
+    }
+    snUpdateMoodBoard();
+    snUpdateBadges();
+    snUpdateCompass();
+    snUpdateGenerateButton();
+}
+
+function snScrollToPill(chip) {
+    const worldId = chip.dataset.world;
+    if (worldId !== currentWorldId) {
+        snSelectWorld(worldId);
+        return;
+    }
+    if (chip.classList.contains('chip-term')) {
+        const term = chip.dataset.term;
+        const el = sn$.articleBody.querySelector(`.interactive-term[data-term="${CSS.escape(term)}"]`);
+        if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            el.style.transition = 'box-shadow 0.3s';
+            el.style.boxShadow = '0 0 16px rgba(74,124,255,0.5)';
+            setTimeout(() => { el.style.boxShadow = ''; }, 1200);
+        }
+    } else {
+        const markId = chip.dataset.markId;
+        const el = sn$.articleBody.querySelector(`[data-mark-id="${markId}"]`);
+        if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            el.style.transition = 'box-shadow 0.3s';
+            el.style.boxShadow = '0 0 16px rgba(245,158,11,0.5)';
+            setTimeout(() => { el.style.boxShadow = ''; }, 1200);
+        }
+    }
+}
+
+// ===================================================
+// BADGES ON NODES
+// ===================================================
+function snUpdateBadges() {
+    snAllWorlds.forEach(w => {
+        const badge = document.getElementById('sn-badge-' + w.id);
+        if (!badge) return;
+        const termCount = selections[w.id] ? Object.keys(selections[w.id]).length : 0;
+        const passageCount = customSelections[w.id] ? customSelections[w.id].length : 0;
+        const total = termCount + passageCount;
+        if (total > 0) {
+            badge.textContent = total;
+            badge.classList.add('visible');
+        } else {
+            badge.classList.remove('visible');
+        }
+    });
+}
+
+// ===================================================
+// MOOD COMPASS
+// ===================================================
+function snUpdateCompass() {
+    if (!sn$.compassNeedle) return;
+    let totalEnergy = 0;
+    let totalBright = 0;
+    let count = 0;
+
+    Object.keys(selections).forEach(wId => {
+        const meta = snAllWorlds.find(w => w.id === wId);
+        if (!meta) return;
+        const vec = SN_GROUP_MOOD_VECTORS[meta.group] || { energy: 0, brightness: 0 };
+        const n = Object.keys(selections[wId]).length;
+        totalEnergy += vec.energy * n;
+        totalBright += vec.brightness * n;
+        count += n;
+    });
+
+    if (count > 0) {
+        totalEnergy /= count;
+        totalBright /= count;
     }
 
-    updateSelectionCounter();
-    updateWorldTabIndicators();
+    const cx = 50 + totalBright * 35;
+    const cy = 50 - totalEnergy * 35;
+
+    sn$.compassNeedle.style.left = Math.max(15, Math.min(85, cx)) + '%';
+    sn$.compassNeedle.style.top = Math.max(15, Math.min(85, cy)) + '%';
+
+    if (count > 0) {
+        const hue = 220 + totalBright * 40 + totalEnergy * 20;
+        sn$.compassNeedle.style.background = `hsl(${hue}, 70%, 60%)`;
+        sn$.compassNeedle.style.boxShadow = `0 0 12px 4px hsla(${hue}, 70%, 60%, 0.5)`;
+    } else {
+        sn$.compassNeedle.style.background = 'var(--sn-accent-blue)';
+        sn$.compassNeedle.style.boxShadow = '0 0 10px 3px rgba(74, 124, 255, 0.5)';
+    }
 }
 
-// === API GENERATION ===
-async function generateVision() {
-    const activeWorld = CREATIVE_WORLDS[currentWorldId];
-    const worldSelections = selections[currentWorldId] || {};
-    const worldCustomSelections = customSelections[currentWorldId] || [];
+// ===================================================
+// SEARCH / CROSS-WORLD
+// ===================================================
+function snHandleSearch(query) {
+    if (!sn$.canvas) return;
+    if (sn$.searchClear) sn$.searchClear.classList.toggle('visible', query.length > 0);
 
-    const selectedKeys = Object.keys(worldSelections);
-    const customTexts = worldCustomSelections.map(s => s.text);
-
-    // Require at least one selection (either interactive-term or custom)
-    if (selectedKeys.length === 0 && customTexts.length === 0) {
-        showToast("Bitte klicke auf ein paar Begriffe im Text oder markiere Textpassagen, bevor du startest.", "warning");
+    if (!query) {
+        sn$.canvas.querySelectorAll('.sn-world-node').forEach(n => {
+            n.classList.remove('dimmed', 'highlighted');
+            const hits = n.querySelector('.sn-node-hits');
+            if (hits) hits.classList.remove('visible');
+        });
+        if (sn$.crossResults) sn$.crossResults.classList.remove('visible');
+        snActiveLegendGroup = null;
         return;
     }
 
-    // Build user input including both types of selections
-    let userInput = `
-    World: ${activeWorld.name}
-    `;
+    const q = query.toLowerCase();
 
-    if (selectedKeys.length > 0) {
-        userInput += `
-    Selected Terms:
-    ${selectedKeys.map(k => `- ${k}`).join('\n')}
-    `;
-    }
+    sn$.canvas.querySelectorAll('.sn-world-node').forEach(n => {
+        const wId = n.dataset.worldId;
+        const meta = snAllWorlds.find(w => w.id === wId);
+        const nameMatch = meta && meta.name.toLowerCase().includes(q);
+        const termsForWorld = snAllWorldTermsCache[wId] || [];
+        const termHits = termsForWorld.filter(t => t.toLowerCase().includes(q));
 
-    if (worldCustomSelections.length > 0) {
-        userInput += `
-    Custom Marked Passages:
-    ${worldCustomSelections.map(s => {
-            if (s.note) {
-                return `- "${s.text}" [Notiz: ${s.note}]`;
+        if (nameMatch || termHits.length > 0) {
+            n.classList.remove('dimmed');
+            n.classList.add('highlighted');
+            const hitsEl = n.querySelector('.sn-node-hits');
+            if (hitsEl && termHits.length > 0) {
+                hitsEl.textContent = termHits.length;
+                hitsEl.classList.add('visible');
+            } else if (hitsEl) {
+                hitsEl.classList.remove('visible');
             }
-            return `- "${s.text}"`;
-        }).join('\n')}
-    `;
+        } else {
+            n.classList.add('dimmed');
+            n.classList.remove('highlighted');
+            const hitsEl = n.querySelector('.sn-node-hits');
+            if (hitsEl) hitsEl.classList.remove('visible');
+        }
+    });
+
+    // Cross-world dropdown
+    const results = [];
+    snAllWorlds.forEach(w => {
+        const nameMatch = w.name.toLowerCase().includes(q);
+        const termsForWorld = snAllWorldTermsCache[w.id] || [];
+        const termHits = termsForWorld.filter(t => t.toLowerCase().includes(q));
+        if (nameMatch || termHits.length > 0) {
+            results.push({ world: w, termHits, nameMatch });
+        }
+    });
+
+    if (results.length > 0 && query.length >= 2 && sn$.crossResults) {
+        let html = '';
+        results.slice(0, 8).forEach(r => {
+            html += `<div class="sn-cross-search-item" data-world-id="${r.world.id}">
+                <span class="sn-cross-search-item-icon">${r.world.icon}</span>
+                <span class="sn-cross-search-item-name">${snEscapeHtml(r.world.name)}</span>
+                ${r.termHits.length > 0 ? `<span class="sn-cross-search-item-hits">${r.termHits.length} Treffer</span>` : ''}
+            </div>`;
+            r.termHits.slice(0, 3).forEach(t => {
+                const highlighted = t.replace(new RegExp(`(${snEscapeRegExp(query)})`, 'gi'), '<mark>$1</mark>');
+                html += `<div class="sn-cross-search-item-term" data-world-id="${r.world.id}" data-term="${snEscapeHtml(t)}">${highlighted}</div>`;
+            });
+        });
+        sn$.crossResults.innerHTML = html;
+        sn$.crossResults.classList.add('visible');
+
+        sn$.crossResults.querySelectorAll('.sn-cross-search-item').forEach(el => {
+            el.addEventListener('click', () => {
+                snSelectWorld(el.dataset.worldId);
+                sn$.crossResults.classList.remove('visible');
+                sn$.search.value = '';
+                snHandleSearch('');
+            });
+        });
+
+        sn$.crossResults.querySelectorAll('.sn-cross-search-item-term').forEach(el => {
+            el.addEventListener('click', () => {
+                const wId = el.dataset.worldId;
+                snSelectWorld(wId);
+                setTimeout(() => {
+                    const term = el.dataset.term;
+                    const termEl = sn$.articleBody.querySelector(`.interactive-term[data-term="${CSS.escape(term)}"]`);
+                    if (termEl) {
+                        termEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        termEl.style.transition = 'box-shadow 0.3s';
+                        termEl.style.boxShadow = '0 0 16px rgba(74,124,255,0.6)';
+                        setTimeout(() => { termEl.style.boxShadow = ''; }, 1500);
+                    }
+                }, 300);
+                sn$.crossResults.classList.remove('visible');
+                sn$.search.value = '';
+                snHandleSearch('');
+            });
+        });
+    } else if (sn$.crossResults) {
+        sn$.crossResults.classList.remove('visible');
+    }
+}
+
+// ===================================================
+// RESET
+// ===================================================
+function resetAllSelections() {
+    if (!currentWorldId) return;
+
+    // Clear terms for ALL worlds
+    selections = {};
+    // Clear passages for ALL worlds
+    Object.keys(customSelections).forEach(wId => {
+        if (wId === currentWorldId && sn$.articleBody) {
+            (customSelections[wId] || []).forEach(sel => {
+                const el = sn$.articleBody.querySelector(`[data-mark-id="${sel.id}"]`);
+                if (el) {
+                    const parent = el.parentNode;
+                    while (el.firstChild) parent.insertBefore(el.firstChild, el);
+                    el.remove();
+                }
+            });
+        }
+    });
+    customSelections = {};
+
+    snSyncArticleTermHighlights();
+    if (sn$.overviewMount) sn$.overviewMount.querySelectorAll('.sn-quick-tag').forEach(tag => tag.classList.remove('selected'));
+    snUpdateMoodBoard();
+    snUpdateBadges();
+    snUpdateCompass();
+    snUpdateGenerateButton();
+    showToast('Auswahl zurueckgesetzt', 'info', 2000);
+}
+
+// ===================================================
+// GENERATE PROMPT
+// ===================================================
+function snUpdateGenerateButton() {
+    const totalTerms = Object.values(selections).reduce((sum, w) => sum + Object.keys(w).length, 0);
+    const totalPassages = Object.values(customSelections).reduce((sum, arr) => sum + arr.length, 0);
+    if (sn$.genBtn) sn$.genBtn.disabled = (totalTerms + totalPassages) === 0;
+}
+
+async function generateVision() {
+    // Collect ALL selections across ALL worlds
+    const parts = [];
+
+    Object.keys(selections).forEach(wId => {
+        const worldMeta = snAllWorlds.find(w => w.id === wId);
+        const worldName = worldMeta ? worldMeta.name : wId;
+        const terms = Object.keys(selections[wId]).filter(t => selections[wId][t]);
+        if (terms.length > 0) {
+            parts.push(`[${worldName}]: ${terms.join(', ')}`);
+        }
+    });
+
+    Object.keys(customSelections).forEach(wId => {
+        const worldMeta = snAllWorlds.find(w => w.id === wId);
+        const worldName = worldMeta ? worldMeta.name : wId;
+        const passages = (customSelections[wId] || []).map(s => {
+            return s.note ? `"${s.text}" (Notiz: ${s.note})` : `"${s.text}"`;
+        });
+        if (passages.length > 0) {
+            parts.push(`[${worldName} - Markierte Passagen]: ${passages.join('; ')}`);
+        }
+    });
+
+    if (parts.length === 0) {
+        showToast('Bitte klicke auf Begriffe oder markiere Textpassagen.', 'warning');
+        return;
     }
 
-    const btn = document.getElementById('generate-idea-btn');
-    const spinner = document.getElementById('gen-spinner');
-    const icon = document.getElementById('gen-icon');
+    const userMessage = `Ausgewaehlte Begriffe und Passagen:\n${parts.join('\n')}`;
 
-    btn.disabled = true;
-    spinner.classList.remove('hidden');
-    icon.classList.add('hidden');
+    const btn = sn$.genBtn;
+    const spinner = sn$.genSpinner;
+    const icon = sn$.genIcon;
+
+    if (btn) btn.disabled = true;
+    if (spinner) spinner.classList.remove('hidden');
+    if (icon) icon.classList.add('hidden');
+    if (sn$.genLabel) sn$.genLabel.textContent = 'Generiere...';
 
     try {
-        const prompt = await callOpenRouterAPI(userInput, CREATIVE_SYSTEM_PROMPT);
+        const prompt = await callOpenRouterAPI(userMessage, CREATIVE_SYSTEM_PROMPT);
 
         const ideaInput = document.getElementById('idea-input');
         if (ideaInput) {
@@ -10719,10 +11116,577 @@ async function generateVision() {
         closeIdeaStarter();
 
     } catch (e) {
-        showToast("Fehler bei der Generierung: " + e.message, "error");
+        showToast('Fehler bei der Generierung: ' + e.message, 'error');
     } finally {
-        btn.disabled = false;
-        spinner.classList.add('hidden');
-        icon.classList.remove('hidden');
+        if (btn) btn.disabled = false;
+        if (spinner) spinner.classList.add('hidden');
+        if (icon) icon.classList.remove('hidden');
+        if (sn$.genLabel) sn$.genLabel.textContent = 'Prompt erstellen';
+        snUpdateGenerateButton();
     }
 }
+
+// ===================================================
+// FONT SIZE
+// ===================================================
+function snSetTextSize(size) {
+    snCurrentTextSize = size;
+    try { localStorage.setItem('sn-text-size', size); } catch(e) {}
+    const modal = document.getElementById('idea-starter-modal');
+    if (modal) {
+        modal.style.setProperty('--sn-reader-font-size', SN_TEXT_SIZES[size] + 'px');
+    }
+    document.querySelectorAll('.sn-text-size-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.size === size);
+    });
+}
+
+// ===================================================
+// SHUFFLE MODE
+// ===================================================
+function snDoShuffle() {
+    if (!sn$.shuffleSuggestions || !sn$.shuffleOverlay) return;
+
+    const shuffled = [...snAllWorlds].sort(() => Math.random() - 0.5);
+    const picks = shuffled.slice(0, 3);
+
+    sn$.shuffleSuggestions.innerHTML = '';
+
+    picks.forEach(pick => {
+        const terms = snAllWorldTermsCache[pick.id] || [];
+        const randomTerm = terms.length > 0 ? terms[Math.floor(Math.random() * terms.length)] : pick.name;
+        const color = SN_GROUP_COLORS[pick.group] || '#888';
+
+        const div = document.createElement('div');
+        div.className = 'sn-shuffle-suggestion';
+        div.innerHTML = `
+            <span class="sn-shuffle-icon">${pick.icon}</span>
+            <div class="sn-shuffle-info">
+                <div class="sn-shuffle-world-name">${snEscapeHtml(pick.name)}</div>
+                <div class="sn-shuffle-term" style="color:${color}">${snEscapeHtml(randomTerm)}</div>
+            </div>`;
+
+        div.addEventListener('click', () => {
+            snSelectWorld(pick.id);
+            sn$.shuffleOverlay.classList.remove('visible');
+
+            // Auto-select the random term
+            setTimeout(() => {
+                if (!selections[pick.id]) selections[pick.id] = {};
+                if (!selections[pick.id][randomTerm]) {
+                    selections[pick.id][randomTerm] = true;
+                    snSyncArticleTermHighlights();
+                    snUpdateMoodBoard();
+                    snUpdateBadges();
+                    snUpdateCompass();
+                    snUpdateGenerateButton();
+                    showToast(`"${randomTerm}" ausgewählt.`, 'info', 2000);
+
+                    // Scroll to term
+                    const termEl = sn$.articleBody ? sn$.articleBody.querySelector(`.interactive-term[data-term="${CSS.escape(randomTerm)}"]`) : null;
+                    if (termEl) {
+                        termEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        termEl.style.transition = 'box-shadow 0.3s';
+                        termEl.style.boxShadow = '0 0 16px rgba(74,124,255,0.6)';
+                        setTimeout(() => { termEl.style.boxShadow = ''; }, 1500);
+                    }
+                }
+            }, 400);
+        });
+
+        sn$.shuffleSuggestions.appendChild(div);
+    });
+
+    sn$.shuffleOverlay.classList.add('visible');
+}
+
+// ===================================================
+// ARTICLE SCROLL HANDLER
+// ===================================================
+function snHandleArticleScroll() {
+    if (!sn$.articleScroll || !sn$.backToOverview) return;
+    const scrollTop = sn$.articleScroll.scrollTop;
+    sn$.backToOverview.classList.toggle('visible', scrollTop > 250);
+}
+
+// ===================================================
+// PAN & ZOOM
+// ===================================================
+const SN_ZOOM_MIN = 0.4;
+const SN_ZOOM_MAX = 2.5;
+
+function snPersistViewState() {
+    try {
+        localStorage.setItem('sn-zoom', snZoom);
+        localStorage.setItem('sn-pan-x', snPanX);
+        localStorage.setItem('sn-pan-y', snPanY);
+    } catch(e) {}
+}
+
+function snApplyTransform() {
+    if (!sn$.canvas) return;
+    sn$.canvas.style.transform = `translate(${snPanX}px, ${snPanY}px) scale(${snZoom})`;
+    snPersistViewState();
+}
+
+function snResetPanZoom() {
+    snZoom = 1.0;
+    snPanX = 0;
+    snPanY = 0;
+    snApplyTransform();
+}
+
+function snZoomAtPoint(newZoom, clientX, clientY) {
+    newZoom = Math.max(SN_ZOOM_MIN, Math.min(SN_ZOOM_MAX, newZoom));
+    if (!sn$.canvasWrap) return;
+    const rect = sn$.canvasWrap.getBoundingClientRect();
+    // Point in the wrap's local coordinate space
+    const px = clientX - rect.left;
+    const py = clientY - rect.top;
+    // Where that point currently maps in canvas space
+    const canvasX = (px - snPanX) / snZoom;
+    const canvasY = (py - snPanY) / snZoom;
+    // After zoom, adjust pan so the same canvas point stays under cursor
+    snPanX = px - canvasX * newZoom;
+    snPanY = py - canvasY * newZoom;
+    snZoom = newZoom;
+    snApplyTransform();
+}
+
+function snBindPanZoom() {
+    const wrap = sn$.canvasWrap;
+    if (!wrap) return;
+
+    // Wheel events: zoom and horizontal pan
+    wrap.addEventListener('wheel', (e) => {
+        e.preventDefault();
+
+        // Shift + wheel = horizontal pan
+        if (e.shiftKey && !e.ctrlKey && !e.altKey) {
+            snPanX -= e.deltaY;
+            snApplyTransform();
+            return;
+        }
+
+        // Pinch on trackpad (ctrlKey) or Alt+wheel = zoom
+        if (e.ctrlKey || e.altKey) {
+            const factor = e.ctrlKey ? 0.01 : 0.002;
+            const newZoom = snZoom * (1 - e.deltaY * factor);
+            snZoomAtPoint(newZoom, e.clientX, e.clientY);
+            return;
+        }
+
+        // Normal wheel = zoom
+        const zoomFactor = 0.002;
+        const newZoom = snZoom * (1 - e.deltaY * zoomFactor);
+        snZoomAtPoint(newZoom, e.clientX, e.clientY);
+    }, { passive: false });
+
+    // Click & Drag to pan
+    wrap.addEventListener('mousedown', (e) => {
+        // Only left button, ignore if clicking on a node directly
+        if (e.button !== 0) return;
+        snIsDragging = true;
+        snDragMoved = false;
+        snDragStartX = e.clientX;
+        snDragStartY = e.clientY;
+        snDragStartPanX = snPanX;
+        snDragStartPanY = snPanY;
+        wrap.style.cursor = 'grabbing';
+    });
+
+    window.addEventListener('mousemove', (e) => {
+        if (!snIsDragging) return;
+        const dx = e.clientX - snDragStartX;
+        const dy = e.clientY - snDragStartY;
+        if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
+            snDragMoved = true;
+        }
+        snPanX = snDragStartPanX + dx;
+        snPanY = snDragStartPanY + dy;
+        snApplyTransform();
+    });
+
+    window.addEventListener('mouseup', () => {
+        if (snIsDragging) {
+            snIsDragging = false;
+            if (wrap) wrap.style.cursor = '';
+        }
+    });
+
+    // Prevent click on nodes if we were dragging
+    wrap.addEventListener('click', (e) => {
+        if (snDragMoved) {
+            e.stopPropagation();
+            snDragMoved = false;
+        }
+    }, true); // capture phase to intercept before node clicks
+
+    // Touch support for pinch-to-zoom
+    let snTouchDist = 0;
+    let snTouchPanStart = null;
+
+    wrap.addEventListener('touchstart', (e) => {
+        if (e.touches.length === 2) {
+            e.preventDefault();
+            const dx = e.touches[0].clientX - e.touches[1].clientX;
+            const dy = e.touches[0].clientY - e.touches[1].clientY;
+            snTouchDist = Math.hypot(dx, dy);
+        } else if (e.touches.length === 1) {
+            snTouchPanStart = {
+                x: e.touches[0].clientX,
+                y: e.touches[0].clientY,
+                panX: snPanX,
+                panY: snPanY
+            };
+        }
+    }, { passive: false });
+
+    wrap.addEventListener('touchmove', (e) => {
+        if (e.touches.length === 2 && snTouchDist > 0) {
+            e.preventDefault();
+            const dx = e.touches[0].clientX - e.touches[1].clientX;
+            const dy = e.touches[0].clientY - e.touches[1].clientY;
+            const newDist = Math.hypot(dx, dy);
+            const scale = newDist / snTouchDist;
+            const midX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+            const midY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+            snZoomAtPoint(snZoom * scale, midX, midY);
+            snTouchDist = newDist;
+        } else if (e.touches.length === 1 && snTouchPanStart) {
+            const dx = e.touches[0].clientX - snTouchPanStart.x;
+            const dy = e.touches[0].clientY - snTouchPanStart.y;
+            snPanX = snTouchPanStart.panX + dx;
+            snPanY = snTouchPanStart.panY + dy;
+            snApplyTransform();
+        }
+    }, { passive: false });
+
+    wrap.addEventListener('touchend', () => {
+        snTouchDist = 0;
+        snTouchPanStart = null;
+    });
+
+    // Apply persisted pan/zoom state on init
+    snApplyTransform();
+}
+
+// ===================================================
+// SPREAD FACTOR
+// ===================================================
+function snApplySpread() {
+    const canvas = sn$.canvas;
+    if (!canvas) return;
+    const nodes = canvas.querySelectorAll('.sn-world-node');
+    nodes.forEach(node => {
+        const wid = node.dataset.worldId;
+        const pos = SN_SPECTRUM_POSITIONS[wid];
+        if (!pos) return;
+        const [origX, origY] = pos;
+        const newX = 50 + (origX - 50) * snSpreadFactor;
+        const newY = 50 + (origY - 50) * snSpreadFactor;
+        node.style.left = newX + '%';
+        node.style.top = newY + '%';
+    });
+}
+
+function snBindSpreadControl() {
+    const btns = document.querySelectorAll('.sn-spread-btn');
+    // Sync active class to persisted spread factor on load
+    btns.forEach(b => b.classList.toggle('active', parseFloat(b.dataset.spread) === snSpreadFactor));
+    btns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            snSpreadFactor = parseFloat(btn.dataset.spread);
+            try { localStorage.setItem('sn-spread-factor', snSpreadFactor); } catch(e) {}
+            btns.forEach(b => b.classList.toggle('active', b === btn));
+            snApplySpread();
+        });
+    });
+}
+
+// ===================================================
+// LABEL TOGGLE
+// ===================================================
+function snBindLabelToggle() {
+    const btn = document.getElementById('sn-label-toggle');
+    if (!btn || !sn$.canvas) return;
+
+    // Apply initial state from localStorage
+    if (!snLabelsVisible) {
+        sn$.canvas.classList.add('sn-labels-hidden');
+        btn.classList.add('active');
+    }
+
+    btn.addEventListener('click', () => {
+        snLabelsVisible = !snLabelsVisible;
+        sn$.canvas.classList.toggle('sn-labels-hidden', !snLabelsVisible);
+        btn.classList.toggle('active', !snLabelsVisible);
+        try { localStorage.setItem('sn-labels-visible', snLabelsVisible ? 'true' : 'false'); } catch(e) {}
+    });
+}
+
+// ===================================================
+// PANEL SPLITTER (horizontal resize)
+// ===================================================
+const SN_SPLITTER_KEY = 'sn-panel-split';
+const SN_SPLIT_MIN = 20;  // Minimum left panel width in %
+const SN_SPLIT_MAX = 75;  // Maximum left panel width in %
+
+let snSplitDragging = false;
+let snSplitStartX = 0;
+let snSplitStartFrac = 0;
+let snSplitRafId = 0;
+let snSplitPending = 0;
+let snSplitMainContent = null;
+let snSplitSpectrumPanel = null;
+
+function snApplySplit(leftPct) {
+    if (snSplitSpectrumPanel) {
+        snSplitSpectrumPanel.style.width = leftPct + '%';
+    }
+}
+
+function snClearSplit() {
+    if (snSplitSpectrumPanel) {
+        snSplitSpectrumPanel.style.width = '';
+    }
+}
+
+function snSaveSplit(leftPct) {
+    try { localStorage.setItem(SN_SPLITTER_KEY, String(Math.round(leftPct))); } catch(e) {}
+}
+
+function snRestoreSplit() {
+    try {
+        const raw = localStorage.getItem(SN_SPLITTER_KEY);
+        if (raw === null) return;
+        const val = parseFloat(raw);
+        if (!isNaN(val) && val >= SN_SPLIT_MIN && val <= SN_SPLIT_MAX) {
+            snApplySplit(val);
+        }
+    } catch(e) {}
+}
+
+function snBindSplitter() {
+    const splitter = document.getElementById('sn-panel-splitter');
+    snSplitMainContent = document.querySelector('.sn-main-content');
+    snSplitSpectrumPanel = document.querySelector('.sn-spectrum-panel');
+    if (!splitter || !snSplitMainContent || !snSplitSpectrumPanel) return;
+
+    // Restore saved split
+    snRestoreSplit();
+
+    splitter.addEventListener('pointerdown', (e) => {
+        if (e.button !== 0) return;
+        e.preventDefault();
+        e.stopPropagation();
+
+        snSplitDragging = true;
+        snSplitStartX = e.clientX;
+
+        const totalW = snSplitMainContent.clientWidth;
+        snSplitStartFrac = totalW > 0
+            ? snSplitSpectrumPanel.getBoundingClientRect().width / totalW
+            : 0.4;
+
+        document.addEventListener('pointermove', snOnSplitMove, { passive: false });
+        document.addEventListener('pointerup', snOnSplitUp);
+        document.addEventListener('pointercancel', snOnSplitUp);
+
+        splitter.classList.add('sn-splitter-active');
+        document.body.classList.add('sn-body-resizing');
+    });
+
+    // Double-click to reset
+    splitter.addEventListener('dblclick', (e) => {
+        e.preventDefault();
+        snClearSplit();
+        try { localStorage.removeItem(SN_SPLITTER_KEY); } catch(e) {}
+    });
+}
+
+function snOnSplitMove(e) {
+    if (!snSplitDragging) return;
+    e.preventDefault();
+
+    const totalW = snSplitMainContent.clientWidth;
+    if (totalW <= 0) return;
+
+    const dx = e.clientX - snSplitStartX;
+    let newLeft = (snSplitStartFrac + dx / totalW) * 100;
+    newLeft = Math.max(SN_SPLIT_MIN, Math.min(SN_SPLIT_MAX, newLeft));
+    snSplitPending = newLeft;
+
+    if (!snSplitRafId) {
+        snSplitRafId = requestAnimationFrame(() => {
+            snApplySplit(snSplitPending);
+            snSplitRafId = 0;
+        });
+    }
+}
+
+function snOnSplitUp() {
+    if (!snSplitDragging) return;
+    snSplitDragging = false;
+
+    if (snSplitRafId) { cancelAnimationFrame(snSplitRafId); snSplitRafId = 0; }
+
+    // Compute final value from actual rendered size
+    const totalW = snSplitMainContent.clientWidth;
+    let finalLeft;
+    if (totalW > 0) {
+        finalLeft = (snSplitSpectrumPanel.getBoundingClientRect().width / totalW) * 100;
+        finalLeft = Math.max(SN_SPLIT_MIN, Math.min(SN_SPLIT_MAX, Math.round(finalLeft)));
+    } else {
+        finalLeft = 40;
+    }
+
+    snApplySplit(finalLeft);
+    snSaveSplit(finalLeft);
+
+    document.removeEventListener('pointermove', snOnSplitMove);
+    document.removeEventListener('pointerup', snOnSplitUp);
+    document.removeEventListener('pointercancel', snOnSplitUp);
+
+    const splitter = document.getElementById('sn-panel-splitter');
+    if (splitter) splitter.classList.remove('sn-splitter-active');
+    document.body.classList.remove('sn-body-resizing');
+}
+
+// ===================================================
+// EVENT BINDINGS
+// ===================================================
+function snBindEvents() {
+    // Search
+    if (sn$.search) {
+        sn$.search.addEventListener('input', () => {
+            clearTimeout(snSearchTimeout);
+            snSearchTimeout = setTimeout(() => snHandleSearch(sn$.search.value.trim()), 120);
+        });
+    }
+    if (sn$.searchClear) {
+        sn$.searchClear.addEventListener('click', () => {
+            if (sn$.search) sn$.search.value = '';
+            snHandleSearch('');
+            if (sn$.search) sn$.search.focus();
+        });
+    }
+
+    // Close cross-search on outside click
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.sn-spectrum-search-wrap') && sn$.crossResults) {
+            sn$.crossResults.classList.remove('visible');
+        }
+        // Close mark popup on outside click
+        if (!e.target.closest('.sn-mark-popup') && !window.getSelection()?.toString().trim() && sn$.markPopup) {
+            sn$.markPopup.classList.remove('visible');
+        }
+    });
+
+    // Text selection for marking
+    if (sn$.articleBody) {
+        sn$.articleBody.addEventListener('mouseup', (e) => {
+            setTimeout(() => snHandleTextSelection(e), 10);
+        });
+
+        // Click delegation for interactive-terms (also catches dynamically rendered terms)
+        sn$.articleBody.addEventListener('click', (e) => {
+            const term = e.target.closest('.interactive-term');
+            if (term) {
+                // Already handled by snBindInteractiveTerms click listeners
+                // but this serves as a fallback
+            }
+        });
+    }
+
+    // Mark buttons
+    const markBtn = document.getElementById('sn-mark-btn');
+    const noteBtn = document.getElementById('sn-note-btn');
+    const cancelMarkBtn = document.getElementById('sn-cancel-mark-btn');
+    if (markBtn) markBtn.addEventListener('click', () => snMarkSelection(false));
+    if (noteBtn) noteBtn.addEventListener('click', () => snMarkSelection(true));
+    if (cancelMarkBtn) cancelMarkBtn.addEventListener('click', () => {
+        if (sn$.markPopup) sn$.markPopup.classList.remove('visible');
+        window.getSelection().removeAllRanges();
+        snPendingRange = null;
+    });
+
+    // Note modal
+    const noteSaveBtn = document.getElementById('sn-note-save-btn');
+    const noteCancelBtn = document.getElementById('sn-note-cancel-btn');
+    if (noteSaveBtn) noteSaveBtn.addEventListener('click', () => {
+        const note = sn$.noteField ? sn$.noteField.value.trim() : '';
+        if (sn$.noteOverlay) sn$.noteOverlay.classList.remove('visible');
+        const text = snPendingRange ? snPendingRange.toString().trim() : '';
+        snApplyMark(text, note || null);
+    });
+    if (noteCancelBtn) noteCancelBtn.addEventListener('click', () => {
+        if (sn$.noteOverlay) sn$.noteOverlay.classList.remove('visible');
+        snPendingRange = null;
+    });
+    if (sn$.noteOverlay) {
+        sn$.noteOverlay.addEventListener('click', (e) => {
+            if (e.target === sn$.noteOverlay) {
+                sn$.noteOverlay.classList.remove('visible');
+                snPendingRange = null;
+            }
+        });
+    }
+
+    // Article scroll: back-to-overview
+    if (sn$.articleScroll) {
+        sn$.articleScroll.addEventListener('scroll', snHandleArticleScroll);
+    }
+    const backBtn = sn$.backToOverview ? sn$.backToOverview.querySelector('.sn-back-to-overview-btn') : null;
+    if (backBtn) {
+        backBtn.addEventListener('click', () => {
+            if (sn$.articleScroll) sn$.articleScroll.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+
+    // Mood Board Tray toggle
+    if (sn$.trayHeader) {
+        sn$.trayHeader.addEventListener('click', () => {
+            if (!sn$.tray) return;
+            const isExpanded = sn$.tray.classList.contains('expanded');
+            sn$.tray.classList.toggle('expanded', !isExpanded);
+            sn$.tray.classList.toggle('collapsed', isExpanded);
+        });
+    }
+
+    // Shuffle
+    if (sn$.shuffleBtn) sn$.shuffleBtn.addEventListener('click', snDoShuffle);
+    if (sn$.shuffleClose) sn$.shuffleClose.addEventListener('click', () => {
+        if (sn$.shuffleOverlay) sn$.shuffleOverlay.classList.remove('visible');
+    });
+    if (sn$.shuffleOverlay) {
+        sn$.shuffleOverlay.addEventListener('click', (e) => {
+            if (e.target === sn$.shuffleOverlay) sn$.shuffleOverlay.classList.remove('visible');
+        });
+    }
+
+    // Font size buttons — now dynamically injected in snRenderArticle;
+    // no static binding needed here.
+
+    // Resize observer for grid
+    if (sn$.canvas) {
+        const ro = new ResizeObserver(() => snDrawGrid());
+        ro.observe(sn$.canvas);
+    }
+
+    // Pan & Zoom for spectrum canvas
+    snBindPanZoom();
+
+    // Spread factor control
+    snBindSpreadControl();
+
+    // Label toggle
+    snBindLabelToggle();
+
+    // Panel splitter (horizontal resize between spectrum & article)
+    snBindSplitter();
+}
+
+// Legacy stub: updateSelectionCounter (referenced by old code paths)
+function updateSelectionCounter() { snUpdateMoodBoard(); }
+function updateWorldTabIndicators() { snUpdateBadges(); }

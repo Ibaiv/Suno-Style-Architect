@@ -1660,8 +1660,8 @@
             var isDefault = idx < DEFAULT_CHAIN_PRESETS.length;
             var label = preset.name + (isDefault ? ' (Standard)' : '');
             var toolNames = preset.items.map(function (it) { return it.emoji + ' ' + it.toolName; }).join(' \u2192 ');
-            row.innerHTML = '<span class="bd-chain-preset-name">' + label + '</span>' +
-                '<span class="bd-chain-preset-tools">' + toolNames + '</span>';
+            row.innerHTML = '<span class="bd-chain-preset-name">' + escapeHTML(label) + '</span>' +
+                '<span class="bd-chain-preset-tools">' + escapeHTML(toolNames) + '</span>';
 
             row.addEventListener('click', function () {
                 chainItems = preset.items.slice();

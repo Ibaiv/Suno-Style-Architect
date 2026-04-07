@@ -15,7 +15,7 @@ class CORSHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
     
     def end_headers(self):
         """Add CORS headers to all responses"""
-        self.send_header('Access-Control-Allow-Origin', '*')
+        self.send_header('Access-Control-Allow-Origin', 'http://localhost:8000')
         self.send_header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
         self.send_header('Access-Control-Allow-Headers', 'Content-Type, Authorization')
         super().end_headers()
@@ -38,7 +38,7 @@ def main():
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
     
     try:
-        with socketserver.TCPServer(("", PORT), CORSHTTPRequestHandler) as httpd:
+        with socketserver.TCPServer(("127.0.0.1", PORT), CORSHTTPRequestHandler) as httpd:
             print(f"🎵 Suno Style Architect Development Server")
             print(f"📡 Server running at: http://localhost:{PORT}")
             print(f"📁 Serving directory: {os.getcwd()}")

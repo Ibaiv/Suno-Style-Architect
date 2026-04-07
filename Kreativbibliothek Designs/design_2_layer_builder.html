@@ -1,0 +1,2409 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kreativbibliothek — Layer Builder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ========================================================================
+   LAYER BUILDER — Design #2 Kreativbibliothek
+   A DAW-inspired layer-building paradigm for musical prompt composition
+   ======================================================================== */
+
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Base palette */
+    --bg-deep: #0b0b16;
+    --bg-panel: rgba(14, 14, 28, 0.75);
+    --bg-panel-solid: #0e0e1c;
+    --bg-surface: rgba(22, 22, 42, 0.6);
+    --bg-hover: rgba(255, 255, 255, 0.04);
+    --bg-active: rgba(255, 255, 255, 0.07);
+
+    --border-subtle: rgba(255, 255, 255, 0.06);
+    --border-medium: rgba(255, 255, 255, 0.10);
+    --border-strong: rgba(255, 255, 255, 0.15);
+
+    --text-primary: #e8e8f0;
+    --text-secondary: rgba(232, 232, 240, 0.65);
+    --text-tertiary: rgba(232, 232, 240, 0.4);
+    --text-inverse: #0b0b16;
+
+    /* Category accents */
+    --accent-orchestra: #f59e0b;
+    --accent-ambient: #60a5fa;
+    --accent-club: #22d3ee;
+    --accent-hiphop: #a78bfa;
+    --accent-world: #34d399;
+    --accent-feeling: #fb7185;
+
+    /* Functional */
+    --selection-mark: linear-gradient(90deg, #f59e0b, #f97316);
+    --success: #34d399;
+    --warning: #fbbf24;
+    --error: #f87171;
+
+    /* Sizing */
+    --panel-left: 260px;
+    --panel-right: 300px;
+    --header-h: 52px;
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+
+    /* Motion */
+    --ease-out: cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --duration-fast: 0.15s;
+    --duration-normal: 0.2s;
+    --duration-slow: 0.35s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+    background: var(--bg-deep);
+    color: var(--text-primary);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 14px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.12);
+    border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+
+/* ── LAYOUT SHELL ──────────────────────────────────────────────────── */
+
+#app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+#header {
+    height: var(--header-h);
+    min-height: var(--header-h);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    border-bottom: 1px solid var(--border-subtle);
+    background: var(--bg-panel);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    z-index: 100;
+}
+
+#header .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+    user-select: none;
+}
+
+#header .brand .logo-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    background: linear-gradient(135deg, var(--accent-orchestra), var(--accent-club));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}
+
+#header .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border: 1px solid var(--border-medium);
+    border-radius: var(--radius-sm);
+    background: var(--bg-surface);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--duration-normal) var(--ease-out);
+    white-space: nowrap;
+    user-select: none;
+    outline: none;
+}
+.btn:hover { background: var(--bg-hover); border-color: var(--border-strong); }
+.btn:focus-visible { box-shadow: 0 0 0 2px var(--accent-club); }
+.btn:active { transform: scale(0.97); }
+
+.btn-primary {
+    background: var(--accent-orchestra);
+    color: var(--text-inverse);
+    border-color: var(--accent-orchestra);
+    font-weight: 600;
+}
+.btn-primary:hover { background: #d97706; border-color: #d97706; }
+
+.btn-sm { padding: 4px 10px; font-size: 11px; }
+.btn-icon {
+    padding: 6px;
+    width: 32px;
+    height: 32px;
+    justify-content: center;
+}
+
+#workspace {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+
+/* ── LEFT PANEL: World Browser ─────────────────────────────────────── */
+
+#panel-left {
+    width: var(--panel-left);
+    min-width: var(--panel-left);
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--border-subtle);
+    background: var(--bg-panel);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    overflow: hidden;
+}
+
+#panel-left .panel-header {
+    padding: 12px 12px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+#panel-left .panel-title {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-tertiary);
+    padding: 0 4px;
+}
+
+#search-worlds {
+    width: 100%;
+    padding: 7px 10px 7px 32px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 12px;
+    outline: none;
+    transition: border-color var(--duration-fast) var(--ease-out);
+}
+#search-worlds::placeholder { color: var(--text-tertiary); }
+#search-worlds:focus { border-color: var(--accent-club); }
+
+.search-wrap {
+    position: relative;
+}
+.search-wrap .search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-tertiary);
+    font-size: 12px;
+    pointer-events: none;
+}
+
+#world-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 4px 8px 12px;
+}
+
+/* Recommended section */
+.recommended-section {
+    margin-bottom: 8px;
+    display: none;
+}
+.recommended-section.visible { display: block; }
+
+.recommended-section .section-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent-orchestra);
+    padding: 4px 8px 6px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.recommended-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+/* Category groups */
+.category-group {
+    margin-bottom: 2px;
+}
+
+.category-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 8px;
+    cursor: pointer;
+    user-select: none;
+    border-radius: var(--radius-sm);
+    transition: background var(--duration-fast) var(--ease-out);
+}
+.category-header:hover { background: var(--bg-hover); }
+
+.category-bar {
+    width: 3px;
+    height: 14px;
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+
+.category-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.category-chevron {
+    font-size: 10px;
+    color: var(--text-tertiary);
+    transition: transform var(--duration-normal) var(--ease-out);
+    flex-shrink: 0;
+}
+.category-group.collapsed .category-chevron { transform: rotate(-90deg); }
+.category-group.collapsed .category-worlds { display: none; }
+
+.category-count {
+    font-size: 10px;
+    color: var(--text-tertiary);
+    font-weight: 400;
+    min-width: 16px;
+    text-align: right;
+}
+
+.category-worlds {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    padding-left: 4px;
+}
+
+/* World items */
+.world-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 8px 5px 12px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--duration-fast) var(--ease-out);
+    position: relative;
+    user-select: none;
+}
+.world-item:hover { background: var(--bg-hover); }
+.world-item.active {
+    background: var(--bg-active);
+}
+.world-item.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 4px;
+    bottom: 4px;
+    width: 2px;
+    border-radius: 1px;
+    background: var(--world-accent, #888);
+}
+
+.world-item .world-icon {
+    font-size: 14px;
+    flex-shrink: 0;
+    width: 20px;
+    text-align: center;
+}
+
+.world-item .world-name {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--text-secondary);
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: color var(--duration-fast) var(--ease-out);
+}
+.world-item.active .world-name { color: var(--text-primary); font-weight: 500; }
+.world-item:hover .world-name { color: var(--text-primary); }
+
+.world-item .world-badge {
+    font-size: 9px;
+    font-weight: 600;
+    padding: 1px 5px;
+    border-radius: 8px;
+    color: var(--text-inverse);
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all var(--duration-normal) var(--ease-out);
+}
+.world-item .world-badge.visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* ── CENTER PANEL: Article Reader ──────────────────────────────────── */
+
+#panel-center {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    overflow: hidden;
+    background: var(--bg-deep);
+}
+
+#article-header {
+    padding: 12px 24px;
+    border-bottom: 1px solid var(--border-subtle);
+    background: var(--bg-panel);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 52px;
+}
+
+#article-header .article-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+#article-header .article-icon {
+    font-size: 22px;
+    flex-shrink: 0;
+}
+
+#article-header .article-title {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#article-header .article-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.selection-stats {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 11px;
+    color: var(--text-tertiary);
+    font-weight: 500;
+}
+
+.selection-stats .stat {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.selection-stats .stat-value {
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+/* Key terms bar */
+#key-terms-bar {
+    padding: 8px 24px;
+    border-bottom: 1px solid var(--border-subtle);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    overflow-x: auto;
+    min-height: 38px;
+    background: rgba(14, 14, 28, 0.4);
+    scrollbar-width: none;
+}
+#key-terms-bar::-webkit-scrollbar { display: none; }
+
+#key-terms-bar .key-term-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-tertiary);
+    flex-shrink: 0;
+    margin-right: 4px;
+}
+
+.key-term-chip {
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 500;
+    border: 1px solid var(--border-medium);
+    background: var(--bg-surface);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all var(--duration-fast) var(--ease-out);
+    white-space: nowrap;
+    flex-shrink: 0;
+    user-select: none;
+}
+.key-term-chip:hover {
+    border-color: var(--border-strong);
+    color: var(--text-primary);
+    background: var(--bg-hover);
+}
+.key-term-chip.selected {
+    border-color: transparent;
+    color: var(--text-inverse);
+    font-weight: 600;
+}
+
+/* Article content */
+#article-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px;
+}
+
+#article-content {
+    max-width: 720px;
+    margin: 0 auto;
+    opacity: 1;
+    transition: opacity var(--duration-slow) var(--ease-out);
+}
+#article-content.fade-out { opacity: 0; }
+
+#article-content h1 {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.3;
+    margin-bottom: 20px;
+    color: var(--text-primary);
+}
+
+#article-content h2 {
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-top: 32px;
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border-subtle);
+    color: var(--text-primary);
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#article-content h2::before {
+    content: '\25BE';
+    font-size: 12px;
+    color: var(--text-tertiary);
+    transition: transform var(--duration-normal) var(--ease-out);
+    flex-shrink: 0;
+}
+#article-content h2.collapsed::before { transform: rotate(-90deg); }
+#article-content h2.collapsed ~ *:not(h2) { display: none; }
+
+#article-content h3 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 20px;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+#article-content p {
+    margin-bottom: 12px;
+    color: var(--text-secondary);
+    font-size: 13.5px;
+    line-height: 1.7;
+}
+
+#article-content ul, #article-content ol {
+    margin-bottom: 12px;
+    padding-left: 20px;
+}
+
+#article-content li {
+    margin-bottom: 6px;
+    color: var(--text-secondary);
+    font-size: 13.5px;
+    line-height: 1.6;
+}
+
+#article-content strong { color: var(--text-primary); font-weight: 600; }
+#article-content em { font-style: italic; color: var(--text-secondary); }
+
+#article-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 12px;
+}
+#article-content table th {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid var(--border-medium);
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+#article-content table td {
+    padding: 6px 8px;
+    border-bottom: 1px solid var(--border-subtle);
+    color: var(--text-secondary);
+}
+
+/* Interactive terms */
+#article-content .interactive-term {
+    color: var(--text-primary);
+    cursor: pointer;
+    padding: 1px 4px;
+    margin: 0 -2px;
+    border-radius: 3px;
+    border-bottom: 1.5px solid var(--text-tertiary);
+    transition: all var(--duration-fast) var(--ease-out);
+    display: inline;
+    position: relative;
+    font-weight: 500;
+}
+#article-content .interactive-term:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-bottom-color: var(--text-secondary);
+}
+#article-content .interactive-term.selected {
+    border-bottom-color: transparent;
+    color: var(--text-inverse);
+    font-weight: 600;
+}
+#article-content .interactive-term.selected::after {
+    content: '';
+    position: absolute;
+    inset: -1px -3px;
+    border-radius: 3px;
+    z-index: -1;
+}
+
+/* Term selection animation */
+@keyframes termPop {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.04); }
+    100% { transform: scale(1); }
+}
+.interactive-term.pop-anim {
+    animation: termPop 0.25s var(--ease-spring);
+}
+
+/* Custom text selections (marked passages) */
+.custom-selection {
+    background: linear-gradient(180deg, transparent 70%, rgba(245, 158, 11, 0.25) 70%);
+    border-radius: 1px;
+    cursor: pointer;
+    position: relative;
+}
+.custom-selection:hover {
+    background: linear-gradient(180deg, transparent 65%, rgba(245, 158, 11, 0.35) 65%);
+}
+.custom-selection .passage-note-icon {
+    font-size: 10px;
+    vertical-align: super;
+    margin-left: 2px;
+    cursor: pointer;
+    opacity: 0.7;
+}
+.custom-selection .passage-note-icon:hover { opacity: 1; }
+
+/* Selection popup */
+#selection-popup {
+    position: fixed;
+    z-index: 500;
+    background: var(--bg-panel-solid);
+    border: 1px solid var(--border-medium);
+    border-radius: var(--radius-md);
+    padding: 6px;
+    display: none;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+#selection-popup.visible { display: flex; gap: 4px; }
+
+#selection-popup .popup-btn {
+    padding: 5px 12px;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: var(--bg-surface);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background var(--duration-fast) var(--ease-out);
+}
+#selection-popup .popup-btn:hover { background: var(--bg-active); }
+#selection-popup .popup-btn.primary { background: var(--accent-orchestra); color: var(--text-inverse); }
+#selection-popup .popup-btn.primary:hover { background: #d97706; }
+
+/* Empty state */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    gap: 12px;
+    color: var(--text-tertiary);
+    padding: 40px;
+    text-align: center;
+}
+.empty-state .empty-icon { font-size: 36px; opacity: 0.4; }
+.empty-state .empty-text { font-size: 13px; line-height: 1.5; max-width: 260px; }
+
+/* ── RIGHT PANEL: Layer Stack ──────────────────────────────────────── */
+
+#panel-right {
+    width: var(--panel-right);
+    min-width: var(--panel-right);
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid var(--border-subtle);
+    background: var(--bg-panel);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    overflow: hidden;
+}
+
+#panel-right .panel-header {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border-subtle);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#panel-right .panel-title {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-tertiary);
+}
+
+#layer-count {
+    font-size: 10px;
+    color: var(--text-tertiary);
+    font-weight: 500;
+}
+
+#layer-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    /* Subtle track lane lines */
+    background-image: repeating-linear-gradient(
+        180deg,
+        transparent,
+        transparent 59px,
+        rgba(255,255,255,0.02) 59px,
+        rgba(255,255,255,0.02) 60px
+    );
+}
+
+/* Layer empty state */
+#layer-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    gap: 10px;
+    color: var(--text-tertiary);
+    text-align: center;
+    padding: 24px;
+}
+#layer-empty .empty-icon { font-size: 28px; opacity: 0.3; }
+#layer-empty .empty-text { font-size: 12px; line-height: 1.5; }
+
+/* Layer card */
+.layer-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    transition: all var(--duration-normal) var(--ease-out);
+    position: relative;
+}
+.layer-card:hover { border-color: var(--border-medium); }
+.layer-card.disabled { opacity: 0.4; }
+.layer-card.drag-over {
+    border-color: var(--accent-club);
+    box-shadow: 0 0 0 1px var(--accent-club);
+}
+
+.layer-card .layer-accent {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+}
+
+.layer-card .layer-head {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 10px 8px 12px;
+}
+
+.layer-card .drag-handle {
+    cursor: grab;
+    color: var(--text-tertiary);
+    font-size: 10px;
+    padding: 2px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    opacity: 0.5;
+    transition: opacity var(--duration-fast) var(--ease-out);
+}
+.layer-card:hover .drag-handle { opacity: 1; }
+.drag-handle .dot-row { display: flex; gap: 2px; }
+.drag-handle .dot {
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.layer-card .layer-icon {
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.layer-card .layer-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.layer-card .layer-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-primary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.layer-card .layer-counts {
+    font-size: 10px;
+    color: var(--text-tertiary);
+    font-weight: 400;
+}
+
+.layer-toggle {
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-subtle);
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    flex-shrink: 0;
+    transition: all var(--duration-fast) var(--ease-out);
+}
+.layer-toggle:hover { background: var(--bg-hover); border-color: var(--border-medium); }
+.layer-toggle.off { color: var(--text-tertiary); opacity: 0.5; }
+
+.layer-card .layer-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+    padding: 0 10px 8px 12px;
+}
+
+.layer-tag {
+    font-size: 10px;
+    font-weight: 500;
+    padding: 1px 6px;
+    border-radius: 8px;
+    color: var(--text-inverse);
+    opacity: 0.85;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.layer-card .layer-remove {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    color: var(--text-tertiary);
+    font-size: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: all var(--duration-fast) var(--ease-out);
+}
+.layer-card:hover .layer-remove { opacity: 0.6; }
+.layer-card .layer-remove:hover { opacity: 1; background: rgba(248,113,113,0.15); color: var(--error); }
+
+/* ── LAYER FOOTER: Preview + Generate ──────────────────────────────── */
+
+#layer-footer {
+    border-top: 1px solid var(--border-subtle);
+    display: flex;
+    flex-direction: column;
+}
+
+#preview-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    cursor: pointer;
+    user-select: none;
+    transition: background var(--duration-fast) var(--ease-out);
+}
+#preview-toggle:hover { background: var(--bg-hover); }
+
+#preview-toggle .preview-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-tertiary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+#preview-toggle .preview-chevron {
+    font-size: 10px;
+    color: var(--text-tertiary);
+    transition: transform var(--duration-normal) var(--ease-out);
+}
+#preview-toggle.open .preview-chevron { transform: rotate(180deg); }
+
+#preview-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height var(--duration-slow) var(--ease-out);
+}
+#preview-content.open { max-height: 200px; }
+
+#preview-text {
+    padding: 8px 12px 12px;
+    font-size: 11px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    font-style: italic;
+    max-height: 160px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+#generate-section {
+    padding: 10px 12px;
+    display: flex;
+    gap: 6px;
+}
+
+#btn-generate {
+    flex: 1;
+}
+
+/* ── RESULT MODAL ──────────────────────────────────────────────────── */
+
+#result-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity var(--duration-normal) var(--ease-out);
+}
+#result-overlay.visible { display: flex; opacity: 1; }
+
+#result-modal {
+    width: 90%;
+    max-width: 560px;
+    max-height: 80vh;
+    background: var(--bg-panel-solid);
+    border: 1px solid var(--border-medium);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 24px 64px rgba(0,0,0,0.4);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transform: translateY(8px) scale(0.98);
+    transition: transform var(--duration-slow) var(--ease-out);
+}
+#result-overlay.visible #result-modal { transform: translateY(0) scale(1); }
+
+#result-modal .modal-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border-subtle);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#result-modal .modal-title {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+#result-modal .modal-close {
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radius-sm);
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#result-modal .modal-close:hover { background: var(--bg-hover); }
+
+#result-body {
+    padding: 20px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+#result-text {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text-primary);
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+#result-modal .modal-footer {
+    padding: 12px 20px;
+    border-top: 1px solid var(--border-subtle);
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+/* ── LOADING SPINNER ───────────────────────────────────────────────── */
+
+#loading-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 900;
+    background: rgba(11, 11, 22, 0.7);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 16px;
+}
+#loading-overlay.visible { display: flex; }
+
+.spinner {
+    width: 36px;
+    height: 36px;
+    border: 3px solid var(--border-medium);
+    border-top-color: var(--accent-orchestra);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.spinner-text {
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+/* ── TOAST ─────────────────────────────────────────────────────────── */
+
+#toast-container {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    pointer-events: none;
+}
+
+.toast {
+    padding: 10px 18px;
+    border-radius: var(--radius-md);
+    background: var(--bg-panel-solid);
+    border: 1px solid var(--border-medium);
+    color: var(--text-primary);
+    font-size: 12px;
+    font-weight: 500;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    pointer-events: auto;
+    opacity: 0;
+    transform: translateY(12px);
+    animation: toastIn 0.3s var(--ease-out) forwards;
+    max-width: 400px;
+    text-align: center;
+}
+.toast.error { border-color: var(--error); color: var(--error); }
+.toast.warning { border-color: var(--warning); color: var(--warning); }
+.toast.success { border-color: var(--success); color: var(--success); }
+
+@keyframes toastIn {
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes toastOut {
+    to { opacity: 0; transform: translateY(-8px); }
+}
+
+/* ── NOTE INPUT MODAL ──────────────────────────────────────────────── */
+
+#note-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1100;
+    background: rgba(0, 0, 0, 0.55);
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+#note-modal-overlay.visible { display: flex; }
+
+#note-modal {
+    width: 340px;
+    background: var(--bg-panel-solid);
+    border: 1px solid var(--border-medium);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 16px 48px rgba(0,0,0,0.4);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+#note-modal .note-title {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+#note-input {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid var(--border-medium);
+    border-radius: var(--radius-sm);
+    background: var(--bg-surface);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 13px;
+    outline: none;
+    resize: vertical;
+    min-height: 60px;
+}
+#note-input:focus { border-color: var(--accent-club); }
+
+#note-modal .note-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+/* ── PASSAGE NOTE TOOLTIP ──────────────────────────────────────────── */
+
+.passage-tooltip {
+    position: fixed;
+    z-index: 600;
+    max-width: 240px;
+    padding: 8px 12px;
+    background: var(--bg-panel-solid);
+    border: 1px solid var(--border-medium);
+    border-radius: var(--radius-md);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    font-size: 11px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    pointer-events: none;
+    display: none;
+}
+.passage-tooltip.visible { display: block; }
+
+/* ── FOCUS INDICATORS ──────────────────────────────────────────────── */
+
+*:focus-visible {
+    outline: 2px solid var(--accent-club);
+    outline-offset: 2px;
+}
+
+button:focus-visible, .btn:focus-visible, input:focus-visible, textarea:focus-visible {
+    outline: 2px solid var(--accent-club);
+    outline-offset: 1px;
+}
+
+</style>
+</head>
+<body>
+
+<div id="app">
+    <!-- HEADER -->
+    <header id="header">
+        <div class="brand">
+            <div class="logo-icon">&#9835;</div>
+            <span>Kreativbibliothek</span>
+            <span style="font-weight:400; color:var(--text-tertiary); font-size:12px;">Layer Builder</span>
+        </div>
+        <div class="header-actions">
+            <div class="selection-stats" id="global-stats">
+                <span class="stat"><span class="stat-value" id="stat-total-terms">0</span> Begriffe</span>
+                <span class="stat"><span class="stat-value" id="stat-total-passages">0</span> Passagen</span>
+                <span class="stat"><span class="stat-value" id="stat-total-layers">0</span> Ebenen</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- WORKSPACE -->
+    <div id="workspace">
+        <!-- LEFT PANEL: World Browser -->
+        <aside id="panel-left">
+            <div class="panel-header">
+                <div class="panel-title">Welten-Browser</div>
+                <div class="search-wrap">
+                    <span class="search-icon">&#128269;</span>
+                    <input type="text" id="search-worlds" placeholder="Suche Welten..." autocomplete="off" spellcheck="false">
+                </div>
+            </div>
+            <div id="world-list">
+                <!-- Recommended section -->
+                <div class="recommended-section" id="recommended-section">
+                    <div class="section-label">&#9733; Empfohlen</div>
+                    <div class="recommended-list" id="recommended-list"></div>
+                </div>
+                <!-- Category groups inserted by JS -->
+            </div>
+        </aside>
+
+        <!-- CENTER PANEL: Article Reader -->
+        <main id="panel-center">
+            <div id="article-header">
+                <div class="article-meta">
+                    <span class="article-icon" id="article-icon"></span>
+                    <span class="article-title" id="article-title">Welt auswählen</span>
+                </div>
+                <div class="article-actions">
+                    <div class="selection-stats" id="article-stats" style="display:none;">
+                        <span class="stat"><span class="stat-value" id="stat-terms">0</span> Begriffe</span>
+                        <span class="stat"><span class="stat-value" id="stat-passages">0</span> Passagen</span>
+                    </div>
+                    <button class="btn btn-sm" id="btn-reset" style="display:none;" title="Auswahl dieser Welt zurücksetzen">Zurücksetzen</button>
+                </div>
+            </div>
+            <div id="key-terms-bar" style="display:none;">
+                <span class="key-term-label">Schlüssel&shy;begriffe</span>
+            </div>
+            <div id="article-scroll">
+                <div id="article-content">
+                    <div class="empty-state" id="center-empty">
+                        <div class="empty-icon">&#127926;</div>
+                        <div class="empty-text">Wähle eine Welt im Browser links, um ihren Artikel zu lesen und Begriffe auszuwählen.</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- RIGHT PANEL: Layer Stack -->
+        <aside id="panel-right">
+            <div class="panel-header">
+                <span class="panel-title">Ebenen-Stack</span>
+                <span id="layer-count">0 Ebenen</span>
+            </div>
+            <div id="layer-list">
+                <div id="layer-empty">
+                    <div class="empty-icon">&#9776;</div>
+                    <div class="empty-text">Beginne Begriffe auszuwählen, um deine erste Ebene zu erzeugen.</div>
+                </div>
+            </div>
+            <div id="layer-footer">
+                <div id="preview-toggle" tabindex="0" role="button" aria-expanded="false">
+                    <span class="preview-label">&#9654; Vorschau</span>
+                    <span class="preview-chevron">&#9660;</span>
+                </div>
+                <div id="preview-content">
+                    <div id="preview-text">Noch keine Auswahl getroffen.</div>
+                </div>
+                <div id="generate-section">
+                    <button class="btn btn-primary" id="btn-generate" disabled>
+                        <span>&#9889;</span> Prompt erstellen
+                    </button>
+                </div>
+            </div>
+        </aside>
+    </div>
+</div>
+
+<!-- SELECTION POPUP -->
+<div id="selection-popup">
+    <button class="popup-btn primary" id="popup-mark">Markieren</button>
+    <button class="popup-btn" id="popup-mark-note">+ Notiz</button>
+</div>
+
+<!-- NOTE MODAL -->
+<div id="note-modal-overlay">
+    <div id="note-modal">
+        <div class="note-title">Notiz zur Passage</div>
+        <textarea id="note-input" placeholder="Deine Notiz..."></textarea>
+        <div class="note-actions">
+            <button class="btn btn-sm" id="note-cancel">Abbrechen</button>
+            <button class="btn btn-sm btn-primary" id="note-save">Speichern</button>
+        </div>
+    </div>
+</div>
+
+<!-- PASSAGE TOOLTIP -->
+<div class="passage-tooltip" id="passage-tooltip"></div>
+
+<!-- RESULT MODAL -->
+<div id="result-overlay">
+    <div id="result-modal">
+        <div class="modal-header">
+            <span class="modal-title">Generierter Prompt</span>
+            <button class="modal-close" id="result-close">&times;</button>
+        </div>
+        <div id="result-body">
+            <div id="result-text"></div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-sm" id="result-copy">Kopieren</button>
+            <button class="btn btn-sm btn-primary" id="result-ok">Schließen</button>
+        </div>
+    </div>
+</div>
+
+<!-- LOADING OVERLAY -->
+<div id="loading-overlay">
+    <div class="spinner"></div>
+    <div class="spinner-text">Prompt wird generiert...</div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div id="toast-container"></div>
+
+<script>
+/* ========================================================================
+   LAYER BUILDER — Core Application Logic
+   ======================================================================== */
+
+(function () {
+    'use strict';
+
+    // ── Constants ──────────────────────────────────────────────────────
+
+    const CREATIVE_SYSTEM_PROMPT = `Du bist ein hoch-kreativer Musik-Architekt. Deine Aufgabe ist es, basierend auf den vom User in einem interaktiven Artikel ausgewählten Begriffen einen kohärenten, detaillierten Suno-Prompt zu erstellen.
+WICHTIG:
+- Integriere die ausgewählten Begriffe (Keywords) sinnvoll in den Prompt.
+- Das Ergebnis soll ein reiner Prompt-String sein, formatiert im [Style], [Instrumentation], [Mood] Format.
+- Füge keine Erklärungen hinzu, nur den Prompt.`;
+
+    const API_URL = 'https://openrouter.ai/api/v1/chat/completions';
+
+    const CATEGORY_META = {
+        orchestra_group:       { label: 'Orchestral & Klassik',   icon: '🎻', color: '#f59e0b' },
+        ambient_group:         { label: 'Ambient & Texturen',     icon: '🌌', color: '#60a5fa' },
+        urban_club_group:      { label: 'Club & Electronic',      icon: '🎧', color: '#22d3ee' },
+        hip_hop_group:         { label: 'Hip-Hop & Beats',        icon: '🎤', color: '#a78bfa' },
+        world_orchestra_group: { label: 'Weltmusik',              icon: '🌏', color: '#34d399' },
+        sound_feeling_group:   { label: 'Klangwelten',            icon: '🔊', color: '#fb7185' }
+    };
+
+    // Group relationships for recommendations
+    const GROUP_RELATIONS = {
+        orchestra_group:       ['ambient_group', 'world_orchestra_group', 'sound_feeling_group'],
+        ambient_group:         ['sound_feeling_group', 'orchestra_group', 'urban_club_group'],
+        urban_club_group:      ['hip_hop_group', 'ambient_group', 'sound_feeling_group'],
+        hip_hop_group:         ['urban_club_group', 'sound_feeling_group', 'world_orchestra_group'],
+        world_orchestra_group: ['orchestra_group', 'sound_feeling_group', 'ambient_group'],
+        sound_feeling_group:   ['ambient_group', 'orchestra_group', 'world_orchestra_group']
+    };
+
+    const CATEGORY_ORDER = [
+        'orchestra_group', 'ambient_group', 'urban_club_group',
+        'hip_hop_group', 'world_orchestra_group', 'sound_feeling_group'
+    ];
+
+    // ── State ─────────────────────────────────────────────────────────
+
+    let allWorlds = [];
+    let worldsByGroup = {};
+    let worldsById = {};
+    let worldContentCache = {};
+
+    let activeWorldId = null;
+    let selections = {};        // { worldId: { term: true, ... } }
+    let customSelections = {};   // { worldId: [{ text, note, id }, ...] }
+    let layerOrder = [];         // [worldId, ...]  — order of layers
+    let layerEnabled = {};       // { worldId: true/false }
+
+    // Pending text selection data
+    let pendingSelection = null;
+    let pendingNoteRange = null;
+
+    // ── DOM Refs ──────────────────────────────────────────────────────
+
+    const $ = (s, p) => (p || document).querySelector(s);
+    const $$ = (s, p) => [...(p || document).querySelectorAll(s)];
+
+    const dom = {
+        worldList:      $('#world-list'),
+        searchInput:    $('#search-worlds'),
+        articleIcon:    $('#article-icon'),
+        articleTitle:   $('#article-title'),
+        articleContent: $('#article-content'),
+        articleScroll:  $('#article-scroll'),
+        articleStats:   $('#article-stats'),
+        keyTermsBar:    $('#key-terms-bar'),
+        centerEmpty:    $('#center-empty'),
+        btnReset:       $('#btn-reset'),
+        statTerms:      $('#stat-terms'),
+        statPassages:   $('#stat-passages'),
+        statTotalTerms: $('#stat-total-terms'),
+        statTotalPassages: $('#stat-total-passages'),
+        statTotalLayers:   $('#stat-total-layers'),
+        layerList:      $('#layer-list'),
+        layerEmpty:     $('#layer-empty'),
+        layerCount:     $('#layer-count'),
+        previewToggle:  $('#preview-toggle'),
+        previewContent: $('#preview-content'),
+        previewText:    $('#preview-text'),
+        btnGenerate:    $('#btn-generate'),
+        selectionPopup: $('#selection-popup'),
+        popupMark:      $('#popup-mark'),
+        popupMarkNote:  $('#popup-mark-note'),
+        noteOverlay:    $('#note-modal-overlay'),
+        noteInput:      $('#note-input'),
+        noteCancel:     $('#note-cancel'),
+        noteSave:       $('#note-save'),
+        resultOverlay:  $('#result-overlay'),
+        resultText:     $('#result-text'),
+        resultClose:    $('#result-close'),
+        resultCopy:     $('#result-copy'),
+        resultOk:       $('#result-ok'),
+        loadingOverlay: $('#loading-overlay'),
+        toastContainer: $('#toast-container'),
+        passageTooltip: $('#passage-tooltip'),
+        recommendedSection: $('#recommended-section'),
+        recommendedList:    $('#recommended-list'),
+    };
+
+    // ── Utility ───────────────────────────────────────────────────────
+
+    function getAccentColor(worldId) {
+        const w = worldsById[worldId];
+        if (!w) return '#888';
+        const cat = CATEGORY_META[w.group];
+        return cat ? cat.color : '#888';
+    }
+
+    function toast(msg, type = 'info') {
+        const el = document.createElement('div');
+        el.className = 'toast' + (type !== 'info' ? ' ' + type : '');
+        el.textContent = msg;
+        dom.toastContainer.appendChild(el);
+        setTimeout(() => {
+            el.style.animation = 'toastOut 0.3s var(--ease-out) forwards';
+            setTimeout(() => el.remove(), 300);
+        }, 3200);
+    }
+
+    function sanitizeHTML(html) {
+        // Keep only safe tags used in world content
+        const tmp = document.createElement('div');
+        tmp.innerHTML = html;
+        // Remove script tags
+        tmp.querySelectorAll('script, iframe, object, embed, form, input').forEach(el => el.remove());
+        // Remove event handlers
+        tmp.querySelectorAll('*').forEach(el => {
+            [...el.attributes].forEach(attr => {
+                if (attr.name.startsWith('on')) el.removeAttribute(attr.name);
+            });
+        });
+        return tmp.innerHTML;
+    }
+
+    function escapeHTML(text) {
+        const d = document.createElement('div');
+        d.textContent = text;
+        return d.innerHTML;
+    }
+
+    function uid() {
+        return 'sel_' + Math.random().toString(36).substr(2, 9);
+    }
+
+    // ── Data Loading ──────────────────────────────────────────────────
+
+    async function loadIndex() {
+        try {
+            const resp = await fetch('../data/worlds/index.json');
+            if (!resp.ok) throw new Error('Index fetch failed');
+            const data = await resp.json();
+            allWorlds = data.worlds || [];
+            allWorlds.forEach(w => {
+                worldsById[w.id] = w;
+                if (!worldsByGroup[w.group]) worldsByGroup[w.group] = [];
+                worldsByGroup[w.group].push(w);
+            });
+            renderWorldBrowser();
+        } catch (e) {
+            console.error('Failed to load world index:', e);
+            toast('Fehler beim Laden der Welten.', 'error');
+        }
+    }
+
+    async function loadWorldContent(worldId) {
+        if (worldContentCache[worldId]) return worldContentCache[worldId];
+        try {
+            const resp = await fetch(`../data/worlds/${worldId}.json`);
+            if (!resp.ok) throw new Error(`World ${worldId} fetch failed`);
+            const data = await resp.json();
+            worldContentCache[worldId] = data;
+            return data;
+        } catch (e) {
+            console.error('Failed to load world:', e);
+            toast('Fehler beim Laden des Artikels.', 'error');
+            return null;
+        }
+    }
+
+    // ── World Browser Rendering ───────────────────────────────────────
+
+    function renderWorldBrowser() {
+        // Clear existing groups (keep recommended section)
+        $$('.category-group', dom.worldList).forEach(el => el.remove());
+
+        CATEGORY_ORDER.forEach(groupId => {
+            const meta = CATEGORY_META[groupId];
+            const worlds = worldsByGroup[groupId] || [];
+            if (!worlds.length) return;
+
+            const group = document.createElement('div');
+            group.className = 'category-group';
+            group.dataset.group = groupId;
+
+            group.innerHTML = `
+                <div class="category-header" tabindex="0" role="button" aria-expanded="true">
+                    <div class="category-bar" style="background:${meta.color}"></div>
+                    <span class="category-label">${meta.label}</span>
+                    <span class="category-count">${worlds.length}</span>
+                    <span class="category-chevron">&#9660;</span>
+                </div>
+                <div class="category-worlds">
+                    ${worlds.map(w => `
+                        <div class="world-item" data-world="${w.id}" tabindex="0" role="button">
+                            <span class="world-icon">${w.icon}</span>
+                            <span class="world-name">${escapeHTML(w.name)}</span>
+                            <span class="world-badge" style="background:${meta.color}"></span>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+
+            const header = group.querySelector('.category-header');
+            header.addEventListener('click', () => {
+                group.classList.toggle('collapsed');
+                header.setAttribute('aria-expanded', !group.classList.contains('collapsed'));
+            });
+            header.addEventListener('keydown', e => {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); header.click(); }
+            });
+
+            group.querySelectorAll('.world-item').forEach(item => {
+                item.addEventListener('click', () => selectWorld(item.dataset.world));
+                item.addEventListener('keydown', e => {
+                    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); item.click(); }
+                });
+            });
+
+            dom.worldList.appendChild(group);
+        });
+    }
+
+    function updateWorldBadges() {
+        $$('.world-item', dom.worldList).forEach(item => {
+            const wid = item.dataset.world;
+            const badge = item.querySelector('.world-badge');
+            const termCount = selections[wid] ? Object.keys(selections[wid]).length : 0;
+            const passCount = customSelections[wid] ? customSelections[wid].length : 0;
+            const total = termCount + passCount;
+            if (total > 0) {
+                badge.textContent = total;
+                badge.classList.add('visible');
+            } else {
+                badge.classList.remove('visible');
+            }
+        });
+    }
+
+    // ── Search ────────────────────────────────────────────────────────
+
+    dom.searchInput.addEventListener('input', () => {
+        const q = dom.searchInput.value.trim().toLowerCase();
+        $$('.category-group', dom.worldList).forEach(group => {
+            let hasVisible = false;
+            group.querySelectorAll('.world-item').forEach(item => {
+                const wid = item.dataset.world;
+                const w = worldsById[wid];
+                const match = !q || w.name.toLowerCase().includes(q) ||
+                    (CATEGORY_META[w.group] && CATEGORY_META[w.group].label.toLowerCase().includes(q));
+                item.style.display = match ? '' : 'none';
+                if (match) hasVisible = true;
+            });
+            group.style.display = hasVisible ? '' : 'none';
+            if (q && hasVisible) group.classList.remove('collapsed');
+        });
+    });
+
+    // ── Recommendations ───────────────────────────────────────────────
+
+    function updateRecommendations() {
+        const usedGroups = new Set();
+        layerOrder.forEach(wid => {
+            const w = worldsById[wid];
+            if (w) usedGroups.add(w.group);
+        });
+
+        if (usedGroups.size === 0) {
+            dom.recommendedSection.classList.remove('visible');
+            return;
+        }
+
+        const suggestedGroups = new Set();
+        usedGroups.forEach(g => {
+            (GROUP_RELATIONS[g] || []).forEach(rel => {
+                if (!usedGroups.has(rel)) suggestedGroups.add(rel);
+            });
+        });
+
+        const candidates = [];
+        suggestedGroups.forEach(g => {
+            const worlds = worldsByGroup[g] || [];
+            // Pick up to 2 from each suggested group
+            worlds.slice(0, 2).forEach(w => {
+                if (!layerOrder.includes(w.id)) candidates.push(w);
+            });
+        });
+
+        const top = candidates.slice(0, 4);
+        if (!top.length) {
+            dom.recommendedSection.classList.remove('visible');
+            return;
+        }
+
+        dom.recommendedSection.classList.add('visible');
+        dom.recommendedList.innerHTML = top.map(w => {
+            const meta = CATEGORY_META[w.group] || {};
+            return `<div class="world-item" data-world="${w.id}" tabindex="0" role="button">
+                <span class="world-icon">${w.icon}</span>
+                <span class="world-name">${escapeHTML(w.name)}</span>
+                <span class="world-badge" style="background:${meta.color}"></span>
+            </div>`;
+        }).join('');
+
+        dom.recommendedList.querySelectorAll('.world-item').forEach(item => {
+            item.addEventListener('click', () => selectWorld(item.dataset.world));
+            // Update badge if applicable
+            const wid = item.dataset.world;
+            const badge = item.querySelector('.world-badge');
+            const total = (selections[wid] ? Object.keys(selections[wid]).length : 0) +
+                           (customSelections[wid] ? customSelections[wid].length : 0);
+            if (total > 0) { badge.textContent = total; badge.classList.add('visible'); }
+        });
+    }
+
+    // ── World Selection & Article Display ─────────────────────────────
+
+    async function selectWorld(worldId) {
+        if (activeWorldId === worldId) return;
+
+        // Highlight in sidebar
+        $$('.world-item', dom.worldList).forEach(el => el.classList.toggle('active', el.dataset.world === worldId));
+        const w = worldsById[worldId];
+        if (!w) return;
+
+        const accentColor = getAccentColor(worldId);
+
+        // Set accent color CSS variable on active item for the ::before pseudo-element
+        $$('.world-item', dom.worldList).forEach(el => {
+            if (el.dataset.world === worldId) {
+                el.style.setProperty('--world-accent', accentColor);
+            }
+        });
+
+        // Fade out content
+        dom.articleContent.classList.add('fade-out');
+        await new Promise(r => setTimeout(r, 150));
+
+        activeWorldId = worldId;
+
+        // Update header
+        dom.articleIcon.textContent = w.icon;
+        dom.articleTitle.textContent = w.name;
+        dom.btnReset.style.display = '';
+        dom.articleStats.style.display = '';
+
+        // Load content
+        const data = await loadWorldContent(worldId);
+        if (!data || activeWorldId !== worldId) return;
+
+        dom.centerEmpty.style.display = 'none';
+
+        // Set article content
+        dom.articleContent.innerHTML = sanitizeHTML(data.content || '<p>Kein Inhalt verfügbar.</p>');
+
+        // Setup interactive terms
+        setupInteractiveTerms(worldId, accentColor);
+
+        // Setup key terms bar
+        setupKeyTermsBar(worldId, accentColor);
+
+        // Setup section collapse
+        setupSectionCollapse();
+
+        // Restore custom selections
+        restoreCustomSelections(worldId);
+
+        // Fade in
+        dom.articleContent.classList.remove('fade-out');
+        dom.articleScroll.scrollTop = 0;
+
+        // Update stats
+        updateArticleStats();
+    }
+
+    function setupInteractiveTerms(worldId, accentColor) {
+        const terms = $$('.interactive-term', dom.articleContent);
+        terms.forEach(el => {
+            const term = el.getAttribute('data-term');
+            if (!term) return;
+
+            // Restore selection state
+            if (selections[worldId] && selections[worldId][term]) {
+                el.classList.add('selected');
+                el.style.setProperty('--term-bg', accentColor);
+                setTermSelectedStyle(el, accentColor);
+            }
+
+            el.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleTerm(worldId, term, accentColor);
+            });
+        });
+    }
+
+    function setTermSelectedStyle(el, color) {
+        if (el.classList.contains('selected')) {
+            el.style.background = color;
+            el.style.color = 'var(--text-inverse)';
+            el.style.borderBottomColor = 'transparent';
+        } else {
+            el.style.background = '';
+            el.style.color = '';
+            el.style.borderBottomColor = '';
+        }
+    }
+
+    function toggleTerm(worldId, term, accentColor) {
+        if (!selections[worldId]) selections[worldId] = {};
+
+        if (selections[worldId][term]) {
+            delete selections[worldId][term];
+            if (Object.keys(selections[worldId]).length === 0) delete selections[worldId];
+        } else {
+            selections[worldId][term] = true;
+        }
+
+        // Update all matching term elements in article
+        $$('.interactive-term', dom.articleContent).forEach(el => {
+            if (el.getAttribute('data-term') === term) {
+                el.classList.toggle('selected', !!(selections[worldId] && selections[worldId][term]));
+                setTermSelectedStyle(el, accentColor);
+
+                // Pop animation
+                el.classList.remove('pop-anim');
+                void el.offsetWidth;
+                el.classList.add('pop-anim');
+            }
+        });
+
+        // Update key terms bar
+        updateKeyTermsBarState(worldId, accentColor);
+
+        updateArticleStats();
+        updateLayers(worldId);
+        updateWorldBadges();
+        updateGlobalStats();
+        updatePreview();
+        updateRecommendations();
+    }
+
+    function setupKeyTermsBar(worldId, accentColor) {
+        const terms = $$('.interactive-term', dom.articleContent);
+        const termCounts = {};
+        terms.forEach(el => {
+            const t = el.getAttribute('data-term');
+            if (t) termCounts[t] = (termCounts[t] || 0) + 1;
+        });
+
+        // Get top terms (most frequent, up to 15)
+        const sorted = Object.entries(termCounts)
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 15);
+
+        if (!sorted.length) {
+            dom.keyTermsBar.style.display = 'none';
+            return;
+        }
+
+        dom.keyTermsBar.style.display = '';
+        dom.keyTermsBar.innerHTML = '<span class="key-term-label">Schlüsselbegriffe</span>';
+
+        sorted.forEach(([term]) => {
+            const chip = document.createElement('button');
+            chip.className = 'key-term-chip';
+            chip.textContent = term;
+            chip.dataset.term = term;
+
+            if (selections[worldId] && selections[worldId][term]) {
+                chip.classList.add('selected');
+                chip.style.background = accentColor;
+                chip.style.borderColor = 'transparent';
+            }
+
+            chip.addEventListener('click', () => {
+                toggleTerm(worldId, term, accentColor);
+            });
+
+            dom.keyTermsBar.appendChild(chip);
+        });
+    }
+
+    function updateKeyTermsBarState(worldId, accentColor) {
+        $$('.key-term-chip', dom.keyTermsBar).forEach(chip => {
+            const term = chip.dataset.term;
+            const selected = selections[worldId] && selections[worldId][term];
+            chip.classList.toggle('selected', !!selected);
+            chip.style.background = selected ? accentColor : '';
+            chip.style.borderColor = selected ? 'transparent' : '';
+            chip.style.color = selected ? 'var(--text-inverse)' : '';
+        });
+    }
+
+    function setupSectionCollapse() {
+        $$('h2', dom.articleContent).forEach(h2 => {
+            h2.addEventListener('click', () => {
+                h2.classList.toggle('collapsed');
+                // Toggle visibility of siblings until next h2
+                let next = h2.nextElementSibling;
+                while (next && next.tagName !== 'H2') {
+                    next.style.display = h2.classList.contains('collapsed') ? 'none' : '';
+                    next = next.nextElementSibling;
+                }
+            });
+        });
+    }
+
+    // ── Text Passage Marking ──────────────────────────────────────────
+
+    document.addEventListener('mouseup', (e) => {
+        const sel = window.getSelection();
+        if (!sel || sel.isCollapsed || !activeWorldId) {
+            hideSelectionPopup();
+            return;
+        }
+
+        // Only allow marking inside article content
+        const range = sel.getRangeAt(0);
+        if (!dom.articleContent.contains(range.commonAncestorContainer)) {
+            hideSelectionPopup();
+            return;
+        }
+
+        const text = sel.toString().trim();
+        if (!text || text.length < 3) {
+            hideSelectionPopup();
+            return;
+        }
+
+        // Don't show popup if clicking on interactive term
+        if (e.target.closest('.interactive-term')) {
+            hideSelectionPopup();
+            return;
+        }
+
+        pendingSelection = { text, range: range.cloneRange() };
+
+        const rect = range.getBoundingClientRect();
+        const popup = dom.selectionPopup;
+        popup.classList.add('visible');
+        popup.style.left = (rect.left + rect.width / 2 - popup.offsetWidth / 2) + 'px';
+        popup.style.top = (rect.top - popup.offsetHeight - 8) + 'px';
+    });
+
+    function hideSelectionPopup() {
+        dom.selectionPopup.classList.remove('visible');
+        pendingSelection = null;
+    }
+
+    dom.popupMark.addEventListener('click', () => {
+        if (!pendingSelection) return;
+        markPassage(pendingSelection.text, pendingSelection.range, null);
+        hideSelectionPopup();
+        window.getSelection().removeAllRanges();
+    });
+
+    dom.popupMarkNote.addEventListener('click', () => {
+        if (!pendingSelection) return;
+        pendingNoteRange = { text: pendingSelection.text, range: pendingSelection.range };
+        hideSelectionPopup();
+        window.getSelection().removeAllRanges();
+        dom.noteOverlay.classList.add('visible');
+        dom.noteInput.value = '';
+        dom.noteInput.focus();
+    });
+
+    dom.noteCancel.addEventListener('click', () => {
+        dom.noteOverlay.classList.remove('visible');
+        pendingNoteRange = null;
+    });
+
+    dom.noteSave.addEventListener('click', () => {
+        if (!pendingNoteRange) return;
+        const note = dom.noteInput.value.trim();
+        markPassage(pendingNoteRange.text, pendingNoteRange.range, note || null);
+        dom.noteOverlay.classList.remove('visible');
+        pendingNoteRange = null;
+    });
+
+    dom.noteInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); dom.noteSave.click(); }
+        if (e.key === 'Escape') dom.noteCancel.click();
+    });
+
+    function markPassage(text, range, note) {
+        if (!activeWorldId) return;
+        const id = uid();
+
+        if (!customSelections[activeWorldId]) customSelections[activeWorldId] = [];
+        customSelections[activeWorldId].push({ id, text, note });
+
+        // Wrap the range
+        try {
+            const span = document.createElement('span');
+            span.className = 'custom-selection';
+            span.dataset.passageId = id;
+            if (note) {
+                const noteIcon = document.createElement('span');
+                noteIcon.className = 'passage-note-icon';
+                noteIcon.textContent = '📝';
+                noteIcon.title = note;
+                noteIcon.addEventListener('mouseenter', (e) => showPassageTooltip(e, note));
+                noteIcon.addEventListener('mouseleave', hidePassageTooltip);
+                range.surroundContents(span);
+                span.appendChild(noteIcon);
+            } else {
+                range.surroundContents(span);
+            }
+        } catch (e) {
+            // If surroundContents fails (crossing nodes), extract and re-wrap
+            try {
+                const frag = range.extractContents();
+                const span = document.createElement('span');
+                span.className = 'custom-selection';
+                span.dataset.passageId = id;
+                span.appendChild(frag);
+                if (note) {
+                    const noteIcon = document.createElement('span');
+                    noteIcon.className = 'passage-note-icon';
+                    noteIcon.textContent = '📝';
+                    noteIcon.title = note;
+                    noteIcon.addEventListener('mouseenter', (ev) => showPassageTooltip(ev, note));
+                    noteIcon.addEventListener('mouseleave', hidePassageTooltip);
+                    span.appendChild(noteIcon);
+                }
+                range.insertNode(span);
+            } catch (e2) {
+                console.warn('Could not mark passage:', e2);
+                toast('Passage konnte nicht markiert werden.', 'warning');
+                return;
+            }
+        }
+
+        updateArticleStats();
+        updateLayers(activeWorldId);
+        updateWorldBadges();
+        updateGlobalStats();
+        updatePreview();
+        updateRecommendations();
+    }
+
+    function restoreCustomSelections(worldId) {
+        // Passages are stored as text/note pairs. We don't re-mark them in DOM
+        // because the DOM was freshly loaded. A production system would persist
+        // ranges; here we just update stats. The custom selections are still
+        // tracked for prompt generation.
+    }
+
+    function showPassageTooltip(e, note) {
+        dom.passageTooltip.textContent = note;
+        dom.passageTooltip.classList.add('visible');
+        const rect = e.target.getBoundingClientRect();
+        dom.passageTooltip.style.left = rect.left + 'px';
+        dom.passageTooltip.style.top = (rect.bottom + 6) + 'px';
+    }
+
+    function hidePassageTooltip() {
+        dom.passageTooltip.classList.remove('visible');
+    }
+
+    // ── Stats ─────────────────────────────────────────────────────────
+
+    function updateArticleStats() {
+        if (!activeWorldId) return;
+        const termCount = selections[activeWorldId] ? Object.keys(selections[activeWorldId]).length : 0;
+        const passCount = customSelections[activeWorldId] ? customSelections[activeWorldId].length : 0;
+        dom.statTerms.textContent = termCount;
+        dom.statPassages.textContent = passCount;
+    }
+
+    function updateGlobalStats() {
+        let totalTerms = 0, totalPassages = 0;
+        Object.values(selections).forEach(sel => totalTerms += Object.keys(sel).length);
+        Object.values(customSelections).forEach(arr => totalPassages += arr.length);
+        dom.statTotalTerms.textContent = totalTerms;
+        dom.statTotalPassages.textContent = totalPassages;
+        dom.statTotalLayers.textContent = layerOrder.length;
+    }
+
+    // ── Reset ─────────────────────────────────────────────────────────
+
+    dom.btnReset.addEventListener('click', () => {
+        if (!activeWorldId) return;
+        delete selections[activeWorldId];
+        delete customSelections[activeWorldId];
+
+        // Re-render article to clear visual selections
+        const accentColor = getAccentColor(activeWorldId);
+        $$('.interactive-term', dom.articleContent).forEach(el => {
+            el.classList.remove('selected');
+            el.style.background = '';
+            el.style.color = '';
+            el.style.borderBottomColor = '';
+        });
+        $$('.custom-selection', dom.articleContent).forEach(el => {
+            const parent = el.parentNode;
+            while (el.firstChild) parent.insertBefore(el.firstChild, el);
+            parent.removeChild(el);
+        });
+
+        updateKeyTermsBarState(activeWorldId, accentColor);
+        updateArticleStats();
+        updateLayers(activeWorldId);
+        updateWorldBadges();
+        updateGlobalStats();
+        updatePreview();
+        updateRecommendations();
+
+        toast('Auswahl zurückgesetzt.', 'success');
+    });
+
+    // ── Layer Stack ───────────────────────────────────────────────────
+
+    function updateLayers(changedWorldId) {
+        const hasTerms = selections[changedWorldId] && Object.keys(selections[changedWorldId]).length > 0;
+        const hasPassages = customSelections[changedWorldId] && customSelections[changedWorldId].length > 0;
+        const shouldExist = hasTerms || hasPassages;
+
+        const idx = layerOrder.indexOf(changedWorldId);
+        if (shouldExist && idx === -1) {
+            layerOrder.push(changedWorldId);
+            layerEnabled[changedWorldId] = true;
+        } else if (!shouldExist && idx !== -1) {
+            layerOrder.splice(idx, 1);
+            delete layerEnabled[changedWorldId];
+        }
+
+        renderLayerStack();
+    }
+
+    function renderLayerStack() {
+        // Clear all layer cards (keep empty state)
+        $$('.layer-card', dom.layerList).forEach(el => el.remove());
+
+        dom.layerEmpty.style.display = layerOrder.length ? 'none' : '';
+        dom.layerCount.textContent = layerOrder.length + ' Ebene' + (layerOrder.length !== 1 ? 'n' : '');
+
+        const activeCount = layerOrder.filter(id => layerEnabled[id] !== false).length;
+        dom.btnGenerate.disabled = activeCount === 0;
+
+        layerOrder.forEach((worldId, i) => {
+            const w = worldsById[worldId];
+            if (!w) return;
+            const meta = CATEGORY_META[w.group] || {};
+            const color = meta.color || '#888';
+            const enabled = layerEnabled[worldId] !== false;
+            const termCount = selections[worldId] ? Object.keys(selections[worldId]).length : 0;
+            const passCount = customSelections[worldId] ? customSelections[worldId].length : 0;
+            const terms = selections[worldId] ? Object.keys(selections[worldId]) : [];
+
+            const card = document.createElement('div');
+            card.className = 'layer-card' + (enabled ? '' : ' disabled');
+            card.dataset.worldId = worldId;
+            card.draggable = true;
+
+            card.innerHTML = `
+                <div class="layer-accent" style="background:${color}"></div>
+                <div class="layer-head">
+                    <div class="drag-handle" title="Ziehen zum Umsortieren">
+                        <div class="dot-row"><span class="dot"></span><span class="dot"></span></div>
+                        <div class="dot-row"><span class="dot"></span><span class="dot"></span></div>
+                        <div class="dot-row"><span class="dot"></span><span class="dot"></span></div>
+                    </div>
+                    <span class="layer-icon">${w.icon}</span>
+                    <div class="layer-info">
+                        <div class="layer-name">${escapeHTML(w.name)}</div>
+                        <div class="layer-counts">${termCount} Begriffe · ${passCount} Passagen</div>
+                    </div>
+                    <button class="layer-toggle ${enabled ? '' : 'off'}" title="Ebene an/aus">
+                        ${enabled ? '&#128065;' : '&#128065;'}
+                    </button>
+                </div>
+                ${terms.length ? `<div class="layer-tags">
+                    ${terms.slice(0, 8).map(t => `<span class="layer-tag" style="background:${color}" title="${escapeHTML(t)}">${escapeHTML(t)}</span>`).join('')}
+                    ${terms.length > 8 ? `<span class="layer-tag" style="background:${color};opacity:0.6">+${terms.length - 8}</span>` : ''}
+                </div>` : ''}
+            `;
+
+            // Toggle handler
+            card.querySelector('.layer-toggle').addEventListener('click', (e) => {
+                e.stopPropagation();
+                layerEnabled[worldId] = !layerEnabled[worldId];
+                if (layerEnabled[worldId] === true) delete layerEnabled[worldId]; // default is true
+                renderLayerStack();
+                updatePreview();
+            });
+
+            // Click to navigate to that world
+            card.querySelector('.layer-info').style.cursor = 'pointer';
+            card.querySelector('.layer-info').addEventListener('click', () => selectWorld(worldId));
+
+            // Drag and drop
+            card.addEventListener('dragstart', (e) => {
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/plain', worldId);
+                card.style.opacity = '0.5';
+            });
+            card.addEventListener('dragend', () => { card.style.opacity = ''; });
+            card.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = 'move';
+                card.classList.add('drag-over');
+            });
+            card.addEventListener('dragleave', () => card.classList.remove('drag-over'));
+            card.addEventListener('drop', (e) => {
+                e.preventDefault();
+                card.classList.remove('drag-over');
+                const fromId = e.dataTransfer.getData('text/plain');
+                const toId = worldId;
+                if (fromId === toId) return;
+                const fromIdx = layerOrder.indexOf(fromId);
+                const toIdx = layerOrder.indexOf(toId);
+                if (fromIdx === -1 || toIdx === -1) return;
+                layerOrder.splice(fromIdx, 1);
+                layerOrder.splice(toIdx, 0, fromId);
+                renderLayerStack();
+                updatePreview();
+            });
+
+            dom.layerList.appendChild(card);
+        });
+
+        updateGlobalStats();
+    }
+
+    // ── Preview ───────────────────────────────────────────────────────
+
+    let previewOpen = false;
+
+    dom.previewToggle.addEventListener('click', () => {
+        previewOpen = !previewOpen;
+        dom.previewToggle.classList.toggle('open', previewOpen);
+        dom.previewContent.classList.toggle('open', previewOpen);
+        dom.previewToggle.setAttribute('aria-expanded', previewOpen);
+    });
+    dom.previewToggle.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); dom.previewToggle.click(); }
+    });
+
+    function updatePreview() {
+        const parts = [];
+        layerOrder.forEach((worldId, i) => {
+            if (layerEnabled[worldId] === false) return;
+            const w = worldsById[worldId];
+            if (!w) return;
+
+            const terms = selections[worldId] ? Object.keys(selections[worldId]) : [];
+            const passages = customSelections[worldId] || [];
+
+            if (!terms.length && !passages.length) return;
+
+            let line = `[${w.name}]`;
+            if (terms.length) line += ` ${terms.join(', ')}`;
+            if (passages.length) line += ` (+${passages.length} Passagen)`;
+            parts.push(line);
+        });
+
+        if (!parts.length) {
+            dom.previewText.textContent = 'Noch keine Auswahl getroffen.';
+        } else {
+            dom.previewText.textContent = parts.join('\n');
+        }
+    }
+
+    // ── Prompt Generation ─────────────────────────────────────────────
+
+    dom.btnGenerate.addEventListener('click', generatePrompt);
+
+    async function generatePrompt() {
+        const apiKey = localStorage.getItem('openrouter_api_key');
+        if (!apiKey) {
+            toast('Kein API-Key gefunden. Bitte in localStorage setzen: openrouter_api_key', 'error');
+            return;
+        }
+
+        // Build user message from active layers (in order, topmost = highest priority)
+        const layerTexts = [];
+        layerOrder.forEach((worldId, i) => {
+            if (layerEnabled[worldId] === false) return;
+            const w = worldsById[worldId];
+            if (!w) return;
+
+            const terms = selections[worldId] ? Object.keys(selections[worldId]) : [];
+            const passages = customSelections[worldId] || [];
+            if (!terms.length && !passages.length) return;
+
+            let section = `## Ebene ${i + 1}: ${w.name}\n`;
+            if (terms.length) section += `Begriffe: ${terms.join(', ')}\n`;
+            passages.forEach(p => {
+                section += `Markierte Passage: "${p.text}"`;
+                if (p.note) section += ` (Notiz: ${p.note})`;
+                section += '\n';
+            });
+            layerTexts.push(section);
+        });
+
+        if (!layerTexts.length) {
+            toast('Keine aktiven Ebenen mit Auswahl.', 'warning');
+            return;
+        }
+
+        const userMessage = `Erstelle einen Suno-Prompt basierend auf folgenden Ebenen (sortiert nach Priorität, Ebene 1 = höchste Priorität):\n\n${layerTexts.join('\n')}`;
+
+        const model = localStorage.getItem('selected_model') || 'google/gemini-2.5-flash';
+
+        dom.loadingOverlay.classList.add('visible');
+
+        try {
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`,
+                    'HTTP-Referer': window.location.href,
+                },
+                body: JSON.stringify({
+                    model: model,
+                    messages: [
+                        { role: 'system', content: CREATIVE_SYSTEM_PROMPT },
+                        { role: 'user', content: userMessage }
+                    ],
+                    max_tokens: 1024,
+                    temperature: 0.85,
+                })
+            });
+
+            if (!response.ok) {
+                const errData = await response.json().catch(() => null);
+                throw new Error(errData?.error?.message || `HTTP ${response.status}`);
+            }
+
+            const data = await response.json();
+            const result = data.choices?.[0]?.message?.content;
+
+            if (!result) throw new Error('Keine Antwort vom Modell erhalten.');
+
+            dom.resultText.textContent = result;
+            dom.resultOverlay.classList.add('visible');
+
+        } catch (e) {
+            console.error('Generation failed:', e);
+            toast('Fehler: ' + e.message, 'error');
+        } finally {
+            dom.loadingOverlay.classList.remove('visible');
+        }
+    }
+
+    // ── Result Modal ──────────────────────────────────────────────────
+
+    dom.resultClose.addEventListener('click', closeResult);
+    dom.resultOk.addEventListener('click', closeResult);
+    dom.resultOverlay.addEventListener('click', (e) => {
+        if (e.target === dom.resultOverlay) closeResult();
+    });
+
+    function closeResult() {
+        dom.resultOverlay.classList.remove('visible');
+    }
+
+    dom.resultCopy.addEventListener('click', async () => {
+        const text = dom.resultText.textContent;
+        try {
+            await navigator.clipboard.writeText(text);
+            toast('Prompt kopiert!', 'success');
+        } catch {
+            // Fallback
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            ta.remove();
+            toast('Prompt kopiert!', 'success');
+        }
+    });
+
+    // ── Keyboard Navigation ───────────────────────────────────────────
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            if (dom.noteOverlay.classList.contains('visible')) {
+                dom.noteCancel.click();
+            } else if (dom.resultOverlay.classList.contains('visible')) {
+                closeResult();
+            } else {
+                hideSelectionPopup();
+            }
+        }
+    });
+
+    // ── Close popup on outside click ──────────────────────────────────
+
+    document.addEventListener('mousedown', (e) => {
+        if (!dom.selectionPopup.contains(e.target)) {
+            // Don't immediately hide; let mouseup handle new selection
+        }
+    });
+
+    // ── Initialize ────────────────────────────────────────────────────
+
+    loadIndex();
+
+})();
+</script>
+</body>
+</html>
