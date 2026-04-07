@@ -85,6 +85,30 @@
       "group": "urban_club_group"
     },
     {
+      "id": "jazz_world_main",
+      "name": "Jazz World",
+      "icon": "🎷",
+      "group": "jazz_group"
+    },
+    {
+      "id": "bebop_club_new_york",
+      "name": "Bebop Club New York",
+      "icon": "🎷",
+      "group": "jazz_group"
+    },
+    {
+      "id": "modal_jazz_explorations",
+      "name": "Modal Jazz Explorations",
+      "icon": "🎹",
+      "group": "jazz_group"
+    },
+    {
+      "id": "free_jazz_experiment",
+      "name": "Free Jazz Experiment",
+      "icon": "🎷",
+      "group": "jazz_group"
+    },
+    {
       "id": "hip_hop_main",
       "name": "Hip Hop",
       "icon": "🎤",

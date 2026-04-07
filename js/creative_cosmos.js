@@ -3292,6 +3292,551 @@ const CREATIVE_WORLDS = {
         </section>
     `
     },
+    jazz_world_main: {
+        id: 'jazz_world_main',
+        group: 'jazz_group',
+        name: 'Jazz World',
+        icon: '🎷',
+        wikiContent: `
+        <header>
+            <h1>Jazz World: Improvisation, Harmonie und klangliche Eigenzeit</h1>
+        </header>
+
+        <section>
+            <p>Diese Gruppe buendelt zentrale Stilwelten des <span class="interactive-term" data-term="Jazz">Jazz</span> von seinen historischen Wurzeln bis zu spaeteren Verzweigungen. Im Zentrum stehen <span class="interactive-term" data-term="Improvisation">Improvisation</span>, <span class="interactive-term" data-term="Swing">Swing</span>, harmonische Spannung, Ensemble-Kommunikation und die Frage, wie Zeit im Jazz organisiert wird.</p>
+            <p>Die Jazz-Welten sind nicht nur Genre-Etiketten, sondern kompositorische Denkraeume. Sie helfen dabei, neue Musik ueber <span class="interactive-term" data-term="Phrasierung">Phrasierung</span>, <span class="interactive-term" data-term="Voicings">Voicings</span>, <span class="interactive-term" data-term="Groove">Groove</span>, <span class="interactive-term" data-term="Klangfarbe">Klangfarbe</span> und historische Haltung zu verstehen.</p>
+            <p>Aktuell integriert sind <span class="interactive-term" data-term="Bebop">Bebop</span> als urbane New Yorker Verdichtung, <span class="interactive-term" data-term="Modal Jazz">Modal Jazz</span> als Oeffnung von Harmonie in Richtung Raum, Dauer und melodischer Freiheit sowie <span class="interactive-term" data-term="Free Jazz">Free Jazz</span> als kollektive und klangliche Grenzverschiebung. Weitere Jazz-Welten koennen daran anschliessen, etwa <span class="interactive-term" data-term="Cool Jazz">Cool Jazz</span>, <span class="interactive-term" data-term="Hard Bop">Hard Bop</span> oder <span class="interactive-term" data-term="Fusion">Fusion</span>.</p>
+        </section>
+        `
+    },
+    bebop_club_new_york: {
+        id: 'bebop_club_new_york',
+        group: 'jazz_group',
+        name: 'Bebop Club New York',
+        icon: '🎷',
+        wikiContent: `
+        <header>
+            <h1>Bebop Club New York</h1>
+        </header>
+
+        <section>
+            <p><em>Zwischen 1940 und 1945 veraenderte sich in den nachthungrigen Kellern von Harlem und auf der 52nd Street in Manhattan das Schicksal der populaeren Musik. Was als informelle Jam Sessions begann, wurde zur radikalsten kuenstlerischen Revolution des 20. Jahrhunderts: der <span class="interactive-term" data-term="Bebop">Bebop</span>.</em></p>
+        </section>
+
+        <section>
+            <h2>Die Kamine der Revolution</h2>
+            <p>Der <span class="interactive-term" data-term="Bebop">Bebop</span> entstand nicht in Konzertsälen, sondern in drei Orten, die bis heute als mythische Schauplaetze der Jazzgeschichte gelten: <span class="interactive-term" data-term="Minton's Playhouse">Minton's Playhouse</span> in Harlem, <span class="interactive-term" data-term="Monroe's Uptown House">Monroe's Uptown House</span> und die legendaere <span class="interactive-term" data-term="52nd Street">52nd Street</span>, spaeter oft "Swing Street" genannt.</p>
+
+            <h3>Minton's Playhouse: Das Labor</h3>
+            <p>Henry Minton, Saxophonist und erster afroamerikanischer Delegierter der Musicians Union Local 802, eroeffnete 1938 im Cecil Hotel an der 210 West 118th Street einen Club, der Geschichte schreiben sollte. Ab 1940 engagierte er den ehemaligen Bandleader Teddy Hill als Manager. Hill wiederum holte <span class="interactive-term" data-term="Kenny Clarke">Kenny Clarke</span> als Hausedrummer, denselben Musiker, den er zuvor aus seiner Big Band entlassen hatte, weil dessen Spiel als zu unorthodox galt.</p>
+            <p>Clarke formte ein Quartett mit dem Pianisten <span class="interactive-term" data-term="Thelonious Monk">Thelonious Monk</span>, dem Bassisten Nick Fenton und dem Trompeter Joe Guy. Ihre Aufgabe war nicht bloss Unterhaltung, sondern Zuspitzung: frei spielen, harmonisch kuehn werden und musikalische Komplexitaet so weit treiben, dass nur wirklich vorbereitete Musiker bestehen konnten. In diesem Umfeld kursierten fruehe Fassungen von Stuecken wie <em>Epistrophy</em> und <em>Rhythm-A-Ning</em>.</p>
+
+            <h3>Monroe's Uptown House: Die ewige Nacht</h3>
+            <p>Waehrend Minton's in den fruehen Morgenstunden schloss, wurde <span class="interactive-term" data-term="Monroe's Uptown House">Monroe's Uptown House</span> an der 198 West 134th Street zum zweiten Brennpunkt. Clark Monroe betrieb den Club seit Mitte der 1930er Jahre; ab 1940 wurde er zur zweiten Heimat der Bebop-Pioniere. Die Hausband unter Al Tinney spielte bis in den Morgen hinein, fuer ein Publikum, das nicht mehr tanzen wollte, sondern hoeren musste.</p>
+
+            <h3>52nd Street: Von der Speakeasy zum Schrein</h3>
+            <p>Waehrend des Zweiten Weltkriegs verlagerte sich das Zentrum nach Midtown. Die <span class="interactive-term" data-term="52nd Street">52nd Street</span> zwischen Fifth und Seventh Avenue wurde zum Schaufenster des neuen Stils. Clubs wie das Onyx, das Three Deuces und Kelly's Stable boten Raum fuer kleine Combos. Hier trat <span class="interactive-term" data-term="Dizzy Gillespie">Dizzy Gillespie</span> auf, hier spielte <span class="interactive-term" data-term="Charlie Parker">Charlie Parker</span> praegende Sessions, und Monk komponierte das <em>52nd Street Theme</em> als klingendes Emblem dieser Strasse.</p>
+        </section>
+
+        <section>
+            <h2>Die Architekten des Sounds</h2>
+            <table class="w-full text-left text-sm border-collapse my-4">
+                <thead>
+                    <tr>
+                        <th class="p-2">Musiker</th>
+                        <th class="p-2">Instrument</th>
+                        <th class="p-2">Beitrag</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="p-2">Charlie Parker</td>
+                        <td class="p-2">Altsaxophon</td>
+                        <td class="p-2">Extrem verdichtete Linien, harmonische Beweglichkeit, Phrasierung ueber den Takt hinaus</td>
+                    </tr>
+                    <tr>
+                        <td class="p-2">Dizzy Gillespie</td>
+                        <td class="p-2">Trompete</td>
+                        <td class="p-2">Virtuositaet im Hochregister, kompositorische Klarheit, spaeter auch afrokubanische Erweiterungen</td>
+                    </tr>
+                    <tr>
+                        <td class="p-2">Thelonious Monk</td>
+                        <td class="p-2">Klavier</td>
+                        <td class="p-2">Dissonante Reibung, asymmetrische Melodik, eigensinnige Akkordlogik</td>
+                    </tr>
+                    <tr>
+                        <td class="p-2">Kenny Clarke</td>
+                        <td class="p-2">Schlagzeug</td>
+                        <td class="p-2">Praegung des <span class="interactive-term" data-term="Ride-Cymbal-Time">Ride-Cymbal-Time</span>, Befreiung der Bassdrum fuer Akzente</td>
+                    </tr>
+                    <tr>
+                        <td class="p-2">Bud Powell</td>
+                        <td class="p-2">Klavier</td>
+                        <td class="p-2">Uebersetzung des <span class="interactive-term" data-term="Bebop">Bebop</span>-Idioms auf das Klavier, rechte Hand als Blaslinien-Denken</td>
+                    </tr>
+                    <tr>
+                        <td class="p-2">Max Roach</td>
+                        <td class="p-2">Schlagzeug</td>
+                        <td class="p-2">Verfeinerung von Clarkes Konzept, melodisches und strukturelles Drumset-Spiel</td>
+                    </tr>
+                    <tr>
+                        <td class="p-2">Charlie Christian</td>
+                        <td class="p-2">Gitarre</td>
+                        <td class="p-2">Frueher Impulsgeber fuer lineares Solo-Denken auf der E-Gitarre</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>Die musikalische DNA</h2>
+            <p>Was unterscheidet <span class="interactive-term" data-term="Bebop">Bebop</span> vom <span class="interactive-term" data-term="Swing">Swing</span>? Die Unterschiede sind fundamental und betreffen nahezu jeden musikalischen Parameter.</p>
+
+            <h3>Tempo und Rhythmus</h3>
+            <p>Die neuen Stuecke wurden in brennenden Tempi gespielt, oft jenseits von 220 BPM. Paradoxerweise wurde die Musik mit wachsender Geschwindigkeit weniger tanzbar. Der <span class="interactive-term" data-term="Ride-Cymbal-Time">Ride-Cymbal-Time</span>, von Kenny Clarke etabliert und von <span class="interactive-term" data-term="Max Roach">Max Roach</span> weiterentwickelt, verlagerte die Zeitorganisation von der Bassdrum auf das Ride-Becken. Die linke Hand wurde frei fuer rhythmisches <span class="interactive-term" data-term="Comping">Comping</span>, waehrend die Bassdrum nicht mehr das Metrum markierte, sondern pointierte Akzente setzte, spaeter als "dropping bombs" beschrieben.</p>
+
+            <h3>Harmonik: Die ii-V-I-Sprache</h3>
+            <p>Waehrend der <span class="interactive-term" data-term="Swing">Swing</span> oft auf vergleichsweise direkten Songformen basierte, entwickelte der <span class="interactive-term" data-term="Bebop">Bebop</span> eine hochverdichtete harmonische Grammatik. Das <span class="interactive-term" data-term="ii-V-I">ii-V-I</span>-Schema wurde zur elementaren Phrase-Einheit, zugleich aber permanent erweitert durch Ersatzdominanten, <span class="interactive-term" data-term="Tritonus-Substitution">Tritonus-Substitutionen</span>, alterierte Dominanten und beschleunigte Akkordwechsel. In spaeteren Rueckblicken beschrieb Parker seine harmonische Entdeckung bei "Cherokee" als einen Moment, in dem sich obere Akkordintervalle ploetzlich in melodische Logik verwandelten.</p>
+
+            <h3>Melodik und Chromatik</h3>
+            <p><span class="interactive-term" data-term="Chromatische Annäherungen">Chromatische Annaeherungen</span> wurden zum Markenzeichen. Bebopper umspielten Zieltone von oben und unten, nutzten Durchgaenge, Umspielungen und <span class="interactive-term" data-term="Enclosure">Enclosures</span>. Die spaeter so genannten <span class="interactive-term" data-term="Bebop-Skalen">Bebop-Skalen</span> ermoeglichten es, Akkordtoene auf metrisch starken Zaehzeiten zu landen, ohne die Linie ihrer Beweglichkeit zu berauben.</p>
+
+            <h3>Der Bebop-Head</h3>
+            <p>Auch die Kompositionsform veraenderte sich. Statt ausgearbeiteter Big-Band-Arrangements dominierten extrem dichte Melodiekopfe, die sogenannten <span class="interactive-term" data-term="Bebop-Head">Bebop-Heads</span>. Viele davon waren <span class="interactive-term" data-term="Contrafact">Contrafacts</span>, also neue Melodien ueber bereits bekannte Harmoniefolgen, etwa ueber <span class="interactive-term" data-term="Rhythm Changes">Rhythm Changes</span>. So entstand eine Musik, die formal kompakt blieb und zugleich maximale Binnenkomplexitaet entfalten konnte.</p>
+
+            <h3>Der Walking Bass</h3>
+            <p>Der Kontrabass gewann in der Bebop-Rhythmusgruppe eine neue Rolle. Aus dem staerker perkussiven Slap-Bass frueherer Kontexte wurde der <span class="interactive-term" data-term="Walking Bass">Walking Bass</span>: vier fuehlbare Viertelnoten pro Takt, die nicht nur Puls geben, sondern den harmonischen Verlauf staendig mitzeichnen.</p>
+        </section>
+
+        <section>
+            <h2>Kunst fuer die Ohren: Die Aesthetik des Bebop</h2>
+            <ul>
+                <li><strong>Rassische Selbstbehauptung:</strong> In einer Zeit der Segregation beanspruchten Parker, Gillespie, Monk und ihre Mitstreiter den Status von Kuenstlern statt blossen Entertainern.</li>
+                <li><strong>Nachkriegsspannung:</strong> Die Nervositaet, Fragmentierung und Energie der Musik passte zu einer Epoche, in der Optimismus nicht mehr unschuldig klang.</li>
+                <li><strong>Neudefinition des Jazz:</strong> Waehren Rhythm and Blues und andere Formen die Tanzflaeche uebernahmen, definierte sich Jazz als Hoer- und Kunstmusik neu.</li>
+            </ul>
+            <p>Aus dieser Verschiebung entstand auch eine neue Haltung: nicht Gefaelligkeit, sondern Zuspitzung; nicht glatte Unterhaltung, sondern ein Vokabular, das Aufmerksamkeit, Wissen und Reaktionsschnelligkeit verlangte.</p>
+        </section>
+
+        <section>
+            <h2>Warum das bis heute wichtig ist</h2>
+            <ul>
+                <li>Das <span class="interactive-term" data-term="ii-V-I">ii-V-I</span>-Vokabular bleibt Grundsprache zahlloser Jazz-Ausbildungen.</li>
+                <li>Der <span class="interactive-term" data-term="Ride-Cymbal-Time">Ride-Cymbal-Time</span> praegt bis heute klassisches und modernes Jazz-Drumming.</li>
+                <li>Der <span class="interactive-term" data-term="Walking Bass">Walking Bass</span> definiert weiterhin eine zentrale Form jazziger Bewegung.</li>
+                <li><span class="interactive-term" data-term="Chromatische Annäherungen">Chromatische Annaeherungen</span> gehoeren bis heute zum Kern moderner Improvisation.</li>
+            </ul>
+            <p>Von <span class="interactive-term" data-term="Cool Jazz">Cool Jazz</span> ueber <span class="interactive-term" data-term="Hard Bop">Hard Bop</span>, <span class="interactive-term" data-term="Modal Jazz">Modal Jazz</span> und <span class="interactive-term" data-term="Post-Bop">Post-Bop</span> bis hin zu spaeteren Hip-Hop-Produktionen bleibt der <span class="interactive-term" data-term="Bebop">Bebop</span> die grammatische Tiefenstruktur des modernen Jazz.</p>
+        </section>
+
+        <section>
+            <h2>Suno-Keywords fuer die Kreativbibliothek</h2>
+            <p><strong>Atmosphaerische Tags:</strong> after-hours jazz, smoky basement club, Harlem 1943, blue note ambience, saxophone cries, brass stabs, ride cymbal shimmer, walking bass pulse, bebop heads, complex harmonies, angular melodies, dropping bombs, fast swing, dissonant, nervous energy, stoic cool</p>
+            <p><strong>Musikalische Parameter:</strong> Tempo 240-300 BPM, Saxophon-Lead, gedaempfte Trompete, akustisches Klavier, Kontrabass, Drumset mit Ride-Fokus, Extended Chords mit 9, 11, 13 und alterierten Dominanten.</p>
+            <p><strong>Referenzpunkte:</strong> Charlie Parker Dial sessions, Monk Blue Note years, Bud Powell Verve recordings, Dizzy Gillespie small groups, Ko-Ko, Anthropology, A Night in Tunisia, Tempus Fugit, Epistrophy.</p>
+        </section>
+
+        <section>
+            <h2>Quellen-Links</h2>
+            <ul>
+                <li><a href="https://maap.columbia.edu/mbl_place/57.html" target="_blank" rel="noopener noreferrer">Minton's Playhouse – Columbia University Mapping Project</a></li>
+                <li><a href="https://www.jazz88.org/articles/Bebop_1945-1950%3A_The_Bebop_Incubators%3A_Mintons_and_Monroes/1/" target="_blank" rel="noopener noreferrer">Bebop Incubators: Mintons and Monroes – Jazz 88.3</a></li>
+                <li><a href="https://jazzfuel.com/new-yorks-52nd-street/" target="_blank" rel="noopener noreferrer">New York's 52nd Street – Jazzfuel</a></li>
+                <li><a href="https://www.ohjazz.tv/mag/bebop-birth-of-modern-jazz" target="_blank" rel="noopener noreferrer">Bebop and the Birth of Modern Jazz – Oh! Jazz</a></li>
+                <li><a href="https://www.nationalww2museum.org/war/articles/modern-jazz-late-1940s" target="_blank" rel="noopener noreferrer">Jazz in the Late 1940s – National WWII Museum</a></li>
+                <li><a href="https://ae.zildjian.com/education/evolution-of-the-ride-pattern/evolution-of-the-ride-pattern-installment-7/" target="_blank" rel="noopener noreferrer">Evolution of the Ride Pattern – Kenny Clarke</a></li>
+                <li><a href="https://www.wtju.net/jazz-at-100-hour-27-un-poco-loco-the-intensity-of-bud-powell/" target="_blank" rel="noopener noreferrer">Bud Powell Analysis – WTJU</a></li>
+                <li><a href="https://en.wikipedia.org/wiki/Tempus_Fugit" target="_blank" rel="noopener noreferrer">Tempus Fugit – Referenz zum Repertoirebegriff</a></li>
+            </ul>
+        </section>
+        `
+    },
+    modal_jazz_explorations: {
+        id: 'modal_jazz_explorations',
+        group: 'jazz_group',
+        name: 'Modal Jazz Explorations',
+        icon: '🎹',
+        wikiContent: `
+        <header>
+            <h1>Modal Jazz Explorations</h1>
+            <p>Eine fundierte Klangreise durch die Aera der melodischen Freiheit.</p>
+        </header>
+
+        <section>
+            <p>Es gibt Schallplatten, die klingen, als haette jemand die Zeit angehalten. <em>Kind of Blue</em> von Miles Davis ist eine davon. Was 1959 in einem New Yorker Studio entstand, war mehr als ein Album: Es war eine <span class="interactive-term" data-term="Stilistische Revolution" title="Eine Revolution in der Jazz-Harmonielehre, die Moden statt Akkordwechsel in den Mittelpunkt stellte.">stilistische Revolution</span>, die das Verhaeltnis von Melodie, Harmonie und Raum fundamental veraenderte. Doch die Geschichte des modalen Jazz beginnt nicht mit einem einzigen Mann, nicht einmal mit einem einzigen Jahrzehnt. Sie entspringt dem beharrlichen Fragen eines Komponisten aus Cincinnati und muendet in eine Weltsprache, die bis heute in Film, Ambient und elektronischer Musik nachhallt.</p>
+        </section>
+
+        <section>
+            <h2>Was ist modaler Jazz?</h2>
+            <p><span class="interactive-term" data-term="Modaler Jazz" title="Ein musikalisches Konzept, bei dem statt wechselnder Akkorde einzelne Tonarten oder Skalen ueber laengere Zeitabschnitte improvisatorisch erkundet werden.">Modaler Jazz</span> existiert dort, wo die Rhythmusgruppe eine einzige Harmonie oder ein eng begrenztes harmonisches Feld ueber laengere Zeit traegt, waehrend die Solisten auf einer damit verbundenen <span class="interactive-term" data-term="Mode" title="Eine der sieben Skalen, die aus einer diatonischen Tonleiter abgeleitet werden, etwa Dorisch, Lydisch oder Mixolydisch.">Mode</span> improvisieren. Die beiden entscheidenden Faktoren sind statische Harmonie und modale Improvisation.</p>
+            <p>Im Unterschied dazu waren Bebop und Hard Bop weitgehend auf <span class="interactive-term" data-term="II-V-I-Progressionen" title="Akkordfolgen wie II-V-I, die eine klare Aufloesungstonart anstreben und ein starkes Gefuehl harmonischer Bewegung erzeugen.">II-V-I-Progressionen</span> und haeufige Harmoniewechsel ausgerichtet. Modaler Jazz gibt dieses Dauer-Vorwaerts zugunsten einzelner Klangfelder auf. Der Improvisator denkt nicht primaer in Akkordtoenen pro Takt, sondern in Skalenraeumen, die fuer laengere Boegen, motivische Entwicklung und ein anderes Zeitgefuehl offen sind.</p>
+            <blockquote>
+                <p>Was ich ueber die modale Form gelernt habe, ist: Wenn man so spielt, kann man ewig weitermachen. Man muss sich keine Sorgen um Akkordwechsel machen. Man kann mehr mit der melodischen Linie machen. Die Herausforderung ist zu sehen, wie einfallsreich man melodisch sein kann.</p>
+                <cite>Miles Davis, zitiert nach John Szwed, <em>So What: The Life of Miles Davis</em></cite>
+            </blockquote>
+            <p>Statische Harmonie ist dabei nicht Selbstzweck. Sie ist, wie mehrere musikwissenschaftliche Darstellungen betonen, ein Mittel zur melodischen Freiheit. Die scheinbare Reduktion im harmonischen Material erweitert die Freiheit in Phrasierung, Register, Spannung und Langform.</p>
+        </section>
+
+        <section>
+            <h2>Der Architekt: George Russell und das Lydian Chromatic Concept</h2>
+            <p>Die intellektuelle Grundlage des modalen Jazz stammt von <span class="interactive-term" data-term="George Russell" title="Amerikanischer Komponist und Musiktheoretiker (1923-2009), dessen Lydian Chromatic Concept die Jazztheorie nachhaltig veraenderte.">George Russell</span>. Sein 1953 veroeffentlichtes Buch <em>The Lydian Chromatic Concept of Tonal Organization</em> war ein genuiner Beitrag aus dem Jazz zur Musiktheorie und stellte eine radikale Erweiterung der harmonischen Sprache dar. Russell suchte nach einer Skala, die den Klang eines Akkords vollkommen einfangen konnte, ohne sofort ein funktionales Aufloesungsbeduerfnis zu erzeugen.</p>
+            <p>Die Antwort war die <span class="interactive-term" data-term="Lydische Skala" title="Die vierte Mode der Dur-Tonleiter; sie unterscheidet sich von der normalen Dur-Skala durch eine erhoehte Quarte und erzeugt einen offenen, schwebenden Klang.">lydische Skala</span>. Im Unterschied zur ionischen Dur-Skala schien sie fuer Russell den Tonika-Dreiklang nicht bloss zu umkreisen, sondern aus dessen eigener Schwerkraft zu sprechen. Die erhoehte Quarte wurde nicht als Stoerung, sondern als Lichtquelle gehoert.</p>
+            <p>Davis und Russell standen in engem Austausch. Russell erinnerte spaeter mehrere Treffen, in denen Miles nach einer neuen Beziehung zu Akkorden suchte. In dieser Perspektive wurde das <em>Concept</em> zu einer objektiven Erklaerung fuer die Einheit von Akkord und Skala und damit zu einem theoretischen Wegbereiter fuer den modalen Ansatz von Miles Davis und John Coltrane.</p>
+        </section>
+
+        <section>
+            <h2>Die Offenbarung: Miles Davis und <em>Kind of Blue</em></h2>
+            <p>Als Miles Davis 1959 <em>Kind of Blue</em> aufnahm, lag bereits ein Weg hinter ihm. Fruehe <span class="interactive-term" data-term="Pedalpunkte" title="Wiederholte oder gehaltene Bassnoten, die als harmonischer Fixpunkt unter wechselnden Klaengen fungieren und Statik erzeugen.">Pedalpunkte</span> in Aufnahmen der 1950er deuteten die Idee statischer Harmonie an. Ein entscheidender Erfahrungsraum war auch die improvisierte Filmmusik zu <em>L'Ascenseur pour l'Échafaud</em>, in der Davis entdeckte, wie stark Musik ohne dichte formale und harmonische Vorgaben ueber Tonzentren, Farbe und Zeit funktionieren kann.</p>
+            <p>Mit <em>Milestones</em> von 1958 entstand dann der erste voll ausgeformte modale Titel seines Umfelds. Ein Jahr spaeter verdichtete <em>Kind of Blue</em> diesen Ansatz zur Kanonform. Auf <em>So What</em> tragen nur zwei harmonische Felder ein ganzes Stueck. Der beruehmte <span class="interactive-term" data-term="So-What-Akkord" title="Ein durch Bill Evans geformtes modales Voicing, das eng mit So What und der Klangidee des Modal Jazz verbunden ist.">So-What-Akkord</span>, gespielt von Bill Evans, wurde zu einem der meistzitierten Klavierkloenge der Jazzgeschichte und verkoerpert das Prinzip der <span class="interactive-term" data-term="Quartalharmonik" title="Akkorde, die aus uebereinandergeschichteten Quarten statt aus Terzen aufgebaut sind und dadurch einen offenen, schwebenden Klang erzeugen.">Quartalharmonik</span>.</p>
+        </section>
+
+        <section>
+            <h2>Die Architekten des Klangs</h2>
+            <table class="w-full text-left text-sm border-collapse my-4">
+                <thead>
+                    <tr>
+                        <th class="p-2">Musiker</th>
+                        <th class="p-2">Instrument</th>
+                        <th class="p-2">Beitrag zum modalen Jazz</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="p-2"><strong>Miles Davis</strong></td>
+                        <td class="p-2">Trompete</td>
+                        <td class="p-2">Pionier von <em>Kind of Blue</em>; minimalistische, raumorientierte Phrasierung; Modalitaet als strukturelle Oeffnung</td>
+                    </tr>
+                    <tr>
+                        <td class="p-2"><strong>John Coltrane</strong></td>
+                        <td class="p-2">Saxophon</td>
+                        <td class="p-2">Ausdehnung modaler Formen auf Langstrecke; <em>Impressions</em>, spaeter <em>A Love Supreme</em>; Verbindung von Intensitaet und Trance</td>
+                    </tr>
+                    <tr>
+                        <td class="p-2"><strong>Bill Evans</strong></td>
+                        <td class="p-2">Klavier</td>
+                        <td class="p-2">Praegende Voicings, impressionistische Klanglogik, entscheidende Formung der Aesthetik von <em>Kind of Blue</em></td>
+                    </tr>
+                    <tr>
+                        <td class="p-2"><strong>Herbie Hancock</strong></td>
+                        <td class="p-2">Klavier</td>
+                        <td class="p-2">Weiterentwicklung quartaler und offener Harmonik; <em>Maiden Voyage</em> als modaler Standard</td>
+                    </tr>
+                    <tr>
+                        <td class="p-2"><strong>McCoy Tyner</strong></td>
+                        <td class="p-2">Klavier</td>
+                        <td class="p-2">Perkussive Kraft, oktavgespreizte Linke, massive Quartalharmonik im Coltrane Quartet</td>
+                    </tr>
+                    <tr>
+                        <td class="p-2"><strong>George Russell</strong></td>
+                        <td class="p-2">Komponist / Theoretiker</td>
+                        <td class="p-2">Schuf mit dem Lydian Chromatic Concept das theoretische Fundament</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>Bill Evans brachte eine Klangethik der Luft und des Schwebens ein. Seine <span class="interactive-term" data-term="Quartal-Voicings" title="Akkordvoicings aus uebereinandergeschichteten Quarten, die einen offenen und weniger funktionalen Klang erzeugen.">Quartal-Voicings</span> und seine impressionistisch gefaerbte Artikulation machten das Klavier im modalen Kontext zu einem Raumgenerator statt bloss zu einem Akkordlieferanten. John Coltrane wiederum zeigte, dass modale Umgebungen nicht weniger virtuos sind als Bebop-Kontexte, sondern anders virtuos: Langform-Kohärenz, motivische Verdichtung und ein Spiel, das in Wellen statt bloss in Taktsegmenten denkt.</p>
+        </section>
+
+        <section>
+            <h2>Das modale Universum: Skalen und ihre Charaktere</h2>
+            <p>Die Modi der diatonischen Skala bilden das Grundgeruest des modalen Jazz. Jeder Modus besitzt eine eigene emotionale Signatur.</p>
+            <table class="w-full text-left text-sm border-collapse my-4">
+                <thead>
+                    <tr>
+                        <th class="p-2">Mode</th>
+                        <th class="p-2">Intervallstruktur</th>
+                        <th class="p-2">Klangcharakter</th>
+                        <th class="p-2">Typische Verwendung</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="p-2"><strong>Dorisch</strong></td>
+                        <td class="p-2">Ganz-Halb-Ganz-Ganz-Ganz-Halb-Ganz</td>
+                        <td class="p-2">Moll mit grosser Sexte; melancholisch, aber nicht hoffnungslos</td>
+                        <td class="p-2">Minor-7-Klaenge, Blues-Naehe, schwebende Atmosphaere</td>
+                    </tr>
+                    <tr>
+                        <td class="p-2"><strong>Phrygisch</strong></td>
+                        <td class="p-2">Halb-Ganz-Ganz-Ganz-Halb-Ganz-Ganz</td>
+                        <td class="p-2">Dunkel, fremd, spannungsgeladen</td>
+                        <td class="p-2">Mysterioese oder spanisch / oestlich gefaerbte Passagen</td>
+                    </tr>
+                    <tr>
+                        <td class="p-2"><strong>Lydisch</strong></td>
+                        <td class="p-2">Ganz-Ganz-Ganz-Halb-Ganz-Ganz-Halb</td>
+                        <td class="p-2">Luftig, traumartig, licht</td>
+                        <td class="p-2">Major-7-Klaenge, offene und himmlische Felder</td>
+                    </tr>
+                    <tr>
+                        <td class="p-2"><strong>Mixolydisch</strong></td>
+                        <td class="p-2">Ganz-Ganz-Halb-Ganz-Ganz-Ganz-Halb</td>
+                        <td class="p-2">Dominant, bluesig, groove-orientiert</td>
+                        <td class="p-2">Dominant-7-Klaenge, Groove-Jazz, Funk-Nahe</td>
+                    </tr>
+                    <tr>
+                        <td class="p-2"><strong>Aeolisch</strong></td>
+                        <td class="p-2">Ganz-Halb-Ganz-Ganz-Halb-Ganz-Ganz</td>
+                        <td class="p-2">Natuerliches Moll, ernst und klassisch gefaerbt</td>
+                        <td class="p-2">Moll-Felder ohne dorische Aufhellung</td>
+                    </tr>
+                    <tr>
+                        <td class="p-2"><strong>Lokrisch</strong></td>
+                        <td class="p-2">Halb-Ganz-Ganz-Halb-Ganz-Ganz-Ganz</td>
+                        <td class="p-2">Instabil, spröde, stark dissonant</td>
+                        <td class="p-2">Eher fuer Randfaelle und avantgardistische Spannung</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>Die <span class="interactive-term" data-term="Quartalharmonik" title="Ein Harmoniesystem, bei dem Akkorde aus Quarten statt Terzen aufgebaut werden.">Quartalharmonik</span>, der <span class="interactive-term" data-term="Pedalpunkt" title="Eine wiederholte oder gehaltene Bassnote, die als harmonischer Fixpunkt dient, waehrend darueber melodische und harmonische Exploration stattfindet.">Pedalpunkt</span> und <span class="interactive-term" data-term="Offene Voicings" title="Akkordvoicings, die Toene auslassen oder weit auseinanderziehen, um einen offenen Klang zu erzeugen.">offene Voicings</span> definieren die Klangarchitektur dieses Feldes. Raum und Stille sind dabei keine Leerstellen, sondern vollwertige kompositorische Elemente.</p>
+        </section>
+
+        <section>
+            <h2>Bruch mit dem Bebop, ohne Verzicht auf Virtuositaet</h2>
+            <table class="w-full text-left text-sm border-collapse my-4">
+                <thead>
+                    <tr>
+                        <th class="p-2">Aspekt</th>
+                        <th class="p-2">Bebop</th>
+                        <th class="p-2">Modaler Jazz</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="p-2"><strong>Harmonische Struktur</strong></td>
+                        <td class="p-2">Rasche Akkordwechsel, verdichtete Progressionen</td>
+                        <td class="p-2">Statische oder stark reduzierte Harmonie ueber laengere Zeit</td>
+                    </tr>
+                    <tr>
+                        <td class="p-2"><strong>Improvisationsansatz</strong></td>
+                        <td class="p-2">Chord-by-Chord-Denken</td>
+                        <td class="p-2">Skalen- und Felddenken</td>
+                    </tr>
+                    <tr>
+                        <td class="p-2"><strong>Melodische Entwicklung</strong></td>
+                        <td class="p-2">Arpeggien, Akkordtoene, schnelle Linien</td>
+                        <td class="p-2">Motivische Entwicklung, lange Boegen, modale Farbexploration</td>
+                    </tr>
+                    <tr>
+                        <td class="p-2"><strong>Virtuositaet</strong></td>
+                        <td class="p-2">Technische Brillanz ueber Changes</td>
+                        <td class="p-2">Erfindungskraft, Formbewusstsein, Kontrolle ueber Dauer und Farbe</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>Modaler Jazz ist nicht die Vereinfachung des Bebop, sondern dessen Umgewichtung. Die Virtuositaet verschiebt sich vom Navigieren dichter Changes zur Faehigkeit, ueber lange Strecken melodisch einfallsreich, rhythmisch spannend und formal ueberzeugend zu bleiben.</p>
+        </section>
+
+        <section>
+            <h2>Nachhall bis heute</h2>
+            <p>Die Aesthetik des modalen Jazz lebt in vielen spaeteren Feldern weiter: im <span class="interactive-term" data-term="Post-Bop">Post-Bop</span>, in der ECM-Klangkultur, in spirituell geoeffneten Langformen, in Film und Ambient. Gerade die Verbindung von offenem Zeitgefuehl, statischer Harmonie und fein modellierter Klangfarbe machte den Stil anschlussfaehig fuer spaetere Musik, die weniger an Funktionsharmonik als an Zustand, Raum und Textur interessiert ist.</p>
+            <p>Von Miles Davis' spaeteren elektrischen Arbeiten ueber Brian Enos Bezugnahmen bis hin zu gegenwaertigen Jazz- und Crossover-Szenen bleibt die modale Denkweise ein Werkzeug fuer Musik, die nicht bloss Akkorde abarbeitet, sondern Atmosphaeren bewohnt.</p>
+        </section>
+
+        <section>
+            <h2>Die Klangessenz fuer Suno</h2>
+            <ul>
+                <li><strong>Modale Klarheit:</strong> Eine spezifische Mode waehlen und ueber laengere Passagen halten, statt staendig funktional umzuschalten.</li>
+                <li><strong>Raum als Material:</strong> Offenheit, Pausen, schwebende Dauer und geringe harmonische Dichte explizit benennen.</li>
+                <li><strong>Quartalharmonik:</strong> Begriffe wie quartal voicings, open chords oder suspended harmony liefern den richtigen Schwebezustand.</li>
+                <li><strong>Melodischer Impuls:</strong> Eher singing phrases, motivic development und modal improvisation als bloss virtuoso jazz solo.</li>
+            </ul>
+            <p><strong>Beispiel:</strong> <em>A contemplative jazz piece in D Dorian, featuring a sustained bass pedal point, quartal piano voicings, and a melodic trumpet line with long singing phrases, influenced by Kind of Blue-era Miles Davis, with space and silence as compositional elements.</em></p>
+        </section>
+
+        <section>
+            <h2>Suno-Keywords</h2>
+            <p>Modal Jazz, Kind of Blue, Dorian Mode, Mixolydian, Lydian Scale, Quartal Harmony, Pedal Point, Open Voicings, Space and Silence, Miles Davis Style, Bill Evans Piano, Coltrane Influence, So What Chord, Melodic Freedom, Static Harmony, Modal Improvisation, ECM Sound, Ambient Jazz, Brushed Drums, Late Night Jazz Club.</p>
+        </section>
+
+        <section>
+            <h2>Typische Klangsignaturen</h2>
+            <ul>
+                <li><strong>Muted Trumpet:</strong> Gedaempfte Trompete mit langen, sparsamen Phrasen</li>
+                <li><strong>Soft Piano:</strong> Impressionistisch schwebende Akkorde mit Pedalpunkt-Gefuehl</li>
+                <li><strong>Brushed Snare:</strong> Besen auf der Snare fuer eine weiche Textur</li>
+                <li><strong>Upright Bass:</strong> Kontrabass mit langen Notenwerten und wenig hektischer Aktivitaet</li>
+                <li><strong>Tenor Sax Warmth:</strong> Warmer Tenorsaxophon-Ton ueber statischer Harmonie</li>
+                <li><strong>Room Ambience:</strong> Ein Raumklang, der Luft, Tiefe und Zurueckhaltung suggeriert</li>
+                <li><strong>Sustained Notes:</strong> Gehaltene Toene als harmonische Fixpunkte</li>
+                <li><strong>Sparse Arrangement:</strong> Wenige Instrumente, viel Luft dazwischen</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Quellen und weiterfuehrende Literatur</h2>
+            <ul>
+                <li><a href="https://ojs.lib.uwo.ca/index.php/notabene/article/view/6559" target="_blank" rel="noopener noreferrer">Myles Boothroyd: Modal Jazz and Miles Davis</a></li>
+                <li><a href="https://georgerussell.com/lc.html" target="_blank" rel="noopener noreferrer">George Russell: The Lydian Chromatic Concept of Tonal Organization</a></li>
+                <li><a href="https://downbeat.com/microsites/prestige/trane-interview.html" target="_blank" rel="noopener noreferrer">John Coltrane im Downbeat-Interview, 29. September 1960</a></li>
+                <li><a href="https://jazzprofiles.blogspot.com/2022/02/bill-evans-ralph-j-gleason-interview.html" target="_blank" rel="noopener noreferrer">Bill Evans Interview mit Ralph J. Gleason</a></li>
+                <li><a href="https://pitchfork.com/features/article/ambient-jazz-pharoah-sanders-floating-points-nala-sinephro" target="_blank" rel="noopener noreferrer">Pitchfork: Ambient Jazz's Quiet, Forceful Return</a></li>
+                <li><a href="https://tokion.jp/en/2020/09/30/miles-davis-influence-on-japanese-ambient-music/" target="_blank" rel="noopener noreferrer">Tokion: Miles Davis' Influence on Japanese Ambient Music</a></li>
+                <li><a href="https://fiveable.me/music-of-the-modern-era/unit-2/modal-jazz/study-guide/wljYkHiPom1sTCpi" target="_blank" rel="noopener noreferrer">Fiveable: Modal Jazz Study Guide</a></li>
+                <li><a href="https://contemporaryschoolofpiano.com/jazz_piano_tips_quartal_voicings" target="_blank" rel="noopener noreferrer">London Contemporary School of Piano: Quartal Voicings</a></li>
+                <li><a href="https://www.guitarmasterclass.net/ls/Quartal-Harmony-The-Dorian-Mode/" target="_blank" rel="noopener noreferrer">Guitar Master Class: Quartal Harmony and the Dorian Mode</a></li>
+            </ul>
+        </section>
+        `
+    },
+    free_jazz_experiment: {
+        id: 'free_jazz_experiment',
+        group: 'jazz_group',
+        name: 'Free Jazz Experiment',
+        icon: '🎷',
+        wikiContent: `
+        <header>
+            <h1>Free Jazz Experiment: Anarchie als Kunstprinzip</h1>
+            <p>Wenn Musik die Regeln nicht ignoriert, sondern durch neue Formen von Freiheit ersetzt.</p>
+        </header>
+
+        <section>
+            <p><strong>Stell dir vor:</strong> Du stehst 1960 im Five Spot Cafe in New York City. Auf der Bühne steht ein Quartett. Der Pianist hämmert mit Ellbogen und Unterarmen in die Tasten. Der Saxophonist spielt Melodien, die wie schreiende Gebete klingen. Der Bassist zieht den Bogen über die Saiten, bis Holz, Metall und Luft zugleich zu sprechen scheinen. Und der Schlagzeuger? Er trommelt nicht einfach im Takt, sondern zerlegt ihn in Partikel.</p>
+            <p>Dies ist kein Chaos. Dies ist <span class="interactive-term" data-term="Free Jazz">Free Jazz</span>: eine der radikalsten Umwälzungen in der Geschichte der westlichen Musik. Eine Revolte gegen Harmonie-Schablonen, gegen europäische Ästhetiknormen, gegen die Kommerzialisierung schwarzen amerikanischen Ausdrucks. Eine Musik, die bewusst riskiert, rau, brüchig und hässlich zu klingen, um wahr zu sein.</p>
+        </section>
+
+        <section>
+            <h2>Was Free Jazz tatsächlich meint</h2>
+            <p>Der Begriff selbst ist problematisch. Ornette Colemans Album <em>Free Jazz: A Collective Improvisation</em> von 1960 gab der Strömung ihren Namen, doch es war nie nur eine Sache. Free Jazz ist eher ein Spektrum von Praktiken, die eines gemeinsam haben: die Weigerung, sich auf vorgefertigte harmonische Fahrpläne zu verlassen.</p>
+            <table class="w-full text-left text-sm border-collapse my-4">
+                <thead>
+                    <tr>
+                        <th class="p-2">Begriff</th>
+                        <th class="p-2">Kernmerkmal</th>
+                        <th class="p-2">Vertreter</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="p-2"><strong>Free Jazz</strong></td>
+                        <td class="p-2">Loest <span class="interactive-term" data-term="Akkordwechsel">Akkordwechsel</span> auf, behaelt aber oft bluesige oder afro-diasporische Phrasierung und emotionale Direktheit</td>
+                        <td class="p-2">Coleman, Ayler, Shepp</td>
+                    </tr>
+                    <tr>
+                        <td class="p-2"><strong>Avantgarde Jazz</strong></td>
+                        <td class="p-2">Oberbegriff fuer experimentelle Jazzformen, oft strukturell komplexer und teilweise staerker von europäischer Moderne beeinflusst</td>
+                        <td class="p-2">Taylor, Braxton, AACM</td>
+                    </tr>
+                    <tr>
+                        <td class="p-2"><strong>Freie Improvisation</strong></td>
+                        <td class="p-2">Verzicht auf fast jede Vorababsprache, oft geraeuschorientiert und nicht notwendig an Jazz idiomatisch gebunden</td>
+                        <td class="p-2">Derek Bailey, Evan Parker, AMM</td>
+                    </tr>
+                </tbody>
+            </table>
+            <blockquote>
+                <p>In der freien Musik gibt es keine Fehler, nur Gelegenheiten.</p>
+                <cite>Cecil Taylor, zugeschrieben in spaeteren Rueckblicken auf seine Aesthetik</cite>
+            </blockquote>
+            <p>Wichtig ist: Free Jazz ist nicht einfach alles durcheinander. Es ist eine neue Art von Organisation, getragen von <span class="interactive-term" data-term="Kollektive Improvisation">kollektiver Improvisation</span>, intuitivem Zuhören und einem hochentwickelten Gespuer fuer Form, Dichte und Interaktion.</p>
+        </section>
+
+        <section>
+            <h2>Die Pioniere</h2>
+            <h3>Ornette Coleman: Der Systembrecher</h3>
+            <p>Coleman eliminierte in entscheidenden Aufnahmen die Bindung an funktionale Harmonie. Seine Theorie der <span class="interactive-term" data-term="Harmolodics">Harmolodics</span> postulierte, dass Tonhoehe, Rhythmus und Harmonie gleichberechtigt koexistieren koennen. <em>The Shape of Jazz to Come</em> wirkte wie eine Kriegserklaerung an orthodoxe Jazzbegriffe: melodisch volksliedhaft, rhythmisch offen, harmonisch nicht mehr an den alten Plan gebunden. Charlie Haden und Don Cherry wurden zu zentralen Mit-Erfindern dieser Sprache.</p>
+
+            <h3>Cecil Taylor: Der pianistische Sturm</h3>
+            <p>Taylor behandelte das Klavier als Perkussions-Orchester. Seine <span class="interactive-term" data-term="Erweiterte Spieltechniken">erweiterten Spieltechniken</span> umfassten Cluster, massive Verdichtungen und eine beinahe choreographische Nutzung der gesamten Tastatur. Komposition und Improvisation verschmolzen bei ihm zu einem Akt kontrollierter Explosion. Mit Jimmy Lyons und Sunny Murray formte er eine Aesthetik extremer <span class="interactive-term" data-term="Dynamik">Dynamik</span>, in der Fluestertexturen und Klangmassen gleichwertig wurden.</p>
+
+            <h3>Albert Ayler: Der spirituelle Schrei</h3>
+            <p>Aylers Musik verband Spirituals, Marschmusik, Blues-Reminiszenzen und freie Kollektivenergie. Seine Linien arbeiteten mit <span class="interactive-term" data-term="Registersprünge">Registersprüngen</span>, rauen Obertönen und einer bewussten Ueberdehnung des Schoenklangs. Aufnahmen wie <em>Spirits Rejoice</em> zeigen Free Jazz als Ekstase, nicht als akademische Uebung.</p>
+
+            <h3>Sun Ra: Der kosmische Architekt</h3>
+            <p>Sun Ras <span class="interactive-term" data-term="Arkestra">Arkestra</span> verband Free Jazz, Big-Band-Erbe, afrofuturistische Mythologie, Percussion, Chants und fruehe Elektronik. Seine Idee von Musik als Vehikel fuer schwarze Befreiung und kosmisches Bewusstsein verschob Free Jazz aus dem Clubkontext in ein eigenes Universum.</p>
+
+            <h3>Archie Shepp: Der politische Poet</h3>
+            <p>Shepp verband freie Formen mit der Sprache von Black Power, Theater, Poesie und historischer Erinnerung. Aufnahmen wie <em>Fire Music</em> und <em>The Magic of Ju-Ju</em> zeigen, dass Free Jazz auch ein explizit politisches Sprechen sein konnte.</p>
+        </section>
+
+        <section>
+            <h2>Die AACM und kollektive Intelligenz</h2>
+            <p>Die <span class="interactive-term" data-term="AACM">Association for the Advancement of Creative Musicians</span>, gegruendet 1965 in Chicago, veraenderte nicht nur den Sound, sondern auch die soziale Organisation experimenteller Musik. Komposition, Improvisation, Multi-Instrumentalismus, Bildungsarbeit und Gemeinschaftsbezug wurden zusammengedacht.</p>
+            <ul>
+                <li><strong>Kollektive Komposition:</strong> Nicht nur einzelne Leader, sondern geteilte Autorenschaft.</li>
+                <li><strong>Multi-Instrumentalismus:</strong> Erweiterung des Klangvokabulars durch flexible Besetzungen.</li>
+                <li><strong>Pädagogik:</strong> Workshops, Community-Arbeit und Nachwuchsförderung als integraler Teil.</li>
+                <li><strong>Great Black Music:</strong> Afro-diasporische Traditionen als Kontinuum statt als getrennte Genres.</li>
+            </ul>
+            <p>Das <span class="interactive-term" data-term="Art Ensemble of Chicago">Art Ensemble of Chicago</span> wurde zum bekanntesten Ausdruck dieser Haltung. Ihre Musik bewegte sich zwischen Stille, Lärm, Ritual, Theater und feinster Miniaturarbeit.</p>
+        </section>
+
+        <section>
+            <h2>Europäische Antworten</h2>
+            <p>Waehren amerikanischer Free Jazz haeufig politisch, spirituell und bluesnah blieb, entwickelte sich in Europa ab den spaeten 1960ern eine staerker abstrahierte Form freier Improvisation. In Grossbritannien arbeiteten <span class="interactive-term" data-term="Derek Bailey">Derek Bailey</span>, <span class="interactive-term" data-term="Evan Parker">Evan Parker</span> und <span class="interactive-term" data-term="AMM">AMM</span> mit Unvorhersehbarkeit, Geraeusch und anti-idiomatischem Spiel. In Deutschland brachten Peter Broetzmann und das Globe Unity Orchestra eine hochenergetische, raue Kollektivaesthetik hervor. In den Niederlanden wurde das Spiel dadaistisch, humorvoll und bewusst anti-feierlich.</p>
+        </section>
+
+        <section>
+            <h2>Klangparameter des Experiments</h2>
+            <ul>
+                <li><strong>Dichte:</strong> Wie viele Informationen gleichzeitig auftreten und wie sie sich schichten.</li>
+                <li><strong>Reibung:</strong> <span class="interactive-term" data-term="Dissonanz">Dissonanz</span> als Zielzustand, nicht als Fehler.</li>
+                <li><strong>Registersprünge:</strong> Extreme Lagen und abrupte Spruenge als Ausdrucksmittel.</li>
+                <li><strong>Atem:</strong> Die physische Präsenz des Spielers wird hörbar, inklusive Luft, Anstrengung und Ansatzgeraeusch.</li>
+                <li><strong>Geräusch:</strong> Grenzen zwischen Ton und <span class="interactive-term" data-term="Noise">Noise</span> werden aufgeloest.</li>
+                <li><strong>Unvorhersehbarkeit:</strong> Form entsteht im Vollzug statt aus einem vorab fixierten Schema.</li>
+                <li><strong>Interaktion:</strong> Das Ensemble agiert als Super-Organismus mit hochsensibler Echtzeitreaktion.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Politische Dimension</h2>
+            <p>Free Jazz entstand nicht im Vakuum. Die Musik reagierte auf rassistische Strukturen des Musikmarktes, auf die Buergerrechtsbewegung, auf antikoloniale Fragen und auf den Vietnamkrieg. Fuer viele Musiker war Freiheit kein rein aisthetischer Begriff, sondern ein kultureller und sozialer Widerstand.</p>
+            <blockquote>
+                <p>Freiheit bedeutet nicht, dass man tun kann, was man will. Freiheit heisst, dass man tun muss, was man muss.</p>
+                <cite>Archie Shepp, in spaeteren Interviews zur politischen Funktion seiner Musik</cite>
+            </blockquote>
+            <p>Gleichzeitig waere eine Reduktion auf Protestmusik zu eng. Viele Protagonisten betonten die transzendente, kosmische oder spirituelle Dimension ihrer Arbeit. Free Jazz ist Widerstand und Ueberschreitung zugleich.</p>
+        </section>
+
+        <section>
+            <h2>Nicht Chaos, sondern neue Ordnung</h2>
+            <ul>
+                <li><strong>Flexible Form:</strong> Skizzen, Signale und Rahmen ersetzen starre Partituren.</li>
+                <li><strong>Zeitgefühl:</strong> Zeit wird organisch, atmend, verdichtet oder gedehnt statt nur metrisch gezählt.</li>
+                <li><strong>Räumliche Organisation:</strong> Wer wann spielt, in welchem Register und mit welcher Funktion, wird im Moment verhandelt.</li>
+                <li><strong>Emotionale Dramaturgie:</strong> Aufbau, Entladung, Spannung und Ruhe existieren weiterhin, aber nicht mehr primär ueber Akkordfolgen.</li>
+            </ul>
+            <p>Gutes Free-Jazz-Ensemble-Spiel ist keine Formlosigkeit, sondern eine telepathische Demokratie: hohes Risiko, hohe Aufmerksamkeit, hohe Gegenwart.</p>
+        </section>
+
+        <section>
+            <h2>Erbe und Relevanz</h2>
+            <p>Die Techniken und Philosophien des Free Jazz wirken bis heute in <span class="interactive-term" data-term="Elektronische Musik">elektronischer Musik</span>, Noise, Drone, zeitgenoessischer Klassik, Hip-Hop-Sampling, Post-Rock, Metal und experimentellen Szenen nach. Auch in der Jazz-Ausbildung ist freie Improvisation inzwischen kein Randthema mehr, sondern eine Grundkompetenz.</p>
+        </section>
+
+        <section>
+            <h2>Suno-Keywords</h2>
+            <p>Free Jazz, Avantgarde Jazz, Collective Improvisation, Atonal, Polyphonic Texture, Extended Techniques, No Chords, Open Form, Energy Music, Alto Sax, Tenor Screams, Prepared Piano, Arco Bass, Polyrhythmic Drums, Clarinet Clusters, Trumpet Smears, Raw, Unpolished, Cathartic, Spiritually Intense, Acoustic Noise, Human Imperfection.</p>
+        </section>
+
+        <section>
+            <h2>Klangprinzipien</h2>
+            <ul>
+                <li><strong>Keine Wiederholungsmuster als Pflicht:</strong> Spannung entsteht durch Richtungswechsel und emergente Form.</li>
+                <li><strong>Plötzliche Dynamiksprünge:</strong> Von fast lautlos zu eruptiv in Sekunden.</li>
+                <li><strong>Kollektivsoli:</strong> Nicht nur einer spricht, sondern mehrere gleichzeitig.</li>
+                <li><strong>Lange Töne gegen Feuerlinien:</strong> Statik und Explosivitaet im direkten Kontrast.</li>
+                <li><strong>Stille als Material:</strong> Leerstellen haben strukturelles Gewicht.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Quellen und weiterfuehrende Literatur</h2>
+            <ul>
+                <li>Ekkehard Jost: <em>Free Jazz</em></li>
+                <li>John Litweiler: <em>The Freedom Principle: Jazz After 1958</em></li>
+                <li>Valerie Wilmer: <em>As Serious As Your Life</em></li>
+                <li>George E. Lewis: <em>A Power Stronger Than Itself</em></li>
+                <li><a href="http://www.aacmchicago.org" target="_blank" rel="noopener noreferrer">AACM Chicago Archive</a></li>
+                <li>Jazz Institute of Chicago Oral Histories</li>
+                <li>DownBeat Magazine Archive</li>
+                <li>The Wire und Guardian-Retrospektiven zu Coleman, Taylor und Ayler</li>
+                <li>AllMusic Guide, BBC Radio 3 Dokumentationen und kuratierte Free-Jazz-Listen von Bandcamp Daily</li>
+            </ul>
+            <p><em>Hinweis: Mehrere oft kolportierte Zitate und Gründungsmythen rund um Free Jazz variieren je nach Quelle. Die hier zusammengefassten Entwicklungslinien folgen der etablierten Forschungsliteratur.</em></p>
+        </section>
+        `
+    },
     hip_hop_main: {
         id: 'hip_hop_main',
         group: 'hip_hop_group',
@@ -9931,6 +10476,7 @@ const SN_GROUP_COLORS = {
     orchestra_group: '#d4a04a',
     ambient_group: '#4a8cd4',
     urban_club_group: '#22d3ee',
+    jazz_group: '#c8a84b',
     hip_hop_group: '#a855f7',
     world_orchestra_group: '#5cb85c',
     sound_feeling_group: '#e87040'
@@ -9940,6 +10486,7 @@ const SN_GROUP_LABELS = {
     orchestra_group: 'Orchester',
     ambient_group: 'Ambient',
     urban_club_group: 'Urban / Club',
+    jazz_group: 'Jazz',
     hip_hop_group: 'Hip Hop',
     world_orchestra_group: 'Welt-Orchester',
     sound_feeling_group: 'Sound & Feeling'
@@ -9956,6 +10503,8 @@ const SN_SPECTRUM_POSITIONS = {
     sleep_ambient_protocols: [70, 92], field_recording_ambient: [65, 88],
     uk_garage_london: [82, 20], detroit_techno_foundry: [88, 15],
     chicago_house_classics: [80, 25],
+    jazz_world_main: [36, 48], bebop_club_new_york: [38, 18],
+    modal_jazz_explorations: [34, 66], free_jazz_experiment: [24, 14],
     hip_hop_main: [68, 30], golden_age_boom_bap: [58, 35],
     jazz_hip_hop_lounge: [52, 55], lofi_hip_hop_tape: [60, 65],
     gfunk_west_coast: [65, 40], southern_trap_lab: [75, 18],
@@ -9977,6 +10526,7 @@ const SN_GROUP_MOOD_VECTORS = {
     orchestra_group: { energy: -0.2, brightness: 0.3 },
     ambient_group: { energy: -0.8, brightness: 0.1 },
     urban_club_group: { energy: 0.9, brightness: 0.4 },
+    jazz_group: { energy: 0.45, brightness: -0.05 },
     hip_hop_group: { energy: 0.5, brightness: -0.1 },
     world_orchestra_group: { energy: 0.2, brightness: 0.2 },
     sound_feeling_group: { energy: 0.0, brightness: 0.0 }
