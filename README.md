@@ -4,6 +4,8 @@ A powerful AI-powered web application for creating optimized music prompts for S
 
 ![Suno Style Architect](https://img.shields.io/badge/Status-Ready-green) ![License](https://img.shields.io/badge/License-MIT-blue)
 
+> GitHub connection verified for repository maintenance.
+
 ## 🎵 Features
 
 ### Core Functionality
