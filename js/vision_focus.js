@@ -183,6 +183,18 @@
     }, ANIM_MS);
   }
 
+  function writeIdeaInput(value, opts) {
+    var el = document.getElementById('idea-input');
+    if (!el) return;
+    if (active) deactivate();
+    el.value = value || '';
+    el.dispatchEvent(new Event('input', { bubbles: true }));
+    if (opts && opts.pulse) {
+      el.classList.add('pulse');
+      setTimeout(function () { el.classList.remove('pulse'); }, 500);
+    }
+  }
+
   function toggle() {
     if (active) { deactivate(); } else { activate(); }
   }
@@ -233,7 +245,7 @@
   }
 
   // Expose public API
-  window.VisionFocus = { toggle: toggle, activate: activate, deactivate: deactivate };
+  window.VisionFocus = { toggle: toggle, activate: activate, deactivate: deactivate, writeIdeaInput: writeIdeaInput };
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);

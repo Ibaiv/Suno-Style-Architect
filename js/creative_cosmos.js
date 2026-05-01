@@ -11657,11 +11657,16 @@ async function generateVision() {
     try {
         const prompt = await callOpenRouterAPI(userMessage, CREATIVE_SYSTEM_PROMPT);
 
-        const ideaInput = document.getElementById('idea-input');
-        if (ideaInput) {
-            ideaInput.value = prompt;
-            ideaInput.classList.add('pulse');
-            setTimeout(() => ideaInput.classList.remove('pulse'), 500);
+        if (window.VisionFocus && typeof window.VisionFocus.writeIdeaInput === 'function') {
+            window.VisionFocus.writeIdeaInput(prompt, { pulse: true });
+        } else {
+            const ideaInput = document.getElementById('idea-input');
+            if (ideaInput) {
+                ideaInput.value = prompt;
+                ideaInput.dispatchEvent(new Event('input', { bubbles: true }));
+                ideaInput.classList.add('pulse');
+                setTimeout(() => ideaInput.classList.remove('pulse'), 500);
+            }
         }
         closeIdeaStarter();
 

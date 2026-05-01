@@ -69,7 +69,12 @@ function setupIdeaSpark() {
                 ideaElement.className = 'p-3 bg-neutral-700/50 rounded-lg cursor-pointer hover:bg-neutral-700 transition-colors';
                 ideaElement.textContent = ideaText.trim();
                 ideaElement.onclick = () => {
-                    document.getElementById('idea-input').value = ideaText.trim();
+                    if (window.VisionFocus && typeof window.VisionFocus.writeIdeaInput === 'function') {
+                        window.VisionFocus.writeIdeaInput(ideaText.trim());
+                    } else {
+                        const el = document.getElementById('idea-input');
+                        if (el) { el.value = ideaText.trim(); el.dispatchEvent(new Event('input', { bubbles: true })); }
+                    }
                     ideaModalLogic.close();
                 };
                 ideasOutput.appendChild(ideaElement);
@@ -2198,7 +2203,12 @@ function setupStyleSync() {
             // Insert into main app
             const mainInput = document.getElementById('idea-input');
             if (mainInput) {
-                mainInput.value = generatedText;
+                if (window.VisionFocus && typeof window.VisionFocus.writeIdeaInput === 'function') {
+                    window.VisionFocus.writeIdeaInput(generatedText);
+                } else {
+                    mainInput.value = generatedText;
+                    mainInput.dispatchEvent(new Event('input', { bubbles: true }));
+                }
                 // Visual feedback
                 applyBtn.innerHTML = '<span>Kopiert!</span> <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" title="Check"><polyline points="20 6 9 17 4 12"/></svg>';
                 setTimeout(() => {
