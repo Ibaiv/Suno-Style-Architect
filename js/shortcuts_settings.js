@@ -108,9 +108,17 @@
     if(e.metaKey || e.ctrlKey) parts.push('Mod');
     if(e.shiftKey) parts.push('Shift');
     if(e.altKey) parts.push('Alt');
-    if(code.startsWith('Key') || code==='Enter' || code==='Slash' || code==='Space') parts.push(code);
-    else if(e.key && e.key.length===1) parts.push('Key' + e.key.toUpperCase());
-    const bind = parts.join('+') || 'Key' + (e.key||'').toUpperCase();
+    if(code.startsWith('Key')) {
+      // Normalize letters to lowercase character bindings (QWERTZ-friendly)
+      parts.push(code.slice(3).toLowerCase());
+    } else if(code==='Enter' || code==='Slash' || code==='Space') {
+      parts.push(code);
+    } else if(e.key && e.key.length===1) {
+      parts.push(e.key.toLowerCase());
+    } else if(code) {
+      parts.push(code);
+    }
+    const bind = parts.join('+') || (e.key && e.key.length===1 ? e.key.toLowerCase() : code);
 
     const det = Keys.listDetailed().find(it=> it.id===recording);
     const existing = det?.bindings || [];

@@ -339,19 +339,14 @@
       bindings:['Mod+l'], run:()=> document.getElementById('klang-studio-tile')?.click() });
 
     // --- Phase 4, Batch 3: Navigation & Panel Shortcuts (P4-7) ---
-    Keys.register({ id:'page.prev', label:'Vorherige Seite', scope:'dashboard',
-      bindings:['BracketLeft', 'Mod+ArrowLeft'],
-      when:()=> document.querySelector('.bottom-dashboard')?.contains(document.activeElement),
-      run:()=> window.ToolPaging?.prevPage && window.ToolPaging.prevPage() });
-
-    Keys.register({ id:'page.next', label:'N\u00e4chste Seite', scope:'dashboard',
-      bindings:['BracketRight', 'Mod+ArrowRight'],
-      when:()=> document.querySelector('.bottom-dashboard')?.contains(document.activeElement),
-      run:()=> window.ToolPaging?.nextPage && window.ToolPaging.nextPage() });
+    // page.prev / page.next removed: ToolPaging does not expose prevPage/nextPage globally
+    // and the shortcuts were non-functional. Re-add only after wiring a global paging API.
   }
 
   // Phase 4 (P4-5): Helper functions for new shortcuts
   function toggleDashboard(){
+    const btn = document.getElementById('bd-collapse-toggle');
+    if(btn){ btn.click(); return; }
     const bd = document.querySelector('.bottom-dashboard');
     if(bd) bd.classList.toggle('hidden');
   }
@@ -485,6 +480,7 @@
     $('import-prompt-button')?.addEventListener('click', ()=> $('import-prompt-file')?.click());
     $('import-prompt-file')?.addEventListener('change', (e)=> importPromptFromFile(e.target.files?.[0]));
 
+    $('help-shortcuts-button')?.addEventListener('click', ()=> openShortcutModal());
     $('history-toggle-button')?.addEventListener('click', toggleHistory);
     $('history-close')?.addEventListener('click', closeHistory);
     $('history-overlay')?.addEventListener('click', closeHistory);
