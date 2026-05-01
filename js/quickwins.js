@@ -143,7 +143,13 @@
   function getCurrentPrompt(){ const el = $('result-text'); return el ? el.textContent.trim() : ''; }
   function setCurrentPrompt(t, toolName){ if(typeof applyPromptWithUndo === 'function'){ applyPromptWithUndo(t, toolName || 'Quick Action'); } else { const el = $('result-text'); if(el){ el.textContent = t||''; } } }
   function getCurrentIdea(){ const el = $('idea-input'); return el ? el.value.trim() : ''; }
-  function setCurrentIdea(t){ const el = $('idea-input'); if(el){ el.value = t||''; el.dispatchEvent(new Event('input')); } }
+  function setCurrentIdea(t){
+    if(window.VisionFocus && typeof window.VisionFocus.writeIdeaInput === 'function'){
+      window.VisionFocus.writeIdeaInput(t);
+    } else {
+      const el = $('idea-input'); if(el){ el.value = t||''; el.dispatchEvent(new Event('input', { bubbles: true })); }
+    }
+  }
 
   // Character stats and compliance (overlay format)
   function updateCharStats(){
