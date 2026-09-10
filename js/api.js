@@ -252,6 +252,7 @@ async function callOpenRouterAPI(userMessage, systemPrompt, imageUrl = null) {
         ]
         : userMessage;
 
+    const usesReasoning = LLM_MODELS[SELECTED_MODEL]?.reasoning === true;
     const payload = {
         model: SELECTED_MODEL,
         stream: false,
@@ -259,20 +260,23 @@ async function callOpenRouterAPI(userMessage, systemPrompt, imageUrl = null) {
             { role: "system", content: systemPrompt },
             { role: "user", content: userContent }
         ],
-        temperature: 0.7,
-        max_tokens: 1000,
-        top_p: 0.9
+        // Reasoning shares the completion budget. Leave room for the final answer
+        // and use provider sampling defaults (Astra/Fable reject custom sampling).
+        ...(usesReasoning
+            ? { max_tokens: 8192, reasoning: { effort: 'low', exclude: true } }
+            : { temperature: 0.7, max_tokens: 1000, top_p: 0.9 })
     };
 
-    // Timeout after 60 seconds to prevent infinite hanging
+    // Allow reasoning models more time, including downloading the response body.
     const controller = new AbortController();
     const timeoutId = setTimeout(() => {
         controller.abort(new Error('timeout'));
-    }, 60000);
+    }, usesReasoning ? 180000 : 60000);
 
     console.log('[SSA] API Request:', { model: SELECTED_MODEL, url: API_URL, messageLength: userMessage.length });
 
     let response;
+    let responseText;
     try {
         response = await fetch(API_URL, {
             method: 'POST',
@@ -285,26 +289,24 @@ async function callOpenRouterAPI(userMessage, systemPrompt, imageUrl = null) {
             body: JSON.stringify(payload),
             signal: controller.signal
         });
+        responseText = await response.text();
     } catch (fetchErr) {
-        clearTimeout(timeoutId);
         if (fetchErr.name === 'AbortError' || fetchErr.message?.includes('timeout')) {
             throw new Error(getUserFriendlyErrorMessage({ message: 'timeout' }));
         }
         throw new Error(getUserFriendlyErrorMessage(fetchErr));
+    } finally {
+        clearTimeout(timeoutId);
     }
-
-    clearTimeout(timeoutId);
 
     console.log('[SSA] API Response status:', response.status);
 
     if (!response.ok) {
-        const errorData = await response.text();
-        console.error('[SSA] API Error:', response.status, errorData);
+        console.error('[SSA] API Error:', response.status, responseText);
         throw new Error(getUserFriendlyErrorMessage({ message: `API request failed (${response.status})` }));
     }
 
     // Read response as text first, then parse - avoids hanging on malformed/streamed responses
-    const responseText = await response.text();
     console.log('[SSA] API Response length:', responseText.length);
 
     let result;
@@ -313,6 +315,10 @@ async function callOpenRouterAPI(userMessage, systemPrompt, imageUrl = null) {
     } catch (parseErr) {
         console.error('[SSA] Failed to parse API response:', responseText.substring(0, 500));
         throw new Error('API-Antwort konnte nicht verarbeitet werden. Möglicherweise ein Server-Problem.');
+    }
+
+    if (result.choices?.[0]?.finish_reason === 'length') {
+        throw new Error('API-Antwort konnte nicht vollständig erstellt werden: Das Token-Limit wurde erreicht. Bitte kürze deine Eingabe oder wähle ein anderes Modell.');
     }
 
     if (result.choices?.[0]?.message?.content) {

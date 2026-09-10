@@ -46,6 +46,14 @@ function updateHeaderModelChips(textModelKey, imageModelKey) {
 }
 
 function loadSettings() {
+    modelSelect.replaceChildren(...Object.entries(MODEL_NAMES).map(([id, name]) => {
+        const option = document.createElement('option');
+        option.value = id;
+        option.textContent = name;
+        option.title = id;
+        return option;
+    }));
+
     // Try multiple keys for compatibility
     const candidates = [
         localStorage.getItem('ssa_api_key'),
@@ -54,7 +62,11 @@ function loadSettings() {
         localStorage.getItem('api_key'),
     ];
     const savedKey = candidates.find(Boolean) || '';
-    const savedModel = localStorage.getItem('selected_model') || 'openai/gpt-5-mini';
+    const storedModel = localStorage.getItem('selected_model');
+    const savedModel = Object.prototype.hasOwnProperty.call(LLM_MODELS, storedModel)
+        ? storedModel : DEFAULT_MODEL;
+    SELECTED_MODEL = savedModel;
+    modelSelect.value = savedModel;
 
     // Load optional fal.ai settings
     const falCandidates = [
@@ -67,16 +79,14 @@ function loadSettings() {
     FAL_MODEL = savedFalModel;
     if (falApiKeyInput) falApiKeyInput.value = savedFalKey;
     if (falModelSelect) falModelSelect.value = savedFalModel;
+    updateHeaderModelChips(savedModel, savedFalModel);
     
     if (savedKey) {
         API_KEY = savedKey;
-        SELECTED_MODEL = savedModel;
         // Normalize/persist preferred keys
         localStorage.setItem('openrouter_api_key', savedKey);
         localStorage.setItem('ssa_api_key', savedKey);
         apiKeyInput.value = savedKey;
-        modelSelect.value = savedModel;
-        updateHeaderModelChips(savedModel, savedFalModel);
         showMainApp();
     } else {
         // Show setup modal explicitly if not configured
@@ -95,6 +105,11 @@ function saveSettings() {
 
     if (!apiKey.startsWith('sk-or-v1-')) {
         showInlineError('api-setup-error', 'Der API Key sollte mit "sk-or-v1-" beginnen. Bitte \u00fcberpr\u00fcfe deinen Key.');
+        return;
+    }
+
+    if (!Object.prototype.hasOwnProperty.call(LLM_MODELS, model)) {
+        showInlineError('api-setup-error', 'Bitte wähle ein KI-Modell aus.');
         return;
     }
 

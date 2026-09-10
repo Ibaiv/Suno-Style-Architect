@@ -49,16 +49,9 @@
                     <label for="model-select" class="block text-sm font-medium text-neutral-300 mb-2">KI-Modell</label>
                     <select id="model-select"
                         class="w-full bg-neutral-900/70 border border-neutral-600 rounded-lg p-3 text-neutral-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
-                        <option value="openai/gpt-5-mini">GPT-5 mini</option>
-                        <option value="anthropic/claude-haiku-4.5">Haiku 4.5</option>
-                        <option value="deepseek/deepseek-v3.1-terminus">Deepseek 3.1 terminus</option>
-                        <option value="deepseek/deepseek-v3.2-exp">Deepseek 3.2 Exp</option>
-                        <option value="tngtech/deepseek-r1t2-chimera">Deepseek-r1t2-chimera</option>
-                        <option value="z-ai/glm-4.6">GLM-4.6</option>
-                        <option value="x-ai/grok-4-fast">Grok-4-fast</option>
-                        <option value="inclusionai/ling-1t">Ling-1T</option>
+                        <!-- Populated from the shared model registry in js/config.js. -->
                     </select>
-                    <p class="text-xs text-neutral-500 mt-1">Standard ist gpt-5-mini (Preis-Leistungs-Verhältnis)</p>
+                    <p class="text-xs text-neutral-500 mt-1">Standard ist GPT-5 mini. „Latest“ folgt automatisch der neuesten Modellversion bei OpenRouter. Die Auswahl gilt für alle KI-Text- und Bildanalyse-Tools.</p>
                 </div>
 
                 <div>

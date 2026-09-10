@@ -74,19 +74,36 @@ A powerful AI-powered web application for creating optimized music prompts for S
 4. **Configure your API settings:**
    - On first visit, you'll see a setup modal
    - Get your free API key from [OpenRouter.ai](https://openrouter.ai)
-   - Choose your preferred AI model (GPT OSS 120B recommended)
+   - Choose your preferred AI model (GPT-5 mini is the default)
    - Click "Einstellungen speichern"
 
 ## 🔧 Configuration
 
 ### API Setup
 1. **Get OpenRouter API Key**: Visit [OpenRouter.ai](https://openrouter.ai) and create a free account
-2. **Choose AI Model**: The app supports multiple models:
-   - **GPT OSS 120B** (Recommended - best price/performance)
-   - **LLama 4 Scout**
-   - **Claude Sonnet 4**
-   - **Deepseek 3.1 Terminus**
-   - **Deepseek R1 Distill Llama 70B**
+2. **Choose AI Model**: GPT-5 mini remains the default. The picker also includes:
+   - **GPT-6 Astra** — `openai/gpt-6-astra`
+   - **Claude Fable (Latest)** — `~anthropic/claude-fable-latest`
+   - **Claude Opus (Latest)** — `~anthropic/claude-opus-latest`
+   - **DeepSeek V4 Flash Vision Exp** — `deepseek/deepseek-v4-flash-vision-exp`
+   - **GLM Flash (Latest)** — `~z-ai/glm-flash-latest`
+   - **Grok (Latest)** — `~x-ai/grok-latest`
+   - **Gemini Pro (Latest)** — `~google/gemini-pro-latest`
+   - **Kimi (Latest)** — `~moonshotai/kimi-latest`
+   - **Gemini Flash (Latest)** — `~google/gemini-flash-latest`
+   - Existing Haiku, DeepSeek, GLM, Grok, and Ling options remain available.
+
+The selection applies to every language-model feature, including prompt generation,
+refinement, Idea Spark, Creative Cosmos, Klang Studio, and Style Synchronizer image
+analysis. OpenRouter resolves the `~…-latest` aliases on each request. All nine new
+entries support image input in the [OpenRouter catalog](https://openrouter.ai/api/v1/models)
+as of September 10, 2026. Image generation still uses the separate Fal.ai settings.
+
+The picker and request configuration share `LLM_MODELS` in `js/config.js`. The new
+models use provider sampling defaults, low reasoning effort, an 8,192-token completion
+budget (including reasoning), and a 180-second timeout. This avoids unsupported
+sampling parameters and leaves room for a final answer after reasoning. Actual model
+access depends on the configured OpenRouter account and provider availability.
 
 ### Settings Management
 - Settings are saved locally in your browser

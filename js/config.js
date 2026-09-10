@@ -34,20 +34,35 @@ const FAL_MODEL_ENDPOINTS = {
 
 // === APP STATE ===
 let API_KEY = '';
-let SELECTED_MODEL = 'openai/gpt-5-mini';
+const DEFAULT_MODEL = 'openai/gpt-5-mini';
+let SELECTED_MODEL = DEFAULT_MODEL;
 const API_URL = 'https://openrouter.ai/api/v1/chat/completions';
 
-// Model display names
-const MODEL_NAMES = {
-    'openai/gpt-5-mini': 'GPT-5 mini',
-    'anthropic/claude-haiku-4.5': 'Haiku 4.5',
-    'deepseek/deepseek-v3.1-terminus': 'Deepseek 3.1 terminus',
-    'deepseek/deepseek-v3.2-exp': 'Deepseek 3.2 Exp',
-    'tngtech/deepseek-r1t2-chimera': 'Deepseek-r1t2-chimera',
-    'z-ai/glm-4.6': 'GLM-4.6',
-    'x-ai/grok-4-fast': 'Grok-4-fast',
-    'inclusionai/ling-1t': 'Ling-1T'
+// Shared by the picker, header, saved settings, and every LLM request.
+// Keep OpenRouter's ~ aliases intact so they continue following the latest model.
+// Capabilities checked against https://openrouter.ai/api/v1/models (2026-09-10).
+const LLM_MODELS = {
+    'openai/gpt-5-mini': { name: 'GPT-5 mini' },
+    'openai/gpt-6-astra': { name: 'GPT-6 Astra', reasoning: true },
+    '~anthropic/claude-fable-latest': { name: 'Claude Fable (Latest)', reasoning: true },
+    '~anthropic/claude-opus-latest': { name: 'Claude Opus (Latest)', reasoning: true },
+    'deepseek/deepseek-v4-flash-vision-exp': { name: 'DeepSeek V4 Flash Vision Exp', reasoning: true },
+    '~z-ai/glm-flash-latest': { name: 'GLM Flash (Latest)', reasoning: true },
+    '~x-ai/grok-latest': { name: 'Grok (Latest)', reasoning: true },
+    '~google/gemini-pro-latest': { name: 'Gemini Pro (Latest)', reasoning: true },
+    '~moonshotai/kimi-latest': { name: 'Kimi (Latest)', reasoning: true },
+    '~google/gemini-flash-latest': { name: 'Gemini Flash (Latest)', reasoning: true },
+    'anthropic/claude-haiku-4.5': { name: 'Haiku 4.5' },
+    'deepseek/deepseek-v3.1-terminus': { name: 'Deepseek 3.1 terminus' },
+    'deepseek/deepseek-v3.2-exp': { name: 'Deepseek 3.2 Exp' },
+    'tngtech/deepseek-r1t2-chimera': { name: 'Deepseek-r1t2-chimera' },
+    'z-ai/glm-4.6': { name: 'GLM-4.6' },
+    'x-ai/grok-4-fast': { name: 'Grok-4-fast' },
+    'inclusionai/ling-1t': { name: 'Ling-1T' }
 };
+const MODEL_NAMES = Object.fromEntries(
+    Object.entries(LLM_MODELS).map(([id, model]) => [id, model.name])
+);
 
 // Music genres for genre mixer
 const musicGenres = ["Acoustic", "Afrobeat", "Alternative", "Ambient", "Blues", "Bluegrass", "Breakcore", "Celtic", "City Pop", "Classical", "Country", "Dance", "Dancehall", "Disco", "Drum and Bass", "Dubstep", "Electronic", "Emo", "Folk", "Funk", "Glitchcore", "Gospel", "Goth", "Grunge", "Hard Rock", "Heavy Metal", "Hip Hop", "House", "Hyperpop", "Indie", "Industrial", "J-Pop", "J-Rock", "Jazz", "K-Pop", "Latin", "Lofi", "New Wave", "Orchestral", "Phonk", "Pop", "Post-Punk", "Progressive Rock", "Psychedelic Rock", "Punk", "R&B", "Reggae", "Reggaeton", "Rock", "Salsa", "Samba", "Shoegaze", "Ska", "Soul", "Synthwave", "Techno", "Trance", "Trap"];
