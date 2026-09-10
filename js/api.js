@@ -2,6 +2,8 @@
 // Converts raw API/network errors into German user-facing messages.
 // Used by all API call sites and display points to avoid leaking technical details.
 function getUserFriendlyErrorMessage(error) {
+    // API errors are displayed by several feature layers; do not translate twice.
+    if (error && typeof error.userMessage === 'string') return error.userMessage;
     const msg = (error && typeof error === 'object') ? (error.message || String(error)) : String(error || '');
     const statusMatch = msg.match(/\b(4\d{2}|5\d{2})\b/);
     const statusCode = statusMatch ? parseInt(statusMatch[1], 10) : null;
@@ -34,6 +36,10 @@ function getUserFriendlyErrorMessage(error) {
         return 'Ungültiger API-Schlüssel. Bitte überprüfe deine Einstellungen.';
     }
 
+    if (statusCode === 402 || /insufficient.*credits|not enough credits/i.test(msg)) {
+        return 'Nicht genug OpenRouter-Guthaben für diese Anfrage. Bitte prüfe dein Guthaben und das Ausgabenlimit des API-Schlüssels.';
+    }
+
     // Server errors (500+)
     if (statusCode !== null && statusCode >= 500) {
         return 'Der Server ist momentan nicht erreichbar. Bitte versuche es später.';
@@ -54,6 +60,48 @@ function getUserFriendlyErrorMessage(error) {
 
     // Generic fallback
     return 'Ein Fehler ist aufgetreten. Bitte versuche es erneut.';
+}
+
+function userFacingError(message) {
+    const error = new Error(message);
+    error.userMessage = message;
+    return error;
+}
+
+// Keep the actual service error so account, model, and parameter failures can be
+// distinguished in every tool. Only extract messages, never dump request metadata.
+function createOpenRouterError(httpStatus, result, model) {
+    const apiError = result?.error || {};
+    const status = Number(apiError.code) || httpStatus;
+    const hints = {
+        400: 'OpenRouter hat die Anfrage abgelehnt.',
+        401: 'Bitte überprüfe deinen OpenRouter API-Schlüssel.',
+        402: 'Nicht genug OpenRouter-Guthaben. Bitte prüfe Guthaben und API-Key-Ausgabenlimit.',
+        403: 'OpenRouter verweigert den Zugriff. Bitte prüfe Modellfreigaben und Kontoeinstellungen.',
+        404: 'Für dieses Modell wurde kein verfügbarer Endpunkt gefunden.',
+        408: 'OpenRouter hat die Anfrage wegen Zeitüberschreitung beendet.',
+        429: 'OpenRouter begrenzt gerade die Anfragen. Bitte warte einen Moment.',
+        502: 'Der Modellanbieter hat eine fehlerhafte Antwort geliefert.',
+        503: 'Aktuell ist kein passender Modellanbieter verfügbar.'
+    };
+    const details = [];
+    if (typeof apiError.message === 'string') details.push(apiError.message);
+    try {
+        const raw = apiError.metadata?.raw;
+        const providerError = typeof raw === 'string' ? JSON.parse(raw) : raw;
+        const message = providerError?.error?.message || providerError?.message;
+        if (typeof message === 'string' && !details.includes(message)) details.push(message);
+    } catch (_) { /* Ignore non-JSON provider metadata. */ }
+
+    let detail = details.join(' — ');
+    if (API_KEY) detail = detail.split(API_KEY).join('[redacted]');
+    detail = detail.replace(/sk-or-v1-[\w-]+|Bearer\s+[^\s"']+/gi, '[redacted]').slice(0, 600);
+    const label = MODEL_NAMES[model] || model;
+    const hint = hints[status] || 'Die Modellanfrage ist fehlgeschlagen.';
+    const error = userFacingError(`OpenRouter ${status} · ${label}: ${hint}${detail ? ` ${detail}` : ''}`);
+    error.status = status;
+    error.model = model;
+    return error;
 }
 
 // === FAL.AI API CALL ===
@@ -252,9 +300,10 @@ async function callOpenRouterAPI(userMessage, systemPrompt, imageUrl = null) {
         ]
         : userMessage;
 
-    const usesReasoning = LLM_MODELS[SELECTED_MODEL]?.reasoning === true;
+    const model = SELECTED_MODEL;
+    const usesReasoning = LLM_MODELS[model]?.reasoning === true;
     const payload = {
-        model: SELECTED_MODEL,
+        model,
         stream: false,
         messages: [
             { role: "system", content: systemPrompt },
@@ -292,19 +341,14 @@ async function callOpenRouterAPI(userMessage, systemPrompt, imageUrl = null) {
         responseText = await response.text();
     } catch (fetchErr) {
         if (fetchErr.name === 'AbortError' || fetchErr.message?.includes('timeout')) {
-            throw new Error(getUserFriendlyErrorMessage({ message: 'timeout' }));
+            throw userFacingError(getUserFriendlyErrorMessage({ message: 'timeout' }));
         }
-        throw new Error(getUserFriendlyErrorMessage(fetchErr));
+        throw userFacingError(getUserFriendlyErrorMessage(fetchErr));
     } finally {
         clearTimeout(timeoutId);
     }
 
     console.log('[SSA] API Response status:', response.status);
-
-    if (!response.ok) {
-        console.error('[SSA] API Error:', response.status, responseText);
-        throw new Error(getUserFriendlyErrorMessage({ message: `API request failed (${response.status})` }));
-    }
 
     // Read response as text first, then parse - avoids hanging on malformed/streamed responses
     console.log('[SSA] API Response length:', responseText.length);
@@ -313,22 +357,29 @@ async function callOpenRouterAPI(userMessage, systemPrompt, imageUrl = null) {
     try {
         result = JSON.parse(responseText);
     } catch (parseErr) {
-        console.error('[SSA] Failed to parse API response:', responseText.substring(0, 500));
+        if (!response.ok) throw createOpenRouterError(response.status, null, model);
         throw new Error('API-Antwort konnte nicht verarbeitet werden. Möglicherweise ein Server-Problem.');
+    }
+
+    // Providers can fail after HTTP 200; inspect the body before accepting content.
+    if (!response.ok || result?.error) {
+        const error = createOpenRouterError(response.status, result, model);
+        console.error('[SSA] API Error:', error.status, error.message);
+        throw error;
     }
 
     if (result.choices?.[0]?.finish_reason === 'length') {
         throw new Error('API-Antwort konnte nicht vollständig erstellt werden: Das Token-Limit wurde erreicht. Bitte kürze deine Eingabe oder wähle ein anderes Modell.');
     }
 
-    if (result.choices?.[0]?.message?.content) {
-        return result.choices[0].message.content.trim();
-    } else if (result.error) {
-        throw new Error(getUserFriendlyErrorMessage({ message: result.error.message || 'Unknown error' }));
-    } else {
-        console.error('[SSA] Unexpected API response structure:', JSON.stringify(result).substring(0, 500));
-        throw new Error('Ein Fehler ist aufgetreten. Bitte versuche es erneut.');
-    }
+    const choice = result?.choices?.[0];
+    const content = choice?.message?.content;
+    const text = typeof content === 'string' ? content : Array.isArray(content)
+        ? content.filter(part => part.type === 'text' && typeof part.text === 'string').map(part => part.text).join('\n')
+        : '';
+    if (text.trim()) return text.trim();
+
+    throw userFacingError(`OpenRouter · ${MODEL_NAMES[model] || model}: Das Modell hat keinen Antworttext geliefert${choice?.finish_reason ? ` (Ende: ${choice.finish_reason})` : ''}. Bitte versuche es erneut.`);
 }
 
 // === UTILITY FUNCTIONS ===
